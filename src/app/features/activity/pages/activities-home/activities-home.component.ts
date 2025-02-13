@@ -1,20 +1,22 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { ActivityCardComponent } from '../../components/activity-card/activity-card.component';
 import { ActivityFacadeService } from '../../services/activity-facade.service';
 import { Activity } from '../../models/activity.model';
+import { Observable } from 'rxjs';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'app-activities-home',
-  imports: [ActivityCardComponent],
+  imports: [ActivityCardComponent, AsyncPipe],
   templateUrl: './activities-home.component.html',
   styleUrl: './activities-home.component.scss',
 })
 export class ActivitiesHomeComponent implements OnInit {
   activityFacadeService: ActivityFacadeService = inject(ActivityFacadeService);
 
-  activities: Activity[] = []; // TODO: importer le typage d'activity
+  activities$: Observable<Activity[]> = this.activityFacadeService.activities$;
 
   ngOnInit(): void {
-    this.activities = this.activityFacadeService.getActivities();
+    this.activityFacadeService.getAllActivities();
   }
 }

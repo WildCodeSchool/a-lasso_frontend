@@ -1,10 +1,13 @@
-<div [ngClass]="darkMode ? 'dark-mode' : ''">
-  <div class="page">
-    <h1>I love Piloutre</h1>
+<!--<div [ngClass]="darkMode ? 'dark-mode' : ''">-->
+<!--  <div class="page">-->
+<!--    <h1>I love Piloutre</h1>-->
 
-  <!-- TODO : à supprimer quand le dark mode sera opérationnel   -->
-  <!--    <div class="card flex justify-center">-->
-  <!--      <p-button label="Check" (click)="changeMode()" />-->
-  <!--    </div>-->
-  <!-- </div> -->
+<!--    &lt;!&ndash;   TODO : à supprimer quand le dark mode sera opérationnel   &ndash;&gt;-->
+<!--    <div class="card flex justify-center">-->
+<!--      <p-button label="Check" (click)="changeMode()" />-->
+<!--    </div>-->
+<!--  </div>-->
+<div>
+  <router-outlet></router-outlet>
 </div>
+<!--</div>-->

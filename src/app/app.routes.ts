@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
 import { AppComponent } from './app.component';
-import { ActivitiesHomeComponent } from './features/activities/pages/activities-home/activities-home.component';
+import { ActivitiesHomeComponent } from './features/activity/pages/activities-home/activities-home.component';
 
 export const routes: Routes = [
   {
@@ -8,7 +8,7 @@ export const routes: Routes = [
     component: AppComponent,
   },
   {
-    path: '/activities',
+    path: 'activities',
     component: ActivitiesHomeComponent,
   },
 ];

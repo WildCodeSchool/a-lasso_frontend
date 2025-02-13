@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Activity } from '../../models/activity.model';
 
 @Component({
@@ -8,5 +8,5 @@ import { Activity } from '../../models/activity.model';
   styleUrl: './activity-card.component.scss',
 })
 export class ActivityCardComponent {
-  activity!: Activity; // TODO: ajouter l'import du typage Activity
+  @Input() activity!: Activity;
 }

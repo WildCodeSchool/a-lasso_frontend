@@ -3,6 +3,7 @@ export type Theme = 'Social' | 'Sport';
 export type Organization = {
   name: string;
   isFollow: boolean;
+  logo: string;
 };
 
 export type Participant = {
@@ -15,34 +16,23 @@ export class Activity {
   title: string = '';
   description: string = '';
   image: string[] = [];
-  organization: Organization = { name: '', isFollow: false };
+  organization: Organization = { name: '', logo: '', isFollow: false };
   location: string = '';
   date: Date = new Date();
   participant: Participant = { current: 0, max: 10 };
   theme: Theme[];
   isFavorite: boolean = false;
 
-  constructor(
-    id: string,
-    title: string,
-    description: string,
-    image: string[],
-    organization: Organization,
-    location: string,
-    date: Date,
-    participant: Participant,
-    theme: Theme[],
-    isFavorite: boolean
-  ) {
-    this.id = id;
-    this.title = title;
-    this.description = description;
-    this.image = image;
-    this.organization = organization;
-    this.location = location;
-    this.date = date;
-    this.participant = participant;
-    this.theme = theme;
-    this.isFavorite = isFavorite;
+  constructor(data: Partial<Activity> = {}) {
+    this.id = data.id || '';
+    this.title = data.title || '';
+    this.description = data.description || '';
+    this.image = data.image || [];
+    this.organization = data.organization || { name: '', logo: '', isFollow: false };
+    this.location = data.location || '';
+    this.date = data.date || new Date();
+    this.participant = data.participant || { current: 0, max: 10 };
+    this.theme = data.theme || [];
+    this.isFavorite = data.isFavorite || false;
   }
 }

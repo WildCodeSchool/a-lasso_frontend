@@ -1,7 +1,8 @@
 .card {
   display: flex;
   flex-direction: column;
-  width: 20vw;
+  width: 80%;
+  padding: 5%;
 
   .description-card {
     display: flex;
@@ -20,6 +21,10 @@
     .footer-description {
       display: flex;
       justify-content: space-between;
+
+      .footer-details {
+        display: flex;
+      }
 
       .location {
         display: flex;
