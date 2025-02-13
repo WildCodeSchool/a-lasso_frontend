@@ -1,0 +1,19 @@
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 1% 0 1%;
+  margin-bottom: 4%;
+  color: var(--primary-dark-color);
+  box-shadow: var(--box-shadow);
+
+  .logo {
+    display: flex;
+    width: 40%;
+    gap: 5%;
+  }
+
+  h1 {
+    font-weight: 400;
+  }
+}
