@@ -22,10 +22,10 @@
     "id": 2,
     "title": "Collecte alimentaire",
     "description": "Aidez-nous à collecter et distribuer des denrées aux personnes dans le besoin.",
-    "image": ["/activities/tempImageData/maraude.png"],
+    "image": ["/activities/tempImageData/collecteAlimentaire.png"],
     "organization": {
       "name": "Les Restos du Cœur",
-      "logo": "/activities/tempImageData/logoCroixRouge.png",
+      "logo": "/activities/tempImageData/restoDuCoeur.png",
       "isFollow": true
     },
     "location": "Lyon",
@@ -41,10 +41,10 @@
     "id": 3,
     "title": "Soutien scolaire",
     "description": "Nous recherchons des bénévoles pour aider des enfants en difficulté scolaire.",
-    "image": ["/activities/tempImageData/maraude.png"],
+    "image": ["/activities/tempImageData/soutienScolaire.jpg"],
     "organization": {
       "name": "Éducation Pour Tous",
-      "logo": "/activities/tempImageData/logoCroixRouge.png",
+      "logo": "/activities/tempImageData/educationPourTous.png",
       "isFollow": true
     },
     "location": "Paris",
@@ -63,13 +63,13 @@
     "image": ["/activities/tempImageData/SPA.png"],
     "organization": {
       "name": "SPA",
-      "logo": "/activities/tempImageData/logoCroixRouge.png",
+      "logo": "/activities/tempImageData/logoSPA.png",
       "isFollow": false
     },
     "location": "Marseille",
     "date": "2024-12-15",
     "participants": {
-      "current": 3,
+      "current": 10,
       "max": 10
     },
     "theme": ["Nature"],
