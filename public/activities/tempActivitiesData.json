@@ -6,7 +6,7 @@
     "image": ["/activities/tempImageData/maraude.png"],
     "organization": {
       "name": "La croix rouge",
-      "logo": "superLogo",
+      "logo": "/activities/tempImageData/logoCroixRouge.png",
       "isFollow": false
     },
     "location": "Nantes",
@@ -25,7 +25,7 @@
     "image": ["/activities/tempImageData/maraude.png"],
     "organization": {
       "name": "Les Restos du Cœur",
-      "logo": "superLogo",
+      "logo": "/activities/tempImageData/logoCroixRouge.png",
       "isFollow": true
     },
     "location": "Lyon",
@@ -44,7 +44,7 @@
     "image": ["/activities/tempImageData/maraude.png"],
     "organization": {
       "name": "Éducation Pour Tous",
-      "logo": "superLogo",
+      "logo": "/activities/tempImageData/logoCroixRouge.png",
       "isFollow": true
     },
     "location": "Paris",
@@ -63,7 +63,7 @@
     "image": ["/activities/tempImageData/SPA.png"],
     "organization": {
       "name": "SPA",
-      "logo": "superLogo",
+      "logo": "/activities/tempImageData/logoCroixRouge.png",
       "isFollow": false
     },
     "location": "Marseille",

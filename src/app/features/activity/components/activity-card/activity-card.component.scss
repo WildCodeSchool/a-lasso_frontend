@@ -1,37 +1,74 @@
 .card {
   display: flex;
   flex-direction: column;
-  width: 80%;
-  padding: 5%;
+  width: 20vw;
+  background-color: var(--background-color-white);
+
+  img {
+    object-fit: contain;
+  }
+
+  .activity-image {
+    width: 100%;
+    filter: brightness(80%);
+  }
+
+  h3 {
+    color: var(--primary-dark-color);
+    font-weight: 400;
+  }
+
+  p {
+    color: var(--font-color);
+  }
 
   .description-card {
     display: flex;
     flex-direction: column;
-    justify-content: space-around;
+    justify-content: space-between;
+    padding: 5% 5% 0% 5%;
 
     .header-description {
       display: flex;
       justify-content: space-between;
+      align-items: center;
     }
 
     .info-asso {
       display: flex;
+      align-items: center;
+      gap: 2%;
+    }
+
+    .push-footer {
+      flex-grow: 1;
     }
 
     .footer-description {
       display: flex;
       justify-content: space-between;
+      width: 100%;
+      align-items: center;
 
       .footer-details {
         display: flex;
-      }
+        width: 60%;
 
-      .location {
-        display: flex;
-      }
+        .location {
+          display: flex;
+          gap: 10%;
+          width: 50%;
+        }
 
-      .date {
-        display: flex;
+        .date {
+          display: flex;
+          width: 50%;
+          gap: 10%;
+        }
+
+        svg {
+          width: 12px;
+        }
       }
     }
   }
