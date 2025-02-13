@@ -1,5 +1,5 @@
 <div class="activities-home">
-  @for (activity of activities; track activity.id) {
+  @for (activity of activities$ | async; track activity.id) {
     <app-activity-card [activity]="activity"></app-activity-card>
   }
 </div>

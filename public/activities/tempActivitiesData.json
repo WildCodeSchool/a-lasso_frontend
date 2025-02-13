@@ -1,0 +1,78 @@
+[
+  {
+    "id": 1,
+    "title": "La maraude",
+    "description": "Nous avons besoin de votre aide pour apporter du soutien aux sans-abris.",
+    "image": ["/activities/tempImageData/maraude.png"],
+    "organization": {
+      "name": "La croix rouge",
+      "logo": "superLogo",
+      "isFollow": false
+    },
+    "location": "Nantes",
+    "date": "2024-09-26",
+    "participants": {
+      "current": 2,
+      "max": 10
+    },
+    "theme": ["Social"],
+    "isFavorite": false
+  },
+  {
+    "id": 2,
+    "title": "Collecte alimentaire",
+    "description": "Aidez-nous à collecter et distribuer des denrées aux personnes dans le besoin.",
+    "image": ["/activities/tempImageData/maraude.png"],
+    "organization": {
+      "name": "Les Restos du Cœur",
+      "logo": "superLogo",
+      "isFollow": true
+    },
+    "location": "Lyon",
+    "date": "2024-10-10",
+    "participants": {
+      "current": 5,
+      "max": 15
+    },
+    "theme": ["Santé"],
+    "isFavorite": true
+  },
+  {
+    "id": 3,
+    "title": "Soutien scolaire",
+    "description": "Nous recherchons des bénévoles pour aider des enfants en difficulté scolaire.",
+    "image": ["/activities/tempImageData/maraude.png"],
+    "organization": {
+      "name": "Éducation Pour Tous",
+      "logo": "superLogo",
+      "isFollow": true
+    },
+    "location": "Paris",
+    "date": "2024-11-05",
+    "participants": {
+      "current": 8,
+      "max": 12
+    },
+    "theme": ["Cours"],
+    "isFavorite": false
+  },
+  {
+    "id": 4,
+    "title": "Réhabilitation d'un refuge",
+    "description": "Rejoignez-nous pour rénover un refuge pour animaux abandonnés.",
+    "image": ["/activities/tempImageData/SPA.png"],
+    "organization": {
+      "name": "SPA",
+      "logo": "superLogo",
+      "isFollow": false
+    },
+    "location": "Marseille",
+    "date": "2024-12-15",
+    "participants": {
+      "current": 3,
+      "max": 10
+    },
+    "theme": ["Nature"],
+    "isFavorite": true
+  }
+]
