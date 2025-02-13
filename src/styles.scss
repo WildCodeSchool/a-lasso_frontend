@@ -1,15 +1,17 @@
 // import font family
 @import url('https://fonts.googleapis.com/css2?family=Crimson+Text&family=Roboto:ital,wght@0,100..900;1,100..900&family=Spectral+SC&display=swap');
 
-:root {
-  // initialization project
-  box-sizing: border-box;
+// initialization project
+body {
   margin: 0;
-  padding: 0;
+  box-sizing: border-box;
+  overflow-x: hidden;
   min-height: 100vh;
   max-width: 100vw;
-  overflow-x: hidden;
+  padding: 0;
+}
 
+:root {
   // variables for colors
   --background-color-white: white;
   --background-color-light: #f8f8f8;

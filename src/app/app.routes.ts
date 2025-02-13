@@ -1,14 +1,16 @@
 import { Routes } from '@angular/router';
-import { AppComponent } from './app.component';
 import { ActivitiesHomeComponent } from './features/activity/pages/activities-home/activities-home.component';
+import { MainLayoutComponent } from './layouts/main-layout/main-layout.component';
 
 export const routes: Routes = [
   {
     path: '',
-    component: AppComponent,
-  },
-  {
-    path: 'activities',
-    component: ActivitiesHomeComponent,
+    component: MainLayoutComponent,
+    children: [
+      {
+        path: 'activities',
+        component: ActivitiesHomeComponent,
+      },
+    ],
   },
 ];
