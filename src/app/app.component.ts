@@ -10,7 +10,6 @@ import { NgClass } from '@angular/common';
   styleUrl: './app.component.scss',
 })
 export class AppComponent {
-
   // TODO: à supprimer quand le dark mode sera fonctionnel
   // darkMode: boolean = false;
   // changeMode(): void {
