@@ -1,5 +1,4 @@
 import { Component, Input } from '@angular/core';
-import { Activity } from '../../models/activity.model';
 
 @Component({
   selector: 'app-inscription-badge',
@@ -9,5 +8,5 @@ import { Activity } from '../../models/activity.model';
   styleUrl: './inscription-badge.component.scss',
 })
 export class InscriptionBadgeComponent {
-  @Input() activity!: Activity;
+  @Input() participants!: { current: number; max: number };
 }

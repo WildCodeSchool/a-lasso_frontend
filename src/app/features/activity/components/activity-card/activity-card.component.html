@@ -4,7 +4,7 @@
     <div class="header-description">
       <h3>{{ activity.title }}</h3>
       @if (activity) {
-        <app-inscription-badge [activity]="activity"></app-inscription-badge>
+      <app-inscription-badge [participants]="activity.participants"></app-inscription-badge>
       }
       <!-- TODO: changer pour le composant réutilisable -->
     </div>
