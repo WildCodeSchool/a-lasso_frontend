@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, tap } from 'rxjs';
+import { Observable } from 'rxjs';
 import { Activity } from '../models/activity.model';
 
 @Injectable({
@@ -11,6 +11,6 @@ export class ActivitiesApiService {
 
   getAllActivities(): Observable<Activity[]> {
     // return this._http.get<Activity[]>("/activities");
-    return this._http.get<Activity[]>('/activities/tempActivitiesData.json').pipe(tap((activities: Activity[]) => console.log(activities)));
+    return this._http.get<Activity[]>('/activities/tempActivitiesData.json');
   }
 }

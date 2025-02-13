@@ -22,7 +22,7 @@ export class ActivityFacadeService {
         tap((activities: Activity[]) => {
           this.store.dispatch(setActivities({ activities }));
         }),
-        take(1),
+        take(1)
       )
       .subscribe();
   }
