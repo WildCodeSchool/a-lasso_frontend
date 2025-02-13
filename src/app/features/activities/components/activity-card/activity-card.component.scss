@@ -1,0 +1,33 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  width: 20vw;
+
+  .description-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+
+    .header-description {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .info-asso {
+      display: flex;
+    }
+
+    .footer-description {
+      display: flex;
+      justify-content: space-between;
+
+      .location {
+        display: flex;
+      }
+
+      .date {
+        display: flex;
+      }
+    }
+  }
+}
