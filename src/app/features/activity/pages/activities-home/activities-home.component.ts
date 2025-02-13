@@ -10,6 +10,7 @@ import { AsyncPipe } from '@angular/common';
   imports: [ActivityCardComponent, AsyncPipe],
   templateUrl: './activities-home.component.html',
   styleUrl: './activities-home.component.scss',
+  standalone: true,
 })
 export class ActivitiesHomeComponent implements OnInit {
   activityFacadeService: ActivityFacadeService = inject(ActivityFacadeService);
