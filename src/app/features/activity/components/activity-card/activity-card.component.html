@@ -3,7 +3,9 @@
   <div class="description-card">
     <div class="header-description">
       <h3>{{ activity.title }}</h3>
-      <p>Badge volonteers</p>
+      @if (activity) {
+        <app-inscription-badge [activity]="activity"></app-inscription-badge>
+      }
       <!-- TODO: changer pour le composant réutilisable -->
     </div>
     <p>

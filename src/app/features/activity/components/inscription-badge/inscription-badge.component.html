@@ -1,0 +1,9 @@
+@if (activity && activity.participants) {
+  <div class="badge-container">
+    @if (activity.participants.current === activity.participants.max) {
+      <p class="badge full">Complet</p>
+    } @else {
+      <p class="badge">{{ activity.participants.current }} / {{ activity.participants.max }} pers.</p>
+    }
+  </div>
+}
