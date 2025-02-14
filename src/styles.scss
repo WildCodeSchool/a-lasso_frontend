@@ -1,57 +1,54 @@
 // import font family
-@import url('https://fonts.googleapis.com/css2?family=Spectral+SC&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Crimson+Text&family=Roboto:ital,wght@0,100..900;1,100..900&family=Spectral+SC&display=swap');
 
-
-:root {
-
-  // initialization project
-  box-sizing: border-box;
+// initialization project
+body {
   margin: 0;
-  padding: 0;
+  box-sizing: border-box;
+  overflow-x: hidden;
   min-height: 100vh;
   max-width: 100vw;
-  overflow-x: hidden;
+  padding: 0;
+}
 
-
+:root {
   // variables for colors
-  --backgroundColorLight: #F8F8F8;
-  --fontColor: black;
+  --background-color-white: white;
+  --background-color-light: #f8f8f8;
+  --font-color: #505050;
 
-  --primaryDarkColor: #13678A;
-  --primaryLightColor: #1385A8;
+  --primary-dark-color: #13678a;
+  --primary-light-color: #1385a8;
 
-  --secondaryValidateColor: #36C919;
-  --secondaryCompleteColor: #FA8D12;
-  --secondaryErrorColor: #D4412D;
-
+  --secondary-validate-color: #36c919;
+  --secondary-complete-color: #fa8d12;
+  --secondary-error-color: #d4412d;
 
   // variables for fonts (size & font families)
-  --fontSizeP: 14px;
-  --fontSizePMini: 10px;
-  --fontSizeBigTitle: 36px; // for H1
-  --fontSizeMediumTitle: 22px; // for H2
-  --fontSizeSmallTitle: 20px; // for H3
+  --font-size-p: 14px;
+  --font-size-p-mini: 10px;
+  --font-size-big-title: 36px; // for H1
+  --font-size-medium-title: 22px; // for H2
+  --font-size-small-title: 20px; // for H3
 
-  --fontSizePMobile: 12px;
-  --fontSizeBigTitleMobile: 24px;
-  --fontSizeMediumTitleMobile: 18px;
-  --fontSizeSmallTitleMobile: 16px;
+  --font-size-p-mobile: 12px;
+  --font-size-big-title-mobile: 24px;
+  --font-size-medium-title-mobile: 18px;
+  --font-size-small-title-mobile: 16px;
 
-  --fontFamilyP: Roboto, sans-serif;
-  --fontFamilyBigMediumTitle: "Spectral SC", serif;
-  --fontFamilySmallTitle: CrimsonText, serif;
-
+  --font-family-p: 'Roboto', serif;
+  --font-family-big-medium-title: 'Spectral SC', serif;
+  --font-family-small-title: 'Crimson Text', serif;
 
   // various variables
-  --borderRadius: 5px;
-  --boxShadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  --greyBorder: 1px solid #D9D9D9;
-
+  --border-radius: 5px;
+  --box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.1);
+  --grey-border: 1px solid #d9d9d9;
 
   // switch colors for dark mode
   .dark-mode {
-    --backgroundColor: #595959;
-    --fontColor: white;
+    --background-color-light: #595959;
+    --font-color: white;
     // TODO: à compléter pour les couleurs de dark mode
   }
 
@@ -59,12 +56,35 @@
 
   // common cases CSS
   .card {
-    border-radius: var(--borderRadius);
-    box-shadow: var(--boxShadow);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
   }
 
   .line-box {
-    border: var(--borderColor);
+    border: var(--border-color);
+  }
+
+  h1 {
+    font-family: var(--font-family-big-medium-title);
+    font-size: var(--font-size-big-title);
+  }
+
+  h2 {
+    font-family: var(--font-family-big-medium-title);
+    font-size: var(--font-size-medium-title);
+  }
+
+  h3 {
+    font-family: var(--font-family-small-title);
+    font-size: var(--font-size-small-title);
+  }
+
+  p {
+    font-family: var(--font-family-p);
+    font-size: var(--font-size-p);
+  }
+
+  .mini-p {
+    font-size: var(--font-size-p-mini);
   }
 }
-

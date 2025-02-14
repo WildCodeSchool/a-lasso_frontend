@@ -1,0 +1,23 @@
+.badge-container {
+  width: 75px;
+  height: 30px;
+
+  .badge {
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: auto;
+    text-align: center;
+    width: 75px;
+    height: 30px;
+    background-color: var(--secondary-validate-color);
+    color: var(--background-color-white);
+    font-size: var(--font-size-p-mini);
+    font-family: var(--font-family-p);
+
+    &.full {
+      background-color: var(--secondary-complete-color);
+    }
+  }
+}
