@@ -1,0 +1,16 @@
+button {
+  border: none;
+  background: none;
+
+  .heartImage {
+    color: var(--primary-light-color);
+    font-size: 25px;
+    transition: all 0.3s ease;
+
+    &:hover {
+      color: var(--primary-dark-color);
+      transform: scale(1.2);
+      cursor: pointer;
+    }
+  }
+}
