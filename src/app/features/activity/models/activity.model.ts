@@ -1,6 +1,6 @@
 export type Theme = 'Social' | 'Sport';
 
-export type Organization = {
+export type Association = {
   name: string;
   isFollow: boolean;
   logo: string;
@@ -16,7 +16,7 @@ export class Activity {
   title: string = '';
   description: string = '';
   image: string[] = [];
-  organization: Organization = { name: '', logo: '', isFollow: false };
+  association: Association = { name: '', logo: '', isFollow: false };
   location: string = '';
   date: Date = new Date();
   participants: Participant = { current: 0, max: 10 };
@@ -28,7 +28,7 @@ export class Activity {
     this.title = data.title || '';
     this.description = data.description || '';
     this.image = data.image || [];
-    this.organization = data.organization || { name: '', logo: '', isFollow: false };
+    this.association = data.association || { name: '', logo: '', isFollow: false };
     this.location = data.location || '';
     this.date = data.date || new Date();
     this.participants = data.participants || { current: 0, max: 10 };

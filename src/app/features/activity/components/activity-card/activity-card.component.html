@@ -1,10 +1,10 @@
 <div class="card">
-  <img class="activity-image" [src]="activity.image[0]" [alt]="activity.title" />
+  <img class="activity-image" [src]="apiUrl + activity.image[0]" [alt]="activity.title" />
   <div class="description-card">
     <div class="header-description">
       <h3>{{ activity.title }}</h3>
       @if (activity) {
-        <app-inscription-badge [participants]="activity.participants"></app-inscription-badge>
+      <app-inscription-badge [participants]="activity.participants"></app-inscription-badge>
       }
     </div>
     <p>
@@ -12,8 +12,9 @@
       <!-- TODO: limiter les caractères -->
     </p>
     <div class="info-asso">
-      <img [src]="activity.organization.logo" [alt]="activity.organization.name" />
-      <p>{{ activity.organization.name }}</p>
+      <img [src]="apiUrl + activity.association.logo" [alt]="activity.association.name" />
+
+      <p>{{ activity.association.name }}</p>
     </div>
     <div class="push-footer">
       <div class="footer-description">

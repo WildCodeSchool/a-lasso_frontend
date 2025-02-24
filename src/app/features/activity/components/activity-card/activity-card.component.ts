@@ -2,6 +2,7 @@ import { Component, Input } from '@angular/core';
 import { Activity } from '../../models/activity.model';
 import { InscriptionBadgeComponent } from '../inscription-badge/inscription-badge.component';
 import { FavoriteHeartComponent } from '../favorite-heart/favorite-heart.component';
+import { environment } from 'src/environments/environment.development';
 
 @Component({
   selector: 'app-activity-card',
@@ -12,4 +13,6 @@ import { FavoriteHeartComponent } from '../favorite-heart/favorite-heart.compone
 })
 export class ActivityCardComponent {
   @Input() activity!: Activity;
+
+  public apiUrl = environment.apiUrl;
 }
