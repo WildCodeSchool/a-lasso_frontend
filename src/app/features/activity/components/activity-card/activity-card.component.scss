@@ -3,6 +3,12 @@
   flex-direction: column;
   width: 20vw;
   background-color: var(--background-color-white);
+  transition: transform 0.3s ease;
+
+  &:hover {
+    transform: scale(1.1);
+    cursor: pointer;
+  }
 
   img {
     object-fit: contain;
@@ -61,12 +67,14 @@
 
         .location {
           display: flex;
+          align-items: center;
           gap: 10%;
           width: 50%;
         }
 
         .date {
           display: flex;
+          align-items: center;
           width: 50%;
           gap: 10%;
         }
