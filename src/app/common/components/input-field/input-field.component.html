@@ -1,0 +1,9 @@
+<p-floatlabel [variant]="variant">
+  @if (type === 'date') {
+    <p-calendar [inputId]="'input_' + (label | lowercase)" [(ngModel)]="value" [disabled]="disabled" dateFormat="dd.mm.yy"> </p-calendar>
+  } @else {
+    <input pInputText [id]="'input_' + (label | lowercase)" [(ngModel)]="value" [type]="type" [disabled]="disabled" autocomplete="off" />
+  }
+
+  <label [for]="'input_' + (label | lowercase)">{{ label }}</label>
+</p-floatlabel>
