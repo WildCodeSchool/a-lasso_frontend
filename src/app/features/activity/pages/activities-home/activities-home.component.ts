@@ -3,11 +3,12 @@ import { ActivityCardComponent } from '../../components/activity-card/activity-c
 import { ActivityFacadeService } from '../../services/activity-facade.service';
 import { Activity } from '../../models/activity.model';
 import { Observable } from 'rxjs';
-import { AsyncPipe } from '@angular/common';
+import { AsyncPipe, NgClass } from '@angular/common';
+import { ToggleMenuComponent } from '../../../../common/components/toggle-menu/toggle-menu.component';
 
 @Component({
   selector: 'app-activities-home',
-  imports: [ActivityCardComponent, AsyncPipe],
+  imports: [ActivityCardComponent, AsyncPipe, ToggleMenuComponent, NgClass],
   templateUrl: './activities-home.component.html',
   styleUrl: './activities-home.component.scss',
   standalone: true,
@@ -17,7 +18,14 @@ export class ActivitiesHomeComponent implements OnInit {
 
   activities$: Observable<Activity[]> = this.activityFacadeService.activities$;
 
+  navigationItems: string[] = ['Liste', 'Carte'];
+  chosenNavigation: string = 'Liste';
+
   ngOnInit(): void {
     this.activityFacadeService.getAllActivities();
+  }
+
+  handleNavigation(title: string): void {
+    this.chosenNavigation = title;
   }
 }

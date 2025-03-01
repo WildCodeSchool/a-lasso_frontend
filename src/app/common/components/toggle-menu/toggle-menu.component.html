@@ -1,0 +1,7 @@
+<p-tabs [(value)]="activeTabValue">
+  <p-tablist>
+    @for (tab of tabs; track $index) {
+      <p-tab [value]="tab" (click)="updateNavigation($index)">{{ tab }}</p-tab>
+    }
+  </p-tablist>
+</p-tabs>

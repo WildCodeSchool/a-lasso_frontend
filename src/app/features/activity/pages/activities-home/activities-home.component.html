@@ -1,5 +1,20 @@
 <div class="activities-home">
-  @for (activity of activities$ | async; track activity.id) {
-    <app-activity-card [activity]="activity"></app-activity-card>
-  }
+  <div class="search-activities">
+    <!--TODO: rajouter ici composant qui regroupe les input de recherche pour la page activities-->
+  </div>
+
+  <div class="cards-and-map">
+    <div class="cards-activities" [ngClass]="chosenNavigation !== 'Liste' ? 'hidden' : ''">
+      @for (activity of activities$ | async; track activity.id) {
+        <app-activity-card [activity]="activity"></app-activity-card>
+      }
+    </div>
+    <div class="map-activities" [ngClass]="chosenNavigation !== 'Carte' ? 'hidden' : ''">
+      <!--TODO: rajouter ici composant map pour la page activities-->
+    </div>
+  </div>
+
+  <div class="switch-map">
+    <app-toggle-menu [tabs]="navigationItems" (chosenTab)="handleNavigation($event)"></app-toggle-menu>
+  </div>
 </div>

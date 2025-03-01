@@ -7,7 +7,7 @@ import { routes } from './app.routes';
 import { provideHttpClient } from '@angular/common/http';
 import { providePrimeNG } from 'primeng/config';
 import { activitiesReducer } from './features/activity/store/activities.reducers';
-import Aura from '@primeng/themes/aura';
+import { myPreset } from './mytheme';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -19,7 +19,7 @@ export const appConfig: ApplicationConfig = {
     provideStoreDevtools({ maxAge: 25 }),
     providePrimeNG({
       theme: {
-        preset: Aura,
+        preset: myPreset,
       },
     }),
   ],
