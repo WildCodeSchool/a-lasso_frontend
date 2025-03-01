@@ -6,7 +6,8 @@ export type Localisation = {
   latitude: number;
 };
 
-export type Association = {
+export type AssociationActiviy = {
+  id: string;
   name: string;
   isFollow: boolean;
   logo: string;
@@ -23,7 +24,8 @@ export class Activity {
   title: string = '';
   description: string = '';
   image: string[] = [];
-  association: Association = {
+  association: AssociationActiviy = {
+    id: '',
     name: '',
     logo: '',
     isFollow: false,
@@ -49,6 +51,7 @@ export class Activity {
     this.description = data.description || '';
     this.image = data.image || [];
     this.association = data.association || {
+      id: '',
       name: '',
       logo: '',
       isFollow: false,
