@@ -1,4 +1,4 @@
-<div class="card">
+<div class="card" [routerLink]="['/activity', activity.id]">
   <img class="activity-image" [src]="apiUrl + activity.image[0]" [alt]="activity.title" />
   <div class="description-card">
     <div class="header-description">

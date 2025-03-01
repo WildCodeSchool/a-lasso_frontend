@@ -1,0 +1,13 @@
+.activity-details-page {
+  display: flex;
+  height: 80vh;
+
+  .activity {
+    width: 50%;
+    border: 1px solid black;
+  }
+
+  .association {
+    width: 50%;
+  }
+}
