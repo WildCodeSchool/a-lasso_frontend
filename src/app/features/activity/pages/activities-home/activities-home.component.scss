@@ -1,6 +1,54 @@
 .activities-home {
   display: flex;
+  flex-direction: column;
   flex-wrap: wrap;
   justify-content: space-around;
   background-color: var(--background-color-light);
+  width: 100vw;
+  height: 80vh;
+  position: relative;
+
+  .search-activities {
+    border: 1px solid black;
+    height: 150px;
+  }
+
+  .cards-and-map {
+    display: flex;
+    width: 100%;
+
+    .cards-activities {
+      width: 50%;
+      display: flex;
+      justify-content: space-around;
+      flex-wrap: wrap;
+    }
+
+    .map-activities {
+      width: 50%;
+      border: 1px solid black;
+      flex-grow: 1;
+      height: 50vh;
+    }
+
+    @media screen and (max-width: 901px) {
+      .hidden {
+        display: none;
+      }
+    }
+  }
+
+  .switch-map {
+    display: none;
+  }
+
+  @media screen and (max-width: 901px) {
+    .switch-map {
+      display: initial;
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+  }
 }

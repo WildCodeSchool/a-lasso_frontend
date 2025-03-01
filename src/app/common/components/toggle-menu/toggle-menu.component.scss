@@ -1,0 +1,12 @@
+p-tablist::ng-deep {
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+p-tab:first-child::ng-deep {
+  border-radius: 5px 0 0 5px;
+}
+
+p-tab:last-child::ng-deep {
+  border-radius: 0 5px 5px 0;
+}
