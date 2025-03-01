@@ -1,9 +1,16 @@
-export type Theme = 'Social' | 'Sport';
+export type Theme = 'Social' | 'Sport' | 'Santé' | 'Nature' | 'Culture' | 'Culinaire' | 'Cours';
 
-export type Organization = {
+export type Localisation = {
+  city: string;
+  longitude: number;
+  latitude: number;
+};
+
+export type Association = {
   name: string;
   isFollow: boolean;
   logo: string;
+  localisation: Localisation;
 };
 
 export type Participant = {
@@ -16,8 +23,21 @@ export class Activity {
   title: string = '';
   description: string = '';
   image: string[] = [];
-  organization: Organization = { name: '', logo: '', isFollow: false };
-  location: string = '';
+  association: Association = {
+    name: '',
+    logo: '',
+    isFollow: false,
+    localisation: {
+      city: '',
+      longitude: 0,
+      latitude: 0,
+    },
+  };
+  location: Localisation = {
+    city: '',
+    longitude: 0,
+    latitude: 0,
+  };
   date: Date = new Date();
   participants: Participant = { current: 0, max: 10 };
   theme: Theme[];
@@ -28,8 +48,21 @@ export class Activity {
     this.title = data.title || '';
     this.description = data.description || '';
     this.image = data.image || [];
-    this.organization = data.organization || { name: '', logo: '', isFollow: false };
-    this.location = data.location || '';
+    this.association = data.association || {
+      name: '',
+      logo: '',
+      isFollow: false,
+      localisation: {
+        city: '',
+        longitude: 0,
+        latitude: 0,
+      },
+    };
+    this.location = data.location || {
+      city: '',
+      longitude: 0,
+      latitude: 0,
+    };
     this.date = data.date || new Date();
     this.participants = data.participants || { current: 0, max: 10 };
     this.theme = data.theme || [];

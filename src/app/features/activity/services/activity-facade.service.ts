@@ -37,7 +37,5 @@ export class ActivityFacadeService {
         take(1)
       )
       .subscribe();
-
-    // if sucess update Store accordignly :
   }
 }

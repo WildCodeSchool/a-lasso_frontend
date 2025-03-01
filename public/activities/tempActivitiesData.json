@@ -4,7 +4,7 @@
     "title": "La maraude",
     "description": "Nous avons besoin de votre aide pour apporter du soutien aux sans-abris.",
     "image": ["/activities/tempImageData/maraude.png"],
-    "organization": {
+    "association": {
       "name": "La croix rouge",
       "logo": "/activities/tempImageData/logoCroixRouge.png",
       "isFollow": false
@@ -16,7 +16,7 @@
       "max": 10
     },
     "theme": ["Social"],
-    "isFavorite": false
+    "isSaved": false
   },
   {
     "id": 2,
