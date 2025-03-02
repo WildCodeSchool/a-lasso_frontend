@@ -32,8 +32,9 @@ export class ActivityFacadeService {
     this._activitiesApi
       .getAllActivities()
       .pipe(
-        tap((activities: Activity[]) => {
-          this._store.dispatch(setActivities({ activities }));
+        map((activities: Activity[]) => activities.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())),
+        tap((sortedActivities: Activity[]) => {
+          this._store.dispatch(setActivities({ activities: sortedActivities }));
         }),
         take(TAKE_1)
       )

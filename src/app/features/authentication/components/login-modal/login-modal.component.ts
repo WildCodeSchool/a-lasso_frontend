@@ -101,10 +101,11 @@ export class LoginModalComponent {
         this.hideModal();
       });
 
+    const timeoutDuration = 100;
     setTimeout(() => {
       if (!loginSuccess) {
         this.error = 'Informations invalides. Veuillez réessayer.';
       }
-    }, 1);
+    }, timeoutDuration);
   }
 }

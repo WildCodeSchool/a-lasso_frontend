@@ -11,8 +11,9 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
 
   return next(req).pipe(
     catchError((error: HttpErrorResponse) => {
-      const summary = 'Erreur';
+      let summary = 'Erreur';
       let detail = 'Une erreur est survenue. Veuillez réessayer.';
+      let severity = 'error';
 
       if (error.status >= HttpStatusCode.InternalServerError) {
         detail = 'Erreur interne du serveur. Veuillez réessayer plus tard.';
@@ -21,12 +22,14 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
       } else if (error.status === HttpStatusCode.BadRequest) {
         detail = 'Requête invalide.';
       } else if (error.status === HttpStatusCode.Unauthorized) {
-        detail = '🚨 Merci de vous connecter pour accéder à ce service';
+        detail = 'Merci de vous connecter pour accéder à ce service';
+        summary = 'Authentification';
+        severity = 'warn';
         authService.clearToken();
       }
 
       toast.add({
-        severity: 'error',
+        severity,
         summary,
         detail,
       });

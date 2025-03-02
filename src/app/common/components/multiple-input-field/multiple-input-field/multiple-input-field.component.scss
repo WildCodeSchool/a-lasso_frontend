@@ -1,0 +1,161 @@
+.input-wrapper {
+  display: flex;
+  position: relative;
+  transform: translateX(-25px);
+  z-index: 1100;
+  .search-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: var(--background-color-white);
+    border-radius: 0;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    padding: 5px;
+    width: 50vw;
+
+    .field-group {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+
+      .custom-iftalabel {
+        width: 100%;
+
+        input {
+          width: 100%;
+          border: none;
+          font-size: 14px;
+          padding: 25px 10px 5px 10px;
+          box-shadow: none;
+
+          &:focus {
+            outline: none;
+            box-shadow: none;
+            z-index: 0;
+          }
+
+          &::placeholder {
+            color: var(--font-color-grey);
+            font-size: 14px;
+          }
+        }
+
+        label {
+          position: absolute;
+          top: 6px;
+          left: 10px;
+          font-size: 14px;
+          color: var(--font-color);
+          pointer-events: none;
+          transition: color 0.2s ease;
+        }
+
+        input:focus + label {
+          color: var(--primary-light-color);
+          transition: color 0.2s ease;
+        }
+
+        .clear-btn {
+          position: absolute;
+          top: 72.5%;
+          right: 15px;
+          transform: translateY(-50%);
+          background: transparent;
+          border: none;
+          color: var(--font-color);
+          cursor: pointer;
+          padding: 0;
+          font-size: 16px;
+
+          &:hover {
+            color: var(--primary-light-color);
+          }
+        }
+      }
+
+      .separator {
+        position: absolute;
+        right: 0;
+        top: 8px;
+        height: 30px;
+        width: 1px;
+        background-color: var(--background-color-grey);
+      }
+
+      .calendar-wrapper {
+        width: 100%;
+        position: relative;
+
+        ::ng-deep .p-inputwrapper {
+          width: 100%;
+          position: relative;
+          padding-right: 30px;
+        }
+        ::ng-deep .p-inputtext {
+          width: 100%;
+          font-size: 14px;
+          padding: 25px 10px 5px 10px;
+          box-shadow: none;
+          border: none;
+          background: transparent;
+
+          &::placeholder {
+            color: var(--font-color-grey);
+            font-size: 14px;
+          }
+
+          &:focus {
+            outline: none;
+            box-shadow: none;
+          }
+        }
+
+        label {
+          position: absolute;
+          top: 8px;
+          left: 10px;
+          font-size: 14px;
+          color: var(--font-color);
+          pointer-events: none;
+          transition: color 0.2s ease;
+        }
+
+        &.focused label {
+          color: var(--primary-light-color);
+        }
+
+        ::ng-deep .p-datepicker-dropdown {
+          display: none;
+        }
+
+        ::ng-deep .p-datepicker-panel {
+          z-index: 1000;
+        }
+      }
+    }
+  }
+  .search-button {
+    position: absolute;
+    right: -60px;
+    background-color: var(--primary-light-color);
+    color: var(--font-color-light);
+    padding: 19.1px 25px;
+    border: none;
+    cursor: pointer;
+    border-radius: 0;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    box-shadow: var(--box-shadow);
+
+    i {
+      font-size: 18px;
+    }
+
+    &:hover {
+      background-color: var(--primary-dark-color);
+    }
+  }
+}
