@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { ActivitiesHomeComponent } from './features/activity/pages/activities-home/activities-home.component';
-import { DemoComponent } from './features/activity/pages/demo/demo.component';
+import { ActivityDetailsComponent } from './features/activity/pages/activity-details/activity-details.component';
+
 
 export const routes: Routes = [
   {
@@ -8,7 +9,7 @@ export const routes: Routes = [
     component: ActivitiesHomeComponent,
   },
   {
-    path: 'demo',
-    component: DemoComponent,
+    path: 'activity/:id',
+    component: ActivityDetailsComponent,
   },
 ];

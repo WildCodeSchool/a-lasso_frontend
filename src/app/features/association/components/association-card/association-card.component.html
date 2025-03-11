@@ -1,0 +1,7 @@
+<p>association-card works!</p>
+
+<div>
+  @if (association$ | async; as association) {
+    <p>{{ association.description }}</p>
+  }
+</div>
