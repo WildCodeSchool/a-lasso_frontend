@@ -1,0 +1,27 @@
+p-floatlabel {
+  input,
+  ::ng-deep p-calendar span input {
+    width: 100%;
+    font-size: 16px;
+    background-color: var(--background-color-light);
+    border: var(--grey-border);
+    border-radius: 8px;
+    transition: border-color 0.3s ease-in-out;
+    color: black;
+
+    &:focus,
+    &:hover,
+    &:active {
+      border-color: var(--primary-light-color) !important;
+      outline: none;
+      ~ label {
+        color: var(--primary-light-color);
+      }
+    }
+
+    label {
+      transition: all 0.3s ease-in-out;
+      color: var(--primary-light-color);
+    }
+  }
+}
