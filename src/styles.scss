@@ -52,7 +52,22 @@ body {
     // TODO: à compléter pour les couleurs de dark mode
   }
 
-  // TODO: ajouter le CSS de la scroll bar
+  /* Largeur de la scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  /* Couleur et arrondi de la piste (le fond de la scrollbar) */
+  ::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+  }
+
+  /* Couleur et style du "thumb" (le curseur de la scrollbar) */
+  ::-webkit-scrollbar-thumb {
+    background: var(--primary-light-color);
+    border-radius: 10px;
+  }
 
   // common cases CSS
   .card {
