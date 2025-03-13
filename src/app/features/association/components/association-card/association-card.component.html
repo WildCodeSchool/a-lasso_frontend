@@ -1,7 +1,19 @@
-<p>association-card works!</p>
-
-<div>
-  @if (association$ | async; as association) {
-    <p>{{ association.description }}</p>
-  }
-</div>
+@if (association$ | async; as association) {
+  <p-card class="card">
+    <ng-template #header>
+      <img alt="Card" class="activity-image" [src]="apiUrl + association.associationProfileImageURL" />
+      <div class="social"><a class="link" [href]="association.siteURL" target="_blank">Voir le site</a></div>
+    </ng-template>
+    <ng-template #title>
+      <img alt="Card" class="activity-logo" [src]="apiUrl + association.associationLogoImage" />
+      <h2 id="association-name">{{ association.name }}</h2>
+    </ng-template>
+    <ng-template #subtitle>
+      <h3>{{ association.founder }}</h3></ng-template
+    >
+    <p>
+      {{ association.description }}
+    </p>
+    <ng-template #footer> </ng-template>
+  </p-card>
+}

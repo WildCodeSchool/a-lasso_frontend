@@ -4,11 +4,15 @@
 
   .activity {
     width: 50%;
+    height: 100%;
     border: 1px solid black;
   }
 
   .association {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     width: 50%;
-    border: 1px solid black;
+    height: 100%;
   }
 }
