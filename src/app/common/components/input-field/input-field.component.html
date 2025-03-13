@@ -1,32 +1,32 @@
 <p-floatlabel [variant]="variant">
   @if (type === 'date') {
-  <p-calendar [inputId]="'input_' + label" [(ngModel)]="value" [disabled]="disabled" dateFormat="dd.mm.yy" ariaLabel="date"></p-calendar>
+    <p-calendar [inputId]="'input_' + label" [(ngModel)]="value" [disabled]="disabled" dateFormat="dd.mm.yy" ariaLabel="date"></p-calendar>
   } @else if (type === 'password') {
-  <p-password
-    [inputId]="'input_' + label"
-    [(ngModel)]="value"
-    [disabled]="disabled"
-    [feedback]="showPasswordRules"
-    [toggleMask]="true"
-    autocomplete="off"
-    ariaLabel="password">
-    @if (showPasswordRules) {
-    <ng-template #header>
-      <div class="font-semibold text-xm mb-4">Choisir un mot de passe</div>
-    </ng-template>
-    <ng-template #footer>
-      <p-divider></p-divider>
-      <ul class="pl-2 ml-2 my-0 leading-normal">
-        <li>Au moins une lettre minuscule</li>
-        <li>Au moins une lettre majuscule</li>
-        <li>Au moins un chiffre</li>
-        <li>Minimum 8 caractères</li>
-      </ul>
-    </ng-template>
-    }
-  </p-password>
+    <p-password
+      [inputId]="'input_' + label"
+      [(ngModel)]="value"
+      [disabled]="disabled"
+      [feedback]="showPasswordRules"
+      [toggleMask]="true"
+      autocomplete="off"
+      ariaLabel="password">
+      @if (showPasswordRules) {
+        <ng-template #header>
+          <div class="font-semibold text-xm mb-4">Choisir un mot de passe</div>
+        </ng-template>
+        <ng-template #footer>
+          <p-divider></p-divider>
+          <ul class="pl-2 ml-2 my-0 leading-normal">
+            <li>Au moins une lettre minuscule</li>
+            <li>Au moins une lettre majuscule</li>
+            <li>Au moins un chiffre</li>
+            <li>Minimum 8 caractères</li>
+          </ul>
+        </ng-template>
+      }
+    </p-password>
   } @else {
-  <input pInputText [id]="'input_' + label" [(ngModel)]="value" [type]="type" [disabled]="disabled" autocomplete="off" [ariaLabel]="label" />
+    <input pInputText [id]="'input_' + label" [(ngModel)]="value" [type]="type" [disabled]="disabled" autocomplete="off" [ariaLabel]="label" />
   }
 
   <label [for]="'input_' + label">{{ label }}</label>
