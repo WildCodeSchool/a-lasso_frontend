@@ -9,8 +9,12 @@ header {
 
   .logo {
     display: flex;
-    width: 40%;
+    width: 50%;
     gap: 5%;
+  }
+
+  img {
+    object-fit: contain;
   }
 
   h1 {

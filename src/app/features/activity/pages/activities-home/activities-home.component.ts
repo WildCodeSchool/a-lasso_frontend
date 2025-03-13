@@ -5,10 +5,11 @@ import { ToggleMenuComponent } from '../../../../common/components/toggle-menu/t
 import { ActivityCardComponent } from '../../components/activity-card/activity-card.component';
 import { Activity } from '../../models/activity.model';
 import { ActivityFacadeService } from '../../services/activity-facade.service';
+import { ActivitySkeletonComponent } from '../../components/activity-skeleton/activity-skeleton.component';
 
 @Component({
   selector: 'app-activities-home',
-  imports: [ActivityCardComponent, AsyncPipe, ToggleMenuComponent, NgClass],
+  imports: [ActivityCardComponent, AsyncPipe, ToggleMenuComponent, NgClass, ActivitySkeletonComponent],
   templateUrl: './activities-home.component.html',
   styleUrl: './activities-home.component.scss',
   standalone: true,

@@ -1,12 +1,11 @@
 .card {
+  width: 22rem;
   display: flex;
   flex-direction: column;
-  width: 20vw;
-  background-color: var(--background-color-white);
   transition: transform 0.3s ease;
 
   &:hover {
-    transform: scale(1.1);
+    transform: scale(1.05);
     cursor: pointer;
   }
 
@@ -20,9 +19,15 @@
     border-radius: var(--border-radius) var(--border-radius) 0 0;
   }
 
-  h3 {
-    color: var(--primary-dark-color);
-    font-weight: 400;
+  .header-description {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    h3 {
+      color: var(--primary-dark-color);
+      font-weight: 400;
+    }
   }
 
   p {
@@ -33,12 +38,9 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    padding: 5% 5% 0 5%;
 
-    .header-description {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+    .description {
+      min-height: 6vh;
     }
 
     .info-asso {
@@ -50,38 +52,30 @@
         width: 25px;
       }
     }
+  }
 
-    .push-footer {
-      flex-grow: 1;
-    }
+  .footer-description {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    align-items: center;
 
-    .footer-description {
+    .footer-details {
       display: flex;
-      justify-content: space-between;
-      width: 100%;
-      align-items: center;
+      width: 60%;
 
-      .footer-details {
+      .location {
         display: flex;
-        width: 60%;
+        align-items: center;
+        gap: 10%;
+        width: 50%;
+      }
 
-        .location {
-          display: flex;
-          align-items: center;
-          gap: 10%;
-          width: 50%;
-        }
-
-        .date {
-          display: flex;
-          align-items: center;
-          width: 50%;
-          gap: 10%;
-        }
-
-        svg {
-          width: 12px;
-        }
+      .date {
+        display: flex;
+        align-items: center;
+        width: 50%;
+        gap: 10%;
       }
     }
   }
