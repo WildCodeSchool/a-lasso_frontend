@@ -6,10 +6,11 @@ import { FavoriteHeartComponent } from '../favorite-heart/favorite-heart.compone
 import { environment } from 'src/environments/environment.development';
 import { TruncatePipe } from '../../../../common/pipes/TruncateString.pipe';
 import { DatePipe } from '@angular/common';
+import { Card } from 'primeng/card';
 
 @Component({
   selector: 'app-activity-card',
-  imports: [InscriptionBadgeComponent, FavoriteHeartComponent, TruncatePipe, DatePipe, RouterLink],
+  imports: [InscriptionBadgeComponent, FavoriteHeartComponent, TruncatePipe, DatePipe, RouterLink, Card],
   templateUrl: './activity-card.component.html',
   styleUrl: './activity-card.component.scss',
   standalone: true,

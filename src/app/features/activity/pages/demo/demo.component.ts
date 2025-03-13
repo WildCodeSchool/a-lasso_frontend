@@ -1,3 +1,5 @@
+// TODO : SUPPRIMER CE FICHIER
+
 import { Component } from '@angular/core';
 import { InputFieldComponent } from 'src/app/common/components/input-field/input-field.component';
 

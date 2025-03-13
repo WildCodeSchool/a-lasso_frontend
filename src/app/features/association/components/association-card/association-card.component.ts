@@ -11,6 +11,7 @@ import { UUIDTypes } from 'uuid';
 @Component({
   selector: 'app-association-card',
   imports: [AsyncPipe, CardModule, ButtonModule, DatePipe],
+
   templateUrl: './association-card.component.html',
   styleUrl: './association-card.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

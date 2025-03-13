@@ -1,35 +1,40 @@
-<div class="card" [routerLink]="['/activity', activity.id]">
-  <img class="activity-image" [src]="apiUrl + activity.image[0]" [alt]="activity.title" />
-  <div class="description-card">
+<p-card class="card p-slideinup" [routerLink]="['/activity', activity.id]">
+  <ng-template #header>
+    <img class="w-full activity-image" [src]="apiUrl + activity.image[0]" [alt]="activity.title" />
+  </ng-template>
+  <ng-template #title>
     <div class="header-description">
-      <h3>{{ activity.title }}</h3>
+      <h3>
+        {{ activity.title }}
+      </h3>
       @if (activity) {
         <app-inscription-badge [participants]="activity.participants"></app-inscription-badge>
       }
     </div>
+  </ng-template>
+  <div class="description-card">
     <p class="description">
-      {{ activity.description | truncate: 130 }}
+      {{ activity.description | truncate: 100 }}
     </p>
     <div class="info-asso">
       <img [src]="apiUrl + activity.association.logo" [alt]="activity.association.name" />
-
       <p>{{ activity.association.name }}</p>
     </div>
-    <div class="push-footer">
-      <div class="footer-description">
-        <div class="footer-details">
-          <div class="location">
-            <i class="fa-solid fa-location-dot"></i>
-            <p class="mini-p">{{ activity.location.city }}</p>
-          </div>
-          <div class="date">
-            <i class="fa-solid fa-calendar-days"></i>
-            <p class="mini-p">{{ activity.date | date: 'dd/MM/yyyy' }}</p>
-          </div>
-        </div>
-
-        <app-favorite-heart [activityId]="activity.id" [isFavorite]="activity.isFavorite"></app-favorite-heart>
-      </div>
-    </div>
   </div>
-</div>
+  <ng-template #footer>
+    <div class="footer-description">
+      <div class="footer-details">
+        <div class="location">
+          <i class="fa-solid fa-location-dot"></i>
+          <p class="mini-p">{{ activity.location.city }}</p>
+        </div>
+        <div class="date">
+          <i class="fa-solid fa-calendar-days"></i>
+          <p class="mini-p">{{ activity.date | date: 'dd/MM/yyyy' }}</p>
+        </div>
+      </div>
+
+      <app-favorite-heart [activityId]="activity.id" [isFavorite]="activity.isFavorite"></app-favorite-heart>
+    </div>
+  </ng-template>
+</p-card>

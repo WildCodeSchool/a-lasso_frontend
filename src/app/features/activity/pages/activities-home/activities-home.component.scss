@@ -10,18 +10,21 @@
 
   .search-activities {
     border: 1px solid black;
-    height: 150px;
+    height: 20%;
   }
 
   .cards-and-map {
     display: flex;
     width: 100%;
+    height: 70%;
 
     .cards-activities {
       width: 50%;
       display: flex;
-      justify-content: space-around;
+      justify-content: center;
+      gap: 1rem;
       flex-wrap: wrap;
+      overflow-y: scroll;
     }
 
     .map-activities {
@@ -34,6 +37,10 @@
     @media screen and (max-width: 901px) {
       .hidden {
         display: none;
+      }
+
+      .cards-activities {
+        width: 100%;
       }
     }
   }
