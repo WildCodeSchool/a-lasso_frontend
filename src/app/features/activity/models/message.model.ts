@@ -5,6 +5,7 @@ export class Message {
   date: Date = new Date();
   content: string = '';
   isSendByUserConnected: boolean = false;
+  activityId: UUIDTypes = '';
 
   constructor(message: Message) {
     this.id = message.id;

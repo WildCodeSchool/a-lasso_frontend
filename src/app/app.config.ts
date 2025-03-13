@@ -9,6 +9,7 @@ import { providePrimeNG } from 'primeng/config';
 import { activitiesReducer } from './features/activity/store/activities.reducers';
 import { myPreset } from './mytheme';
 import { associationsReducer } from './features/association/store/association.reducers';
+import { messagesReducer } from './features/activity/store/messages/messages.reducers';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -16,7 +17,7 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideHttpClient(),
     provideAnimationsAsync(),
-    provideStore({ activities: activitiesReducer, associations: associationsReducer }),
+    provideStore({ activities: activitiesReducer, associations: associationsReducer, messages: messagesReducer }),
     provideStoreDevtools({ maxAge: 25 }),
     providePrimeNG({
       theme: {
