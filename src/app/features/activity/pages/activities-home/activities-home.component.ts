@@ -1,10 +1,10 @@
-import { Component, inject, OnInit } from '@angular/core';
-import { ActivityCardComponent } from '../../components/activity-card/activity-card.component';
-import { ActivityFacadeService } from '../../services/activity-facade.service';
-import { Activity } from '../../models/activity.model';
-import { Observable } from 'rxjs';
 import { AsyncPipe, NgClass } from '@angular/common';
+import { Component, inject, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
 import { ToggleMenuComponent } from '../../../../common/components/toggle-menu/toggle-menu.component';
+import { ActivityCardComponent } from '../../components/activity-card/activity-card.component';
+import { Activity } from '../../models/activity.model';
+import { ActivityFacadeService } from '../../services/activity-facade.service';
 
 @Component({
   selector: 'app-activities-home',
