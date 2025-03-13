@@ -25,7 +25,7 @@ export class ActivityFacadeService {
         tap((activities: Activity[]) => {
           this.store.dispatch(setActivities({ activities }));
         }),
-        take(1)
+        take(1),
       )
       .subscribe();
   }
@@ -38,23 +38,24 @@ export class ActivityFacadeService {
         tap((apiResponse: boolean) =>
           apiResponse
             ? this.store.dispatch(
-                updateFavoriteStatus({
-                  id: activityId,
-                  isFavorite: !isFavorite,
-                })
-              )
-            : 'TODO : ALERT NOTIFCATION FAILED'
+              updateFavoriteStatus({
+                id: activityId,
+                isFavorite: !isFavorite,
+              }),
+            )
+            : 'TODO : ALERT NOTIFCATION FAILED',
         ),
-        take(1)
+        take(1),
       )
       .subscribe();
   }
 
-  getMessagesActivity(activityId: string): Observable<Message[]> {
+  getActivityMessages(activityId: string): Observable<Message[]> {
     //TODO: récupérer les messages du store
     // si pas dans store requete API ?
     // oui mais si messages envoyés depuis stockage dans le store on
     // les récupère quand ???
+
     return this.store.select(selectMessagesByActivityId(activityId)).pipe(
       switchMap(messages => {
         if (messages) {
@@ -64,9 +65,9 @@ export class ActivityFacadeService {
         return this.activitiesApi.getActivityMessages(activityId).pipe(
           tap((fetchedMessages: Message[]) => {
             this.store.dispatch(setMessages({ messages: fetchedMessages }));
-          })
+          }),
         );
-      })
+      }),
     );
   }
 }
