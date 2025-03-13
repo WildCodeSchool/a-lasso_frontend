@@ -9,7 +9,7 @@ export class Association {
   id: UUIDTypes;
   description: string;
   founder: string;
-  LocalDate: Date;
+  foundationDate: Date;
   name: string;
   associationProfileImageURL: string;
   associationLogoImage: string;
@@ -21,7 +21,7 @@ export class Association {
     this.id = data.id || '';
     this.description = data.description || '';
     this.founder = data.founder || '';
-    this.LocalDate = data.LocalDate || new Date();
+    this.foundationDate = data.foundationDate || new Date();
     this.name = data.name || '';
     this.associationProfileImageURL = data.associationProfileImageURL || '';
     this.associationLogoImage = data.associationLogoImage || '';

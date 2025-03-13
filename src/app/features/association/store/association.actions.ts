@@ -1,6 +1,9 @@
 import { createAction, props } from '@ngrx/store';
 import { Association } from '../model/association.model';
+import { UUIDTypes } from 'uuid';
 
 export const setAssociations = createAction('[associations] setAssociations', props<{ association: Association }>());
 
-export const selectAssociation = createAction('[associations] getAssociation', props<{ associationId: string }>());
+export const selectAssociation = createAction('[associations] getAssociation', props<{ associationId: UUIDTypes }>());
+
+export const updateFollowStatus = createAction(`[assocations] updateFollowStatus`, props<{ id: UUIDTypes; isFollow: boolean }>());

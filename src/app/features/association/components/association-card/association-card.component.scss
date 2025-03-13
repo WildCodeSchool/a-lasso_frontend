@@ -1,45 +1,111 @@
 p-card {
   width: 70%;
-  height: 100%;
+
+  max-height: 100%;
   display: block;
   margin: 0 auto;
+  overflow: hidden;
 
-  // 800 * 640 px
-  .activity-image {
-    display: block;
-    width: 100%;
-    height: 40vh;
+  ::ng-deep .p-card-header {
+    // images size in database : 800 * 640 px
+    box-shadow:
+      0 2px 4px rgba(0, 0, 0, 0.15),
+      0 3px 10px rgba(0, 0, 0, 0.05);
 
-    filter: brightness(80%);
-    border-radius: var(--border-radius) var(--border-radius) 0 0;
+    .activity-image {
+      display: block;
+      width: 100%;
+      height: 40vh;
+      object-fit: cover;
+
+      filter: brightness(80%);
+      border-radius: var(--border-radius) var(--border-radius) 0 0;
+    }
+
+    .social {
+      display: flex;
+      justify-content: space-between;
+      padding: 1rem;
+      align-items: center;
+      height: 4rem;
+      background-color: var(--background-color-grey);
+
+      .link {
+        &:hover {
+          transform: scale(1.1);
+          cursor: pointer;
+        }
+      }
+
+      ::ng-deep .p-button {
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+        height: 100%;
+        background: none;
+        border: none;
+        color: var(--primary-light-color);
+
+        i:hover {
+          transform: scale(1.1);
+          cursor: pointer;
+        }
+
+        p {
+          margin: 0;
+          padding: 4px;
+        }
+      }
+    }
   }
 
-  .social {
+  ::ng-deep .p-card-subtitle {
+    h3 {
+      width: 100%;
+      text-align: left;
+      color: var(--font-color-grey);
+      font-weight: 400;
+    }
+  }
+
+  ::ng-deep .p-card-title {
     display: flex;
-    padding: 1rem;
+    gap: 4px;
     align-items: center;
-    height: 4rem;
-    background-color: var(--background-color-grey);
+
+    #association-name {
+      color: var(--primary-dark-color);
+      font-weight: bold;
+    }
+
+    .activity-logo {
+      width: 1vw;
+    }
   }
 
-  .link {
-    text-decoration: none;
-    color: var(--primary-light-color);
+  ::ng-deep .p-card-footer {
+    h3 {
+      width: 100%;
+      text-align: center;
+      font-weight: 500;
+    }
+    .statistics-container {
+      /* Correct class */
+      display: flex;
+      flex-direction: row;
+      justify-content: space-around;
+      flex-wrap: wrap;
+      width: 100%;
+
+      .statistic {
+        width: 33%;
+        text-align: center;
+
+        .value {
+          color: var(--primary-dark-color);
+          font-weight: bold;
+        }
+      }
+    }
   }
-}
-
-img {
-  object-fit: cover;
-}
-
-::ng-deep .p-card-title {
-  display: flex;
-}
-
-#association-name {
-  font-weight: bold;
-}
-
-.activity-logo {
-  width: 3%;
 }
