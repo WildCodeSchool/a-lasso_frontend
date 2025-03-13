@@ -1,0 +1,45 @@
+p-card {
+  width: 70%;
+  height: 100%;
+  display: block;
+  margin: 0 auto;
+
+  // 800 * 640 px
+  .activity-image {
+    display: block;
+    width: 100%;
+    height: 40vh;
+
+    filter: brightness(80%);
+    border-radius: var(--border-radius) var(--border-radius) 0 0;
+  }
+
+  .social {
+    display: flex;
+    padding: 1rem;
+    align-items: center;
+    height: 4rem;
+    background-color: var(--background-color-grey);
+  }
+
+  .link {
+    text-decoration: none;
+    color: var(--primary-light-color);
+  }
+}
+
+img {
+  object-fit: cover;
+}
+
+::ng-deep .p-card-title {
+  display: flex;
+}
+
+#association-name {
+  font-weight: bold;
+}
+
+.activity-logo {
+  width: 3%;
+}
