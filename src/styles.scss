@@ -17,6 +17,7 @@ body {
   --background-color-light: #f8f8f8;
   --background-color-grey: #f3f3f3;
   --font-color: #505050;
+  --font-color-grey: #898989;
 
   --primary-dark-color: #13678a;
   --primary-light-color: #1385a8;
@@ -85,6 +86,17 @@ body {
   p {
     font-family: var(--font-family-p);
     font-size: var(--font-size-p);
+  }
+
+  a,
+  a:visited,
+  a:active,
+  a:focus {
+    font-family: var(--font-family-p);
+    font-size: var(--font-size-p);
+    text-decoration: none;
+    color: var(--primary-light-color);
+    outline: none;
   }
 
   .mini-p {

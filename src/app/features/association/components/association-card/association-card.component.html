@@ -2,18 +2,39 @@
   <p-card class="card">
     <ng-template #header>
       <img alt="Card" class="activity-image" [src]="apiUrl + association.associationProfileImageURL" />
-      <div class="social"><a class="link" [href]="association.siteURL" target="_blank">Voir le site</a></div>
+      <div class="social">
+        <a class="link" [href]="association.siteURL" target="_blank">Voir le site</a>
+        <p-button class="follow-button" (click)="toggleFollow(association.id, association.isFollow)">
+          @if (association.isFollow) {
+            <i class="fa-solid fa-star"></i>
+          } @else {
+            <i class="fa-regular fa-star"></i>
+          }
+
+          <p>Suivre</p>
+        </p-button>
+      </div>
     </ng-template>
     <ng-template #title>
       <img alt="Card" class="activity-logo" [src]="apiUrl + association.associationLogoImage" />
       <h2 id="association-name">{{ association.name }}</h2>
     </ng-template>
     <ng-template #subtitle>
-      <h3>{{ association.founder }}</h3></ng-template
+      <h3>Fondée le {{ association.foundationDate | date: 'dd/MM/yyyy' }} par {{ association.founder }}</h3></ng-template
     >
     <p>
       {{ association.description }}
     </p>
-    <ng-template #footer> </ng-template>
+    <ng-template #footer>
+      <h3>Quelques chiffres :</h3>
+      <div class="statistics-container">
+        @for (stat of association.statistics; track $index) {
+          <div class="statistic">
+            <p class="value">{{ stat.value }}</p>
+            <p>{{ stat.description }}</p>
+          </div>
+        }
+      </div>
+    </ng-template>
   </p-card>
 }

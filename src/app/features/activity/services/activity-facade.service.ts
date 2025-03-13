@@ -5,6 +5,7 @@ import { Store } from '@ngrx/store';
 import { selectActivities } from '../store/activities.selector';
 import { setActivities, updateFavoriteStatus } from '../store/activities.actions';
 import { ActivitiesApiService } from './activities-api.service';
+import { UUIDTypes } from 'uuid';
 
 @Injectable({
   providedIn: 'root',
@@ -26,7 +27,7 @@ export class ActivityFacadeService {
       .subscribe();
   }
 
-  toggleFavorite(activityId: string, isFavorite: boolean): void {
+  toggleFavorite(activityId: UUIDTypes, isFavorite: boolean): void {
     // Send to Back
     this.activitiesApi
       .updateFavoriteStatus(activityId, isFavorite)
