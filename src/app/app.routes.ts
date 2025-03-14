@@ -16,4 +16,8 @@ export const routes: Routes = [
     path: 'demo',
     component: DemoComponent,
   },
+  // { path: 'profile',
+  //   component: ProfilePage,
+  //   canActivate: [isLoggedInGuard]
+  //   },
 ];

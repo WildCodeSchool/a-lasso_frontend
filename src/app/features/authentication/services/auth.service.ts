@@ -3,6 +3,7 @@ import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment.development';
 import { AssociationRegister, UserLogin, VoluntaryRegister } from '../models/user.model';
+import { jwtDecode } from 'jwt-decode';
 
 @Injectable({
   providedIn: 'root',
@@ -21,5 +22,51 @@ export class AuthService {
 
   login(data: UserLogin): Observable<string> {
     return this._http.post<string>(`${this._apiUrl}/auth/login`, data);
+  }
+
+  public saveToken(token: string): void {
+    localStorage.setItem('token', token);
+  }
+
+  public getToken(): string {
+    if (localStorage.getItem('token')) {
+      return localStorage.getItem('token') as string;
+    }
+    throw new Error('Token not found');
+  }
+
+  public clearToken(): void {
+    localStorage.removeItem('token');
+  }
+
+  isLoggedIn(): boolean {
+    const token = this.getToken();
+    if (!token) return false;
+    const decodedToken: any = jwtDecode(token);
+    const expiryDate = new Date(decodedToken.exp * 1000);
+    if (expiryDate < new Date()) {
+      this.clearToken();
+      return false;
+    }
+    return true;
+  }
+
+  // // Méthode simplifiée pour cet atelier :
+  // isLoggedInSimplified(): boolean {
+  //   if (localStorage.getItem('token')) {
+  //     return true;
+  //   }
+  //   return false;
+  // }
+
+  getDecodedToken(): any {
+    const token = this.getToken();
+    if (!token) return null;
+    return jwtDecode(token);
+  }
+
+  getUserRole(): string | null {
+    const decodedToken = this.getDecodedToken();
+    return decodedToken ? decodedToken.role : null;
   }
 }
