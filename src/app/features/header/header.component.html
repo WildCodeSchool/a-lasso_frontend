@@ -3,5 +3,11 @@
     <img src="/LogoALAsso.png" alt="logo A l'asso!" [routerLink]="'/'" />
     <h1>a l'asso !</h1>
   </div>
-  <!--TODO: ajouter la connexion ici-->
+
+  <div class="auth-buttons">
+    <button class="inscription-btn" type="button" (click)="openRegisterModal()">S'inscrire</button>
+
+    <button class="connexion-btn" type="button">Se connecter</button>
+  </div>
 </header>
+<app-register-modal [(visible)]="showRegisterModal"> </app-register-modal>

@@ -10,6 +10,7 @@ import { activitiesReducer } from './features/activity/store/activities.reducers
 import { myPreset } from './mytheme';
 import { associationsReducer } from './features/association/store/association.reducers';
 import { messagesReducer } from './features/activity/store/messages/messages.reducers';
+import { PRIME_NG_FR } from './common/prime-ng.translate';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -23,6 +24,7 @@ export const appConfig: ApplicationConfig = {
       theme: {
         preset: myPreset,
       },
+      translation: PRIME_NG_FR.password,
     }),
   ],
 };
