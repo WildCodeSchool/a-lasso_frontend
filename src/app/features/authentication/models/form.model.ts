@@ -5,3 +5,8 @@ export type FormField = {
   required?: boolean;
   showPasswordRules?: boolean;
 };
+
+export type LoginForm = {
+  email: string;
+  password: string;
+};
