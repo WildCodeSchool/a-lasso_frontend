@@ -4,12 +4,13 @@ import { ActivatedRoute, ParamMap } from '@angular/router';
 import { ToggleMenuComponent } from '../../../../common/components/toggle-menu/toggle-menu.component';
 import { NgClass } from '@angular/common';
 import { ActivityMessagesCardComponent } from '../../components/activity-messages-card/activity-messages-card.component';
+import { ActivityDescriptionComponent } from '../../components/activity-description/activity-description.component';
 
 const MOBILE_SIZE: number = 900;
 
 @Component({
   selector: 'app-activity-details',
-  imports: [AssociationCardComponent, ToggleMenuComponent, NgClass, ActivityMessagesCardComponent],
+  imports: [AssociationCardComponent, ActivityDescriptionComponent, ToggleMenuComponent, NgClass, ActivityMessagesCardComponent],
   templateUrl: './activity-details.component.html',
   styleUrl: './activity-details.component.scss',
 })
