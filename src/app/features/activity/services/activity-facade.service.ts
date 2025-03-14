@@ -9,6 +9,7 @@ import { UUIDTypes } from 'uuid';
 import { Message } from '../models/message.model';
 import { selectMessagesByActivityId } from '../store/messages/messages.selector';
 import { setMessages } from '../store/messages/messages.actions';
+import { MessageCreation } from '../models/messageCreation';
 
 @Injectable({
   providedIn: 'root',
@@ -25,7 +26,7 @@ export class ActivityFacadeService {
         tap((activities: Activity[]) => {
           this.store.dispatch(setActivities({ activities }));
         }),
-        take(1),
+        take(1)
       )
       .subscribe();
   }
@@ -38,14 +39,14 @@ export class ActivityFacadeService {
         tap((apiResponse: boolean) =>
           apiResponse
             ? this.store.dispatch(
-              updateFavoriteStatus({
-                id: activityId,
-                isFavorite: !isFavorite,
-              }),
-            )
-            : 'TODO : ALERT NOTIFCATION FAILED',
+                updateFavoriteStatus({
+                  id: activityId,
+                  isFavorite: !isFavorite,
+                })
+              )
+            : 'TODO : ALERT NOTIFCATION FAILED'
         ),
-        take(1),
+        take(1)
       )
       .subscribe();
   }
@@ -57,17 +58,30 @@ export class ActivityFacadeService {
     // les récupère quand ???
 
     return this.store.select(selectMessagesByActivityId(activityId)).pipe(
+      take(1),
       switchMap(messages => {
-        if (messages) {
+        if (messages.length) {
           return of(messages);
         }
         // If not found in store fetch from API
         return this.activitiesApi.getActivityMessages(activityId).pipe(
-          tap((fetchedMessages: Message[]) => {
+          tap((fetchedMessages: Message[]): void => {
+            fetchedMessages.sort((a: Message, b: Message): number => new Date(a.date).getTime() - new Date(b.date).getTime());
             this.store.dispatch(setMessages({ messages: fetchedMessages }));
-          }),
+          })
         );
-      }),
+      })
     );
+  }
+
+  postActivityMessage(message: MessageCreation): void {
+    this.activitiesApi
+      .postActivityMessage(message)
+      .pipe(
+        tap((postMessage: Message) => {
+          this.store.dispatch(setMessages({ messages: [postMessage] }));
+        })
+      )
+      .subscribe();
   }
 }

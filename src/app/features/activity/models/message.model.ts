@@ -6,11 +6,13 @@ export class Message {
   content: string = '';
   isSendByUserConnected: boolean = false;
   activityId: UUIDTypes = '';
+  author: string = '';
 
   constructor(message: Message) {
     this.id = message.id;
     this.date = message.date;
     this.content = message.content;
     this.isSendByUserConnected = message.isSendByUserConnected;
+    this.author = message.author;
   }
 }
