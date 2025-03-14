@@ -1,23 +1,61 @@
 header {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  padding: 0 1% 0 1%;
-  margin-bottom: 1%;
-  color: var(--primary-dark-color);
+  justify-content: space-between;
+  padding: 16px;
+  background-color: var(--background-color-white);
   box-shadow: var(--box-shadow);
+}
 
-  .logo {
-    display: flex;
-    width: 50%;
-    gap: 5%;
-  }
+.logo {
+  display: flex;
+  align-items: center;
 
   img {
     object-fit: contain;
+    cursor: pointer;
+    height: 50px;
+    margin-right: 8px;
   }
 
   h1 {
-    font-weight: 400;
+    color: var(--primary-dark-color);
+    margin: 0;
+  }
+}
+
+.auth-buttons {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+
+  .inscription-btn,
+  .connexion-btn {
+    padding: 0.5rem 1rem;
+    border-radius: var(--border-radius);
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    transition: background-color 0.3s ease;
+    font-family: var(--font-family-p);
+  }
+
+  .inscription-btn {
+    background-color: var(--primary-dark-color);
+    color: white;
+
+    &:hover {
+      background-color: var(--primary-light-color);
+    }
+  }
+
+  .connexion-btn {
+    background-color: transparent;
+    color: var(--primary-dark-color);
+    border: 1px solid var(--primary-dark-color);
+
+    &:hover {
+      background-color: rgba(19, 103, 138, 0.1);
+    }
   }
 }

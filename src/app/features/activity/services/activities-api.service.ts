@@ -5,6 +5,7 @@ import { Activity } from '../models/activity.model';
 import { environment } from 'src/environments/environment.development';
 import { UUIDTypes } from 'uuid';
 import { Message } from '../models/message.model';
+import { MessageCreation } from '../models/messageCreation';
 
 @Injectable({
   providedIn: 'root',
@@ -26,5 +27,9 @@ export class ActivitiesApiService {
 
   getActivityMessages(activityId: UUIDTypes): Observable<Message[]> {
     return this._http.get<Message[]>(`${this._apiUrl}/messages/${activityId}`);
+  }
+
+  postActivityMessage(message: MessageCreation): Observable<Message> {
+    return this._http.post<Message>(`${this._apiUrl}/messages`, message);
   }
 }

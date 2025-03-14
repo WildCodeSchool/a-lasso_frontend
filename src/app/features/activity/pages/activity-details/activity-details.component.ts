@@ -43,8 +43,10 @@ export class ActivityDetailsComponent implements OnInit {
   private _updateNavigationItems(width: number): void {
     if (width < MOBILE_SIZE) {
       this.navigationItems = ['Activité', 'Messages', 'Association'];
+      this.chosenNavigation = 'Activité';
     } else {
       this.navigationItems = ['Messages', 'Association'];
+      this.chosenNavigation = 'Association';
     }
   }
 }

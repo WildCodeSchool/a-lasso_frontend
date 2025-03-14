@@ -9,6 +9,7 @@ import { UUIDTypes } from 'uuid';
 import { Message } from '../models/message.model';
 import { selectMessagesByActivityId } from '../store/messages/messages.selector';
 import { setMessages } from '../store/messages/messages.actions';
+import { MessageCreation } from '../models/messageCreation';
 
 @Injectable({
   providedIn: 'root',
@@ -50,19 +51,22 @@ export class ActivityFacadeService {
       .subscribe();
   }
 
-  getMessagesActivity(activityId: string): Observable<Message[]> {
+  getActivityMessages(activityId: string): Observable<Message[]> {
     //TODO: récupérer les messages du store
     // si pas dans store requete API ?
     // oui mais si messages envoyés depuis stockage dans le store on
     // les récupère quand ???
+
     return this.store.select(selectMessagesByActivityId(activityId)).pipe(
+      take(1),
       switchMap(messages => {
-        if (messages) {
+        if (messages.length) {
           return of(messages);
         }
         // If not found in store fetch from API
         return this.activitiesApi.getActivityMessages(activityId).pipe(
-          tap((fetchedMessages: Message[]) => {
+          tap((fetchedMessages: Message[]): void => {
+            fetchedMessages.sort((a: Message, b: Message): number => new Date(a.date).getTime() - new Date(b.date).getTime());
             this.store.dispatch(setMessages({ messages: fetchedMessages }));
           })
         );
@@ -70,7 +74,19 @@ export class ActivityFacadeService {
     );
   }
 
+
   getActivity(activityId: string): Observable<Activity | null> {
     return this.store.select(selectActivityById(activityId));
+
+  postActivityMessage(message: MessageCreation): void {
+    this.activitiesApi
+      .postActivityMessage(message)
+      .pipe(
+        tap((postMessage: Message) => {
+          this.store.dispatch(setMessages({ messages: [postMessage] }));
+        })
+      )
+      .subscribe();
+
   }
 }

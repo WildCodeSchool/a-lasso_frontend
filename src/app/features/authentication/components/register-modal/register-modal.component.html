@@ -1,0 +1,78 @@
+<p-dialog
+  [(visible)]="visible"
+  [modal]="true"
+  [closeOnEscape]="true"
+  [dismissableMask]="true"
+  [draggable]="false"
+  [resizable]="false"
+  (onHide)="hideModal()"
+  [header]="'M\'ENREGISTRER'"
+  styleClass="register-modal">
+  <div class="form-container">
+    <div class="user-type-selector">
+      <div class="selector-label">En tant que :</div>
+      <div class="selector-buttons">
+        <p-select [options]="userTypeOptions" [(ngModel)]="userType" optionLabel="label" optionValue="value"></p-select>
+      </div>
+    </div>
+
+    @if (userType === 'bénévole') {
+      <form [formGroup]="benevoleForm" class="form-benevole">
+        @for (field of benevoleFields; track $index) {
+          <ng-container>
+            <div class="form-field">
+              <app-input-field
+                [label]="field.label"
+                [type]="field.type"
+                [showPasswordRules]="field.showPasswordRules || false"
+                [formControlName]="field.name">
+              </app-input-field>
+            </div>
+          </ng-container>
+        }
+
+        <div class="submit-button">
+          <button pButton type="submit" (click)="onSubmit()" class="register-btn">S'enregistrer</button>
+        </div>
+      </form>
+    }
+    @if (userType === 'association') {
+      <form [formGroup]="associationForm" class="form-association">
+        @for (field of associationFields; track $index) {
+          <ng-container>
+            <div class="form-field">
+              <app-input-field [label]="field.label" [type]="field.type" [formControlName]="field.name"> </app-input-field>
+            </div>
+          </ng-container>
+        }
+
+        <div class="address-fields">
+          @for (field of addressFields; track $index) {
+            <ng-container>
+              <div class="address-field">
+                <app-input-field [label]="field.label" [type]="field.type" [formControlName]="field.name"> </app-input-field>
+              </div>
+            </ng-container>
+          }
+        </div>
+
+        @for (field of associationAuthFields; track $index) {
+          <ng-container>
+            <div class="form-field">
+              <app-input-field
+                [label]="field.label"
+                [type]="field.type"
+                [showPasswordRules]="field.showPasswordRules || false"
+                [formControlName]="field.name">
+              </app-input-field>
+            </div>
+          </ng-container>
+        }
+
+        <div class="submit-button">
+          <button pButton type="submit" (click)="onSubmit()" class="register-btn">S'enregistrer</button>
+        </div>
+      </form>
+    }
+  </div>
+</p-dialog>

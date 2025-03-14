@@ -1,0 +1,115 @@
+p-card {
+  width: 90%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+
+  ::ng-deep .p-card-body {
+    padding: 0;
+    background-color: var(--background-color-grey);
+  }
+
+  .all-messages {
+    padding: 5%;
+    min-height: 60vh;
+    overflow-y: auto;
+
+    .message {
+      padding: 2% 0 2% 0;
+    }
+
+    .author {
+      display: flex;
+      margin: 0;
+      padding-right: 2%;
+      color: var(--font-color);
+    }
+
+    .right-author {
+      justify-content: end;
+    }
+
+    .left-author {
+      justify-content: start;
+    }
+
+    .content {
+      display: flex;
+      margin: 0;
+      padding: 0;
+
+      p {
+        border-radius: var(--border-radius);
+        box-shadow: var(--box-shadow);
+        padding: 3%;
+        width: 50%;
+        margin-block: 0;
+      }
+    }
+
+    .right-content {
+      justify-content: end;
+
+      p {
+        background-color: var(--primary-light-color);
+        color: var(--background-color-white);
+      }
+    }
+
+    .left-content {
+      justify-content: start;
+
+      p {
+        background-color: var(--background-color-white);
+      }
+    }
+
+    .empty-message {
+      background-color: var(--primary-light-color);
+      padding: 3%;
+      color: var(--background-color-white);
+      border-radius: var(--border-radius);
+    }
+  }
+
+  .footer {
+    position: relative;
+
+    ::ng-deep .p-menu.p-component {
+      position: absolute !important;
+      top: -70px !important;
+      left: 0 !important;
+      transform: translate(0, 0) !important;
+    }
+
+    ::ng-deep .p-menu .p-menu-list {
+      display: grid !important;
+      grid-template-columns: repeat(4, 1fr);
+    }
+
+    .footer-send-message {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background-color: var(--primary-light-color);
+      padding: 1% 5% 1% 5%;
+      border-radius: 0 0 var(--border-radius) var(--border-radius);
+
+      button {
+        background-color: initial;
+        border: none;
+      }
+
+      .input {
+        width: 70%;
+      }
+
+      .icon {
+        color: var(--background-color-white);
+        font-size: 1.5rem;
+        cursor: pointer;
+      }
+    }
+  }
+}

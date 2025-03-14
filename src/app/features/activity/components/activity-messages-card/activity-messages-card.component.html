@@ -1,1 +1,38 @@
-<p>activity-messages-card works!</p>
+@if (messages$ | async; as messages) {
+  <p-card class="card">
+    <div class="all-messages">
+      @for (message of messages; track message.id) {
+        <div class="message">
+          <p class="author" [ngClass]="message.isSendByUserConnected ? 'right-author' : 'left-author'">{{ message.author }}</p>
+          <div class="content" [ngClass]="message.isSendByUserConnected ? 'right-content' : 'left-content'">
+            <p>{{ message.content }}</p>
+          </div>
+        </div>
+      }
+      @if (!messages.length) {
+        <div class="message empty-message">
+          <p>Aucun message n'a encore été échangé sur l'activité. N'hésitez pas à entamer la discussion !</p>
+        </div>
+      }
+    </div>
+
+    <ng-template #footer>
+      <div class="footer">
+        <div class="footer-send-message">
+          <button (click)="menu.toggle($event)" type="button">
+            <i class="fa-solid fa-face-smile icon"></i>
+          </button>
+
+          <div class="input">
+            <app-input-field [label]="'Taper un message'"></app-input-field>
+          </div>
+
+          <button (click)="postMessage()" type="button">
+            <i class="fa-solid fa-paper-plane icon"></i>
+          </button>
+        </div>
+        <p-menu #menu [model]="emojis" [popup]="true" />
+      </div>
+    </ng-template>
+  </p-card>
+}
