@@ -74,9 +74,9 @@ export class ActivityFacadeService {
     );
   }
 
-
   getActivity(activityId: string): Observable<Activity | null> {
     return this.store.select(selectActivityById(activityId));
+  }
 
   postActivityMessage(message: MessageCreation): void {
     this.activitiesApi
@@ -87,6 +87,5 @@ export class ActivityFacadeService {
         })
       )
       .subscribe();
-
   }
 }
