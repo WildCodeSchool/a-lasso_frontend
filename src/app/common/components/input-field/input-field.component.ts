@@ -33,46 +33,34 @@ export class InputFieldComponent implements ControlValueAccessor, OnDestroy {
   value: any = '';
   private _destroy$ = new Subject<void>();
 
-  // Fonctions qui seront remplacées par Angular
   onChange = (value: any): void => {
     console.log('onChange appelé avec', value);
   };
 
   onTouched = (): void => {
-    console.log('onTouched appelé');
+    /* */
   };
 
-  // Utilisé pour la visualisation de débogage
   get valueAccessor(): string {
-    return this.onChange.toString().slice(0, 100); // Juste pour voir si ça a été remplacé
-  }
-
-  // Pour débogage - affiche la valeur dans la console
-  logValue(): void {
-    console.log(`Valeur actuelle pour ${this.label}:`, this.value);
+    return this.onChange.toString().slice(0, 100);
   }
 
   updateValue(val: any): void {
     this.value = val;
     this.onChange(val);
     this.onTouched();
-    this.logValue(); // Pour le débogage
   }
 
-  // Implémentation de ControlValueAccessor
   writeValue(value: any): void {
     this.value = value;
-    console.log(`writeValue appelé pour ${this.label} avec`, value);
   }
 
   registerOnChange(fn: any): void {
     this.onChange = fn;
-    console.log(`registerOnChange appelé pour ${this.label}`);
   }
 
   registerOnTouched(fn: any): void {
     this.onTouched = fn;
-    console.log(`registerOnTouched appelé pour ${this.label}`);
   }
 
   setDisabledState(isDisabled: boolean): void {

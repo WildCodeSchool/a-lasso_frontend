@@ -51,14 +51,6 @@ export class AuthService {
     return true;
   }
 
-  // // Méthode simplifiée pour cet atelier :
-  // isLoggedInSimplified(): boolean {
-  //   if (localStorage.getItem('token')) {
-  //     return true;
-  //   }
-  //   return false;
-  // }
-
   getDecodedToken(): any {
     const token = this.getToken();
     if (!token) return null;
