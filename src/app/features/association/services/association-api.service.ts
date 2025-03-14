@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { UUIDTypes } from 'uuid';
 import { Association } from '../model/association.model';
 import { environment } from 'src/environments/environment.development';
@@ -18,8 +18,6 @@ export class AssociationApiService {
   }
 
   updateFollowStatus(associationId: UUIDTypes, isFollow: boolean): Observable<boolean> {
-    console.log('TO REMOVE ONCE BACK IS DONE', associationId, isFollow);
-    // this._http.put<Partial<Activity>>('/activities/updateFavorite', { activityId, isFavorite });
-    return of(true);
+    return this._http.put<boolean>(`${this._apiUrl}/association/${associationId}/updateFollow`, { isFollow });
   }
 }

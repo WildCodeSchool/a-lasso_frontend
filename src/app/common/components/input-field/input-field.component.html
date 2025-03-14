@@ -1,46 +1,46 @@
 <p-floatlabel [variant]="variant">
   @if (type === 'date') {
-  <p-calendar
-    [inputId]="'input_' + label"
-    [(ngModel)]="value"
-    (ngModelChange)="updateValue($event)"
-    [disabled]="disabled"
-    dateFormat="dd.mm.yy"
-    ariaLabel="date">
-  </p-calendar>
+    <p-calendar
+      [inputId]="'input_' + label"
+      [(ngModel)]="value"
+      (ngModelChange)="updateValue($event)"
+      [disabled]="disabled"
+      dateFormat="dd.mm.yy"
+      ariaLabel="date">
+    </p-calendar>
   } @else if (type === 'password') {
-  <p-password
-    [inputId]="'input_' + label"
-    [(ngModel)]="value"
-    (ngModelChange)="updateValue($event)"
-    [disabled]="disabled"
-    [feedback]="showPasswordRules"
-    [toggleMask]="true"
-    autocomplete="off"
-    ariaLabel="password">
-    @if (showPasswordRules) {
-    <ng-template #footer>
-      <p-divider></p-divider>
-      <ul>
-        <li>Au moins une lettre minuscule</li>
-        <li>Au moins une lettre majuscule</li>
-        <li>Au moins un caractère spécial</li>
-        <li>Au moins un chiffre</li>
-        <li>Minimum 8 caractères</li>
-      </ul>
-    </ng-template>
-    }
-  </p-password>
+    <p-password
+      [inputId]="'input_' + label"
+      [(ngModel)]="value"
+      (ngModelChange)="updateValue($event)"
+      [disabled]="disabled"
+      [feedback]="showPasswordRules"
+      [toggleMask]="true"
+      autocomplete="off"
+      ariaLabel="password">
+      @if (showPasswordRules) {
+        <ng-template #footer>
+          <p-divider></p-divider>
+          <ul>
+            <li>Au moins une lettre minuscule</li>
+            <li>Au moins une lettre majuscule</li>
+            <li>Au moins un caractère spécial</li>
+            <li>Au moins un chiffre</li>
+            <li>Minimum 8 caractères</li>
+          </ul>
+        </ng-template>
+      }
+    </p-password>
   } @else {
-  <input
-    pInputText
-    [id]="'input_' + label"
-    [(ngModel)]="value"
-    (ngModelChange)="updateValue($event)"
-    [type]="type"
-    [disabled]="disabled"
-    autocomplete="off"
-    [ariaLabel]="label" />
+    <input
+      pInputText
+      [id]="'input_' + label"
+      [(ngModel)]="value"
+      (ngModelChange)="updateValue($event)"
+      [type]="type"
+      [disabled]="disabled"
+      autocomplete="off"
+      [ariaLabel]="label" />
   }
 
   <label [for]="'input_' + label">{{ label }}</label>
