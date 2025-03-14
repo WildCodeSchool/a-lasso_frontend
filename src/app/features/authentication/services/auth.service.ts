@@ -21,10 +21,11 @@ export class AuthService {
   }
 
   login(data: UserLogin): Observable<string> {
-    return this._http.post<string>(`${this._apiUrl}/auth/login`, data);
+    return this._http.post(`${this._apiUrl}/auth/login`, data, { responseType: 'text' });
   }
 
   public saveToken(token: string): void {
+    console.log('token', token);
     localStorage.setItem('tokenAlAsso', token);
   }
 

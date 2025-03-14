@@ -7,7 +7,8 @@
   <div class="auth-buttons">
     <button class="inscription-btn" type="button" (click)="openRegisterModal()">S'inscrire</button>
 
-    <button class="connexion-btn" type="button">Se connecter</button>
+    <button class="connexion-btn" type="button" (click)="openLoginModal()">Se connecter</button>
   </div>
 </header>
 <app-register-modal [(visible)]="showRegisterModal"> </app-register-modal>
+<app-login-modal [(visible)]="showLoginModal"> </app-login-modal>
