@@ -2,7 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { Activity } from '../models/activity.model';
 import { Observable, of, switchMap, take, tap } from 'rxjs';
 import { Store } from '@ngrx/store';
-import { selectActivities } from '../store/activities.selector';
+import { selectActivities, selectActivityById } from '../store/activities.selector';
 import { setActivities, updateFavoriteStatus } from '../store/activities.actions';
 import { ActivitiesApiService } from './activities-api.service';
 import { UUIDTypes } from 'uuid';
@@ -68,5 +68,9 @@ export class ActivityFacadeService {
         );
       })
     );
+  }
+
+  getActivity(activityId: string): Observable<Activity | null> {
+    return this.store.select(selectActivityById(activityId));
   }
 }

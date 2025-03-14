@@ -1,0 +1,46 @@
+.activity-description-section {
+  padding: 1rem;
+  width: 45rem;
+  max-height: 100%;
+  display: block;
+  margin: 0 auto;
+  padding: 0;
+  overflow: hidden;
+  border: solid black 1px;
+
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-height: 5rem;
+      h1 {
+        color: var(--primary-dark-color);
+      }
+    }
+  }
+
+  .sub-title {
+    display: flex;
+    flex-direction: column;
+    p {
+      margin: 0;
+      padding: 0;
+      color: var(--font-color-grey);
+    }
+  }
+
+  .activity-images {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+
+    .image-container {
+      width: 50%;
+    }
+  }
+}

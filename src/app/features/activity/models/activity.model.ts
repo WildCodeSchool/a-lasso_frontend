@@ -23,7 +23,7 @@ export class Activity {
   id: string = '';
   title: string = '';
   description: string = '';
-  image: string[] = [];
+  images: string[] = [];
   association: AssociationActiviy = {
     id: '',
     name: '',
@@ -49,7 +49,7 @@ export class Activity {
     this.id = data.id || '';
     this.title = data.title || '';
     this.description = data.description || '';
-    this.image = data.image || [];
+    this.images = data.images || [];
     this.association = data.association || {
       id: '',
       name: '',
