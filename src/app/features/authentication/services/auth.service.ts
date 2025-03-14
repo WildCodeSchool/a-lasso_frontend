@@ -25,18 +25,20 @@ export class AuthService {
   }
 
   public saveToken(token: string): void {
-    localStorage.setItem('token', token);
+    localStorage.setItem('tokenAlAsso', token);
   }
 
   public getToken(): string {
-    if (localStorage.getItem('token')) {
-      return localStorage.getItem('token') as string;
+    if (localStorage.getItem('tokenAlAsso')) {
+      return localStorage.getItem('tokenAlAsso') as string;
     }
-    throw new Error('Token not found');
+
+    // Token not found
+    return '';
   }
 
   public clearToken(): void {
-    localStorage.removeItem('token');
+    localStorage.removeItem('tokenAlAsso');
   }
 
   isLoggedIn(): boolean {
