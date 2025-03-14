@@ -119,8 +119,6 @@ export class RegisterModalComponent implements OnInit {
     } else {
       this._registerAssociation();
     }
-
-    console.log('Inscription:', currentForm.value);
   }
 
   private _registerVoluntary(): void {
@@ -172,9 +170,5 @@ export class RegisterModalComponent implements OnInit {
         }
       },
     });
-  }
-
-  changeUserType(type: UserType): void {
-    this.userType = type;
   }
 }

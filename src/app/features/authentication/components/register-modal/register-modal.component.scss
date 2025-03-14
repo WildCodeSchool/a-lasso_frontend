@@ -44,7 +44,7 @@
 }
 
 .form-container {
-  padding: 32px 64px;
+  padding: 16px 64px;
 }
 
 .user-type-selector {
@@ -84,6 +84,8 @@
 }
 
 .submit-button {
+  width: 40%;
+  margin: auto;
   .register-btn {
     width: 100%;
     background-color: var(--primary-dark-color);
@@ -101,4 +103,18 @@
   display: block;
   margin-bottom: 8px;
   width: 100%;
+}
+
+::ng-deep .p-dialog-header {
+  position: relative;
+
+  .p-dialog-title {
+    margin: auto;
+  }
+
+  .p-dialog-close-button {
+    position: absolute;
+    top: 5%;
+    right: 1%;
+  }
 }

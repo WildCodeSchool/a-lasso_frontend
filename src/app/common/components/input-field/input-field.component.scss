@@ -26,7 +26,8 @@ p-floatlabel {
     }
   }
 
-  ::ng-deep .p-password {
+  ::ng-deep .p-password,
+  ::ng-deep .p-datepicker {
     width: 100%;
   }
 
