@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { Activity } from '../models/activity.model';
-import { Observable, of, switchMap, take, tap } from 'rxjs';
+import { catchError, Observable, of, switchMap, take, tap } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { selectActivities, selectActivityById } from '../store/activities.selector';
 import { setActivities, updateActivityParticipants, updateFavoriteStatus, updateRegisterStatus } from '../store/activities.actions';
@@ -8,8 +8,9 @@ import { ActivitiesApiService } from './activities-api.service';
 import { UUIDTypes } from 'uuid';
 import { Message } from '../models/message.model';
 import { selectMessagesByActivityId } from '../store/messages/messages.selector';
-import { setMessages } from '../store/messages/messages.actions';
+import { addMessage, setMessages } from '../store/messages/messages.actions';
 import { MessageCreation } from '../models/messageCreation';
+import { MessageService as Toast } from 'primeng/api';
 import { APIResponseToggleRegister } from '../models/api-reponse.model';
 
 @Injectable({
@@ -17,6 +18,7 @@ import { APIResponseToggleRegister } from '../models/api-reponse.model';
 })
 export class ActivityFacadeService {
   store: Store = inject(Store);
+  toast: Toast = inject(Toast);
   activitiesApi: ActivitiesApiService = inject(ActivitiesApiService);
   activities$: Observable<Activity[]> = this.store.select(selectActivities);
 
@@ -73,27 +75,30 @@ export class ActivityFacadeService {
     // TODO : add a Toest notifcation to inform user he is now registered to the acitivty !
   }
 
-  getActivityMessages(activityId: UUIDTypes): Observable<Message[]> {
-    //TODO: récupérer les messages du store
-    // si pas dans store requete API ?
-    // oui mais si messages envoyés depuis stockage dans le store on
+  getActivityMessages(activityId: string): void {
+    // TODO: récupérer les messages du store
+    // si pas messages dans le store => requete API ?
+    // oui mais si messages envoyés depuis le stockage dans le store on
     // les récupère quand ???
 
-    return this.store.select(selectMessagesByActivityId(activityId)).pipe(
-      take(1),
-      switchMap(messages => {
-        if (messages.length) {
-          return of(messages);
-        }
-        // If not found in store fetch from API
-        return this.activitiesApi.getActivityMessages(activityId).pipe(
-          tap((fetchedMessages: Message[]): void => {
-            fetchedMessages.sort((a: Message, b: Message): number => new Date(a.date).getTime() - new Date(b.date).getTime());
-            this.store.dispatch(setMessages({ messages: fetchedMessages }));
-          })
-        );
-      })
-    );
+    this.store
+      .select(selectMessagesByActivityId(activityId))
+      .pipe(
+        take(1),
+        switchMap(messages => {
+          if (messages.length) {
+            return of(messages);
+          }
+          // If not found in store fetch from API
+          return this.activitiesApi.getActivityMessages(activityId).pipe(
+            tap((fetchedMessages: Message[]): void => {
+              fetchedMessages.sort((a: Message, b: Message): number => new Date(a.date).getTime() - new Date(b.date).getTime());
+              this.store.dispatch(setMessages({ messages: fetchedMessages }));
+            })
+          );
+        })
+      )
+      .subscribe();
   }
 
   getActivity(activityId: UUIDTypes): Observable<Activity | null> {
@@ -104,8 +109,21 @@ export class ActivityFacadeService {
     this.activitiesApi
       .postActivityMessage(message)
       .pipe(
-        tap((postMessage: Message) => {
-          this.store.dispatch(setMessages({ messages: [postMessage] }));
+        tap((postedMessage: Message) => {
+          this.store.dispatch(addMessage({ message: postedMessage }));
+          this.toast.add({
+            severity: 'success',
+            summary: 'Message envoyé !',
+          });
+        }),
+        catchError(() => {
+          this.toast.add({
+            severity: 'error',
+            summary: 'Erreur',
+            detail: "Le message n'a pas pu être envoyé. Veuillez réessayer.",
+          });
+          // Return an observable is mandatory to cloture the catchError.
+          return of(null);
         })
       )
       .subscribe();
