@@ -26,7 +26,6 @@ export class AuthService {
   }
 
   public saveToken(token: string): void {
-    console.log('token', token);
     localStorage.setItem('tokenAlAsso', token);
   }
 
