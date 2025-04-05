@@ -32,19 +32,16 @@ export class ActivityFacadeService {
   }
 
   toggleFavorite(activityId: UUIDTypes, isFavorite: boolean): void {
-    // Send to Back
     this.activitiesApi
-      .updateFavoriteStatus(activityId, isFavorite)
+      .updateFavoriteStatus(activityId, !isFavorite)
       .pipe(
         tap((apiResponse: boolean) =>
-          apiResponse
-            ? this.store.dispatch(
-                updateFavoriteStatus({
-                  id: activityId,
-                  isFavorite: !isFavorite,
-                })
-              )
-            : 'TODO : ALERT NOTIFCATION FAILED'
+          this.store.dispatch(
+            updateFavoriteStatus({
+              id: activityId,
+              isFavorite: apiResponse,
+            })
+          )
         ),
         take(1)
       )

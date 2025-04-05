@@ -5,7 +5,6 @@ import { inject } from '@angular/core';
 export const jwtAddTokenInterceptor: HttpInterceptorFn = (req, next) => {
   const auth = inject(AuthService);
   const token = auth.getToken();
-  console.log('[Interceptor] Token:', token);
   if (!token) {
     return next(req);
   }
