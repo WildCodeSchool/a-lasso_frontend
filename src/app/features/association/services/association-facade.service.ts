@@ -57,11 +57,9 @@ export class AssociationFacadeService {
 
   toggleFollow(associationId: UUIDTypes, isFollow: boolean): void {
     this.associationApiService
-      .updateFollowStatus(associationId, isFollow)
+      .updateFollowStatus(associationId, !isFollow)
       .pipe(
-        tap((apiResponse: boolean) =>
-          apiResponse ? this.store.dispatch(updateFollowStatus({ id: associationId, isFollow: !isFollow })) : 'TODO : ALERT NOTIFCATION FAILED'
-        ),
+        tap((apiResponse: boolean) => this.store.dispatch(updateFollowStatus({ id: associationId, isFollow: apiResponse }))),
         take(1)
       )
       .subscribe();

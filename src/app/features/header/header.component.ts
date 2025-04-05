@@ -1,9 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { RegisterModalComponent } from '../authentication/components/register-modal/register-modal.component';
 import { LoginModalComponent } from '../authentication/components/login-modal/login-modal.component';
+import { AuthService } from '../authentication/services/auth.service';
 
 @Component({
   selector: 'app-header',
@@ -14,8 +15,10 @@ import { LoginModalComponent } from '../authentication/components/login-modal/lo
   providers: [MessageService],
 })
 export class HeaderComponent {
-  showRegisterModal = false;
-  showLoginModal = false;
+  private _authService: AuthService = inject(AuthService);
+  public isLoggedIn = this._authService.isLoggedIn();
+  showRegisterModal: boolean = false;
+  showLoginModal: boolean = false;
 
   openRegisterModal(): void {
     this.showRegisterModal = true;

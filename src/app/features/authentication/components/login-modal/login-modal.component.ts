@@ -32,6 +32,10 @@ export class LoginModalComponent {
     { name: 'password', label: 'Mot de passe', type: 'password', required: true },
   ];
 
+  showModal(): void {
+    this.visible = true;
+  }
+
   hideModal(): void {
     this.visible = false;
     this.visibleChange.emit(false);
@@ -44,6 +48,7 @@ export class LoginModalComponent {
 
   onSubmit(): void {
     console.log(this.loginForm.value);
+    this._authService.clearToken(); // clear token otherwize, back will trow error "invalid token"
     this._authService.login(this.loginForm.value as UserLogin).subscribe(token => {
       this._authService.saveToken(token);
       this.hideModal();

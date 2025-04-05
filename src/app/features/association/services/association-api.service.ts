@@ -18,6 +18,6 @@ export class AssociationApiService {
   }
 
   updateFollowStatus(associationId: UUIDTypes, isFollow: boolean): Observable<boolean> {
-    return this._http.put<boolean>(`${this._apiUrl}/association/${associationId}/updateFollow`, { isFollow });
+    return this._http.post<boolean>(`${this._apiUrl}/association/${associationId}/updateFollow`, { isFollow });
   }
 }
