@@ -12,7 +12,8 @@ export class FavoriteHeartComponent {
   @Input() activityId!: string;
   @Input() isFavorite!: boolean;
 
-  toggleFavorite(): void {
+  toggleFavorite(event: MouseEvent): void {
+    event.stopPropagation();
     this.activityFacadeService.toggleFavorite(this.activityId, this.isFavorite);
   }
 }
