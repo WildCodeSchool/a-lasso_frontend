@@ -6,6 +6,7 @@ import { environment } from 'src/environments/environment.development';
 import { UUIDTypes } from 'uuid';
 import { Message } from '../models/message.model';
 import { MessageCreation } from '../models/messageCreation';
+import { APIResponseToggleRegister } from '../models/api-reponse.model';
 
 @Injectable({
   providedIn: 'root',
@@ -22,6 +23,12 @@ export class ActivitiesApiService {
   updateFavoriteStatus(activityId: UUIDTypes, isFavorite: boolean): Observable<boolean> {
     return this._http.patch<boolean>(`${this._apiUrl}/activities/${activityId}/updateFavorite`, { isFavorite });
   }
+
+  updateRegisterStatus(activityId: UUIDTypes, isRegistered: boolean): Observable<APIResponseToggleRegister> {
+    return this._http.patch<APIResponseToggleRegister>(`${this._apiUrl}/activities/${activityId}/updateRegistered`, { isRegistered });
+  }
+
+  // Modifier le return de RegisterStatus :
 
   getActivityMessages(activityId: UUIDTypes): Observable<Message[]> {
     return this._http.get<Message[]>(`${this._apiUrl}/messages/${activityId}`);

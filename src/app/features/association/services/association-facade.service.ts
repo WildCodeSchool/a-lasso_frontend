@@ -17,7 +17,7 @@ export class AssociationFacadeService {
   activityFacadeService: ActivityFacadeService = inject(ActivityFacadeService);
   associationApiService: AssociationApiService = inject(AssociationApiService);
 
-  getAssociationCard(activityId: string): Observable<Association | null> {
+  getAssociationCard(activityId: UUIDTypes): Observable<Association | null> {
     // get activity selected from store
     return this.store.select(selectActivityById(activityId)).pipe(
       switchMap(activity => {

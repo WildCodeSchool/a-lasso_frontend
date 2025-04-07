@@ -17,7 +17,7 @@ import { UUIDTypes } from 'uuid';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AssociationCardComponent implements OnInit {
-  @Input() activityId!: string;
+  @Input() activityId!: UUIDTypes;
 
   associationFacadeService: AssociationFacadeService = inject(AssociationFacadeService);
 
