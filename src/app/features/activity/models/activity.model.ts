@@ -44,6 +44,7 @@ export class Activity {
   participants: Participant = { current: 0, max: 10 };
   theme: Theme[];
   isFavorite: boolean = false;
+  isRegistered: boolean = false;
 
   constructor(data: Partial<Activity> = {}) {
     this.id = data.id || '';
@@ -70,5 +71,6 @@ export class Activity {
     this.participants = data.participants || { current: 0, max: 10 };
     this.theme = data.theme || [];
     this.isFavorite = data.isFavorite || false;
+    this.isRegistered = data.isRegistered || false;
   }
 }
