@@ -1,0 +1,12 @@
+<div class="logo-wrapper" (click)="toggleMenu()" (keydown.enter)="toggleMenu()" tabindex="0">
+  <img [src]="apiUrl + (userAvatar$ | async)" alt="User Avatar" class="user-avatar" />
+
+  @if (isOpen) {
+    <ul class="menu-list" @fadeMenu>
+      <li class="menu-item" (click)="logout()" (keydown.enter)="logout()" tabindex="1">
+        <i class="fa-solid fa-arrow-right-from-bracket"></i>
+        Se déconnecter
+      </li>
+    </ul>
+  }
+</div>

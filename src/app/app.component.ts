@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
-import { ButtonModule } from 'primeng/button';
 import { RouterOutlet } from '@angular/router';
-import { HeaderComponent } from './common/components/header/header.component';
-import { FooterComponent } from './common/components/footer/footer.component';
+import { ButtonModule } from 'primeng/button';
 import { Toast } from 'primeng/toast';
+import { FooterComponent } from './common/components/footer/footer.component';
+import { HeaderComponent } from './common/components/header/header.component';
 
 @Component({
   selector: 'app-root',

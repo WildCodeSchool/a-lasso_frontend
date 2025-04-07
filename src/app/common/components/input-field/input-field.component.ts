@@ -23,7 +23,7 @@ import { Subject } from 'rxjs';
   ],
 })
 export class InputFieldComponent implements ControlValueAccessor, OnDestroy {
-  @Input() label: string = '';
+  @Input() label: string | undefined = '';
   @Input() type: string = 'text';
   @Input() disabled: boolean = false;
   @Input() variant: 'in' | 'on' = 'in';

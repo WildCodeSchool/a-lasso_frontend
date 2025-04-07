@@ -15,6 +15,8 @@ import { myPreset } from './mytheme';
 import { DialogService } from 'primeng/dynamicdialog';
 import { jwtAddTokenInterceptor } from './common/interceptors/jwt-add-token.interceptor';
 import { errorInterceptor } from './common/interceptors/error-server.interceptor';
+import { userReducer } from './features/authentication/store/user.reducer';
+import { metaReducers } from './features/authentication/store/meta-reducers';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -22,7 +24,10 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideHttpClient(withInterceptors([jwtAddTokenInterceptor, errorInterceptor])),
     provideAnimationsAsync(),
-    provideStore({ activities: activitiesReducer, associations: associationsReducer, messages: messagesReducer }),
+    provideStore(
+      { activities: activitiesReducer, associations: associationsReducer, messages: messagesReducer, user: userReducer },
+      { metaReducers }
+    ),
     provideStoreDevtools({ maxAge: 25 }),
     providePrimeNG({
       theme: {

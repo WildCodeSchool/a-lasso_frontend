@@ -1,0 +1,26 @@
+<p-dialog
+  [(visible)]="visible"
+  [modal]="true"
+  [header]="'M\'ENREGISTRER'"
+  [closeOnEscape]="true"
+  [dismissableMask]="true"
+  [draggable]="false"
+  [resizable]="false"
+  styleClass="register-modal"
+  (onHide)="hideModal()">
+  <div class="form-container">
+    <div class="user-type-selector">
+      <div class="selector-label">En tant que :</div>
+      <div class="selector-buttons">
+        <p-select [options]="userTypeOptions" [(ngModel)]="userType" optionLabel="label" optionValue="value"></p-select>
+      </div>
+    </div>
+
+    @if (userType === 'bénévole') {
+      <app-register-voluntary-form #voluntaryForm (submitted)="onRegisterVoluntary($event)" />
+    }
+    @if (userType === 'association') {
+      <app-register-association-form #associationForm (submitted)="onRegisterAssociation($event)" />
+    }
+  </div>
+</p-dialog>

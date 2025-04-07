@@ -24,8 +24,8 @@ export class ActivitiesApiService {
     return this._http.get<Activity[]>(`${this._apiUrl}/activities`);
   }
 
-  updateFavoriteStatus(activityId: UUIDTypes, isFavorite: boolean): Observable<boolean> {
-    return this._http.patch<boolean>(`${this._apiUrl}/activities/${activityId}/updateFavorite`, { isFavorite });
+  updateFavoriteStatus(activityId: UUIDTypes, isSaved: boolean): Observable<boolean> {
+    return this._http.patch<boolean>(`${this._apiUrl}/activities/${activityId}/updateFavorite`, { isSaved });
   }
 
   updateRegisterStatus(activityId: UUIDTypes, isRegistered: boolean): Observable<APIResponseToggleRegister> {

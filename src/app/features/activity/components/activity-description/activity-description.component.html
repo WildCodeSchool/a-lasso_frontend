@@ -6,7 +6,7 @@
         <app-inscription-badge [participants]="activity.participants"></app-inscription-badge>
       </div>
 
-      <app-favorite-heart [activityId]="activity.id" [isFavorite]="activity.isFavorite"></app-favorite-heart>
+      <app-favorite-heart [activityId]="activity.id" [isSaved]="activity.isSaved"></app-favorite-heart>
     </div>
     <div class="sub-title">
       <p>Le {{ activity.date | date: 'dd/MM/yyyy' }} à {{ activity.date | date: 'HH:mm' }}</p>

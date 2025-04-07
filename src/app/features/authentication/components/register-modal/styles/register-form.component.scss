@@ -1,0 +1,68 @@
+.form-benevole,
+.form-association {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+
+  .form-field,
+  & {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .submit-button {
+    display: flex;
+    justify-content: center;
+
+    .register-btn {
+      padding: 8px 16px;
+      font-weight: bold;
+    }
+  }
+
+  .coordinates-fields {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4px;
+
+    .form-field {
+      display: flex;
+      flex-direction: column;
+    }
+  }
+
+  .address-fields {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 4px;
+
+    .address-field {
+      display: flex;
+      flex-direction: column;
+
+      &:nth-child(1) {
+        grid-column: 1;
+      }
+
+      &:nth-child(2) {
+        grid-column: 2;
+      }
+
+      &:nth-child(3) {
+        grid-column: 3;
+      }
+
+      &:nth-child(4) {
+        grid-column: 1;
+      }
+
+      &:nth-child(5) {
+        grid-column: 2;
+      }
+
+      &:nth-child(6) {
+        grid-column: 3;
+      }
+    }
+  }
+}
