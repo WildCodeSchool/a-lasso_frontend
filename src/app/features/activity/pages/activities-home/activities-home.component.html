@@ -1,16 +1,14 @@
 <div class="activities-home">
-  <div class="search-activities"></div>
+  <div class="search-activities"><app-activity-filter [themes$]="themes$"></app-activity-filter></div>
 
   <div class="cards-and-map">
     <div class="cards-activities" [ngClass]="chosenNavigation !== 'Liste' ? 'hidden' : ''">
       @if (!(activities$ | async)?.length) {
-        <app-activity-skeleton></app-activity-skeleton>
-        <app-activity-skeleton></app-activity-skeleton>
-      } @else {
-        @for (activity of activities$ | async; track activity.id) {
-          <app-activity-card [activity]="activity"></app-activity-card>
-        }
-      }
+      <app-activity-skeleton></app-activity-skeleton>
+      <app-activity-skeleton></app-activity-skeleton>
+      } @else { @for (activity of activities$ | async; track activity.id) {
+      <app-activity-card [activity]="activity"></app-activity-card>
+      } }
     </div>
 
     <div class="map-activities" [ngClass]="chosenNavigation !== 'Carte' ? 'hidden' : ''"></div>

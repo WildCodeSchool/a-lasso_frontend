@@ -7,6 +7,7 @@ import { UUIDTypes } from 'uuid';
 import { Message } from '../models/message.model';
 import { MessageCreation } from '../models/messageCreation';
 import { APIResponseToggleRegister } from '../models/api-reponse.model';
+import { Theme } from '../models/theme.model';
 
 @Injectable({
   providedIn: 'root',
@@ -15,6 +16,10 @@ export class ActivitiesApiService {
   _http: HttpClient = inject(HttpClient);
 
   private _apiUrl = environment.apiUrl;
+
+  getActivityThemes(): Observable<Theme[]> {
+    return this._http.get<Theme[]>(`${this._apiUrl}/themes`);
+  }
 
   getAllActivities(): Observable<Activity[]> {
     return this._http.get<Activity[]>(`${this._apiUrl}/activities`);
