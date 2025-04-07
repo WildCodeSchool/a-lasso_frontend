@@ -1,7 +1,9 @@
 import { createReducer, on } from '@ngrx/store';
 import { Activity } from '../models/activity.model';
-import { setActivities, updateActivityParticipants, updateFavoriteStatus, updateRegisterStatus } from './activities.actions';
+import { setActivities, setThemes, updateActivityParticipants, updateFavoriteStatus, updateRegisterStatus } from './activities.actions';
+import { Theme } from '../models/theme.model';
 
+export const initialThemesState: Theme[] = [];
 export const initialActivitiesState: Activity[] = [];
 
 export const activitiesReducer = createReducer(
@@ -15,4 +17,9 @@ export const activitiesReducer = createReducer(
   on(updateActivityParticipants, (state, { id, participants }) =>
     state.map(activity => (activity.id === id ? { ...activity, participants } : activity))
   )
+);
+
+export const themesReducer = createReducer(
+  initialThemesState,
+  on(setThemes, (_, { themes }) => [...themes])
 );

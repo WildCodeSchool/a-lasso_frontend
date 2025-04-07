@@ -1,0 +1,8 @@
+<div class="filter-container">
+  <div id="filter-input"></div>
+  <div class="filter-buttons">
+    @for (theme of themes$ | async; track $index) {
+      <p-button class="theme-button" size="large" [label]="theme.name" [attr.aria-label]="'bouton de thème ' + theme.name"></p-button>
+    }
+  </div>
+</div>

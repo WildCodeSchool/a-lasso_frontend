@@ -1,7 +1,5 @@
 <div class="activities-home">
-  <div class="search-activities">
-    <!--TODO: rajouter ici composant qui regroupe les input de recherche pour la page activities-->
-  </div>
+  <div class="search-activities"><app-activity-filter [themes$]="themes$"></app-activity-filter></div>
 
   <div class="cards-and-map">
     <div class="cards-activities" [ngClass]="chosenNavigation !== 'Liste' ? 'hidden' : ''">

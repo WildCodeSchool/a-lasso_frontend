@@ -6,10 +6,12 @@ import { ActivityCardComponent } from '../../components/activity-card/activity-c
 import { Activity } from '../../models/activity.model';
 import { ActivityFacadeService } from '../../services/activity-facade.service';
 import { ActivitySkeletonComponent } from '../../components/activity-skeleton/activity-skeleton.component';
+import { ActivityFilterComponent } from '../../components/activity-filter/activity-filter.component';
+import { Theme } from '../../models/theme.model';
 
 @Component({
   selector: 'app-activities-home',
-  imports: [ActivityCardComponent, AsyncPipe, ToggleMenuComponent, NgClass, ActivitySkeletonComponent],
+  imports: [ActivityCardComponent, AsyncPipe, ToggleMenuComponent, NgClass, ActivitySkeletonComponent, ActivityFilterComponent],
   templateUrl: './activities-home.component.html',
   styleUrl: './activities-home.component.scss',
   standalone: true,
@@ -17,12 +19,14 @@ import { ActivitySkeletonComponent } from '../../components/activity-skeleton/ac
 export class ActivitiesHomeComponent implements OnInit {
   activityFacadeService: ActivityFacadeService = inject(ActivityFacadeService);
 
+  themes$: Observable<Theme[]> = this.activityFacadeService.themes$;
   activities$: Observable<Activity[]> = this.activityFacadeService.activities$;
 
   navigationItems: string[] = ['Liste', 'Carte'];
   chosenNavigation: string = 'Liste';
 
   ngOnInit(): void {
+    this.activityFacadeService.getActivityThemes();
     this.activityFacadeService.getAllActivities();
   }
 

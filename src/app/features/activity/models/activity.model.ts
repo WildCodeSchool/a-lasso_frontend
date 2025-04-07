@@ -1,4 +1,4 @@
-export type Theme = 'Social' | 'Sport' | 'Santé' | 'Nature' | 'Culture' | 'Culinaire' | 'Cours';
+import { ThemeName } from './theme.model';
 
 export type Localisation = {
   city: string;
@@ -42,7 +42,7 @@ export class Activity {
   };
   date: Date = new Date();
   participants: Participant = { current: 0, max: 10 };
-  theme: Theme[];
+  theme: ThemeName[];
   isFavorite: boolean = false;
   isRegistered: boolean = false;
 
