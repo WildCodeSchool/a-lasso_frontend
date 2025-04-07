@@ -71,6 +71,6 @@ export class Activity {
     this.participants = data.participants || { current: 0, max: 10 };
     this.theme = data.theme || [];
     this.isFavorite = data.isFavorite || false;
-    this.isFavorite = data.isRegistered || false;
+    this.isRegistered = data.isRegistered || false;
   }
 }
