@@ -2,7 +2,13 @@
   <div id="filter-input"></div>
   <div class="filter-buttons">
     @for (theme of themes$ | async; track $index) {
-      <p-button class="theme-button" size="large" [label]="theme.name" [attr.aria-label]="'bouton de thème ' + theme.name"></p-button>
+      <p-button
+        (click)="updateSelectedThemes(theme)"
+        [styleClass]="selected.includes(theme) ? 'selected' : ''"
+        size="large"
+        [icon]="theme.iconUrl"
+        [label]="theme.name"
+        [attr.aria-label]="'bouton de thème ' + theme.name"></p-button>
     }
   </div>
 </div>

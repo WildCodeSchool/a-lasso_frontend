@@ -1,13 +1,12 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Activity } from '../models/activity.model';
+import { Activity, Theme } from '../models/activity.model';
 import { environment } from 'src/environments/environment.development';
 import { UUIDTypes } from 'uuid';
 import { Message } from '../models/message.model';
 import { MessageCreation } from '../models/messageCreation';
 import { APIResponseToggleRegister } from '../models/api-reponse.model';
-import { Theme } from '../models/theme.model';
 
 @Injectable({
   providedIn: 'root',
