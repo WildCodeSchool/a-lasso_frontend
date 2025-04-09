@@ -33,7 +33,7 @@ export type Activity = {
   location: Localisation;
   date: Date;
   participants: Participant;
-  theme: ThemeNameEnum[];
+  themesName: ThemeNameEnum[];
   isFavorite: boolean;
   isRegistered: boolean;
 };

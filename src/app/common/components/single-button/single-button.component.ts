@@ -1,11 +1,10 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 import { ButtonClicked } from '../../models/buttonClicked';
-import { NgStyle } from '@angular/common';
 
 @Component({
   selector: 'app-single-button',
-  imports: [ButtonModule, NgStyle],
+  imports: [ButtonModule],
   templateUrl: './single-button.component.html',
   styleUrl: './single-button.component.scss',
 })

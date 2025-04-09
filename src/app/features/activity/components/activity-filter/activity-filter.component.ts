@@ -24,7 +24,7 @@ export class ActivityFilterComponent implements OnInit {
   @Output() selectedThemes: EventEmitter<ThemeNameEnum[]> = new EventEmitter<ThemeNameEnum[]>();
 
   ngOnInit(): void {
-    this.themes$ = this.activityFacadeService.getActivityThemes().pipe(
+    this.themes$ = this.activityFacadeService.getActivityThemesFromApi().pipe(
       tap(themes => {
         themes.sort((a: Theme, b: Theme) => a.name.localeCompare(b.name));
       })
@@ -33,10 +33,8 @@ export class ActivityFilterComponent implements OnInit {
 
   updateSelectedThemes(theme: ButtonClicked): void {
     const index: number = this.selected.findIndex(t => t === theme.label);
-    console.log(index);
     if (index > -1) {
       this.selected.splice(index, 1);
-      console.log(this.selected);
     } else {
       this.selected.push(theme.label as ThemeNameEnum);
     }
