@@ -24,7 +24,7 @@ export class ActivityDescriptionComponent implements OnInit {
   public apiUrl = environment.apiUrl;
 
   ngOnInit(): void {
-    this.activity$ = this.activityFacadeService.getActivity(this.activityId);
+    this.activity$ = this.activityFacadeService.getActivityFromStore$(this.activityId);
   }
 
   toggleRegister(activityId: UUIDTypes, isRegistered: boolean): void {

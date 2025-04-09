@@ -2,9 +2,9 @@ import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { MessageService } from 'primeng/api';
-import { RegisterModalComponent } from '../authentication/components/register-modal/register-modal.component';
-import { LoginModalComponent } from '../authentication/components/login-modal/login-modal.component';
-import { AuthService } from '../authentication/services/auth.service';
+import { RegisterModalComponent } from '../../../features/authentication/components/register-modal/register-modal.component';
+import { LoginModalComponent } from '../../../features/authentication/components/login-modal/login-modal.component';
+import { AuthService } from '../../../features/authentication/services/auth.service';
 
 @Component({
   selector: 'app-header',

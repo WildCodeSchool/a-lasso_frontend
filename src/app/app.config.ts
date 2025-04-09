@@ -12,15 +12,15 @@ import { PRIME_NG_FR } from './common/prime-ng.translate';
 import { activitiesReducer } from './features/activity/store/activities.reducers';
 import { associationsReducer } from './features/association/store/association.reducers';
 import { myPreset } from './mytheme';
-import { jwtAddTokenInterceptor } from './core/interceptors/jwtAddTokenInterceptor.interceptor';
-import { jwtExpirationInterceptor } from './core/interceptors/jwtExpirationInterceptor';
 import { DialogService } from 'primeng/dynamicdialog';
+import { jwtAddTokenInterceptor } from './common/interceptors/jwt-add-token.interceptor';
+import { errorInterceptor } from './common/interceptors/error-server.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
-    provideHttpClient(withInterceptors([jwtAddTokenInterceptor, jwtExpirationInterceptor])),
+    provideHttpClient(withInterceptors([jwtAddTokenInterceptor, errorInterceptor])),
     provideAnimationsAsync(),
     provideStore({ activities: activitiesReducer, associations: associationsReducer, messages: messagesReducer }),
     provideStoreDevtools({ maxAge: 25 }),

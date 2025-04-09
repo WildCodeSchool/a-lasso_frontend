@@ -18,11 +18,8 @@ import { UUIDTypes } from 'uuid';
 })
 export class AssociationCardComponent implements OnInit {
   @Input() activityId!: UUIDTypes;
-
   associationFacadeService: AssociationFacadeService = inject(AssociationFacadeService);
-
   association$!: Observable<Association | null>;
-
   public apiUrl = environment.apiUrl;
 
   ngOnInit(): void {
