@@ -20,7 +20,7 @@ export class ActivitiesHomeComponent implements OnInit {
   activityFacadeService: ActivityFacadeService = inject(ActivityFacadeService);
 
   activities$: Observable<Activity[]> = this.activityFacadeService.activities$;
-  filteredActivities$: Observable<Activity[]> = this.activities$; // at init, there is no filter
+  filteredActivities$: Observable<Activity[]> = this.activities$;
   selectedThemesName: ThemeNameEnum[] = [];
 
   navigationItems: string[] = ['Liste', 'Carte'];

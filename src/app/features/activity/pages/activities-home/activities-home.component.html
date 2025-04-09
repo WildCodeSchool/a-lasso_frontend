@@ -5,6 +5,7 @@
 
   <div class="cards-and-map">
     <div class="cards-activities" [ngClass]="chosenNavigation !== 'Liste' ? 'hidden' : ''">
+      <!-- skeletons for loading -->
       @if (!(activities$ | async)?.length) {
         <app-activity-skeleton></app-activity-skeleton>
         <app-activity-skeleton></app-activity-skeleton>
