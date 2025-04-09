@@ -8,7 +8,7 @@ import { providePrimeNG } from 'primeng/config';
 import { messagesReducer } from './features/activity/store/messages/messages.reducers';
 import { routes } from './app.routes';
 import { PRIME_NG_FR } from './common/prime-ng.translate';
-import { activitiesReducer, themesReducer } from './features/activity/store/activities.reducers';
+import { activitiesReducer } from './features/activity/store/activities.reducers';
 import { associationsReducer } from './features/association/store/association.reducers';
 import { myPreset } from './mytheme';
 import { jwtAddTokenInterceptor } from './core/interceptors/jwtAddTokenInterceptor.interceptor';
@@ -21,7 +21,7 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideHttpClient(withInterceptors([jwtAddTokenInterceptor, jwtExpirationInterceptor])),
     provideAnimationsAsync(),
-    provideStore({ themes: themesReducer, activities: activitiesReducer, associations: associationsReducer, messages: messagesReducer }),
+    provideStore({ activities: activitiesReducer, associations: associationsReducer, messages: messagesReducer }),
     provideStoreDevtools({ maxAge: 25 }),
     providePrimeNG({
       theme: {

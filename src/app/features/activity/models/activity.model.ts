@@ -1,4 +1,9 @@
-import { ThemeName } from './theme.model';
+export type ThemeNameEnum = 'Social' | 'Sport' | 'Santé' | 'Nature' | 'Culture' | 'Culinaire' | 'Cours';
+
+export type Theme = {
+  name: ThemeNameEnum;
+  iconUrl: string;
+};
 
 export type Localisation = {
   city: string;
@@ -42,7 +47,7 @@ export class Activity {
   };
   date: Date = new Date();
   participants: Participant = { current: 0, max: 10 };
-  theme: ThemeName[];
+  theme: ThemeNameEnum[];
   isFavorite: boolean = false;
   isRegistered: boolean = false;
 

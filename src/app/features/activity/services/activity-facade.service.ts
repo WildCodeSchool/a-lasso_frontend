@@ -1,9 +1,9 @@
 import { Injectable, inject } from '@angular/core';
-import { Activity } from '../models/activity.model';
+import { Activity, Theme } from '../models/activity.model';
 import { Observable, of, switchMap, take, tap } from 'rxjs';
 import { Store } from '@ngrx/store';
-import { selectActivities, selectActivityById, selectThemes } from '../store/activities.selector';
-import { setActivities, setThemes, updateActivityParticipants, updateFavoriteStatus, updateRegisterStatus } from '../store/activities.actions';
+import { selectActivities, selectActivityById } from '../store/activities.selector';
+import { setActivities, updateActivityParticipants, updateFavoriteStatus, updateRegisterStatus } from '../store/activities.actions';
 import { ActivitiesApiService } from './activities-api.service';
 import { UUIDTypes } from 'uuid';
 import { Message } from '../models/message.model';
@@ -11,7 +11,6 @@ import { selectMessagesByActivityId } from '../store/messages/messages.selector'
 import { setMessages } from '../store/messages/messages.actions';
 import { MessageCreation } from '../models/messageCreation';
 import { APIResponseToggleRegister } from '../models/api-reponse.model';
-import { Theme } from '../models/theme.model';
 
 @Injectable({
   providedIn: 'root',
@@ -19,20 +18,10 @@ import { Theme } from '../models/theme.model';
 export class ActivityFacadeService {
   store: Store = inject(Store);
   activitiesApi: ActivitiesApiService = inject(ActivitiesApiService);
-
-  themes$: Observable<Theme[]> = this.store.select(selectThemes);
   activities$: Observable<Activity[]> = this.store.select(selectActivities);
 
-  getActivityThemes(): void {
-    this.activitiesApi
-      .getActivityThemes()
-      .pipe(
-        tap((themes: Theme[]) => {
-          this.store.dispatch(setThemes({ themes }));
-        }),
-        take(1)
-      )
-      .subscribe();
+  getActivityThemes(): Observable<Theme[]> {
+    return this.activitiesApi.getActivityThemes();
   }
 
   getAllActivities(): void {

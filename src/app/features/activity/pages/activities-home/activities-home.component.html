@@ -1,14 +1,21 @@
 <div class="activities-home">
-  <div class="search-activities"><app-activity-filter [themes$]="themes$"></app-activity-filter></div>
+  <div class="search-activities">
+    <app-activity-filter (selectedThemes)="onSelectedThemeChanges($event)"></app-activity-filter>
+  </div>
 
   <div class="cards-and-map">
     <div class="cards-activities" [ngClass]="chosenNavigation !== 'Liste' ? 'hidden' : ''">
+      <!-- skeletons for loading -->
       @if (!(activities$ | async)?.length) {
         <app-activity-skeleton></app-activity-skeleton>
         <app-activity-skeleton></app-activity-skeleton>
       } @else {
-        @for (activity of activities$ | async; track activity.id) {
+        <!-- display activity that match filters -->
+        @for (activity of filteredActivities$ | async; track activity.id) {
           <app-activity-card [activity]="activity"></app-activity-card>
+          <!-- message if no match -->
+        } @empty {
+          <p>Aucuns résultats ne correspond à vos filtres</p>
         }
       }
     </div>
@@ -17,6 +24,7 @@
       <!--TODO: rajouter ici composant map pour la page activities-->
     </div>
   </div>
+
   <div class="switch-map">
     <app-toggle-menu [tabs]="navigationItems" (chosenTab)="handleNavigation($event)"></app-toggle-menu>
   </div>
