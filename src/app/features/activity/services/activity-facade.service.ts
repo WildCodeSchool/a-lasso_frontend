@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { Activity } from '../models/activity.model';
-import { catchError, Observable, of, switchMap, take, tap } from 'rxjs';
+import { Observable, of, switchMap, take, tap } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { selectActivities, selectActivityById } from '../store/activities.selector';
 import { setActivities, updateActivityParticipants, updateFavoriteStatus, updateRegisterStatus } from '../store/activities.actions';
@@ -22,7 +22,7 @@ export class ActivityFacadeService {
   activitiesApi: ActivitiesApiService = inject(ActivitiesApiService);
   activities$: Observable<Activity[]> = this.store.select(selectActivities);
 
-  getAllActivities(): void {
+  getAllActivitiesFromApi(): void {
     this.activitiesApi
       .getAllActivities()
       .pipe(
@@ -72,15 +72,9 @@ export class ActivityFacadeService {
         take(1)
       )
       .subscribe();
-    // TODO : add a Toest notifcation to inform user he is now registered to the acitivty !
   }
 
   getActivityMessages(activityId: string): void {
-    // TODO: récupérer les messages du store
-    // si pas messages dans le store => requete API ?
-    // oui mais si messages envoyés depuis le stockage dans le store on
-    // les récupère quand ???
-
     this.store
       .select(selectMessagesByActivityId(activityId))
       .pipe(
@@ -89,7 +83,6 @@ export class ActivityFacadeService {
           if (messages.length) {
             return of(messages);
           }
-          // If not found in store fetch from API
           return this.activitiesApi.getActivityMessages(activityId).pipe(
             tap((fetchedMessages: Message[]): void => {
               fetchedMessages.sort((a: Message, b: Message): number => new Date(a.date).getTime() - new Date(b.date).getTime());
@@ -101,7 +94,7 @@ export class ActivityFacadeService {
       .subscribe();
   }
 
-  getActivity(activityId: UUIDTypes): Observable<Activity | null> {
+  getActivityFromStore$(activityId: UUIDTypes): Observable<Activity> {
     return this.store.select(selectActivityById(activityId));
   }
 
@@ -115,15 +108,6 @@ export class ActivityFacadeService {
             severity: 'success',
             summary: 'Message envoyé !',
           });
-        }),
-        catchError(() => {
-          this.toast.add({
-            severity: 'error',
-            summary: 'Erreur',
-            detail: "Le message n'a pas pu être envoyé. Veuillez réessayer.",
-          });
-          // Return an observable is mandatory to cloture the catchError.
-          return of(null);
         })
       )
       .subscribe();

@@ -40,10 +40,8 @@
       [type]="type"
       [disabled]="disabled"
       autocomplete="off"
-      [ariaLabel]="label" />
+      [attr.aria-label]="label" />
   }
 
   <label [for]="'input_' + label">{{ label }}</label>
 </p-floatlabel>
-
-<!-- TODO a refacto en plusieurs composants -->

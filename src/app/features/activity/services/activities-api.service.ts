@@ -28,8 +28,6 @@ export class ActivitiesApiService {
     return this._http.patch<APIResponseToggleRegister>(`${this._apiUrl}/activities/${activityId}/updateRegistered`, { isRegistered });
   }
 
-  // Modifier le return de RegisterStatus :
-
   getActivityMessages(activityId: UUIDTypes): Observable<Message[]> {
     return this._http.get<Message[]>(`${this._apiUrl}/messages/${activityId}`);
   }

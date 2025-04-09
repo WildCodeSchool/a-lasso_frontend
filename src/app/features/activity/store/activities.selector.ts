@@ -6,5 +6,5 @@ export const selectActivitiesState = createFeatureSelector<Activity[]>('activiti
 
 export const selectActivities = createSelector(selectActivitiesState, activities => activities);
 
-export const selectActivityById = (activityId: UUIDTypes): MemoizedSelector<object, Activity | null> =>
-  createSelector(selectActivitiesState, activities => (activities || []).find(item => item.id === activityId) || null);
+export const selectActivityById = (activityId: UUIDTypes): MemoizedSelector<object, Activity> =>
+  createSelector(selectActivitiesState, activities => (activities || []).find(item => item.id === activityId) || ({} as Activity));

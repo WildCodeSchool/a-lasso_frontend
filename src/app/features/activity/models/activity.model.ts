@@ -6,7 +6,7 @@ export type Localisation = {
   latitude: number;
 };
 
-export type AssociationActiviy = {
+export type AssociationActivity = {
   id: string;
   name: string;
   isFollow: boolean;
@@ -19,58 +19,16 @@ export type Participant = {
   max: number;
 };
 
-export class Activity {
-  id: string = '';
-  title: string = '';
-  description: string = '';
-  images: string[] = [];
-  association: AssociationActiviy = {
-    id: '',
-    name: '',
-    logo: '',
-    isFollow: false,
-    localisation: {
-      city: '',
-      longitude: 0,
-      latitude: 0,
-    },
-  };
-  location: Localisation = {
-    city: '',
-    longitude: 0,
-    latitude: 0,
-  };
-  date: Date = new Date();
-  participants: Participant = { current: 0, max: 10 };
+export type Activity = {
+  id: string;
+  title: string;
+  description: string;
+  images: string[];
+  association: AssociationActivity;
+  location: Localisation;
+  date: Date;
+  participants: Participant;
   theme: Theme[];
-  isFavorite: boolean = false;
-  isRegistered: boolean = false;
-
-  constructor(data: Partial<Activity> = {}) {
-    this.id = data.id || '';
-    this.title = data.title || '';
-    this.description = data.description || '';
-    this.images = data.images || [];
-    this.association = data.association || {
-      id: '',
-      name: '',
-      logo: '',
-      isFollow: false,
-      localisation: {
-        city: '',
-        longitude: 0,
-        latitude: 0,
-      },
-    };
-    this.location = data.location || {
-      city: '',
-      longitude: 0,
-      latitude: 0,
-    };
-    this.date = data.date || new Date();
-    this.participants = data.participants || { current: 0, max: 10 };
-    this.theme = data.theme || [];
-    this.isFavorite = data.isFavorite || false;
-    this.isRegistered = data.isRegistered || false;
-  }
-}
+  isFavorite: boolean;
+  isRegistered: boolean;
+};

@@ -23,7 +23,7 @@ export class ActivitiesHomeComponent implements OnInit {
   chosenNavigation: string = 'Liste';
 
   ngOnInit(): void {
-    this.activityFacadeService.getAllActivities();
+    this.activityFacadeService.getAllActivitiesFromApi();
   }
 
   handleNavigation(title: string): void {

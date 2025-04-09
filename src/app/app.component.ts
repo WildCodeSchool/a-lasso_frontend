@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 import { RouterOutlet } from '@angular/router';
-import { HeaderComponent } from './features/header/header.component';
-import { FooterComponent } from './features/footer/footer.component';
+import { HeaderComponent } from './common/components/header/header.component';
+import { FooterComponent } from './common/components/footer/footer.component';
 import { Toast } from 'primeng/toast';
 
 @Component({
@@ -12,11 +12,4 @@ import { Toast } from 'primeng/toast';
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
-export class AppComponent {
-  // TODO: à supprimer quand le dark mode sera fonctionnel
-  // darkMode: boolean = false;
-  //
-  // changeMode(): void {
-  //   this.darkMode = !this.darkMode;
-  // }
-}
+export class AppComponent {}

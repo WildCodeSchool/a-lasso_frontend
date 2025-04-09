@@ -13,7 +13,6 @@ export class AuthService {
   private _apiUrl = environment.apiUrl;
 
   registerVoluntary(data: VoluntaryRegister): Observable<boolean> {
-    console.log(data);
     return this._http.post<boolean>(`${this._apiUrl}/auth/register/voluntary`, data);
   }
 
@@ -34,7 +33,6 @@ export class AuthService {
       return localStorage.getItem('tokenAlAsso') as string;
     }
 
-    // Token not found
     return '';
   }
 

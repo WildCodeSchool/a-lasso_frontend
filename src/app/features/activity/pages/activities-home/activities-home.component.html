@@ -1,7 +1,5 @@
 <div class="activities-home">
-  <div class="search-activities">
-    <!--TODO: rajouter ici composant qui regroupe les input de recherche pour la page activities-->
-  </div>
+  <div class="search-activities"></div>
 
   <div class="cards-and-map">
     <div class="cards-activities" [ngClass]="chosenNavigation !== 'Liste' ? 'hidden' : ''">
@@ -15,9 +13,7 @@
       }
     </div>
 
-    <div class="map-activities" [ngClass]="chosenNavigation !== 'Carte' ? 'hidden' : ''">
-      <!--TODO: rajouter ici composant map pour la page activities-->
-    </div>
+    <div class="map-activities" [ngClass]="chosenNavigation !== 'Carte' ? 'hidden' : ''"></div>
   </div>
   <div class="switch-map">
     <app-toggle-menu [tabs]="navigationItems" (chosenTab)="handleNavigation($event)"></app-toggle-menu>
