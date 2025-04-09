@@ -1,7 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ActivityCardComponent } from '../../components/activity-card/activity-card.component';
-import { Activity, Theme } from '../../models/activity.model';
+import { Activity, ThemeNameEnum } from '../../models/activity.model';
 import { ActivityFacadeService } from '../../services/activity-facade.service';
 import { ActivitySkeletonComponent } from '../../components/activity-skeleton/activity-skeleton.component';
 import { ActivityFilterComponent } from '../../components/activity-filter/activity-filter.component';
@@ -21,7 +21,7 @@ export class ActivitiesHomeComponent implements OnInit {
 
   activities$: Observable<Activity[]> = this.activityFacadeService.activities$;
   filteredActivities$: Observable<Activity[]> = this.activities$; // at init, there is no filter
-  selectedThemes: Theme[] = [];
+  selectedThemesName: ThemeNameEnum[] = [];
 
   navigationItems: string[] = ['Liste', 'Carte'];
   chosenNavigation: string = 'Liste';
@@ -35,13 +35,15 @@ export class ActivitiesHomeComponent implements OnInit {
     this.chosenNavigation = title;
   }
 
-  onSelectedThemeChanges(updatedSelectedThemes: Theme[]): void {
-    this.selectedThemes = updatedSelectedThemes;
+  onSelectedThemeChanges(updatedSelectedThemesName: ThemeNameEnum[]): void {
+    this.selectedThemesName = updatedSelectedThemesName;
 
     this.filteredActivities$ = this.activities$.pipe(
       map(activities =>
         activities.filter(activity =>
-          this.selectedThemes.length === 0 ? true : activity.theme.some(theme => this.selectedThemes.some(selected => selected.name === theme))
+          this.selectedThemesName.length === 0
+            ? true
+            : activity.themesName.some(themeName => this.selectedThemesName.some(selectedName => selectedName === themeName))
         )
       )
     );

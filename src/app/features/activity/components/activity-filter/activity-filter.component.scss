@@ -14,35 +14,6 @@
     height: auto;
     padding: 1rem;
   }
-
-  ::ng-deep .p-button {
-    border: none;
-    border-radius: 10px;
-    height: 3rem;
-    width: 10rem;
-    font-weight: 400;
-    background-color: var(--background-color-white);
-    color: var(--primary-light-color);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: var(--box-shadow);
-
-    &:hover {
-      transform: scale(1.05);
-      background-color: var(--primary-light-color) !important;
-      color: white;
-    }
-
-    .p-button-label {
-      font-weight: 400 !important;
-    }
-  }
-
-  ::ng-deep .p-button.selected {
-    background-color: var(--primary-light-color) !important;
-    color: white;
-  }
 }
 
 @media screen and (max-width: 901px) {
