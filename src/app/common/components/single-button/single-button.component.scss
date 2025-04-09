@@ -1,0 +1,87 @@
+.single-button-container {
+  ::ng-deep .p-button {
+    /* Base styles */
+    border: none;
+    border-radius: 10px;
+    height: 3rem;
+    width: 10rem;
+    font-weight: 400;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: var(--box-shadow);
+    transition:
+      transform 0.2s ease,
+      background-color 0.2s ease;
+  }
+
+  ::ng-deep .p-button-label {
+    font-weight: 400 !important;
+  }
+
+  /* defaultWhite style */
+  ::ng-deep .p-button.defaultWhite {
+    background-color: var(--background-color-white);
+    color: var(--primary-light-color);
+
+    &:hover {
+      transform: scale(1.05);
+      background-color: var(--primary-light-color) !important;
+      color: white;
+    }
+  }
+
+  ::ng-deep .p-button.defaultWhite.selected {
+    background-color: var(--primary-light-color) !important;
+    color: white;
+  }
+
+  /* defaultBlue style*/
+  ::ng-deep .p-button.defaultBlue {
+    background-color: var(--primary-light-color);
+    color: var(--background-color-white);
+
+    &:hover {
+      transform: scale(1.05);
+      background-color: var(--background-color-white) !important;
+      color: var(--primary-light-color);
+    }
+  }
+
+  ::ng-deep .p-button.defaultBlue.selected {
+    background-color: var(--background-color-white) !important;
+    color: var(--primary-light-color);
+  }
+
+  /*  unsubscribe style*/
+  ::ng-deep .p-button.unsubscribe {
+    background-color: var(--background-color-white);
+    color: var(--primary-light-color);
+    min-width: 150px;
+    height: 50px;
+    margin-left: 15px;
+    margin-top: 50px;
+    font-size: 1rem;
+    padding: 0.75rem;
+
+    &:hover {
+      transform: scale(1.05);
+    }
+  }
+
+  /*  subscribe style*/
+  ::ng-deep .p-button.subscribe {
+    background-color: var(--secondary-validate-color);
+    color: white;
+    min-width: 150px;
+    height: 50px;
+    margin-left: 15px;
+    margin-top: 50px;
+    font-size: 1rem;
+    padding: 0.75rem;
+
+    &:hover {
+      transform: scale(1.05);
+    }
+  }
+}

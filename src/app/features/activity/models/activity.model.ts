@@ -1,4 +1,9 @@
-export type Theme = 'Social' | 'Sport' | 'Santé' | 'Nature' | 'Culture' | 'Culinaire' | 'Cours';
+export type ThemeNameEnum = 'Social' | 'Sport' | 'Santé' | 'Nature' | 'Culture' | 'Culinaire' | 'Cours';
+
+export type Theme = {
+  name: ThemeNameEnum;
+  iconUrl: string;
+};
 
 export type Localisation = {
   city: string;
@@ -28,7 +33,7 @@ export type Activity = {
   location: Localisation;
   date: Date;
   participants: Participant;
-  theme: Theme[];
+  themesName: ThemeNameEnum[];
   isFavorite: boolean;
   isRegistered: boolean;
 };

@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { Activity } from '../models/activity.model';
+import { Activity, Theme } from '../models/activity.model';
 import { Observable, of, switchMap, take, tap } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { selectActivities, selectActivityById } from '../store/activities.selector';
@@ -21,6 +21,10 @@ export class ActivityFacadeService {
   toast: Toast = inject(Toast);
   activitiesApi: ActivitiesApiService = inject(ActivitiesApiService);
   activities$: Observable<Activity[]> = this.store.select(selectActivities);
+
+  getActivityThemesFromApi(): Observable<Theme[]> {
+    return this.activitiesApi.getActivityThemes();
+  }
 
   getAllActivitiesFromApi(): void {
     this.activitiesApi

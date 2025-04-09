@@ -8,10 +8,11 @@ import { InscriptionBadgeComponent } from '../inscription-badge/inscription-badg
 import { FavoriteHeartComponent } from '../favorite-heart/favorite-heart.component';
 import { ButtonModule } from 'primeng/button';
 import { UUIDTypes } from 'uuid';
+import { SingleButtonComponent } from '../../../../common/components/single-button/single-button.component';
 
 @Component({
   selector: 'app-activity-description',
-  imports: [InscriptionBadgeComponent, FavoriteHeartComponent, AsyncPipe, DatePipe, ButtonModule],
+  imports: [InscriptionBadgeComponent, FavoriteHeartComponent, AsyncPipe, DatePipe, ButtonModule, SingleButtonComponent],
   templateUrl: './activity-description.component.html',
   styleUrl: './activity-description.component.scss',
 })
@@ -27,7 +28,7 @@ export class ActivityDescriptionComponent implements OnInit {
     this.activity$ = this.activityFacadeService.getActivityFromStore$(this.activityId);
   }
 
-  toggleRegister(activityId: UUIDTypes, isRegistered: boolean): void {
-    this.activityFacadeService.toggleRegister(activityId, isRegistered);
+  toggleRegister(activity: Activity): void {
+    this.activityFacadeService.toggleRegister(activity.id, activity.isRegistered);
   }
 }

@@ -47,7 +47,6 @@ export class LoginModalComponent {
   }
 
   onSubmit(): void {
-    console.log(this.loginForm.value);
     this._authService.clearToken();
     this._authService.login(this.loginForm.value as UserLogin).subscribe(token => {
       this._authService.saveToken(token);

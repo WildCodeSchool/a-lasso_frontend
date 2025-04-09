@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Activity } from '../models/activity.model';
+import { Activity, Theme } from '../models/activity.model';
 import { environment } from 'src/environments/environment.development';
 import { UUIDTypes } from 'uuid';
 import { Message } from '../models/message.model';
@@ -15,6 +15,10 @@ export class ActivitiesApiService {
   _http: HttpClient = inject(HttpClient);
 
   private _apiUrl = environment.apiUrl;
+
+  getActivityThemes(): Observable<Theme[]> {
+    return this._http.get<Theme[]>(`${this._apiUrl}/themes`);
+  }
 
   getAllActivities(): Observable<Activity[]> {
     return this._http.get<Activity[]>(`${this._apiUrl}/activities`);
