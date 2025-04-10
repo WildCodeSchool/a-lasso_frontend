@@ -18,7 +18,9 @@
       }
     </div>
 
-    <div class="map-activities" [ngClass]="chosenNavigation !== 'Carte' ? 'hidden' : ''"></div>
+    <div class="map-activities" [ngClass]="chosenNavigation !== 'Carte' ? 'hidden' : ''">
+      <app-map [filteredActivities$]="filteredActivities$"></app-map>
+    </div>
   </div>
 
   <div class="switch-map">

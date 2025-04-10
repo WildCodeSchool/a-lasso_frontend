@@ -1,0 +1,12 @@
+<div id="map" class="map-container">
+  <div class="map-legend">
+    <div class="legend-item">
+      <div class="item-color-and-name"><span class="legend-color activity"> </span> <span>Activités</span></div>
+      <p-checkbox [(ngModel)]="mapDisplay.activities" [binary]="true" (onChange)="addMarkers()" />
+    </div>
+    <div class="legend-item">
+      <div class="item-color-and-name"><span class="legend-color association"> </span> <span>Associations</span></div>
+      <p-checkbox [(ngModel)]="mapDisplay.associations" [binary]="true" (onChange)="addMarkers()" />
+    </div>
+  </div>
+</div>

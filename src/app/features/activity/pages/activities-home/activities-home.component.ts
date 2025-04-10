@@ -8,10 +8,11 @@ import { ActivityFilterComponent } from '../../components/activity-filter/activi
 import { AsyncPipe, NgClass } from '@angular/common';
 import { ToggleMenuComponent } from '../../../../common/components/toggle-menu/toggle-menu.component';
 import { map } from 'rxjs/operators';
+import { MapComponent } from '../../../map/components/map/map.component';
 
 @Component({
   selector: 'app-activities-home',
-  imports: [ActivityCardComponent, AsyncPipe, ActivitySkeletonComponent, ActivityFilterComponent, NgClass, ToggleMenuComponent],
+  imports: [ActivityCardComponent, AsyncPipe, ActivitySkeletonComponent, ActivityFilterComponent, NgClass, ToggleMenuComponent, MapComponent],
   templateUrl: './activities-home.component.html',
   styleUrls: ['./activities-home.component.scss'],
   standalone: true,

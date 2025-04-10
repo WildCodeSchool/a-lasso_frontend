@@ -4,7 +4,7 @@ import { AssociationApiService } from './association-api.service';
 import { filter, Observable, of, switchMap, take, tap } from 'rxjs';
 import { setAssociations, updateFollowStatus } from '../store/association.actions';
 import { Association } from '../model/association.model';
-import { selectAssociation } from '../store/association.selector';
+import { selectAssociation, selectAssociations } from '../store/association.selector';
 import { ActivityFacadeService } from '../../activity/services/activity-facade.service';
 import { UUIDTypes } from 'uuid';
 import { Activity } from '../../activity/models/activity.model';
@@ -16,6 +16,8 @@ export class AssociationFacadeService {
   store: Store = inject(Store);
   activityFacadeService: ActivityFacadeService = inject(ActivityFacadeService);
   associationApiService: AssociationApiService = inject(AssociationApiService);
+
+  associations$: Observable<Association[]> = this.store.select(selectAssociations);
 
   getAssociationCard(activityId: UUIDTypes): Observable<Association> {
     return this.activityFacadeService.getActivityFromStore$(activityId).pipe(
