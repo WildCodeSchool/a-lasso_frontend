@@ -36,5 +36,10 @@
         <p>Les mots de passe ne correspondent pas</p>
       </div>
     }
+    @if (globalError) {
+      <div @fadeInOut>
+        <p>{{ globalError }}</p>
+      </div>
+    }
   </div>
 </div>

@@ -19,29 +19,8 @@
               [showPasswordRules]="field.showPasswordRules || false"
               [formControlName]="field.name">
             </app-input-field>
-            @if (loginForm.get(field.name)?.invalid && (loginForm.get(field.name)?.touched || loginForm.get(field.name)?.dirty)) {
-              <div @fadeInOut class="animation-wrapper">
-                <div class="field-error">
-                  @if (loginForm.get(field.name)?.errors?.['required']) {
-                    <p>Ce champ est requis</p>
-                  } @else if (loginForm.get(field.name)?.errors?.['email']) {
-                    <p>Veuillez entrer une adresse e-mail valide</p>
-                  } @else if (loginForm.get(field.name)?.errors?.['minlength']) {
-                    <p>
-                      Minimum {{ loginForm.get(field.name)?.errors?.['minlength'].requiredLength }} caractères (actuellement
-                      {{ loginForm.get(field.name)?.errors?.['minlength'].actualLength }})
-                    </p>
-                  } @else if (loginForm.get(field.name)?.errors?.['maxlength']) {
-                    <p>
-                      Maximum {{ loginForm.get(field.name)?.errors?.['maxlength'].requiredLength }} caractères (actuellement
-                      {{ loginForm.get(field.name)?.errors?.['maxlength'].actualLength }})
-                    </p>
-                  } @else if (loginForm.get(field.name)?.errors?.['pattern'] && field.name === 'password') {
-                    <p>Mot de passe invalide</p>
-                  }
-                </div>
-              </div>
-            }
+
+            <app-input-field-error [control]="loginForm.get(field.name)" [fieldName]="field.name" />
           </div>
         </ng-container>
       }
@@ -50,13 +29,7 @@
         <button pButton type="submit" class="register-btn" [disabled]="loginForm.invalid">Se connecter</button>
       </div>
 
-      @if (error) {
-        <div @fadeInOut class="animation-wrapper">
-          <div class="error-message">
-            <p>{{ error }}</p>
-          </div>
-        </div>
-      }
+      <app-input-field-error [globalError]="error" />
     </form>
   </div>
 </p-dialog>

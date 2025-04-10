@@ -5,16 +5,6 @@
       <app-input-field-error [control]="form.get(field.name)" [fieldName]="field.name" />
     </div>
   }
-
-  <div class="address-fields">
-    @for (field of addressFields; track $index) {
-      <div class="address-field">
-        <app-input-field [label]="field.label" [type]="field.type" [formControlName]="field.name" />
-        <app-input-field-error [control]="form.get(field.name)" [fieldName]="field.name" />
-      </div>
-    }
-  </div>
-
   @for (field of authFields; track $index) {
     <div class="form-field">
       <app-input-field
@@ -31,6 +21,15 @@
         " />
     </div>
   }
+
+  <div class="address-fields">
+    @for (field of addressFields; track $index) {
+      <div class="address-field">
+        <app-input-field [label]="field.label" [type]="field.type" [formControlName]="field.name" />
+        <app-input-field-error [control]="form.get(field.name)" [fieldName]="field.name" />
+      </div>
+    }
+  </div>
 
   <div class="submit-button">
     <button pButton type="submit" class="register-btn" [disabled]="form.invalid">S'enregistrer</button>

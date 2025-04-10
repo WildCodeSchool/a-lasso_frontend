@@ -26,4 +26,5 @@ export class InputFieldErrorComponent {
   @Input() control!: AbstractControl | null;
   @Input() fieldName = '';
   @Input() showPasswordMismatchError = false;
+  @Input() globalError: string | null = null;
 }
