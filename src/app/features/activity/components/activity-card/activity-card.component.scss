@@ -2,11 +2,11 @@
   overflow: visible;
   position: relative;
   padding: 5px;
+
   .card {
     width: 95%;
-    transition:
-      transform 0.3s ease,
-      box-shadow 0.3s ease;
+    transition: transform 0.3s ease,
+    box-shadow 0.3s ease;
     display: flex;
     flex-direction: column;
 
@@ -15,6 +15,7 @@
       z-index: 10;
       position: relative;
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      cursor: pointer;
     }
 
     img.activity-image {

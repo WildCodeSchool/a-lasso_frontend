@@ -24,6 +24,6 @@
   </div>
 
   <div class="switch-map">
-    <app-toggle-menu [tabs]="navigationItems" (chosenTab)="handleNavigation($event)"></app-toggle-menu>
+    <app-toggle-menu [tabs]="navigationItems" [activeTabValue]="0" (chosenTab)="handleNavigation($event)"></app-toggle-menu>
   </div>
 </div>

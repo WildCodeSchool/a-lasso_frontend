@@ -6,7 +6,13 @@ import { NgClass } from '@angular/common';
 import { ActivityMessagesCardComponent } from '../../components/activity-messages-card/activity-messages-card.component';
 import { ActivityDescriptionComponent } from '../../components/activity-description/activity-description.component';
 import { MOBILE_SIZE } from '../../../../common/models/scss-variables';
-import { Subscription } from 'rxjs';
+import { filter, Observable, of, Subscription, switchMap, take } from 'rxjs';
+import { AuthService } from '../../../authentication/services/auth.service';
+import { Store } from '@ngrx/store';
+import { selectActivitiesUserInfos } from '../../../authentication/store/user.selectors';
+import { ActivitiesUserInfos } from '../../../authentication/models/user.model';
+import { Activity } from '../../models/activity.model';
+import { ActivityFacadeService } from '../../services/activity-facade.service';
 
 @Component({
   selector: 'app-activity-details',
@@ -16,10 +22,15 @@ import { Subscription } from 'rxjs';
 })
 export class ActivityDetailsComponent implements OnInit, OnDestroy {
   private _routeSub!: Subscription;
+  authService: AuthService = inject(AuthService);
+  activityFacadeService: ActivityFacadeService = inject(ActivityFacadeService);
+  store: Store = inject(Store);
   route: ActivatedRoute = inject(ActivatedRoute);
   activityId!: string;
+  activity$!: Observable<Activity>;
 
-  navigationItems: string[] = ['Activité', 'Messages', 'Association'];
+  activeTab: number = 0;
+  navigationItems: string[] = ['Activité', 'Association'];
   chosenNavigation: string = 'Activité';
   screenWidth: number = window.innerWidth;
 
@@ -28,6 +39,20 @@ export class ActivityDetailsComponent implements OnInit, OnDestroy {
       this.activityId = String(params.get('id'));
     });
     this._updateNavigationItems(window.innerWidth);
+
+    this.activity$ = this.activityFacadeService.getActivityFromStore$(this.activityId).pipe(
+      switchMap(activity => {
+        if (activity?.location?.city) {
+          return of(activity);
+        }
+
+        this.activityFacadeService.getAllActivitiesFromApi();
+        return this.activityFacadeService.getActivityFromStore$(this.activityId).pipe(
+          filter((a): a is Activity => !!a && !!a.location?.city),
+          take(1)
+        );
+      })
+    );
   }
 
   ngOnDestroy(): void {
@@ -48,12 +73,31 @@ export class ActivityDetailsComponent implements OnInit, OnDestroy {
   }
 
   private _updateNavigationItems(width: number): void {
-    if (width < MOBILE_SIZE) {
-      this.navigationItems = ['Activité', 'Messages', 'Association'];
-      this.chosenNavigation = 'Activité';
+    const userIsLoggedIn: boolean = this.authService.isLoggedIn();
+
+    const setNavigation = (hasAccessToMessagesActivity: boolean): void => {
+      const isMobile: boolean = width < MOBILE_SIZE;
+
+      if (hasAccessToMessagesActivity) {
+        this.navigationItems = isMobile ? ['Activité', 'Messages', 'Association'] : ['Messages', 'Association'];
+        this.chosenNavigation = isMobile ? 'Activité' : 'Association';
+        this.activeTab = isMobile ? 0 : 1;
+      } else {
+        this.navigationItems = isMobile ? ['Activité', 'Association'] : [];
+        this.chosenNavigation = isMobile ? 'Activité' : 'Association';
+      }
+    };
+
+    if (userIsLoggedIn) {
+      const activitiesUserInfos$: Observable<ActivitiesUserInfos[]> = this.store.select(selectActivitiesUserInfos);
+
+      activitiesUserInfos$.pipe().subscribe((userInfos): void => {
+        const isRegistered: boolean = userInfos.find((activity): boolean => activity.activityId === this.activityId)?.isRegistered;
+
+        setNavigation(!!isRegistered);
+      });
     } else {
-      this.navigationItems = ['Messages', 'Association'];
-      this.chosenNavigation = 'Association';
+      setNavigation(false);
     }
   }
 }

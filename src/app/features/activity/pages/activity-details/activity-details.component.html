@@ -1,22 +1,27 @@
 <div class="activity-details-page">
   <div class="navigation">
-    <app-toggle-menu [tabs]="navigationItems" (chosenTab)="handleNavigation($event)"></app-toggle-menu>
+    @if (navigationItems.length) {
+      <app-toggle-menu [tabs]="navigationItems" [activeTabValue]="activeTab" (chosenTab)="handleNavigation($event)"></app-toggle-menu>
+    }
   </div>
   <div class="activity" [ngClass]="chosenNavigation !== 'Activité' ? 'hidden' : ''">
-    <app-activity-description [activityId]="activityId"> </app-activity-description>
+    <app-activity-description [activity$]="activity$"></app-activity-description>
   </div>
   <div
     class="association-messages"
     [ngClass]="{
       hidden: chosenNavigation === 'Activité' && screenWidth < 900,
       'show-association': chosenNavigation === 'Association' || chosenNavigation === 'Activité',
-      'show-messages': chosenNavigation === 'Messages',
+      'show-messages': chosenNavigation === 'Messages'
     }">
     <div class="association" [ngClass]="chosenNavigation !== 'Association' ? 'hidden' : ''">
-      <app-association-card [activityId]="activityId"></app-association-card>
+      <app-association-card [activity$]="activity$"></app-association-card>
     </div>
-    <div class="messages" [ngClass]="chosenNavigation === 'Messages' ? 'show-messages' : ''">
-      <app-activity-messages-card [activityId]="activityId"></app-activity-messages-card>
-    </div>
+
+    @if (navigationItems.includes('Messages')) {
+      <div class="messages" [ngClass]="chosenNavigation === 'Messages' ? 'show-messages' : ''">
+        <app-activity-messages-card [activityId]="activityId"></app-activity-messages-card>
+      </div>
+    }
   </div>
 </div>

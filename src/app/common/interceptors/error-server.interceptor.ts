@@ -14,9 +14,7 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
       const summary = 'Erreur';
       let detail = 'Une erreur est survenue. Veuillez réessayer.';
 
-      if (error.error?.message) {
-        detail = error.error.message;
-      } else if (error.status >= HttpStatusCode.InternalServerError) {
+      if (error.status >= HttpStatusCode.InternalServerError) {
         detail = 'Erreur interne du serveur. Veuillez réessayer plus tard.';
       } else if (error.status === HttpStatusCode.NotFound) {
         detail = 'La ressource demandée est introuvable.';
