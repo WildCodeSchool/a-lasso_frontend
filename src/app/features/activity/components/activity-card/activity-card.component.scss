@@ -94,3 +94,26 @@
     }
   }
 }
+
+@media screen and (max-width: 900px) {
+  ::ng-deep p-card {
+    flex-direction: row;
+    width: 27rem;
+    height: 15rem;
+
+    .p-card-header {
+      width: 30%;
+      height: 100%;
+
+      .img {
+        object-fit: cover;
+        height: 100%;
+      }
+    }
+
+    .p-card-body {
+      width: 70%;
+      padding: 1rem;
+    }
+  }
+}

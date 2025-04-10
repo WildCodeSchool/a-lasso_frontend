@@ -8,7 +8,6 @@
 
   <div class="cards-and-map">
     <div class="cards-activities" [ngClass]="chosenNavigation !== 'Liste' ? 'hidden' : ''">
-      <!-- skeletons for loading -->
       @if (!(activities$ | async)?.length) {
         <app-activity-skeleton></app-activity-skeleton>
         <app-activity-skeleton></app-activity-skeleton>
@@ -20,7 +19,7 @@
         } @empty {
           <p class="empty">
             <i class="fa-solid fa-magnifying-glass"></i>
-            Aucuns résultats ne correspond à votre recherche
+            Aucun résultat ne correspond à votre recherche
           </p>
         }
       }
