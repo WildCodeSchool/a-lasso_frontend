@@ -48,13 +48,15 @@
   .form {
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 4px;
 
     .animation-wrapper {
-      overflow: hidden;
+      height: 20px;
 
       .field-error,
       .error-message {
+        height: 20px;
+
         color: var(--secondary-error-color);
         text-align: center;
         font-size: 13px;
