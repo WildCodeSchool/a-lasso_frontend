@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { Association } from '../model/association.model';
+import { Association } from '../models/association.model';
 import { UUIDTypes } from 'uuid';
 
 export const setAssociations = createAction('[associations] setAssociations', props<{ association: Association }>());

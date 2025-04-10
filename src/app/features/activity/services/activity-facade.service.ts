@@ -12,6 +12,8 @@ import { addMessage, setMessages } from '../store/messages/messages.actions';
 import { MessageCreation } from '../models/messageCreation';
 import { MessageService as Toast } from 'primeng/api';
 import { APIResponseToggleRegister } from '../models/api-reponse.model';
+import { updateActivitiesUserInfos } from '../../authentication/store/user.actions';
+import { TAKE_1 } from 'src/app/common/constants/observables.constants';
 
 @Injectable({
   providedIn: 'root',
@@ -33,24 +35,30 @@ export class ActivityFacadeService {
         tap((activities: Activity[]) => {
           this.store.dispatch(setActivities({ activities }));
         }),
-        take(1)
+        take(TAKE_1)
       )
       .subscribe();
   }
 
-  toggleFavorite(activityId: UUIDTypes, isFavorite: boolean): void {
+  toggleSave(activityId: UUIDTypes, isSaved: boolean): void {
     this.activitiesApi
-      .updateFavoriteStatus(activityId, !isFavorite)
+      .updateFavoriteStatus(activityId, !isSaved)
       .pipe(
-        tap((apiResponse: boolean) =>
+        tap((apiResponse: boolean) => {
           this.store.dispatch(
             updateFavoriteStatus({
               id: activityId,
-              isFavorite: apiResponse,
+              isSaved: apiResponse,
             })
-          )
-        ),
-        take(1)
+          );
+          this.store.dispatch(
+            updateActivitiesUserInfos({
+              activityId: activityId,
+              isSaved: apiResponse,
+            })
+          );
+        }),
+        take(TAKE_1)
       )
       .subscribe();
   }
@@ -72,8 +80,14 @@ export class ActivityFacadeService {
               participants: apiResponse.activityVoluntaryDTO,
             })
           );
+          this.store.dispatch(
+            updateActivitiesUserInfos({
+              activityId: activityId,
+              isRegistered: apiResponse.isRegistered,
+            })
+          );
         }),
-        take(1)
+        take(TAKE_1)
       )
       .subscribe();
   }
@@ -82,7 +96,7 @@ export class ActivityFacadeService {
     this.store
       .select(selectMessagesByActivityId(activityId))
       .pipe(
-        take(1),
+        take(TAKE_1),
         switchMap(messages => {
           if (messages.length) {
             return of(messages);

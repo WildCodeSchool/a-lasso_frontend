@@ -4,10 +4,18 @@
     <h1>a l'asso !</h1>
   </div>
 
-  <div class="auth-buttons">
-    <button class="inscription-btn" type="button" (click)="openRegisterModal()">S'inscrire</button>
-    <button class="connexion-btn" type="button" (click)="openLoginModal()">Se connecter</button>
-  </div>
+  @if (isAuthenticated$ | async) {
+    <div class="user-info">
+      <p class="user-name" @fadeInOut>Bonjour, {{ userDisplayName$ | async }} !</p>
+      <app-header-menu></app-header-menu>
+    </div>
+  } @else {
+    <div class="auth-buttons">
+      <button class="inscription-btn" type="button" (click)="openRegisterModal()">S'inscrire</button>
+      <button class="connexion-btn" type="button" (click)="openLoginModal()">Se connecter</button>
+    </div>
+  }
 </header>
-<app-register-modal [(visible)]="showRegisterModal"> </app-register-modal>
-<app-login-modal [(visible)]="showLoginModal"> </app-login-modal>
+
+<app-register-modal [(visible)]="showRegisterModal"></app-register-modal>
+<app-login-modal [(visible)]="showLoginModal"></app-login-modal>

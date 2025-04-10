@@ -1,11 +1,12 @@
 import { Component, Input, OnInit, OnChanges, SimpleChanges, OnDestroy } from '@angular/core';
 import maplibregl from 'maplibre-gl';
 import { Activity } from 'src/app/features/activity/models/activity.model';
-import { environmentSecret } from 'src/environments/environment.secret';
 import { Observable, Subscription } from 'rxjs';
 import { CheckboxModule } from 'primeng/checkbox';
 import { FormsModule } from '@angular/forms';
 import { MapDisplayType } from '../../models/map';
+import { environmentSecret } from 'src/environments/environment.secret';
+import { FRANCE_LATITUDE, FRANCE_LONGITUDE } from '../../constants/map.constants';
 
 @Component({
   selector: 'app-map',
@@ -28,7 +29,7 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy {
     this._map = new maplibregl.Map({
       container: 'map',
       style: `https://api.maptiler.com/maps/streets/style.json?key=${this._mapKey}`,
-      center: [2.2137, 46.6034],
+      center: [FRANCE_LONGITUDE, FRANCE_LATITUDE],
       zoom: 5,
     });
 

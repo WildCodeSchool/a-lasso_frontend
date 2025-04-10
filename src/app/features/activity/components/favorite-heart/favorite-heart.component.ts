@@ -10,10 +10,10 @@ import { ActivityFacadeService } from '../../services/activity-facade.service';
 export class FavoriteHeartComponent {
   activityFacadeService: ActivityFacadeService = inject(ActivityFacadeService);
   @Input() activityId!: string;
-  @Input() isFavorite!: boolean;
+  @Input() isSaved!: boolean;
 
   toggleFavorite(event: MouseEvent): void {
     event.stopPropagation();
-    this.activityFacadeService.toggleFavorite(this.activityId, this.isFavorite);
+    this.activityFacadeService.toggleSave(this.activityId, this.isSaved);
   }
 }

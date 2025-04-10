@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject, Input, OnInit } from '@angular/core';
 import { AssociationFacadeService } from '../../services/association-facade.service';
 import { Observable } from 'rxjs';
-import { Association } from '../../model/association.model';
+import { Association } from '../../models/association.model';
 import { AsyncPipe, DatePipe } from '@angular/common';
 import { CardModule } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';

@@ -103,7 +103,8 @@ body {
     margin: 0;
   }
 
-  p {
+  p,
+  li {
     font-family: var(--font-family-p);
     font-size: var(--font-size-p);
   }

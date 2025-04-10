@@ -16,7 +16,7 @@
       [disabled]="disabled"
       [feedback]="showPasswordRules"
       [toggleMask]="true"
-      autocomplete="off"
+      autocomplete="on"
       ariaLabel="password">
       @if (showPasswordRules) {
         <ng-template #footer>
@@ -39,8 +39,8 @@
       (ngModelChange)="updateValue($event)"
       [type]="type"
       [disabled]="disabled"
-      autocomplete="off"
-      [attr.aria-label]="label" />
+      autocomplete="on"
+      [ariaLabel]="label" />
   }
 
   <label [for]="'input_' + label">{{ label }}</label>

@@ -4,6 +4,8 @@ import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment.development';
 import { AssociationRegister, UserLogin, VoluntaryRegister } from '../models/user.model';
 import { jwtDecode } from 'jwt-decode';
+import { ApiResponseLogin, JwtDecodedToken } from '../models/api-response.model';
+import { EXPIRACY_MULTIPLIER } from '../constants/auth.constants';
 
 @Injectable({
   providedIn: 'root',
@@ -20,8 +22,8 @@ export class AuthService {
     return this._http.post<boolean>(`${this._apiUrl}/auth/register/association`, data);
   }
 
-  login(data: UserLogin): Observable<string> {
-    return this._http.post(`${this._apiUrl}/auth/login`, data, { responseType: 'text' });
+  login(data: UserLogin): Observable<ApiResponseLogin> {
+    return this._http.post<ApiResponseLogin>(`${this._apiUrl}/auth/login`, data);
   }
 
   public saveToken(token: string): void {
@@ -40,26 +42,19 @@ export class AuthService {
     localStorage.removeItem('tokenAlAsso');
   }
 
+  public clearUserState(): void {
+    localStorage.removeItem('userState');
+  }
+
   isLoggedIn(): boolean {
     const token = this.getToken();
     if (!token) return false;
-    const decodedToken: any = jwtDecode(token);
-    const expiryDate = new Date(decodedToken.exp * 1000);
+    const decodedToken: JwtDecodedToken = jwtDecode(token);
+    const expiryDate = new Date(decodedToken.exp * EXPIRACY_MULTIPLIER);
     if (expiryDate < new Date()) {
       this.clearToken();
       return false;
     }
     return true;
-  }
-
-  getDecodedToken(): any {
-    const token = this.getToken();
-    if (!token) return null;
-    return jwtDecode(token);
-  }
-
-  getUserRole(): string | null {
-    const decodedToken = this.getDecodedToken();
-    return decodedToken ? decodedToken.role : null;
   }
 }

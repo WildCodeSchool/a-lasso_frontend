@@ -9,7 +9,7 @@
   [header]="'SE CONNECTER'"
   styleClass="login-modal">
   <div class="form-container">
-    <form [formGroup]="loginForm" class="form">
+    <form [formGroup]="loginForm" class="form" (ngSubmit)="onSubmit()">
       @for (field of loginFields; track $index) {
         <ng-container>
           <div class="form-field">
@@ -19,13 +19,44 @@
               [showPasswordRules]="field.showPasswordRules || false"
               [formControlName]="field.name">
             </app-input-field>
+            @if (loginForm.get(field.name)?.invalid && (loginForm.get(field.name)?.touched || loginForm.get(field.name)?.dirty)) {
+              <div @fadeInOut class="animation-wrapper">
+                <div class="field-error">
+                  @if (loginForm.get(field.name)?.errors?.['required']) {
+                    <p>Ce champ est requis</p>
+                  } @else if (loginForm.get(field.name)?.errors?.['email']) {
+                    <p>Veuillez entrer une adresse e-mail valide</p>
+                  } @else if (loginForm.get(field.name)?.errors?.['minlength']) {
+                    <p>
+                      Minimum {{ loginForm.get(field.name)?.errors?.['minlength'].requiredLength }} caractères (actuellement
+                      {{ loginForm.get(field.name)?.errors?.['minlength'].actualLength }})
+                    </p>
+                  } @else if (loginForm.get(field.name)?.errors?.['maxlength']) {
+                    <p>
+                      Maximum {{ loginForm.get(field.name)?.errors?.['maxlength'].requiredLength }} caractères (actuellement
+                      {{ loginForm.get(field.name)?.errors?.['maxlength'].actualLength }})
+                    </p>
+                  } @else if (loginForm.get(field.name)?.errors?.['pattern'] && field.name === 'password') {
+                    <p>Mot de passe invalide</p>
+                  }
+                </div>
+              </div>
+            }
           </div>
         </ng-container>
       }
 
       <div class="submit-button">
-        <button pButton type="submit" (click)="onSubmit()" class="register-btn">Se connecter</button>
+        <button pButton type="submit" class="register-btn" [disabled]="loginForm.invalid">Se connecter</button>
       </div>
+
+      @if (error) {
+        <div @fadeInOut class="animation-wrapper">
+          <div class="error-message">
+            <p>{{ error }}</p>
+          </div>
+        </div>
+      }
     </form>
   </div>
 </p-dialog>

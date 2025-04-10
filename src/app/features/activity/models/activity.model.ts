@@ -34,6 +34,6 @@ export type Activity = {
   date: Date;
   participants: Participant;
   themesName: ThemeNameEnum[];
-  isFavorite: boolean;
+  isSaved: boolean;
   isRegistered: boolean;
 };
