@@ -1,6 +1,9 @@
 // import font family
 @import url('https://fonts.googleapis.com/css2?family=Crimson+Text&family=Roboto:ital,wght@0,100..900;1,100..900&family=Spectral+SC&display=swap');
 
+//import map
+@import 'maplibre-gl/dist/maplibre-gl.css';
+
 // initialization project
 body {
   margin: 0;
