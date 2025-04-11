@@ -13,6 +13,7 @@ body {
   max-width: 100vw;
   padding: 0;
   background-color: var(--background-color-light);
+  overflow-y: hidden;
 }
 
 :root {
@@ -33,7 +34,7 @@ body {
   --secondary-error-color: #d4412d;
 
   // variables for fonts (size & font families)
-  --font-size-p: 14px;
+  --font-size-p: 16px;
   --font-size-p-mini: 10px;
   --font-size-big-title: 36px; // for H1
   --font-size-medium-title: 22px; // for H2
@@ -107,6 +108,7 @@ body {
   li {
     font-family: var(--font-family-p);
     font-size: var(--font-size-p);
+    line-height: 1.5;
   }
 
   a,
