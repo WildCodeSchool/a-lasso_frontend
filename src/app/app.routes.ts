@@ -4,12 +4,14 @@ import { ActivityDetailsComponent } from './features/activity/pages/activity-det
 import { activityDetailsResolver } from './common/resolvers/activity-details.resolver';
 import { AssociationDetailsComponent } from './features/association/pages/association-details/association-details.component';
 import { associationResolver } from './common/resolvers/association.resolver';
+import { ActivityCreationComponent } from './features/activity/pages/activity-creation/activity-creation.component';
 
 export const routes: Routes = [
   {
     path: '',
     component: ActivitiesHomeComponent,
   },
+  { path: 'activivity/creation', component: ActivityCreationComponent },
   {
     path: 'activity/:id',
     component: ActivityDetailsComponent,
@@ -20,8 +22,6 @@ export const routes: Routes = [
   {
     path: 'association/:id',
     component: AssociationDetailsComponent,
-    resolve: {
-      association: associationResolver,
-    },
+    association: associationResolver,
   },
 ];

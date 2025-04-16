@@ -1,0 +1,40 @@
+.activity-creation-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  width: 100vw;
+  height: 80vh;
+  padding: var(--page-padding);
+
+  .informations-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .add-photo-container {
+      margin-bottom: 1rem;
+    }
+
+    header {
+    }
+
+    .details-inputs-areas {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 80%;
+
+      .theme-selection-container {
+        padding: var(--border-radius);
+        background-color: white;
+        border-radius: 15px;
+        border: var(--grey-border);
+      }
+    }
+  }
+}
+
+h2,
+h3 {
+  font-weight: 400;
+}

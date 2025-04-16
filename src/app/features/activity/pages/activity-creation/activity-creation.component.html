@@ -1,0 +1,23 @@
+<div class="activity-creation-container">
+  <header>
+    <h2>Créer une nouvelle activité</h2>
+  </header>
+  <div class="informations-container">
+    <section class="add-photo-container">
+      <app-activity-add-photo></app-activity-add-photo>
+    </section>
+    <div class="details-inputs-areas">
+      <section class="add-informations-container"></section>
+      <section class="theme-selection-container">
+        <h3>Thèmes</h3>
+        <app-activity-filter (selectedThemes)="onSelectedThemeChanges($event)"></app-activity-filter>
+      </section>
+      <section class="description-container">
+        <!-- Section to build -->
+      </section>
+      <section class="action-buttons-container">
+        <!-- Section to build -->
+      </section>
+    </div>
+  </div>
+</div>

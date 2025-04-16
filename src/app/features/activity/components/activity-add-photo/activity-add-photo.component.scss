@@ -1,0 +1,40 @@
+.add-photo-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10rem; // space between boxes
+  width: 100%;
+  justify-content: center; // or 'flex-start'
+
+  .photo-box {
+    position: relative;
+    background-color: white;
+    border: 1px dashed black;
+    padding: 3rem 3rem 2rem 3rem;
+
+    &:hover {
+      border: 1px solid black;
+      cursor: pointer;
+    }
+
+    .fa-solid {
+      font-size: 10rem;
+      color: var(--primary-light-color);
+    }
+
+    .fa-plus {
+      font-size: 5rem;
+      position: absolute;
+      top: 5px;
+      left: 15px;
+    }
+
+    h3 {
+      padding-top: 15px;
+      font-weight: 400;
+    }
+  }
+
+  .input-import-image {
+    display: none;
+  }
+}
