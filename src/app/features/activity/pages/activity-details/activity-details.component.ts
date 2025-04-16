@@ -93,7 +93,6 @@ export class ActivityDetailsComponent implements OnInit, OnDestroy {
 
       activitiesUserInfos$.pipe().subscribe((userInfos): void => {
         const isRegistered: boolean = userInfos.find((activity): boolean => activity.activityId === this.activityId)?.isRegistered;
-
         setNavigation(!!isRegistered);
       });
     } else {

@@ -32,7 +32,14 @@ export const userReducer = createReducer(
     const existing = state.userInfos.followedAssociations as FollowedAssociation[];
 
     const updated = isFollow
-      ? [...existing.filter(a => a.associationId !== associationId), { associationId, isFollow: true, isNotificationActive: true }]
+      ? [
+          ...existing.filter(a => a.associationId !== associationId),
+          {
+            associationId,
+            isFollow: true,
+            isNotificationActive: true,
+          },
+        ]
       : existing.filter(a => a.associationId !== associationId);
 
     return {
@@ -49,9 +56,11 @@ export const userReducer = createReducer(
     }
 
     const existing = state.userInfos.activitiesUserInfos;
+    let found: boolean = false;
 
     const updated = existing.map(activity => {
       if (activity.activityId === activityId) {
+        found = true;
         return {
           ...activity,
           isSaved: typeof isSaved !== 'undefined' ? isSaved : activity.isSaved,
@@ -60,6 +69,14 @@ export const userReducer = createReducer(
       }
       return activity;
     });
+
+    if (!found) {
+      updated.push({
+        activityId,
+        isSaved: isSaved ?? false,
+        isRegistered: isRegistered ?? false,
+      });
+    }
 
     return {
       ...state,
