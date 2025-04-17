@@ -9,9 +9,9 @@ import { ButtonClicked } from '../../models/buttonClicked';
   styleUrl: './single-button.component.scss',
 })
 export class SingleButtonComponent {
+  @Output() buttonClicked: EventEmitter<ButtonClicked> = new EventEmitter<ButtonClicked>();
   @Input({ required: true }) id!: number;
   @Input() label!: string;
-  @Output() buttonClicked: EventEmitter<ButtonClicked> = new EventEmitter<ButtonClicked>();
   @Input() icon?: string;
   @Input() ariaLabel?: string;
   @Input() size?: 'small' | 'large' | undefined;

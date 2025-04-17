@@ -1,6 +1,9 @@
 import { UUIDTypes } from 'uuid';
 
-export type UserType = 'bénévole' | 'association';
+export enum UserType {
+  Association = 'association',
+  Voluntary = 'voluntary',
+}
 
 export type VoluntaryRegister = {
   first_name: string;
@@ -14,6 +17,7 @@ export type VoluntaryRegister = {
 };
 
 export type VoluntaryLogin = {
+  type: UserType.Voluntary;
   first_name: string;
   last_name: string;
   email: string;
@@ -64,6 +68,7 @@ export type AssociationRegister = {
 };
 
 export type AssociationLogin = {
+  type: UserType.Association;
   siret: string;
   name: string;
   email: string;

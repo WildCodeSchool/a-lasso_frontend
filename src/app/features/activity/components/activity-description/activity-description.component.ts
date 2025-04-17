@@ -1,8 +1,7 @@
 import { Component, inject, Input } from '@angular/core';
 import { Activity } from '../../models/activity.model';
 import { ActivityFacadeService } from '../../services/activity-facade.service';
-import { Observable } from 'rxjs';
-import { AsyncPipe, DatePipe } from '@angular/common';
+import { DatePipe } from '@angular/common';
 import { environment } from 'src/environments/environment.development';
 import { InscriptionBadgeComponent } from '../inscription-badge/inscription-badge.component';
 import { FavoriteHeartComponent } from '../favorite-heart/favorite-heart.component';
@@ -11,18 +10,18 @@ import { SingleButtonComponent } from '../../../../common/components/single-butt
 
 @Component({
   selector: 'app-activity-description',
-  imports: [InscriptionBadgeComponent, FavoriteHeartComponent, AsyncPipe, DatePipe, ButtonModule, SingleButtonComponent],
+  imports: [InscriptionBadgeComponent, FavoriteHeartComponent, DatePipe, ButtonModule, SingleButtonComponent],
   templateUrl: './activity-description.component.html',
   styleUrl: './activity-description.component.scss',
 })
 export class ActivityDescriptionComponent {
-  @Input() activity$!: Observable<Activity>;
+  @Input() activity!: Activity;
 
-  activityFacadeService: ActivityFacadeService = inject(ActivityFacadeService);
+  private _activityFacadeService: ActivityFacadeService = inject(ActivityFacadeService);
 
   public apiUrl = environment.apiUrl;
 
   toggleRegister(activity: Activity): void {
-    this.activityFacadeService.toggleRegister(activity.id, activity.isRegistered);
+    this._activityFacadeService.toggleRegister(activity.id, activity.isRegistered);
   }
 }

@@ -4,6 +4,8 @@ import { UUIDTypes } from 'uuid';
 
 export const setActivities = createAction('[activities] setActivities', props<{ activities: Activity[] }>());
 
+export const setActivity = createAction('[activities] setActivity', props<{ activity: Activity }>());
+
 export const updateFavoriteStatus = createAction('[activities] updateFavoriteStatus', props<{ id: UUIDTypes; isSaved: boolean }>());
 
 export const updateRegisterStatus = createAction('[activities] updateRegisterStatus', props<{ id: UUIDTypes; isRegistered: boolean }>());

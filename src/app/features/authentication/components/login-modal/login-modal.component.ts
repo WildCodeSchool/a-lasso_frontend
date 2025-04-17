@@ -42,10 +42,11 @@ import { InputFieldErrorComponent } from 'src/app/common/components/input-field-
   ],
 })
 export class LoginModalComponent {
+  @Output() visibleChange = new EventEmitter<boolean>();
+  @Input() visible: boolean = false;
   private _auth = inject(AuthFacade);
   private _fb: FormBuilder = new FormBuilder();
-  @Input() visible: boolean = false;
-  @Output() visibleChange = new EventEmitter<boolean>();
+  isAuthenticated$ = this._auth.isAuthenticated$;
 
   loginForm = this._fb.group({
     email: ['', [Validators.required, Validators.email]],
@@ -59,7 +60,6 @@ export class LoginModalComponent {
 
   error: string = '';
   submitted = false;
-  isAuthenticated$ = this._auth.isAuthenticated$;
 
   showModal(): void {
     this.visible = true;

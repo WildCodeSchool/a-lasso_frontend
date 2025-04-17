@@ -1,6 +1,9 @@
 <div class="page">
   <p-toast></p-toast>
   <app-header></app-header>
+  @if (loading) {
+    <p-progressBar mode="indeterminate" [style]="{ height: '6px' }" />
+  }
   <router-outlet></router-outlet>
   <div class="push-footer"></div>
   <app-footer></app-footer>

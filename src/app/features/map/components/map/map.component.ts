@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, OnChanges, SimpleChanges, OnDestroy } from '@angular/core';
+import { Component, Input, OnInit, OnChanges, SimpleChanges, inject, DestroyRef } from '@angular/core';
 import maplibregl from 'maplibre-gl';
 import { Activity } from 'src/app/features/activity/models/activity.model';
 import { Observable, Subscription } from 'rxjs';
@@ -7,6 +7,7 @@ import { FormsModule } from '@angular/forms';
 import { MapDisplayType } from '../../models/map';
 import { environmentSecret } from 'src/environments/environment.secret';
 import { FRANCE_LATITUDE, FRANCE_LONGITUDE } from '../../constants/map.constants';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-map',
@@ -14,7 +15,9 @@ import { FRANCE_LATITUDE, FRANCE_LONGITUDE } from '../../constants/map.constants
   imports: [FormsModule, CheckboxModule],
   styleUrl: './map.component.scss',
 })
-export class MapComponent implements OnInit, OnChanges, OnDestroy {
+export class MapComponent implements OnInit, OnChanges {
+  private _destroyRef = inject(DestroyRef);
+
   @Input() filteredActivities$!: Observable<Activity[]>;
 
   private _mapKey = environmentSecret.apiMapKey;
@@ -38,20 +41,23 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['filteredActivities$'] && this.filteredActivities$ && this._map) {
-      this._activitySub?.unsubscribe();
-      this.addMarkers();
-    }
+    this._updateMarkersOnFiltersChange(changes);
   }
 
   addMarkers(): void {
-    this._activitySub = this.filteredActivities$.subscribe(activities => {
+    this._activitySub = this.filteredActivities$.pipe(takeUntilDestroyed(this._destroyRef)).subscribe(activities => {
       this._clearMarkers();
       activities.forEach(activity => {
         this.addActivityMarkers(activity);
         this.addAssociationMarkers(activity);
       });
     });
+  }
+
+  private _updateMarkersOnFiltersChange(changes: SimpleChanges): void {
+    if (changes['filteredActivities$'] && this.filteredActivities$ && this._map) {
+      this.addMarkers();
+    }
   }
 
   private _clearMarkers(): void {
@@ -79,9 +85,5 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy {
         .addTo(this._map);
       this._associationMarkers.push(assocMarker);
     }
-  }
-
-  ngOnDestroy(): void {
-    this._activitySub?.unsubscribe();
   }
 }
