@@ -22,15 +22,15 @@ export class RegisterVoluntaryFormComponent {
 
   form: FormGroup = this._fb.group(
     {
-      nom: ['', [Validators.required, Validators.minLength(MIN_LENGTH), Validators.maxLength(MAX_LENGTH)]],
-      prenom: ['', [Validators.required, Validators.minLength(MIN_LENGTH), Validators.maxLength(MAX_LENGTH)]],
+      last_name: ['', [Validators.required, Validators.minLength(MIN_LENGTH), Validators.maxLength(MAX_LENGTH)]],
+      first_name: ['', [Validators.required, Validators.minLength(MIN_LENGTH), Validators.maxLength(MAX_LENGTH)]],
       email: ['', [Validators.required, Validators.email]],
-      motDePasse: ['', [Validators.required, Validators.pattern(PASSWORD_REGEX)]],
-      confirmationMotDePasse: ['', [Validators.required]],
-      telephone: ['', [Validators.pattern(PHONE_REGEX)]],
-      ville: ['', [Validators.required, Validators.minLength(MIN_LENGTH), Validators.maxLength(MAX_LENGTH)]],
-      pays: ['', [Validators.required, Validators.minLength(MIN_LENGTH), Validators.maxLength(MAX_LENGTH)]],
-      dateNaissance: ['', Validators.required],
+      password: ['', [Validators.required, Validators.pattern(PASSWORD_REGEX)]],
+      confirmPassword: ['', [Validators.required]],
+      phone: ['', [Validators.pattern(PHONE_REGEX)]],
+      city: ['', [Validators.required, Validators.minLength(MIN_LENGTH), Validators.maxLength(MAX_LENGTH)]],
+      country: ['', [Validators.required, Validators.minLength(MIN_LENGTH), Validators.maxLength(MAX_LENGTH)]],
+      birthdate: ['', Validators.required],
     },
     {
       validators: [passwordsMatchValidator],
@@ -38,28 +38,28 @@ export class RegisterVoluntaryFormComponent {
   );
 
   fields: FormField[] = [
-    { name: 'prenom', label: 'Prénom', type: 'text', required: true },
-    { name: 'nom', label: 'Nom', type: 'text', required: true },
+    { name: 'first_name', label: 'Prénom', type: 'text', required: true },
+    { name: 'last_name', label: 'Nom', type: 'text', required: true },
     { name: 'email', label: 'E-mail', type: 'email', required: true },
-    { name: 'motDePasse', label: 'Mot de passe', type: 'password', required: true, showPasswordRules: true },
-    { name: 'confirmationMotDePasse', label: 'Confirmation', type: 'password', required: true },
-    { name: 'telephone', label: 'Téléphone', type: 'tel' },
+    { name: 'password', label: 'Mot de passe', type: 'password', required: true, showPasswordRules: true },
+    { name: 'confirmPassword', label: 'Confirmation', type: 'password', required: true },
+    { name: 'phone', label: 'Téléphone', type: 'tel' },
     {
       name: 'coordonnees',
       type: 'group',
       children: [
-        { name: 'ville', label: 'Ville', type: 'text', required: true },
-        { name: 'pays', label: 'Pays', type: 'text', required: true },
+        { name: 'city', label: 'Ville', type: 'text', required: true },
+        { name: 'country', label: 'Pays', type: 'text', required: true },
       ],
     },
 
-    { name: 'dateNaissance', label: 'Date de naissance', type: 'date', required: true },
+    { name: 'birthdate', label: 'Date de naissance', type: 'date', required: true },
   ];
 
   onSubmit(): void {
     this._submittedOnce = true;
 
-    if (this.form.valid && this.form.value.motDePasse === this.form.value.confirmationMotDePasse) {
+    if (this.form.valid && this.form.value.password === this.form.value.confirmPassword) {
       this.submitted.emit(this.form);
     }
   }
