@@ -22,6 +22,7 @@
     img.activity-image {
       height: 200px;
       object-fit: cover;
+      object-position: center 30%;
       width: 100%;
       filter: brightness(80%);
       border-radius: var(--border-radius) var(--border-radius) 0 0;
@@ -51,7 +52,7 @@
       justify-content: space-between;
 
       .description {
-        min-height: 6vh;
+        height: 72px;
         margin: 0;
       }
 

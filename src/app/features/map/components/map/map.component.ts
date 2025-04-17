@@ -5,9 +5,10 @@ import { Observable, Subscription } from 'rxjs';
 import { CheckboxModule } from 'primeng/checkbox';
 import { FormsModule } from '@angular/forms';
 import { MapDisplayType } from '../../models/map';
-import { environmentSecret } from 'src/environments/environment.secret';
+
 import { FRANCE_LATITUDE, FRANCE_LONGITUDE } from '../../constants/map.constants';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { environmentSecret } from 'src/environments/environment.secret';
 
 @Component({
   selector: 'app-map',

@@ -26,10 +26,25 @@
       grid-template-columns: repeat(2, 1fr);
       gap: 20px;
       height: 100%;
-      padding-bottom: 80px;
+      padding-bottom: 0;
       box-sizing: border-box;
       overflow-y: auto;
       overflow-x: visible;
+      position: relative;
+
+      .empty {
+        position: absolute;
+        top: 35%;
+        width: 100%;
+        text-align: center;
+        font-size: 18px;
+        font-style: italic;
+        color: var(--dai-secondary, #888);
+
+        i {
+          margin-right: 8px;
+        }
+      }
     }
 
     .map-activities {
@@ -60,6 +75,27 @@
       bottom: 0;
       left: 50%;
       transform: translateX(-50%);
+    }
+  }
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto 10px;
+  width: 70vw;
+
+  .multiple-input-demo {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    gap: 25px;
+
+    h3 {
+      color: var(--primary-light-color);
     }
   }
 }

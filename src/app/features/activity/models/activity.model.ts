@@ -45,3 +45,9 @@ export type Activity = {
   isSaved: boolean;
   isRegistered: boolean;
 };
+
+export type ActivitySearchFilters = {
+  search: string;
+  date: string;
+  location: string;
+};
