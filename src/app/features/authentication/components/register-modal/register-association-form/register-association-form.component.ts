@@ -31,17 +31,17 @@ export class RegisterAssociationFormComponent {
   form: FormGroup = this._fb.group(
     {
       siret: ['', [Validators.required, Validators.pattern(SIRET_REGEX)]],
-      nom: ['', [Validators.required, Validators.minLength(MIN_LENGTH), Validators.maxLength(MAX_LENGTH)]],
-      telephone: ['', [Validators.pattern(PHONE_REGEX)]],
-      adresseNumero: ['', [Validators.required, Validators.pattern(ADDRESS_NUMBER_REGEX)]],
-      adresseRue: ['', [Validators.required, Validators.minLength(MIN_LENGTH), Validators.maxLength(MAX_ADDRESS_LENGTH)]],
-      adresseComplement: [''],
-      adresseCodePostal: ['', [Validators.required, Validators.pattern(POSTAL_CODE_REGEX)]],
-      adresseVille: ['', [Validators.required, Validators.minLength(MIN_LENGTH), Validators.maxLength(MAX_LENGTH)]],
-      adressePays: ['', [Validators.required, Validators.minLength(MIN_LENGTH), Validators.maxLength(MAX_LENGTH)]],
+      name: ['', [Validators.required, Validators.minLength(MIN_LENGTH), Validators.maxLength(MAX_LENGTH)]],
+      phone: ['', [Validators.pattern(PHONE_REGEX)]],
+      addressNumber: ['', [Validators.required, Validators.pattern(ADDRESS_NUMBER_REGEX)]],
+      street: ['', [Validators.required, Validators.minLength(MIN_LENGTH), Validators.maxLength(MAX_ADDRESS_LENGTH)]],
+      complement: [''],
+      zipCode: ['', [Validators.required, Validators.pattern(POSTAL_CODE_REGEX)]],
+      city: ['', [Validators.required, Validators.minLength(MIN_LENGTH), Validators.maxLength(MAX_LENGTH)]],
+      country: ['', [Validators.required, Validators.minLength(MIN_LENGTH), Validators.maxLength(MAX_LENGTH)]],
       email: ['', [Validators.required, Validators.email]],
-      motDePasse: ['', [Validators.required, Validators.pattern(PASSWORD_REGEX)]],
-      confirmationMotDePasse: ['', [Validators.required]],
+      password: ['', [Validators.required, Validators.pattern(PASSWORD_REGEX)]],
+      confirmPassword: ['', [Validators.required]],
     },
     {
       validators: [passwordsMatchValidator],
@@ -50,23 +50,23 @@ export class RegisterAssociationFormComponent {
 
   fields: FormField[] = [
     { name: 'siret', label: 'N° SIRET', type: 'text', required: true },
-    { name: 'nom', label: 'Nom', type: 'text', required: true },
-    { name: 'telephone', label: 'Téléphone', type: 'tel', required: true },
+    { name: 'name', label: 'Nom', type: 'text', required: true },
+    { name: 'phone', label: 'Téléphone', type: 'tel', required: true },
   ];
 
   addressFields: FormField[] = [
-    { name: 'adresseNumero', label: 'Numéro', type: 'text' },
-    { name: 'adresseRue', label: 'Rue', type: 'text', required: true },
-    { name: 'adresseComplement', label: 'Complément', type: 'text' },
-    { name: 'adresseCodePostal', label: 'Code Postal', type: 'text', required: true },
-    { name: 'adresseVille', label: 'Ville', type: 'text', required: true },
-    { name: 'adressePays', label: 'Pays', type: 'text', required: true },
+    { name: 'addressNumber', label: 'Numéro', type: 'text' },
+    { name: 'street', label: 'Rue', type: 'text', required: true },
+    { name: 'complement', label: 'Complément', type: 'text' },
+    { name: 'zipCode', label: 'Code Postal', type: 'text', required: true },
+    { name: 'city', label: 'Ville', type: 'text', required: true },
+    { name: 'country', label: 'Pays', type: 'text', required: true },
   ];
 
   authFields: FormField[] = [
     { name: 'email', label: 'E-mail', type: 'email', required: true },
-    { name: 'motDePasse', label: 'Mot de passe', type: 'password', required: true, showPasswordRules: true },
-    { name: 'confirmationMotDePasse', label: 'Confirmation', type: 'password', required: true },
+    { name: 'password', label: 'Mot de passe', type: 'password', required: true, showPasswordRules: true },
+    { name: 'confirmPassword', label: 'Confirmation', type: 'password', required: true },
   ];
 
   onSubmit(): void {
@@ -75,7 +75,7 @@ export class RegisterAssociationFormComponent {
       return;
     }
 
-    if (this.form.value.motDePasse === this.form.value.confirmationMotDePasse) {
+    if (this.form.value.password === this.form.value.confirmPassword) {
       this.submitted.emit(this.form);
     }
   }

@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { Activity, Theme } from '../models/activity.model';
-import { Observable, of, switchMap, take, tap } from 'rxjs';
+import { map, Observable, of, switchMap, take, tap } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { selectActivities, selectActivityById } from '../store/activities.selector';
 import { setActivities, setActivity, updateActivityParticipants, updateFavoriteStatus, updateRegisterStatus } from '../store/activities.actions';
@@ -54,7 +54,6 @@ export class ActivityFacadeService {
 
   getActivityByIdFromApiAndDispatchStore(activityId: UUIDTypes): Observable<Activity> {
     return this._activitiesApi.getActivityById(activityId).pipe(
-      //TODO : change the getAllActivities par un getActivityById
       tap((activity: Activity): void => {
         this._store.dispatch(setActivity({ activity: activity }));
       })
@@ -122,10 +121,11 @@ export class ActivityFacadeService {
           if (messages.length) {
             return of(messages);
           }
+
           return this._activitiesApi.getActivityMessages(activityId).pipe(
-            tap((fetchedMessages: Message[]): void => {
-              fetchedMessages.sort((a: Message, b: Message): number => new Date(a.date).getTime() - new Date(b.date).getTime());
-              this._store.dispatch(setMessages({ messages: fetchedMessages }));
+            map((fetchedMessages: Message[]) => [...fetchedMessages].sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())),
+            tap((sortedMessages: Message[]) => {
+              this._store.dispatch(setMessages({ messages: sortedMessages }));
             })
           );
         })
