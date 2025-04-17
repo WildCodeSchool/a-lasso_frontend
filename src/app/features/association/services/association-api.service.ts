@@ -18,6 +18,10 @@ export class AssociationApiService {
     return this._http.get<Association>(`${this._apiUrl}/association/${id}`);
   }
 
+  getAssociationCards(ids: UUIDTypes[]): Observable<Association[]> {
+    return this._http.post<Association[]>(`${this._apiUrl}/association/cards`, { ids });
+  }
+
   getExistingActivityPictures(currentOffset: number, pageSize: number): Observable<Image[]> {
     const params = {
       offset: currentOffset,
@@ -29,9 +33,5 @@ export class AssociationApiService {
 
   updateFollowStatus(associationId: UUIDTypes, isFollow: boolean): Observable<boolean> {
     return this._http.patch<boolean>(`${this._apiUrl}/association/${associationId}/updateFollow`, { isFollow });
-  }
-
-  patchAssociationField(associationId: UUIDTypes, payload: Partial<Association>): Observable<Association> {
-    return this._http.patch<Association>(`${this._apiUrl}/association/${associationId}`, payload);
   }
 }

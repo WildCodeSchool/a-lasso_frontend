@@ -2,11 +2,12 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { BehaviorSubject, map, Observable, of, switchMap } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { AssociationRegister, UserLogin, VoluntaryRegister } from '../models/user.model';
 import { jwtDecode } from 'jwt-decode';
-import { ApiResponseLogin, JwtDecodedToken } from '../models/api-response.model';
-import { EXPIRACY_MULTIPLIER, TokenRole, UserRole } from '../constants/auth.constants';
 import { MessageService as Toast } from 'primeng/api';
+import { EXPIRACY_MULTIPLIER, TokenRole, UserRole } from '../constants/auth.constants';
+import { ApiResponseLogin, JwtDecodedToken } from '../models/api-response.model';
+import { AssociationLogin, AssociationRegister, UserLogin, VoluntaryLogin, VoluntaryRegister } from '../models/user.model';
+import { showWarnToast } from 'src/app/common/utils/toast.utils';
 
 @Injectable({
   providedIn: 'root',
@@ -34,6 +35,10 @@ export class AuthService {
       oldPassword,
       newPassword,
     });
+  }
+
+  changeEmail(password: string, newEmail: string): Observable<{ token: string; user: VoluntaryLogin | AssociationLogin }> {
+    return this._http.patch<{ token: string; user: VoluntaryLogin | AssociationLogin }>(`${this._apiUrl}/auth/change-email`, { password, newEmail });
   }
 
   deleteAccount(): Observable<void> {
@@ -74,11 +79,7 @@ export class AuthService {
       this.clearToken();
       this._setAuthState(false);
 
-      this.toast.add({
-        summary: 'Session expirée',
-        detail: 'Merci de vous reconnecter.',
-        severity: 'warn',
-      });
+      showWarnToast(this.toast, 'Votre session a expiré. Veuillez vous reconnecter.');
 
       return this.getAuthState();
     }

@@ -1,25 +1,24 @@
-import { Injectable, inject } from '@angular/core';
-import { Activity, Participant, Theme } from '../models/activity.model';
-import { filter, map, Observable, of, switchMap, take, tap } from 'rxjs';
+import { inject, Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { selectActivities, selectActivityById } from '../store/activities.selector';
-import { setActivities, setActivity, updateActivityParticipants } from '../store/activities.actions';
-import { ActivitiesApiService } from './activities-api.service';
-import { UUIDTypes } from 'uuid';
-import { Message } from '../models/message.model';
-import { selectMessagesByActivityId } from '../store/messages/messages.selector';
-import { addMessage, setMessages } from '../store/messages/messages.actions';
-import { MessageCreation } from '../models/messageCreation';
 import { MessageService as Toast } from 'primeng/api';
-import { APIResponseToggleRegister } from '../models/api-reponse.model';
-import { updateActivitiesUserInfos } from '../../authentication/store/user.actions';
+import { map, Observable, of, switchMap, take, tap } from 'rxjs';
 import { TAKE_1 } from 'src/app/common/constants/observables.constants';
-import { selectActivitiesUserInfos } from '../../authentication/store/user.selectors';
+import { showInfoToast, showSuccessToast } from 'src/app/common/utils/toast.utils';
+import { UUIDTypes } from 'uuid';
 import { ActivitiesUserInfos, AddressApiResult } from '../../authentication/models/user.model';
+import { updateActivitiesUserInfos } from '../../authentication/store/user.actions';
+import { selectActivitiesUserInfos, selectConnectedAssociationId, selectConnectedVoluntaryId } from '../../authentication/store/user.selectors';
 import { ActivityFormData } from '../models/activity-creation.model';
-import { selectConnectedAssociationId } from '../../authentication/store/user.selectors';
+import { Activity, Participant, Theme } from '../models/activity.model';
+import { APIResponseToggleRegister } from '../models/api-reponse.model';
+import { Message } from '../models/message.model';
+import { MessageCreation } from '../models/messageCreation';
 import * as ActivityActions from '../store/activities.actions';
-import { showSuccessToast } from 'src/app/common/utils/toast.utils';
+import { setActivities, setActivity, updateActivityParticipants } from '../store/activities.actions';
+import { selectActivities, selectActivityById } from '../store/activities.selector';
+import { addMessage, setMessages } from '../store/messages/messages.actions';
+import { selectMessagesByActivityId } from '../store/messages/messages.selector';
+import { ActivitiesApiService } from './activities-api.service';
 
 @Injectable({
   providedIn: 'root',
@@ -30,7 +29,12 @@ export class ActivityFacadeService {
   private _activitiesApi: ActivitiesApiService = inject(ActivitiesApiService);
 
   activities$: Observable<Activity[]> = this._store.select(selectActivities);
-  associationId$: Observable<UUIDTypes> = this._store.select(selectConnectedAssociationId).pipe(filter((id): id is UUIDTypes => !!id));
+  associationId$: Observable<UUIDTypes | null> = this._store.select(selectConnectedAssociationId);
+  voluntaryId$: Observable<UUIDTypes | null> = this._store.select(selectConnectedVoluntaryId);
+
+  registeredActivityIds$: Observable<UUIDTypes[]> = this._store
+    .select(selectActivitiesUserInfos)
+    .pipe(map(infos => infos.filter(info => info.isRegistered).map(info => info.activityId)));
 
   getActivityThemesFromApi(): Observable<Theme[]> {
     return this._activitiesApi.getActivityThemes();
@@ -81,21 +85,39 @@ export class ActivityFacadeService {
     );
   }
 
+  refreshActivitiesByAssociation(associationId: UUIDTypes): void {
+    this._activitiesApi.getActivitiesByAssociationId(associationId).subscribe(activities => {
+      this._store.dispatch(setActivities({ activities }));
+    });
+  }
+
   toggleSave(activityId: UUIDTypes, isSaved: boolean): void {
     this._activitiesApi
       .updateFavoriteStatus(activityId, !isSaved)
       .pipe(
-        tap((apiResponse: boolean) => {
-          this._store.dispatch(
-            updateActivitiesUserInfos({
-              activityId: activityId,
-              isSaved: apiResponse,
-            })
-          );
-        }),
-        take(TAKE_1)
+        take(TAKE_1),
+        tap({
+          next: (apiResponse: boolean) => {
+            this._store.dispatch(
+              updateActivitiesUserInfos({
+                activityId: activityId,
+                isSaved: apiResponse,
+              })
+            );
+
+            if (apiResponse) {
+              showSuccessToast(this._toast);
+            } else {
+              showInfoToast(this._toast, 'Activité retirée de vos favoris.');
+            }
+          },
+        })
       )
-      .subscribe();
+      .subscribe({
+        error: () => {
+          showInfoToast(this._toast);
+        },
+      });
   }
 
   getIsRegisteredActivity(activityId: UUIDTypes): Observable<boolean> {
@@ -127,6 +149,12 @@ export class ActivityFacadeService {
               isRegistered: apiResponse.isRegistered,
             })
           );
+
+          if (apiResponse.isRegistered) {
+            showSuccessToast(this._toast);
+          } else {
+            showInfoToast(this._toast, 'Inscription annulée.');
+          }
         }),
         take(TAKE_1)
       )

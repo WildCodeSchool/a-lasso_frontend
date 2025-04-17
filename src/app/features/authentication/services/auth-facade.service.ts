@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { combineLatest, map, Observable, take } from 'rxjs';
+import { combineLatest, map, Observable, of, switchMap, take } from 'rxjs';
 import { TAKE_1 } from 'src/app/common/constants/observables.constants';
 import { UUIDTypes } from 'uuid';
 import { ActivityFacadeService } from '../../activity/services/activity-facade.service';
@@ -14,6 +14,11 @@ import { AssociationLogin, UserHeaderInfo, UserLogin, UserType, VoluntaryLogin }
 import * as UserActions from '../store/user.actions';
 import * as UserSelectors from '../store/user.selectors';
 import { AuthService } from './auth.service';
+import { getInitialUserState } from '../store/meta-reducers';
+import { VoluntaryProfileService } from '../../profile/services/voluntary-profil.service';
+import { MessageService } from 'primeng/api';
+import { showSuccessToast } from 'src/app/common/utils/toast.utils';
+import { AssociationProfileService } from '../../profile/services/association-profil.service';
 
 @Injectable({
   providedIn: 'root',
@@ -22,6 +27,9 @@ export class AuthFacade {
   private _store = inject(Store);
   private _authService = inject(AuthService);
   private _activityFacade = inject(ActivityFacadeService);
+  private _voluntaryProfileService = inject(VoluntaryProfileService);
+  private _associationProfileService = inject(AssociationProfileService);
+  private _toast = inject(MessageService);
   private _router = inject(Router);
 
   readonly user$: Observable<VoluntaryLogin | AssociationLogin | null> = this._store.select(UserSelectors.selectUser);
@@ -58,6 +66,20 @@ export class AuthFacade {
     return this._authService.changePassword(oldPassword, newPassword);
   }
 
+  updateEmail(newEmail: string, password: string): Observable<ApiResponseLogin> {
+    return this._authService.changeEmail(password, newEmail).pipe(
+      map(({ token, user }) => {
+        this._authService.saveToken(token);
+        this._authService.updateAuthState();
+        this._store.dispatch(UserActions.loginSuccess({ userInfos: user }));
+        localStorage.setItem('userState', JSON.stringify({ isAuthenticated: true, userInfos: user }));
+        showSuccessToast(this._toast);
+
+        return { token, user };
+      })
+    );
+  }
+
   deleteAccount(): Observable<void> {
     return this._authService.deleteAccount();
   }
@@ -65,7 +87,8 @@ export class AuthFacade {
   getUserHeaderInfo(): Observable<UserHeaderInfo> {
     return combineLatest([this._authService.getRolesUser(), this.user$]).pipe(
       map(([roles, user]) => {
-        const isConnected: boolean = roles.length > 0;
+        const minimumRequiredRoles = 0;
+        const isConnected: boolean = roles.length > minimumRequiredRoles;
         const isAssociation: boolean = roles.includes(UserRole.ASSOCIATION);
         const canPublishActivity: boolean = isAssociation && this._router.url !== '/activity/creation';
 
@@ -81,6 +104,34 @@ export class AuthFacade {
         };
       })
     );
+  }
+
+  initUserFromStorage(): void {
+    const userState = getInitialUserState();
+    if (userState.isAuthenticated && userState.userInfos) {
+      this._store.dispatch(UserActions.loginSuccess({ userInfos: userState.userInfos }));
+    }
+  }
+
+  refreshUser(): void {
+    combineLatest([this._authService.isVoluntaryUser(), this._authService.isAssociationUser()])
+      .pipe(
+        take(TAKE_1),
+        switchMap(([isVoluntary, isAssociation]) => {
+          if (isVoluntary) {
+            return this._voluntaryProfileService.getVoluntary();
+          }
+          if (isAssociation) {
+            return this._associationProfileService.getAssociation();
+          }
+          return of(null);
+        })
+      )
+      .subscribe(user => {
+        if (user) {
+          this._store.dispatch(UserActions.loginSuccess({ userInfos: user }));
+        }
+      });
   }
 
   private _resetSession(): void {

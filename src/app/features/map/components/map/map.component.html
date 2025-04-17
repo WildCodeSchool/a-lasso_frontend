@@ -11,4 +11,4 @@
   </div>
 </div>
 
-<app-popup-map #popupRef></app-popup-map>
+<app-popup-map #popupRef (popupClosed)="popup.remove()"></app-popup-map>

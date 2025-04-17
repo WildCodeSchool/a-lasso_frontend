@@ -22,7 +22,7 @@ export class AssociationProfileFacadeService {
   updateGeneralInfo(foundationDate: string, founder: string): void {
     this.associationId$.pipe(take(TAKE_1)).subscribe(id => {
       if (!id) return;
-      this._profileService.updateGeneralInfo(id, { foundationDate, founder }).subscribe({
+      this._profileService.updateGeneralInfo({ foundationDate, founder }).subscribe({
         next: () => {
           this._store.dispatch(UserActions.updateAssociationGeneralInfo({ foundationDate, founder }));
         },
@@ -33,7 +33,7 @@ export class AssociationProfileFacadeService {
   updateDescription(description: string): void {
     this.associationId$.pipe(take(TAKE_1)).subscribe(id => {
       if (!id) return;
-      this._profileService.updateDescription(id, description).subscribe({
+      this._profileService.updateDescription(description).subscribe({
         next: () => {
           this._store.dispatch(UserActions.updateAssociationDescription({ description }));
         },
@@ -46,7 +46,7 @@ export class AssociationProfileFacadeService {
       take(TAKE_1),
       switchMap(id => {
         if (!id) throw new Error('Association id is missing');
-        return this._profileService.updateStats(id.toString(), statistics).pipe(
+        return this._profileService.updateStats(statistics).pipe(
           tap(() => {
             this._store.dispatch(UserActions.updateAssociationStats({ statistics }));
           })

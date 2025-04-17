@@ -14,6 +14,13 @@ export const associationsReducer = createReducer(
     }
     return [...state, association];
   }),
+  on(AssociationActions.setManyAssociations, (state, { associations }) => {
+    const updatedMap = new Map(state.map(a => [a.id.toString(), a]));
+    associations.forEach(assoc => {
+      updatedMap.set(assoc.id.toString(), { ...updatedMap.get(assoc.id.toString()), ...assoc });
+    });
+    return Array.from(updatedMap.values());
+  }),
   on(ActivityActions.clearUserActivityInfos, state =>
     state.map(association => ({
       ...association,

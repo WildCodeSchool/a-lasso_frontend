@@ -31,13 +31,16 @@ export class ActivityCardComponent implements OnInit {
 
   public isSavedActivity$: Observable<boolean>;
   public voluntariesRegistered$: Observable<Participant>;
-  public apiUrl = environment.apiUrl;
+  public apiUrl: string = environment.apiUrl;
+  public associationLogoUrl!: string;
 
   isVoluntary$: Observable<boolean> = this._authService.isVoluntaryUser();
+  isAssociation$: Observable<boolean> = this._authService.isAssociationUser();
 
   ngOnInit(): void {
     this.isSavedActivity$ = this._activityFacadeService.getIsSavedActivity(this.activity.id);
     this.voluntariesRegistered$ = this._activityFacadeService.getVoluntariesRegisteredToAnActivity(this.activity.id);
+    this._setAssociationLogoUrl();
   }
 
   onDeleteClick(event: MouseEvent): void {
@@ -48,5 +51,14 @@ export class ActivityCardComponent implements OnInit {
   onEditClick(event: MouseEvent): void {
     event.stopPropagation();
     this.edit.emit(this.activity.id);
+  }
+
+  private _setAssociationLogoUrl(): void {
+    const logo = this.activity.association.logo;
+    if (logo.startsWith('data:image')) {
+      this.associationLogoUrl = logo;
+    } else {
+      this.associationLogoUrl = this.apiUrl + logo;
+    }
   }
 }
