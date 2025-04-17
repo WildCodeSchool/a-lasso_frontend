@@ -1,6 +1,6 @@
 <div class="card-wrapper">
   <p-card class="card p-slideinup" [routerLink]="['/activity', activity.id]">
-    @if (showDeleteButton) {
+    @if (showDeleteButton && (isAssociation$ | async)) {
       <button
         class="delete-btn"
         type="button"
@@ -34,7 +34,7 @@
         {{ activity.description | truncate: 100 }}
       </p>
       <div class="info-asso">
-        <img [src]="apiUrl + activity.association.logo" [alt]="activity.association.name" />
+        <img [src]="associationLogoUrl" [alt]="activity.association.name" />
         <p>{{ activity.association.name }}</p>
       </div>
     </div>

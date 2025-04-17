@@ -20,6 +20,8 @@ export const selectConnectedAssociationId = createSelector(selectUser, (user): U
   return user.id;
 });
 
+export const selectConnectedVoluntaryId = createSelector(selectUser, user => (user?.type === UserType.Voluntary ? user.id : null));
+
 export const selectAssociationFoundationDate = createSelector(selectUser, user => (user?.type === UserType.Association ? user.foundationDate : null));
 
 export const selectAssociationFounder = createSelector(selectUser, user => (user?.type === UserType.Association ? user.founder : ''));

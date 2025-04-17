@@ -12,12 +12,15 @@ import { Image } from '../../activity/models/activity.model';
 import { setAssociations } from '../store/association.actions';
 import * as AssociationSelectors from '../store/association.selector';
 import { AssociationApiService } from './association-api.service';
+import { showInfoToast, showSuccessToast } from 'src/app/common/utils/toast.utils';
+import { MessageService } from 'primeng/api';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AssociationFacadeService {
   private _store: Store = inject(Store);
+  private _toast: MessageService = inject(MessageService);
   private _associationApiService: AssociationApiService = inject(AssociationApiService);
 
   associations$: Observable<Association[]> = this._store.select(AssociationSelectors.selectAssociations);
@@ -85,6 +88,12 @@ export class AssociationFacadeService {
       .pipe(
         tap((apiResponse: boolean) => {
           this._store.dispatch(updateFollowedAssociations({ associationId, isFollow: apiResponse }));
+
+          if (apiResponse === true) {
+            showSuccessToast(this._toast);
+          } else {
+            showInfoToast(this._toast, 'Association retirée de vos suivis.');
+          }
         }),
         take(TAKE_1)
       )

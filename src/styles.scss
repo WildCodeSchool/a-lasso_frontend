@@ -173,3 +173,16 @@ body {
     font-size: var(--font-size-p-mini);
   }
 }
+
+.maplibregl-popup-close-button {
+  background-color: red !important;
+  color: white !important;
+  font-size: 20px !important;
+  border-radius: 50% !important;
+  width: 30px !important;
+  height: 30px !important;
+  line-height: 30px !important;
+  text-align: center !important;
+  top: 5px !important;
+  right: 5px !important;
+}

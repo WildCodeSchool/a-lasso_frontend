@@ -5,6 +5,7 @@ import { Toast } from 'primeng/toast';
 import { FooterComponent } from './common/components/footer/footer.component';
 import { HeaderComponent } from './common/components/header/header.component';
 import { ProgressBar } from 'primeng/progressbar';
+import { AuthFacade } from './features/authentication/services/auth-facade.service';
 
 @Component({
   selector: 'app-root',
@@ -15,9 +16,11 @@ import { ProgressBar } from 'primeng/progressbar';
 })
 export class AppComponent implements OnInit {
   private _router: Router = inject(Router);
+  private _authFacade = inject(AuthFacade);
   loading = false;
 
   ngOnInit(): void {
+    this._authFacade.initUserFromStorage();
     this._router.events.subscribe(event => {
       switch (true) {
         case event instanceof NavigationStart: {

@@ -1,6 +1,11 @@
 <section class="about-container">
   <h1 class="about-title">À propos</h1>
 
+  <div class="about-avatar about-wrapper">
+    <h2 class="about-subtitle">Logo de l'association</h2>
+    <app-upload-avatar [imageUrl]="userAvatar$ | async"></app-upload-avatar>
+  </div>
+
   <div class="about-info about-wrapper">
     <h2 class="about-subtitle">Informations générales</h2>
     <span class="about-input-wrapper">

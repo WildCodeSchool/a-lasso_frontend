@@ -3,6 +3,8 @@
   flex-direction: column;
   padding: 16px;
   width: 100%;
+  max-height: calc(100vh - 200px);
+  overflow-y: auto;
 
   .about-title {
     color: var(--primary-dark-color);
@@ -29,5 +31,11 @@
 
   .about-info {
     margin-bottom: 32px;
+  }
+
+  .about-number {
+    color: var(--primary-dark-color);
+    font-weight: bold;
+    margin-bottom: 8px;
   }
 }
