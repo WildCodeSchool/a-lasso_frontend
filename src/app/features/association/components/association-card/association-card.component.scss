@@ -1,7 +1,5 @@
 p-card {
-  width: 35rem;
-
-  max-height: 100%;
+  width: 37.5rem;
   display: block;
   margin: 0 auto;
   overflow: hidden;
@@ -15,7 +13,7 @@ p-card {
     .activity-image {
       display: block;
       width: 100%;
-      height: 40vh;
+      height: 30vh;
       object-fit: cover;
 
       filter: brightness(80%);
@@ -83,11 +81,18 @@ p-card {
     }
   }
 
+  ::ng-deep .p-card-content {
+    p {
+      height: 48px;
+    }
+  }
+
   ::ng-deep .p-card-footer {
     h3 {
       width: 100%;
       text-align: center;
       font-weight: 500;
+      margin-bottom: 16px;
     }
     .statistics-container {
       /* Correct class */
@@ -97,10 +102,17 @@ p-card {
       flex-wrap: wrap;
       width: 100%;
 
+      p {
+        margin: 0;
+      }
+
       .statistic {
         width: 33%;
         text-align: center;
 
+        .description {
+          height: 48px;
+        }
         .value {
           color: var(--primary-dark-color);
           font-weight: bold;

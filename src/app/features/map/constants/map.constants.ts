@@ -1,0 +1,2 @@
+export const FRANCE_LONGITUDE = 2.454072;
+export const FRANCE_LATITUDE = 46.603354;

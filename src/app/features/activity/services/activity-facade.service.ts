@@ -1,111 +1,148 @@
 import { Injectable, inject } from '@angular/core';
-import { Activity } from '../models/activity.model';
-import { Observable, of, switchMap, take, tap } from 'rxjs';
+import { Activity, Theme } from '../models/activity.model';
+import { map, Observable, of, switchMap, take, tap } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { selectActivities, selectActivityById } from '../store/activities.selector';
-import { setActivities, updateActivityParticipants, updateFavoriteStatus, updateRegisterStatus } from '../store/activities.actions';
+import { setActivities, setActivity, updateActivityParticipants, updateFavoriteStatus, updateRegisterStatus } from '../store/activities.actions';
 import { ActivitiesApiService } from './activities-api.service';
 import { UUIDTypes } from 'uuid';
 import { Message } from '../models/message.model';
 import { selectMessagesByActivityId } from '../store/messages/messages.selector';
-import { setMessages } from '../store/messages/messages.actions';
+import { addMessage, setMessages } from '../store/messages/messages.actions';
 import { MessageCreation } from '../models/messageCreation';
+import { MessageService as Toast } from 'primeng/api';
 import { APIResponseToggleRegister } from '../models/api-reponse.model';
+import { updateActivitiesUserInfos } from '../../authentication/store/user.actions';
+import { TAKE_1 } from 'src/app/common/constants/observables.constants';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ActivityFacadeService {
-  store: Store = inject(Store);
-  activitiesApi: ActivitiesApiService = inject(ActivitiesApiService);
-  activities$: Observable<Activity[]> = this.store.select(selectActivities);
+  private _store: Store = inject(Store);
+  private _toast: Toast = inject(Toast);
+  private _activitiesApi: ActivitiesApiService = inject(ActivitiesApiService);
+  activities$: Observable<Activity[]> = this._store.select(selectActivities);
 
-  getAllActivities(): void {
-    this.activitiesApi
+  getActivityThemesFromApi(): Observable<Theme[]> {
+    return this._activitiesApi.getActivityThemes();
+  }
+
+  getAllActivitiesFromApi(): void {
+    this._activitiesApi
       .getAllActivities()
       .pipe(
         tap((activities: Activity[]) => {
-          this.store.dispatch(setActivities({ activities }));
+          this._store.dispatch(setActivities({ activities }));
         }),
-        take(1)
+        take(TAKE_1)
       )
       .subscribe();
   }
 
-  toggleFavorite(activityId: UUIDTypes, isFavorite: boolean): void {
-    this.activitiesApi
-      .updateFavoriteStatus(activityId, !isFavorite)
+  getActivityFromStore$(activityId: UUIDTypes): Observable<Activity> {
+    return this._store.select(selectActivityById(activityId)).pipe(
+      take(TAKE_1),
+      switchMap(activity => {
+        if (activity.description) {
+          return of(activity);
+        }
+        return this.getActivityByIdFromApiAndDispatchStore(activityId);
+      })
+    );
+  }
+
+  getActivityByIdFromApiAndDispatchStore(activityId: UUIDTypes): Observable<Activity> {
+    return this._activitiesApi.getActivityById(activityId).pipe(
+      tap((activity: Activity): void => {
+        this._store.dispatch(setActivity({ activity: activity }));
+      })
+    );
+  }
+
+  toggleSave(activityId: UUIDTypes, isSaved: boolean): void {
+    this._activitiesApi
+      .updateFavoriteStatus(activityId, !isSaved)
       .pipe(
-        tap((apiResponse: boolean) =>
-          this.store.dispatch(
+        tap((apiResponse: boolean) => {
+          this._store.dispatch(
             updateFavoriteStatus({
               id: activityId,
-              isFavorite: apiResponse,
+              isSaved: apiResponse,
             })
-          )
-        ),
-        take(1)
+          );
+          this._store.dispatch(
+            updateActivitiesUserInfos({
+              activityId: activityId,
+              isSaved: apiResponse,
+            })
+          );
+        }),
+        take(TAKE_1)
       )
       .subscribe();
   }
 
   toggleRegister(activityId: UUIDTypes, isRegistered: boolean): void {
-    this.activitiesApi
+    this._activitiesApi
       .updateRegisterStatus(activityId, !isRegistered)
       .pipe(
         tap((apiResponse: APIResponseToggleRegister) => {
-          this.store.dispatch(
+          this._store.dispatch(
             updateRegisterStatus({
               id: activityId,
               isRegistered: apiResponse.isRegistered,
             })
           );
-          this.store.dispatch(
+          this._store.dispatch(
             updateActivityParticipants({
               id: activityId,
               participants: apiResponse.activityVoluntaryDTO,
             })
           );
+          this._store.dispatch(
+            updateActivitiesUserInfos({
+              activityId: activityId,
+              isRegistered: apiResponse.isRegistered,
+            })
+          );
         }),
-        take(1)
+        take(TAKE_1)
       )
       .subscribe();
-    // TODO : add a Toest notifcation to inform user he is now registered to the acitivty !
   }
 
-  getActivityMessages(activityId: UUIDTypes): Observable<Message[]> {
-    //TODO: récupérer les messages du store
-    // si pas dans store requete API ?
-    // oui mais si messages envoyés depuis stockage dans le store on
-    // les récupère quand ???
+  getActivityMessages(activityId: string): void {
+    this._store
+      .select(selectMessagesByActivityId(activityId))
+      .pipe(
+        take(TAKE_1),
+        switchMap(messages => {
+          if (messages.length) {
+            return of(messages);
+          }
 
-    return this.store.select(selectMessagesByActivityId(activityId)).pipe(
-      take(1),
-      switchMap(messages => {
-        if (messages.length) {
-          return of(messages);
-        }
-        // If not found in store fetch from API
-        return this.activitiesApi.getActivityMessages(activityId).pipe(
-          tap((fetchedMessages: Message[]): void => {
-            fetchedMessages.sort((a: Message, b: Message): number => new Date(a.date).getTime() - new Date(b.date).getTime());
-            this.store.dispatch(setMessages({ messages: fetchedMessages }));
-          })
-        );
-      })
-    );
-  }
-
-  getActivity(activityId: UUIDTypes): Observable<Activity | null> {
-    return this.store.select(selectActivityById(activityId));
+          return this._activitiesApi.getActivityMessages(activityId).pipe(
+            map((fetchedMessages: Message[]) => [...fetchedMessages].sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())),
+            tap((sortedMessages: Message[]) => {
+              this._store.dispatch(setMessages({ messages: sortedMessages }));
+            })
+          );
+        })
+      )
+      .subscribe();
   }
 
   postActivityMessage(message: MessageCreation): void {
-    this.activitiesApi
+    this._activitiesApi
       .postActivityMessage(message)
       .pipe(
-        tap((postMessage: Message) => {
-          this.store.dispatch(setMessages({ messages: [postMessage] }));
+        tap((postedMessage: Message) => {
+          this._store.dispatch(addMessage({ message: postedMessage }));
+          this._toast.add({
+            severity: 'success',
+            summary: 'Message envoyé !',
+          });
         })
       )
       .subscribe();

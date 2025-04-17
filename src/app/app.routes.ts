@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
 import { ActivitiesHomeComponent } from './features/activity/pages/activities-home/activities-home.component';
 import { ActivityDetailsComponent } from './features/activity/pages/activity-details/activity-details.component';
-import { DemoComponent } from './features/activity/pages/demo/demo.component';
+import { activityDetailsResolver } from './common/resolvers/activity-details.resolver';
 
 export const routes: Routes = [
   {
@@ -11,13 +11,8 @@ export const routes: Routes = [
   {
     path: 'activity/:id',
     component: ActivityDetailsComponent,
+    resolve: {
+      activityDetails: activityDetailsResolver,
+    },
   },
-  {
-    path: 'demo',
-    component: DemoComponent,
-  },
-  // { path: 'profile',
-  //   component: ProfilePage,
-  //   canActivate: [isLoggedInGuard]
-  //   },
 ];

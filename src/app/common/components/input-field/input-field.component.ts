@@ -23,30 +23,25 @@ import { Subject } from 'rxjs';
   ],
 })
 export class InputFieldComponent implements ControlValueAccessor, OnDestroy {
-  @Input() label: string = '';
+  @Input() label: string | undefined = '';
   @Input() type: string = 'text';
   @Input() disabled: boolean = false;
   @Input() variant: 'in' | 'on' = 'in';
   @Input() showPasswordRules: boolean = false;
   @Input() formControlName?: string;
 
-  value: any = '';
+  value: string = '';
   private _destroy$ = new Subject<void>();
 
   onChange = (value: any): void => {
-    console.log('onChange appelé avec', value);
+    this.value = value;
   };
 
   onTouched = (): void => {
     /* */
   };
 
-  get valueAccessor(): string {
-    return this.onChange.toString().slice(0, 100);
-  }
-
   updateValue(val: any): void {
-    this.value = val;
     this.onChange(val);
     this.onTouched();
   }

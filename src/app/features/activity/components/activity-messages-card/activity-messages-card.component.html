@@ -24,7 +24,12 @@
           </button>
 
           <div class="input">
-            <app-input-field [label]="'Taper un message'"></app-input-field>
+            <form [formGroup]="messageForm">
+              <app-input-field
+                [label]="newMessageField.label"
+                [type]="newMessageField.type"
+                [formControlName]="newMessageField.name"></app-input-field>
+            </form>
           </div>
 
           <button (click)="postMessage()" type="button">

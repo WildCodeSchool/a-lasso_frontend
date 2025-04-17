@@ -1,4 +1,4 @@
-@if (activity$ | async; as activity) {
+@if (activity) {
   <section class="activity-description-section">
     <div class="header">
       <div class="title">
@@ -6,7 +6,7 @@
         <app-inscription-badge [participants]="activity.participants"></app-inscription-badge>
       </div>
 
-      <app-favorite-heart [activityId]="activity.id" [isFavorite]="activity.isFavorite"></app-favorite-heart>
+      <app-favorite-heart [activityId]="activity.id" [isSaved]="activity.isSaved"></app-favorite-heart>
     </div>
     <div class="sub-title">
       <p>Le {{ activity.date | date: 'dd/MM/yyyy' }} à {{ activity.date | date: 'HH:mm' }}</p>
@@ -21,21 +21,12 @@
         </div>
       }
     </div>
-    @if (!activity.isRegistered) {
-      <p-button
-        (click)="toggleRegister(activity.id, activity.isRegistered)"
-        id="subscribe-button"
-        size="large"
-        label="M'inscrire 🚀"
-        aria-label="boutton d'inscription" />
-    } @else {
-      <p-button
-        (click)="toggleRegister(activity.id, activity.isRegistered)"
-        class="buttons"
-        id="unsubscribe-button"
-        label="Me désinscrire"
-        size="large"
-        aria-label="boutton de désincription" />
-    }
+    <app-single-button
+      [id]="1"
+      (buttonClicked)="toggleRegister(activity)"
+      [styleClass]="activity.isRegistered ? 'unsubscribe' : 'subscribe'"
+      [label]="activity.isRegistered ? 'Me désinscrire' : 'Minscrire 🚀'"
+      [ariaLabel]="'bouton de ' + activity.isRegistered ? 'désinscription' : 'inscription'">
+    </app-single-button>
   </section>
 }

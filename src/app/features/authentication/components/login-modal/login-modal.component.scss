@@ -1,0 +1,92 @@
+:host ::ng-deep {
+  .login-modal {
+    max-width: 500px;
+    max-height: 90vh;
+    width: 100%;
+
+    .p-dialog-header {
+      position: relative;
+      padding: 16px;
+      font-weight: 600;
+      color: var(--primary-dark-color);
+
+      .p-dialog-title {
+        margin: auto;
+      }
+
+      .p-dialog-close-button {
+        position: absolute;
+        top: 5%;
+        right: 1%;
+      }
+    }
+
+    .p-dialog-content {
+      padding: 0;
+    }
+
+    .p-inputtext {
+      width: 100%;
+    }
+  }
+
+  app-input-field {
+    display: block;
+    margin-bottom: 8px;
+    width: 100%;
+  }
+
+  .p-password-panel,
+  .p-calendar .p-datepicker {
+    z-index: 1100 !important;
+  }
+
+  .form-container {
+    padding: 16px 48px;
+  }
+
+  .form {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+
+    .animation-wrapper {
+      height: 20px;
+
+      .field-error,
+      .error-message {
+        height: 20px;
+
+        color: var(--secondary-error-color);
+        text-align: center;
+        font-size: 13px;
+        margin-top: 4px;
+        transition:
+          opacity 0.3s ease,
+          transform 0.3s ease,
+          max-height 0.3s ease;
+
+        p {
+          margin: 0;
+        }
+      }
+    }
+  }
+
+  .submit-button {
+    width: 40%;
+    margin: auto;
+
+    .register-btn {
+      width: 100%;
+      background-color: var(--primary-dark-color);
+      border-color: var(--primary-dark-color);
+      font-weight: 600;
+
+      &:hover {
+        background-color: var(--primary-light-color);
+        border-color: var(--primary-light-color);
+      }
+    }
+  }
+}

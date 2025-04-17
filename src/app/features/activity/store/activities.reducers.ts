@@ -1,18 +1,32 @@
 import { createReducer, on } from '@ngrx/store';
 import { Activity } from '../models/activity.model';
-import { setActivities, updateActivityParticipants, updateFavoriteStatus, updateRegisterStatus } from './activities.actions';
+import * as ActivityActions from './activities.actions';
 
 export const initialActivitiesState: Activity[] = [];
 
 export const activitiesReducer = createReducer(
   initialActivitiesState,
-  on(setActivities, (_, { activities }) => [...activities]),
+  on(ActivityActions.setActivities, (_, { activities }) => [...activities]),
 
-  on(updateFavoriteStatus, (state, { id, isFavorite }) => state.map(activity => (activity.id === id ? { ...activity, isFavorite } : activity))),
+  on(ActivityActions.setActivity, (state, { activity }) => [...state, activity]),
 
-  on(updateRegisterStatus, (state, { id, isRegistered }) => state.map(activity => (activity.id === id ? { ...activity, isRegistered } : activity))),
+  on(ActivityActions.updateFavoriteStatus, (state, { id, isSaved }) =>
+    state.map(activity => (activity.id === id ? { ...activity, isSaved } : activity))
+  ),
 
-  on(updateActivityParticipants, (state, { id, participants }) =>
+  on(ActivityActions.updateRegisterStatus, (state, { id, isRegistered }) =>
+    state.map(activity => (activity.id === id ? { ...activity, isRegistered } : activity))
+  ),
+
+  on(ActivityActions.updateActivityParticipants, (state, { id, participants }) =>
     state.map(activity => (activity.id === id ? { ...activity, participants } : activity))
+  ),
+
+  on(ActivityActions.clearUserActivityInfos, state =>
+    state.map(activity => ({
+      ...activity,
+      isSaved: false,
+      isRegistered: false,
+    }))
   )
 );

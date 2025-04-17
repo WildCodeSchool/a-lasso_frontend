@@ -1,12 +1,19 @@
-import { Component, HostListener, inject, OnInit } from '@angular/core';
+import { Component, DestroyRef, HostListener, inject, OnInit } from '@angular/core';
 import { AssociationCardComponent } from '../../../association/components/association-card/association-card.component';
-import { ActivatedRoute, ParamMap } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { ToggleMenuComponent } from '../../../../common/components/toggle-menu/toggle-menu.component';
 import { NgClass } from '@angular/common';
 import { ActivityMessagesCardComponent } from '../../components/activity-messages-card/activity-messages-card.component';
 import { ActivityDescriptionComponent } from '../../components/activity-description/activity-description.component';
-
-const MOBILE_SIZE: number = 900;
+import { MOBILE_SIZE } from '../../../../common/models/scss-variables';
+import { Observable } from 'rxjs';
+import { AuthService } from '../../../authentication/services/auth.service';
+import { Store } from '@ngrx/store';
+import { selectActivitiesUserInfos } from '../../../authentication/store/user.selectors';
+import { ActivitiesUserInfos } from '../../../authentication/models/user.model';
+import { Activity } from '../../models/activity.model';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Association } from 'src/app/features/association/models/association.model';
 
 @Component({
   selector: 'app-activity-details',
@@ -15,22 +22,23 @@ const MOBILE_SIZE: number = 900;
   styleUrl: './activity-details.component.scss',
 })
 export class ActivityDetailsComponent implements OnInit {
-  route: ActivatedRoute = inject(ActivatedRoute);
+  private _authService: AuthService = inject(AuthService);
+  private _route: ActivatedRoute = inject(ActivatedRoute);
+  private _store: Store = inject(Store);
+  private _destroyRef = inject(DestroyRef);
   activityId!: string;
+  activity!: Activity;
+  association!: Association;
 
-  navigationItems: string[] = ['Activité', 'Messages', 'Association'];
+  activeTab: number = 0;
+  navigationItems: string[] = ['Activité', 'Association'];
   chosenNavigation: string = 'Activité';
   screenWidth: number = window.innerWidth;
 
   ngOnInit(): void {
-    this.route.paramMap.subscribe((params: ParamMap) => {
-      this.activityId = String(params.get('id'));
-    });
     this._updateNavigationItems(window.innerWidth);
-  }
-
-  handleNavigation(chosenNavigation: string): void {
-    this.chosenNavigation = chosenNavigation;
+    this.activity = this._route.snapshot.data['activityDetails']['activity'];
+    this.association = this._route.snapshot.data['activityDetails']['association'];
   }
 
   @HostListener('window:resize', ['$event'])
@@ -40,13 +48,35 @@ export class ActivityDetailsComponent implements OnInit {
     this.screenWidth = target.innerWidth;
   }
 
+  handleNavigation(chosenNavigation: string): void {
+    this.chosenNavigation = chosenNavigation;
+  }
+
   private _updateNavigationItems(width: number): void {
-    if (width < MOBILE_SIZE) {
-      this.navigationItems = ['Activité', 'Messages', 'Association'];
-      this.chosenNavigation = 'Activité';
+    const userIsLoggedIn: boolean = this._authService.isLoggedIn();
+
+    const setNavigation = (hasAccessToMessagesActivity: boolean): void => {
+      const isMobile: boolean = width < MOBILE_SIZE;
+
+      if (hasAccessToMessagesActivity) {
+        this.navigationItems = isMobile ? ['Activité', 'Messages', 'Association'] : ['Messages', 'Association'];
+        this.chosenNavigation = isMobile ? 'Activité' : 'Association';
+        this.activeTab = isMobile ? 0 : 1;
+      } else {
+        this.navigationItems = isMobile ? ['Activité', 'Association'] : [];
+        this.chosenNavigation = isMobile ? 'Activité' : 'Association';
+      }
+    };
+
+    if (userIsLoggedIn) {
+      const activitiesUserInfos$: Observable<ActivitiesUserInfos[]> = this._store.select(selectActivitiesUserInfos);
+
+      activitiesUserInfos$.pipe(takeUntilDestroyed(this._destroyRef)).subscribe((userInfos): void => {
+        const isRegistered: boolean = userInfos.find((activity): boolean => activity.activityId === this.activityId)?.isRegistered;
+        setNavigation(!!isRegistered);
+      });
     } else {
-      this.navigationItems = ['Messages', 'Association'];
-      this.chosenNavigation = 'Association';
+      setNavigation(false);
     }
   }
 }

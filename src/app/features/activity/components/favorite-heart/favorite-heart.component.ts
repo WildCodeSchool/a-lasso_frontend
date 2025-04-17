@@ -8,12 +8,12 @@ import { ActivityFacadeService } from '../../services/activity-facade.service';
   styleUrl: './favorite-heart.component.scss',
 })
 export class FavoriteHeartComponent {
-  activityFacadeService: ActivityFacadeService = inject(ActivityFacadeService);
+  private _activityFacadeService: ActivityFacadeService = inject(ActivityFacadeService);
   @Input() activityId!: string;
-  @Input() isFavorite!: boolean;
+  @Input() isSaved!: boolean;
 
   toggleFavorite(event: MouseEvent): void {
     event.stopPropagation();
-    this.activityFacadeService.toggleFavorite(this.activityId, this.isFavorite);
+    this._activityFacadeService.toggleSave(this.activityId, this.isSaved);
   }
 }

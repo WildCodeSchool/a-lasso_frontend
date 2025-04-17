@@ -1,6 +1,9 @@
 // import font family
 @import url('https://fonts.googleapis.com/css2?family=Crimson+Text&family=Roboto:ital,wght@0,100..900;1,100..900&family=Spectral+SC&display=swap');
 
+//import map
+@import 'maplibre-gl/dist/maplibre-gl.css';
+
 // initialization project
 body {
   margin: 0;
@@ -9,6 +12,8 @@ body {
   min-height: 100vh;
   max-width: 100vw;
   padding: 0;
+  background-color: var(--background-color-light);
+  overflow-y: hidden;
 }
 
 :root {
@@ -29,7 +34,7 @@ body {
   --secondary-error-color: #d4412d;
 
   // variables for fonts (size & font families)
-  --font-size-p: 14px;
+  --font-size-p: 16px;
   --font-size-p-mini: 10px;
   --font-size-big-title: 36px; // for H1
   --font-size-medium-title: 22px; // for H2
@@ -53,7 +58,6 @@ body {
   .dark-mode {
     --background-color-light: #595959;
     --font-color: white;
-    // TODO: à compléter pour les couleurs de dark mode
   }
 
   /* Largeur de la scrollbar */
@@ -100,9 +104,11 @@ body {
     margin: 0;
   }
 
-  p {
+  p,
+  li {
     font-family: var(--font-family-p);
     font-size: var(--font-size-p);
+    line-height: 1.5;
   }
 
   a,

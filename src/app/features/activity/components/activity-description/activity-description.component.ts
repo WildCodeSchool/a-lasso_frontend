@@ -1,33 +1,27 @@
-import { Component, inject, Input, OnInit } from '@angular/core';
+import { Component, inject, Input } from '@angular/core';
 import { Activity } from '../../models/activity.model';
 import { ActivityFacadeService } from '../../services/activity-facade.service';
-import { Observable } from 'rxjs';
-import { AsyncPipe, DatePipe } from '@angular/common';
+import { DatePipe } from '@angular/common';
 import { environment } from 'src/environments/environment.development';
 import { InscriptionBadgeComponent } from '../inscription-badge/inscription-badge.component';
 import { FavoriteHeartComponent } from '../favorite-heart/favorite-heart.component';
 import { ButtonModule } from 'primeng/button';
-import { UUIDTypes } from 'uuid';
+import { SingleButtonComponent } from '../../../../common/components/single-button/single-button.component';
 
 @Component({
   selector: 'app-activity-description',
-  imports: [InscriptionBadgeComponent, FavoriteHeartComponent, AsyncPipe, DatePipe, ButtonModule],
+  imports: [InscriptionBadgeComponent, FavoriteHeartComponent, DatePipe, ButtonModule, SingleButtonComponent],
   templateUrl: './activity-description.component.html',
   styleUrl: './activity-description.component.scss',
 })
-export class ActivityDescriptionComponent implements OnInit {
-  @Input() activityId!: UUIDTypes;
+export class ActivityDescriptionComponent {
+  @Input() activity!: Activity;
 
-  activityFacadeService: ActivityFacadeService = inject(ActivityFacadeService);
-  activity$!: Observable<Activity | null>;
+  private _activityFacadeService: ActivityFacadeService = inject(ActivityFacadeService);
 
   public apiUrl = environment.apiUrl;
 
-  ngOnInit(): void {
-    this.activity$ = this.activityFacadeService.getActivity(this.activityId);
-  }
-
-  toggleRegister(activityId: UUIDTypes, isRegistered: boolean): void {
-    this.activityFacadeService.toggleRegister(activityId, isRegistered);
+  toggleRegister(activity: Activity): void {
+    this._activityFacadeService.toggleRegister(activity.id, activity.isRegistered);
   }
 }
