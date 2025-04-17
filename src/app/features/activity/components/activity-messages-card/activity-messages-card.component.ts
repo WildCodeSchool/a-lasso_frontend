@@ -21,7 +21,7 @@ import { Store } from '@ngrx/store';
 })
 export class ActivityMessagesCardComponent implements OnInit {
   store: Store = inject(Store);
-  activityFacadeService: ActivityFacadeService = inject(ActivityFacadeService);
+  private _activityFacadeService: ActivityFacadeService = inject(ActivityFacadeService);
   private _fb: FormBuilder = new FormBuilder();
   @Input() activityId!: string;
 
@@ -48,7 +48,7 @@ export class ActivityMessagesCardComponent implements OnInit {
   };
 
   ngOnInit(): void {
-    this.activityFacadeService.getActivityMessages(this.activityId);
+    this._activityFacadeService.getActivityMessages(this.activityId);
     this.messages$ = this.store.select(selectMessagesByActivityId(this.activityId));
   }
 
@@ -67,7 +67,7 @@ export class ActivityMessagesCardComponent implements OnInit {
       date: new Date(),
     };
 
-    this.activityFacadeService.postActivityMessage(newMessage);
+    this._activityFacadeService.postActivityMessage(newMessage);
     this.messageForm.reset();
   }
 }

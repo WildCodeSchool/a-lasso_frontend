@@ -1,7 +1,15 @@
-export type ThemeNameEnum = 'Social' | 'Sport' | 'Santé' | 'Nature' | 'Culture' | 'Culinaire' | 'Cours';
+export enum ThemeName {
+  Social = 'Social',
+  Sport = 'Sport',
+  Santé = 'Santé',
+  Nature = 'Nature',
+  Culture = 'Culture',
+  Culinaire = 'Culinaire',
+  Cours = 'Cours',
+}
 
 export type Theme = {
-  name: ThemeNameEnum;
+  name: ThemeName;
   iconUrl: string;
 };
 
@@ -33,7 +41,7 @@ export type Activity = {
   location: Localisation;
   date: Date;
   participants: Participant;
-  themesName: ThemeNameEnum[];
+  themesName: ThemeName[];
   isSaved: boolean;
   isRegistered: boolean;
 };

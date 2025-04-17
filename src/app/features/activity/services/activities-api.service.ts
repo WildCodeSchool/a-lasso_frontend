@@ -24,6 +24,10 @@ export class ActivitiesApiService {
     return this._http.get<Activity[]>(`${this._apiUrl}/activities`);
   }
 
+  getActivityById(activityId: UUIDTypes): Observable<Activity> {
+    return this._http.get<Activity>(`${this._apiUrl}/activities/${activityId}`);
+  }
+
   updateFavoriteStatus(activityId: UUIDTypes, isSaved: boolean): Observable<boolean> {
     return this._http.patch<boolean>(`${this._apiUrl}/activities/${activityId}/updateFavorite`, { isSaved });
   }

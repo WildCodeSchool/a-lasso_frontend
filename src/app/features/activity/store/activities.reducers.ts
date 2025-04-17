@@ -8,6 +8,8 @@ export const activitiesReducer = createReducer(
   initialActivitiesState,
   on(ActivityActions.setActivities, (_, { activities }) => [...activities]),
 
+  on(ActivityActions.setActivity, (state, { activity }) => [...state, activity]),
+
   on(ActivityActions.updateFavoriteStatus, (state, { id, isSaved }) =>
     state.map(activity => (activity.id === id ? { ...activity, isSaved } : activity))
   ),

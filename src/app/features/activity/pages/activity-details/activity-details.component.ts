@@ -1,18 +1,19 @@
-import { Component, HostListener, inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, DestroyRef, HostListener, inject, OnInit } from '@angular/core';
 import { AssociationCardComponent } from '../../../association/components/association-card/association-card.component';
-import { ActivatedRoute, ParamMap } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { ToggleMenuComponent } from '../../../../common/components/toggle-menu/toggle-menu.component';
 import { NgClass } from '@angular/common';
 import { ActivityMessagesCardComponent } from '../../components/activity-messages-card/activity-messages-card.component';
 import { ActivityDescriptionComponent } from '../../components/activity-description/activity-description.component';
 import { MOBILE_SIZE } from '../../../../common/models/scss-variables';
-import { filter, Observable, of, Subscription, switchMap, take } from 'rxjs';
+import { Observable } from 'rxjs';
 import { AuthService } from '../../../authentication/services/auth.service';
 import { Store } from '@ngrx/store';
 import { selectActivitiesUserInfos } from '../../../authentication/store/user.selectors';
 import { ActivitiesUserInfos } from '../../../authentication/models/user.model';
 import { Activity } from '../../models/activity.model';
-import { ActivityFacadeService } from '../../services/activity-facade.service';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Association } from 'src/app/features/association/models/association.model';
 
 @Component({
   selector: 'app-activity-details',
@@ -20,14 +21,14 @@ import { ActivityFacadeService } from '../../services/activity-facade.service';
   templateUrl: './activity-details.component.html',
   styleUrl: './activity-details.component.scss',
 })
-export class ActivityDetailsComponent implements OnInit, OnDestroy {
-  private _routeSub!: Subscription;
-  authService: AuthService = inject(AuthService);
-  activityFacadeService: ActivityFacadeService = inject(ActivityFacadeService);
-  store: Store = inject(Store);
-  route: ActivatedRoute = inject(ActivatedRoute);
+export class ActivityDetailsComponent implements OnInit {
+  private _authService: AuthService = inject(AuthService);
+  private _route: ActivatedRoute = inject(ActivatedRoute);
+  private _store: Store = inject(Store);
+  private _destroyRef = inject(DestroyRef);
   activityId!: string;
-  activity$!: Observable<Activity>;
+  activity!: Activity;
+  association!: Association;
 
   activeTab: number = 0;
   navigationItems: string[] = ['Activité', 'Association'];
@@ -35,30 +36,9 @@ export class ActivityDetailsComponent implements OnInit, OnDestroy {
   screenWidth: number = window.innerWidth;
 
   ngOnInit(): void {
-    this._routeSub = this.route.paramMap.subscribe((params: ParamMap) => {
-      this.activityId = String(params.get('id'));
-    });
     this._updateNavigationItems(window.innerWidth);
-
-    this.activity$ = this.activityFacadeService.getActivityFromStore$(this.activityId).pipe(
-      switchMap(activity => {
-        if (activity?.location?.city) {
-          return of(activity);
-        }
-
-        this.activityFacadeService.getAllActivitiesFromApi();
-        return this.activityFacadeService.getActivityFromStore$(this.activityId).pipe(
-          filter((a): a is Activity => !!a && !!a.location?.city),
-          take(1)
-        );
-      })
-    );
-  }
-
-  ngOnDestroy(): void {
-    if (this._routeSub) {
-      this._routeSub.unsubscribe();
-    }
+    this.activity = this._route.snapshot.data['activityDetails']['activity'];
+    this.association = this._route.snapshot.data['activityDetails']['association'];
   }
 
   @HostListener('window:resize', ['$event'])
@@ -73,7 +53,7 @@ export class ActivityDetailsComponent implements OnInit, OnDestroy {
   }
 
   private _updateNavigationItems(width: number): void {
-    const userIsLoggedIn: boolean = this.authService.isLoggedIn();
+    const userIsLoggedIn: boolean = this._authService.isLoggedIn();
 
     const setNavigation = (hasAccessToMessagesActivity: boolean): void => {
       const isMobile: boolean = width < MOBILE_SIZE;
@@ -89,9 +69,9 @@ export class ActivityDetailsComponent implements OnInit, OnDestroy {
     };
 
     if (userIsLoggedIn) {
-      const activitiesUserInfos$: Observable<ActivitiesUserInfos[]> = this.store.select(selectActivitiesUserInfos);
+      const activitiesUserInfos$: Observable<ActivitiesUserInfos[]> = this._store.select(selectActivitiesUserInfos);
 
-      activitiesUserInfos$.pipe().subscribe((userInfos): void => {
+      activitiesUserInfos$.pipe(takeUntilDestroyed(this._destroyRef)).subscribe((userInfos): void => {
         const isRegistered: boolean = userInfos.find((activity): boolean => activity.activityId === this.activityId)?.isRegistered;
         setNavigation(!!isRegistered);
       });

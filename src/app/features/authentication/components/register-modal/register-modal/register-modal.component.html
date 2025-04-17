@@ -16,7 +16,7 @@
       </div>
     </div>
 
-    @if (userType === 'bénévole') {
+    @if (userType === 'voluntary') {
       <app-register-voluntary-form #voluntaryForm (submitted)="onRegisterVoluntary($event)" />
     }
     @if (userType === 'association') {

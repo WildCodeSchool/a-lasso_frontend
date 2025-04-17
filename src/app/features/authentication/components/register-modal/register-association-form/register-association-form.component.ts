@@ -14,7 +14,7 @@ import {
   SIRET_REGEX,
 } from '../../../constants/form.constants';
 import { FormField } from '../../../models/form.model';
-import { passwordsMatchValidator } from '../../../utils/form.utils';
+import { passwordsMatchValidator } from '../../../utils/form.validators';
 import { InputFieldErrorComponent } from '../../../../../common/components/input-field-error/input-field-error.component';
 
 @Component({

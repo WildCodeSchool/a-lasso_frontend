@@ -6,7 +6,7 @@ import { MessageService } from 'primeng/api';
 import { map, Observable } from 'rxjs';
 import { LoginModalComponent } from 'src/app/features/authentication/components/login-modal/login-modal.component';
 import { RegisterModalComponent } from 'src/app/features/authentication/components/register-modal/register-modal/register-modal.component';
-import { VoluntaryLogin } from 'src/app/features/authentication/models/user.model';
+import { UserType } from 'src/app/features/authentication/models/user.model';
 import { AuthFacade } from 'src/app/features/authentication/services/auth-facade.service';
 import { HeaderMenuComponent } from '../header-menu/header-menu.component';
 
@@ -36,13 +36,10 @@ export class HeaderComponent {
   userDisplayName$: Observable<string | null> = this.user$.pipe(
     map(user => {
       if (!user) return null;
-      const isAssociation = 'name' in user;
-      if (isAssociation) {
-        return user.name;
+      if (user.type === UserType.Voluntary) {
+        return `${user.first_name} ${user.last_name}`;
       }
-
-      const voluntary = user as VoluntaryLogin;
-      return `${voluntary.first_name} ${voluntary.last_name}`;
+      return user.name;
     })
   );
 

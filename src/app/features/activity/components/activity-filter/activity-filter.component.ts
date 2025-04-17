@@ -1,9 +1,9 @@
 import { Component, EventEmitter, inject, OnInit, Output } from '@angular/core';
 import { ActivityFacadeService } from '../../services/activity-facade.service';
-import { Observable, tap } from 'rxjs';
+import { Observable } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
-import { Theme, ThemeNameEnum } from '../../models/activity.model';
+import { Theme, ThemeName } from '../../models/activity.model';
 import { SingleButtonComponent } from '../../../../common/components/single-button/single-button.component';
 import { ButtonClicked } from 'src/app/common/models/buttonClicked';
 
@@ -14,21 +14,14 @@ import { ButtonClicked } from 'src/app/common/models/buttonClicked';
   styleUrl: './activity-filter.component.scss',
 })
 export class ActivityFilterComponent implements OnInit {
-  activityFacadeService: ActivityFacadeService = inject(ActivityFacadeService);
+  private _activityFacadeService: ActivityFacadeService = inject(ActivityFacadeService);
 
+  @Output() selectedThemes: EventEmitter<ThemeName[]> = new EventEmitter<ThemeName[]>();
   themes$!: Observable<Theme[]>;
-  public selected: ThemeNameEnum[] = [];
-
-  buttonClicked!: ButtonClicked;
-
-  @Output() selectedThemes: EventEmitter<ThemeNameEnum[]> = new EventEmitter<ThemeNameEnum[]>();
+  selected: ThemeName[] = [];
 
   ngOnInit(): void {
-    this.themes$ = this.activityFacadeService.getActivityThemesFromApi().pipe(
-      tap(themes => {
-        themes.sort((a: Theme, b: Theme) => a.name.localeCompare(b.name));
-      })
-    );
+    this.themes$ = this._activityFacadeService.getActivityThemesFromApi();
   }
 
   updateSelectedThemes(theme: ButtonClicked): void {
@@ -36,7 +29,7 @@ export class ActivityFilterComponent implements OnInit {
     if (index > -1) {
       this.selected.splice(index, 1);
     } else {
-      this.selected.push(theme.label as ThemeNameEnum);
+      this.selected.push(theme.label as ThemeName);
     }
     this.selectedThemes.emit([...this.selected]);
   }

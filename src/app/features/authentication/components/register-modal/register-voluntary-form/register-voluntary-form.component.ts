@@ -6,7 +6,7 @@ import { InputFieldErrorComponent } from '../../../../../common/components/input
 import { InputFieldComponent } from 'src/app/common/components/input-field/input-field.component';
 import { MAX_LENGTH, MIN_LENGTH, PASSWORD_REGEX, PHONE_REGEX } from '../../../constants/form.constants';
 import { FormField } from '../../../models/form.model';
-import { passwordsMatchValidator } from '../../../utils/form.utils';
+import { passwordsMatchValidator } from '../../../utils/form.validators';
 
 @Component({
   selector: 'app-register-voluntary-form',
@@ -18,7 +18,7 @@ import { passwordsMatchValidator } from '../../../utils/form.utils';
 export class RegisterVoluntaryFormComponent {
   @Output() submitted = new EventEmitter<FormGroup>();
   private _fb = inject(FormBuilder);
-  submittedOnce = false;
+  private _submittedOnce = false;
 
   form: FormGroup = this._fb.group(
     {
@@ -57,7 +57,7 @@ export class RegisterVoluntaryFormComponent {
   ];
 
   onSubmit(): void {
-    this.submittedOnce = true;
+    this._submittedOnce = true;
 
     if (this.form.valid && this.form.value.motDePasse === this.form.value.confirmationMotDePasse) {
       this.submitted.emit(this.form);
@@ -66,6 +66,6 @@ export class RegisterVoluntaryFormComponent {
 
   resetForm(): void {
     this.form.reset();
-    this.submittedOnce = false;
+    this._submittedOnce = false;
   }
 }

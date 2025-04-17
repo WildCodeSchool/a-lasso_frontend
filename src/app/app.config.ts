@@ -28,7 +28,7 @@ export const appConfig: ApplicationConfig = {
       { activities: activitiesReducer, associations: associationsReducer, messages: messagesReducer, user: userReducer },
       { metaReducers }
     ),
-    provideStoreDevtools({ maxAge: 25 }),
+    provideStoreDevtools({ maxAge: 25, trace: true }),
     providePrimeNG({
       theme: {
         preset: myPreset,

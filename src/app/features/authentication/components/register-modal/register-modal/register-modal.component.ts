@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, inject, Input, Output, ViewChild } from '@angular/core';
+import { Component, DestroyRef, EventEmitter, inject, Input, Output, ViewChild } from '@angular/core';
 import { FormGroup, FormsModule } from '@angular/forms';
 import { DialogModule } from 'primeng/dialog';
 import { Select } from 'primeng/select';
@@ -8,6 +8,7 @@ import { AuthService } from '../../../services/auth.service';
 import { RegisterAssociationFormComponent } from '../register-association-form/register-association-form.component';
 import { RegisterVoluntaryFormComponent } from '../register-voluntary-form/register-voluntary-form.component';
 import { DATE_PAD_LENGTH, MONTH_OFFSET } from '../../../constants/form.constants';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-register-modal',
@@ -18,27 +19,27 @@ import { DATE_PAD_LENGTH, MONTH_OFFSET } from '../../../constants/form.constants
 })
 export class RegisterModalComponent {
   private _authService = inject(AuthService);
-
-  @Input() visible = false;
+  private _destroyRef = inject(DestroyRef);
   @Output() visibleChange = new EventEmitter<boolean>();
+  @Input() visible = false;
   @ViewChild(RegisterVoluntaryFormComponent) voluntaryFormComponent!: RegisterVoluntaryFormComponent;
   @ViewChild(RegisterAssociationFormComponent) associationFormComponent!: RegisterAssociationFormComponent;
 
-  userType: UserType = 'bénévole';
+  userType: UserType = UserType.Voluntary;
   userTypeOptions = [
-    { label: 'Bénévole', value: 'bénévole' },
-    { label: 'Association', value: 'association' },
+    { label: 'Bénévole', value: UserType.Voluntary },
+    { label: 'Association', value: UserType.Association },
   ];
 
   hideModal(): void {
     this.visible = false;
     this.visibleChange.emit(false);
-    if (this.userType === 'bénévole') {
+    if (this.userType === UserType.Voluntary) {
       this.voluntaryFormComponent?.resetForm();
     } else {
       this.associationFormComponent?.resetForm();
     }
-    this.userType = 'bénévole';
+    this.userType = UserType.Voluntary;
   }
 
   onRegisterVoluntary(form: FormGroup): void {
@@ -54,9 +55,12 @@ export class RegisterModalComponent {
       birth_date: this._formatDate(value.dateNaissance),
     };
 
-    this._authService.registerVoluntary(data).subscribe((success: boolean) => {
-      if (success) this.hideModal();
-    });
+    this._authService
+      .registerVoluntary(data)
+      .pipe(takeUntilDestroyed(this._destroyRef))
+      .subscribe((success: boolean) => {
+        if (success) this.hideModal();
+      });
   }
 
   onRegisterAssociation(form: FormGroup): void {
@@ -77,9 +81,12 @@ export class RegisterModalComponent {
       },
     };
 
-    this._authService.registerAssociation(data).subscribe((success: boolean) => {
-      if (success) this.hideModal();
-    });
+    this._authService
+      .registerAssociation(data)
+      .pipe(takeUntilDestroyed(this._destroyRef))
+      .subscribe((success: boolean) => {
+        if (success) this.hideModal();
+      });
   }
 
   private _formatDate(date: Date): string {

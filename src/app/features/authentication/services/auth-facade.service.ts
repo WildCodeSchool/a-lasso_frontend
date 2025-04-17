@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { AssociationLogin, UserLogin, VoluntaryLogin } from '../models/user.model';
+import { AssociationLogin, UserLogin, UserType, VoluntaryLogin } from '../models/user.model';
 import * as UserActions from '../store/user.actions';
 import * as UserSelectors from '../store/user.selectors';
 import * as ActivitiesActions from '../../activity/store/activities.actions';
@@ -76,7 +76,7 @@ export class AuthFacade {
   }
 
   private _syncUserMetadataWithStore(user: VoluntaryLogin | AssociationLogin): void {
-    if ('activitiesUserInfos' in user) {
+    if (user.type === UserType.Voluntary) {
       user.activitiesUserInfos.forEach(activity => {
         this._store.dispatch(
           ActivitiesActions.updateActivitiesUserInfos({
@@ -88,7 +88,7 @@ export class AuthFacade {
       });
     }
 
-    if ('followedAssociations' in user) {
+    if (user.type === UserType.Voluntary) {
       user.followedAssociations.forEach(association => {
         this._store.dispatch(
           AssociationActions.updateFollowStatus({

@@ -2,9 +2,9 @@ import { animate, style, transition, trigger } from '@angular/animations';
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { Observable, map } from 'rxjs';
-import { VoluntaryLogin } from 'src/app/features/authentication/models/user.model';
 import { AuthFacade } from 'src/app/features/authentication/services/auth-facade.service';
 import { environment } from 'src/environments/environment.development';
+import { UserType } from 'src/app/features/authentication/models/user.model';
 
 @Component({
   selector: 'app-header-menu',
@@ -25,20 +25,18 @@ import { environment } from 'src/environments/environment.development';
 export class HeaderMenuComponent {
   private _auth = inject(AuthFacade);
 
-  isOpen = false;
-  apiUrl = environment.apiUrl;
+  isOpen: boolean = false;
+  apiUrl: string = environment.apiUrl;
 
   user$ = this._auth.user$;
 
   userAvatar$: Observable<string | null> = this.user$.pipe(
     map(user => {
       if (!user) return null;
-      const isAssociation = 'name' in user;
-      if (isAssociation) {
-        return user.associationLogoImage ?? null;
+      if (user.type === UserType.Voluntary) {
+        return user.avatar.url;
       }
-      const voluntary = user as VoluntaryLogin;
-      return voluntary.avatar?.url ?? null;
+      return user.associationLogoImage;
     })
   );
 

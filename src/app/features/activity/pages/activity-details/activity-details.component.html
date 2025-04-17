@@ -5,17 +5,17 @@
     }
   </div>
   <div class="activity" [ngClass]="chosenNavigation !== 'Activité' ? 'hidden' : ''">
-    <app-activity-description [activity$]="activity$"></app-activity-description>
+    <app-activity-description [activity]="activity"></app-activity-description>
   </div>
   <div
     class="association-messages"
     [ngClass]="{
       hidden: chosenNavigation === 'Activité' && screenWidth < 900,
       'show-association': chosenNavigation === 'Association' || chosenNavigation === 'Activité',
-      'show-messages': chosenNavigation === 'Messages'
+      'show-messages': chosenNavigation === 'Messages',
     }">
     <div class="association" [ngClass]="chosenNavigation !== 'Association' ? 'hidden' : ''">
-      <app-association-card [activity$]="activity$"></app-association-card>
+      <app-association-card [association]="association"></app-association-card>
     </div>
 
     @if (navigationItems.includes('Messages')) {

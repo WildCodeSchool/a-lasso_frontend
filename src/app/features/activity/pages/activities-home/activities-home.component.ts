@@ -1,7 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ActivityCardComponent } from '../../components/activity-card/activity-card.component';
-import { Activity, ThemeNameEnum } from '../../models/activity.model';
+import { Activity, ThemeName } from '../../models/activity.model';
 import { ActivityFacadeService } from '../../services/activity-facade.service';
 import { ActivitySkeletonComponent } from '../../components/activity-skeleton/activity-skeleton.component';
 import { ActivityFilterComponent } from '../../components/activity-filter/activity-filter.component';
@@ -18,25 +18,25 @@ import { MapComponent } from '../../../map/components/map/map.component';
   standalone: true,
 })
 export class ActivitiesHomeComponent implements OnInit {
-  activityFacadeService: ActivityFacadeService = inject(ActivityFacadeService);
+  private _activityFacadeService: ActivityFacadeService = inject(ActivityFacadeService);
 
-  activities$: Observable<Activity[]> = this.activityFacadeService.activities$;
+  activities$: Observable<Activity[]> = this._activityFacadeService.activities$;
   filteredActivities$: Observable<Activity[]> = this.activities$;
-  selectedThemesName: ThemeNameEnum[] = [];
 
+  selectedThemesName: ThemeName[] = [];
   navigationItems: string[] = ['Liste', 'Carte'];
   chosenNavigation: string = 'Liste';
 
   ngOnInit(): void {
-    this.activityFacadeService.getActivityThemesFromApi();
-    this.activityFacadeService.getAllActivitiesFromApi();
+    this._activityFacadeService.getActivityThemesFromApi();
+    this._activityFacadeService.getAllActivitiesFromApi();
   }
 
   handleNavigation(title: string): void {
     this.chosenNavigation = title;
   }
 
-  onSelectedThemeChanges(updatedSelectedThemesName: ThemeNameEnum[]): void {
+  onSelectedThemeChanges(updatedSelectedThemesName: ThemeName[]): void {
     this.selectedThemesName = updatedSelectedThemesName;
 
     this.filteredActivities$ = this.activities$.pipe(
