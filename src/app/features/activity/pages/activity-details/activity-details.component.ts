@@ -37,6 +37,7 @@ export class ActivityDetailsComponent implements OnInit {
   screenWidth: number = window.innerWidth;
 
   ngOnInit(): void {
+    this._updateNavigationItems(window.innerWidth);
     this.activity = this._route.snapshot.data['activityDetails']['activity'];
     this.association = this._route.snapshot.data['activityDetails']['association'];
     this._updateNavigationItems(window.innerWidth);

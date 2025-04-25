@@ -17,6 +17,8 @@ export class SingleButtonComponent {
   @Input() size?: 'small' | 'large' | undefined;
   @Input() styleClass?: string;
   @Input() backgroundColor?: string;
+  @Input() disabled: boolean = false;
+  @Input() type?: 'submit' | 'button';
 
   onClick(event: MouseEvent): void {
     this.buttonClicked.emit({ id: this.id, label: this.label, event });

@@ -1,11 +1,8 @@
-import { Component, inject } from '@angular/core';
-import { ActivitiesApiService } from '../../services/activities-api.service';
+import { Component, inject, Input } from '@angular/core';
 import { MessageService } from 'primeng/api';
+import { FormGroup } from '@angular/forms';
 
-export type Photo = {
-  id: number;
-  url: string;
-};
+export type Picture = string | ArrayBuffer;
 
 @Component({
   selector: 'app-activity-add-photo',
@@ -13,13 +10,10 @@ export type Photo = {
   styleUrls: ['./activity-add-photo.component.scss'],
 })
 export class ActivityAddPhotoComponent {
-  photos: Photo[] = [
-    { id: 1, url: '' },
-    { id: 2, url: '' },
-    { id: 3, url: '' },
-  ];
+  @Input() formGroup?: FormGroup;
 
-  private _activitiesApiService: ActivitiesApiService = inject(ActivitiesApiService);
+  pictures: Picture[] = ['', '', ''];
+
   private _toast: MessageService = inject(MessageService);
 
   triggerFileInput(index: number): void {
@@ -27,7 +21,7 @@ export class ActivityAddPhotoComponent {
     fileInput.click();
   }
 
-  handleFileInput(event: Event, photoId: number): void {
+  handleFileInput(event: Event, pictureIndex: number): void {
     const input = event.target as HTMLInputElement;
     const file = input.files?.[0];
 
@@ -46,12 +40,20 @@ export class ActivityAddPhotoComponent {
       return;
     }
 
-    const formData = new FormData();
-    formData.append('file', file);
-    formData.append('photoId', photoId.toString());
+    const reader = new FileReader();
 
-    console.log('formData', formData);
+    reader.readAsDataURL(file);
 
-    // this._activitiesApiService.uploadPhoto(formData);
+    reader.onload = (): void => {
+      this.formGroup.patchValue({
+        file: reader.result,
+      });
+
+      this.pictures[pictureIndex] = reader.result;
+
+      this.formGroup.patchValue({
+        ['photo_' + (pictureIndex + 1)]: reader.result,
+      });
+    };
   }
 }

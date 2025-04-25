@@ -1,4 +1,4 @@
-<div class="input-wrapper">
+<div class="input-wrapper" [formGroup]="formGroup || null">
   <div class="search-container">
     @for (field of inputConfigs; track field.label; let i = $index; let isLast = $last) {
       <div class="field-group">
@@ -25,13 +25,23 @@
             </p-iftalabel>
           } @else {
             <p-iftalabel class="custom-iftalabel">
-              <input
-                pInputText
-                [id]="'input-' + i"
-                [placeholder]="field.placeholder"
-                [type]="field.type"
-                [(ngModel)]="field.value"
-                (ngModelChange)="emitValues()" />
+              @if (formGroup) {
+                <input
+                  pInputText
+                  [id]="'input-' + i"
+                  [placeholder]="field.placeholder"
+                  [type]="field.type"
+                  [formControlName]="formGroup ? field.name : null"
+                  (ngModelChange)="emitValues()" />
+              } @else {
+                <input
+                  pInputText
+                  [id]="'input-' + i"
+                  [placeholder]="field.placeholder"
+                  [type]="field.type"
+                  [(ngModel)]="field.name"
+                  (ngModelChange)="emitValues()" />
+              }
               @if (field.value) {
                 <button class="clear-btn" type="button" (click)="clearInput(i)">
                   <i class="fa-solid fa-xmark"></i>
@@ -49,8 +59,9 @@
       </div>
     }
   </div>
-
-  <button pButton type="button" class="search-button">
-    <i class="fa-solid fa-magnifying-glass"></i>
-  </button>
+  @if (showSearchButton) {
+    <button pButton type="button" class="search-button">
+      <i class="fa-solid fa-magnifying-glass"></i>
+    </button>
+  }
 </div>
