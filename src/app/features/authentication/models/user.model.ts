@@ -31,10 +31,17 @@ export type VoluntaryLogin = {
   };
   followedAssociations: FollowedAssociation[];
   activitiesUserInfos: ActivitiesUserInfos[];
+  messageNotifications: MessageNotification[];
   geolocalisation: {
     latitude: number;
     longitude: number;
   };
+};
+
+export type MessageNotification = {
+  activityId: UUIDTypes;
+  activityTitle: string;
+  countMessagesNotRead: number;
 };
 
 export type FollowedAssociation = {
@@ -77,6 +84,7 @@ export type AssociationLogin = {
   address: Address;
   associationLogoImage?: string;
   associationProfileImageURL?: string;
+  messageNotifications: MessageNotification[];
   geolocation: {
     latitude: number;
     longitude: number;

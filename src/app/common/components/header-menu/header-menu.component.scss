@@ -2,14 +2,23 @@
   position: relative;
   display: inline-block;
   cursor: pointer;
+
   .user-avatar {
     width: 40px;
     height: 40px;
     border-radius: 50%;
     object-fit: cover;
+    position: relative;
+
     &:hover {
       cursor: pointer;
     }
+  }
+
+  .global-badge-menu {
+    position: absolute;
+    top: -15px;
+    right: -15px;
   }
 
   .menu-list {
@@ -22,19 +31,64 @@
     padding: 0;
     border-radius: 4px;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-    width: 160px;
+    width: 200px;
     z-index: 100;
+
     .menu-item {
       padding: 10px 15px;
       cursor: pointer;
       display: flex;
-      justify-content: space-between;
+      gap: 5px;
       align-items: center;
       border-radius: 4px;
 
       &:hover {
         background: var(--primary-light-color);
       }
+
+      .menu-item-content {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        width: 100%;
+
+        .badge-and-caret {
+          display: flex;
+          flex-grow: 1;
+          justify-content: flex-end;
+          gap: 5px;
+        }
+
+        .caret-icon {
+          font-size: 14px;
+          align-self: end;
+          display: flex;
+          justify-content: end;
+        }
+      }
+    }
+
+    .sub-menu {
+      background: var(--background-color-white);
+      color: var(--primary-dark-color);
+      padding-left: 40px;
+
+      .sub-menu-item {
+        padding: 5px 0;
+        cursor: pointer;
+        display: flex;
+        gap: 5px;
+
+        &:hover {
+          background: var(--primary-light-color);
+          color: var(--background-color-white);
+        }
+      }
+    }
+
+    app-badge {
+      display: flex;
+      align-items: center;
     }
   }
 }

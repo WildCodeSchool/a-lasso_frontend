@@ -20,7 +20,7 @@
 
     @if (navigationItems.includes('Messages')) {
       <div class="messages" [ngClass]="chosenNavigation === 'Messages' ? 'show-messages' : ''">
-        <app-activity-messages-card [activityId]="activityId"></app-activity-messages-card>
+        <app-activity-messages-card [activityId]="activity.id"></app-activity-messages-card>
       </div>
     }
   </div>

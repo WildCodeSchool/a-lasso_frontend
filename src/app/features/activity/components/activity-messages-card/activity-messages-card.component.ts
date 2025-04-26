@@ -20,7 +20,7 @@ import { Store } from '@ngrx/store';
   styleUrl: './activity-messages-card.component.scss',
 })
 export class ActivityMessagesCardComponent implements OnInit {
-  store: Store = inject(Store);
+  private _store: Store = inject(Store);
   private _activityFacadeService: ActivityFacadeService = inject(ActivityFacadeService);
   private _fb: FormBuilder = new FormBuilder();
   @Input() activityId!: string;
@@ -49,7 +49,7 @@ export class ActivityMessagesCardComponent implements OnInit {
 
   ngOnInit(): void {
     this._activityFacadeService.getActivityMessages(this.activityId);
-    this.messages$ = this.store.select(selectMessagesByActivityId(this.activityId));
+    this.messages$ = this._store.select(selectMessagesByActivityId(this.activityId));
   }
 
   addEmoji(emoji: string): void {
