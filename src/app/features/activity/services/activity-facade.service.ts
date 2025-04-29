@@ -1,9 +1,9 @@
 import { Injectable, inject } from '@angular/core';
-import { Activity, Theme } from '../models/activity.model';
+import { Activity, Participant, Theme } from '../models/activity.model';
 import { map, Observable, of, switchMap, take, tap } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { selectActivities, selectActivityById } from '../store/activities.selector';
-import { setActivities, setActivity, updateActivityParticipants, updateFavoriteStatus, updateRegisterStatus } from '../store/activities.actions';
+import { setActivities, setActivity, updateActivityParticipants } from '../store/activities.actions';
 import { ActivitiesApiService } from './activities-api.service';
 import { UUIDTypes } from 'uuid';
 import { Message } from '../models/message.model';
@@ -14,6 +14,8 @@ import { MessageService as Toast } from 'primeng/api';
 import { APIResponseToggleRegister } from '../models/api-reponse.model';
 import { updateActivitiesUserInfos } from '../../authentication/store/user.actions';
 import { TAKE_1 } from 'src/app/common/constants/observables.constants';
+import { selectActivitiesUserInfos } from '../../authentication/store/user.selectors';
+import { ActivitiesUserInfos } from '../../authentication/models/user.model';
 
 @Injectable({
   providedIn: 'root',
@@ -61,17 +63,23 @@ export class ActivityFacadeService {
     );
   }
 
+  getIsSavedActivity(activityId: UUIDTypes): Observable<boolean> {
+    return this._store.select(selectActivitiesUserInfos).pipe(
+      switchMap((userActivityInfos: ActivitiesUserInfos[]): Observable<boolean> => {
+        const activityInfos = userActivityInfos.find(activity => activity.activityId === activityId);
+        if (!activityInfos) {
+          return of(false);
+        }
+        return of(activityInfos.isSaved);
+      })
+    );
+  }
+
   toggleSave(activityId: UUIDTypes, isSaved: boolean): void {
     this._activitiesApi
       .updateFavoriteStatus(activityId, !isSaved)
       .pipe(
         tap((apiResponse: boolean) => {
-          this._store.dispatch(
-            updateFavoriteStatus({
-              id: activityId,
-              isSaved: apiResponse,
-            })
-          );
           this._store.dispatch(
             updateActivitiesUserInfos({
               activityId: activityId,
@@ -84,17 +92,23 @@ export class ActivityFacadeService {
       .subscribe();
   }
 
+  getIsRegisteredActivity(activityId: UUIDTypes): Observable<boolean> {
+    return this._store.select(selectActivitiesUserInfos).pipe(
+      switchMap((userActivityInfos: ActivitiesUserInfos[]): Observable<boolean> => {
+        const activityInfos = userActivityInfos.find(activity => activity.activityId === activityId);
+        if (!activityInfos) {
+          return of(false);
+        }
+        return of(activityInfos.isRegistered);
+      })
+    );
+  }
+
   toggleRegister(activityId: UUIDTypes, isRegistered: boolean): void {
     this._activitiesApi
-      .updateRegisterStatus(activityId, !isRegistered)
+      .updateRegisterStatus(activityId, isRegistered)
       .pipe(
         tap((apiResponse: APIResponseToggleRegister) => {
-          this._store.dispatch(
-            updateRegisterStatus({
-              id: activityId,
-              isRegistered: apiResponse.isRegistered,
-            })
-          );
           this._store.dispatch(
             updateActivityParticipants({
               id: activityId,
@@ -111,6 +125,17 @@ export class ActivityFacadeService {
         take(TAKE_1)
       )
       .subscribe();
+  }
+
+  getVoluntariesRegisteredToAnActivity(activityId: UUIDTypes): Observable<Participant> {
+    return this._store.select(selectActivityById(activityId)).pipe(
+      switchMap((activity: Activity): Observable<Participant> => {
+        if (!activity) {
+          return of({ current: 0, max: 0 });
+        }
+        return of(activity.participants);
+      })
+    );
   }
 
   getActivityMessages(activityId: string): void {

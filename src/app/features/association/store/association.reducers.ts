@@ -14,16 +14,6 @@ export const associationsReducer = createReducer(
     }
     return [...state, association];
   }),
-  on(AssociationActions.updateFollowStatus, (state, { id, isFollow }) =>
-    state.map(assocation =>
-      assocation.id === id
-        ? {
-            ...assocation,
-            isFollow,
-          }
-        : assocation
-    )
-  ),
   on(ActivityActions.clearUserActivityInfos, state =>
     state.map(association => ({
       ...association,

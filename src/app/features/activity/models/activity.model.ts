@@ -22,7 +22,6 @@ export type Localisation = {
 export type AssociationActivity = {
   id: string;
   name: string;
-  isFollow: boolean;
   logo: string;
   localisation: Localisation;
 };
@@ -42,8 +41,6 @@ export type Activity = {
   date: Date;
   participants: Participant;
   themesName: ThemeName[];
-  isSaved: boolean;
-  isRegistered: boolean;
 };
 
 export type ActivitySearchFilters = {
