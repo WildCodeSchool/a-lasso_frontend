@@ -2,24 +2,24 @@
   <header>
     <h2>Créer une nouvelle activité</h2>
   </header>
-  <div class="informations-container">
-    <form [formGroup]="activityForm" class="form" (ngSubmit)="onSubmit()">
+
+  <form [formGroup]="activityForm" class="form" (ngSubmit)="onSubmit()">
+    <div class="informations-container">
       <section class="add-photo-container">
         <app-activity-add-photo [formGroup]="activityForm"></app-activity-add-photo>
       </section>
       <div class="details-inputs-areas">
         <section class="add-informations-container">
           @for (activityField of activityFields; track $index) {
-            <app-multiple-input-field
-              class="information-field"
-              [fieldConfigs]="activityField"
-              [formGroup]="activityForm"
-              (inputValuesChanged)="onInputValuesChanged($event)"></app-multiple-input-field>
+          <app-multiple-input-field
+            class="information-field"
+            [fieldConfigs]="activityField"
+            [formGroup]="activityForm"
+            (inputValuesChanged)="onInputValuesChanged($event)"></app-multiple-input-field>
           }
           <!-- app-multiple-error-field -->
         </section>
         <section class="theme-selection-container">
-          <h3>Thèmes</h3>
           <app-activity-filter (selectedThemes)="onSelectedThemeChanges($event)"></app-activity-filter>
         </section>
         <section class="description-container">
@@ -34,6 +34,6 @@
       <section class="action-buttons-container">
         <app-single-button [id]="1" type="submit" [disabled]="activityForm.invalid" label="Publish" ariaLabel="publier"> </app-single-button>
       </section>
-    </form>
-  </div>
+    </div>
+  </form>
 </div>
