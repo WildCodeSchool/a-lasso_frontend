@@ -8,31 +8,23 @@
       <section class="add-photo-container">
         <app-activity-add-photo [formGroup]="activityForm"></app-activity-add-photo>
       </section>
+
       <div class="details-inputs-areas">
         <section class="add-informations-container">
           @for (activityField of activityFields; track $index) {
-          <app-multiple-input-field
-            class="information-field"
-            [fieldConfigs]="activityField"
-            [formGroup]="activityForm"
-            (inputValuesChanged)="onInputValuesChanged($event)"></app-multiple-input-field>
+            <app-multiple-input-field class="information-field" [fieldConfigs]="activityField" [formGroup]="activityForm"></app-multiple-input-field>
           }
-          <!-- app-multiple-error-field -->
         </section>
         <section class="theme-selection-container">
-          <app-activity-filter (selectedThemes)="onSelectedThemeChanges($event)"></app-activity-filter>
+          <app-activity-filter [formGroup]="activityForm" [formThemeField]="formThemeField"></app-activity-filter>
         </section>
         <section class="description-container">
-          <app-multiple-input-field
-            class="description-field"
-            [fieldConfigs]="descriptionFieldConfigs"
-            [formGroup]="activityForm"
-            (inputValuesChanged)="onInputValuesChanged($event)" />
+          <app-multiple-input-field class="description-field" [fieldConfigs]="descriptionFieldConfigs" [formGroup]="activityForm" />
         </section>
       </div>
 
       <section class="action-buttons-container">
-        <app-single-button [id]="1" type="submit" [disabled]="activityForm.invalid" label="Publish" ariaLabel="publier"> </app-single-button>
+        <app-single-button [id]="1" type="submit" label="Publish" ariaLabel="publier"> </app-single-button>
       </section>
     </div>
   </form>

@@ -1,8 +1,8 @@
 <div class="filter-container">
-  <div id="filter-input"></div>
   <div class="filter-buttons">
     @for (theme of themes$ | async; track $index) {
       <app-single-button
+        [type]="'button'"
         [id]="$index"
         (buttonClicked)="updateSelectedThemes($event)"
         [styleClass]="selected.includes(theme.name) ? 'defaultWhite selected' : 'defaultWhite'"
@@ -13,4 +13,9 @@
       </app-single-button>
     }
   </div>
+  @if (formGroup?.get(formThemeField)?.invalid && formGroup?.get(formThemeField)?.touched) {
+    <div class="error-message">
+      <app-input-field-error [control]="formGroup.get(formThemeField)" [fieldName]="formThemeField" />
+    </div>
+  }
 </div>

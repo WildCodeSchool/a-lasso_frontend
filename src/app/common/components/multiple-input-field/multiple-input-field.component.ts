@@ -7,6 +7,7 @@ import { InputGroupModule } from 'primeng/inputgroup';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 import { InputTextModule } from 'primeng/inputtext';
 import { InputFieldConfig } from 'src/app/common/models/input.models';
+import { InputFieldErrorComponent } from '../input-field-error/input-field-error.component';
 
 @Component({
   selector: 'app-multiple-input-field',
@@ -20,6 +21,7 @@ import { InputFieldConfig } from 'src/app/common/models/input.models';
     InputGroupModule,
     InputGroupAddonModule,
     CalendarModule,
+    InputFieldErrorComponent,
   ],
   templateUrl: './multiple-input-field.component.html',
   styleUrls: ['./multiple-input-field.component.scss'],

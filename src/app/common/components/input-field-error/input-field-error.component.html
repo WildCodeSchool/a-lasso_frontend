@@ -1,32 +1,43 @@
 <div class="animation-wrapper">
   <div class="field-error">
     @if (control?.invalid && (control.touched || control.dirty)) {
-      <div @fadeInOut>
-        @if (control.errors?.['required']) {
-          <p>Ce champ est requis</p>
-        }
-        @if (control.errors?.['email']) {
-          <p>Adresse e-mail invalide</p>
-        }
-        @if (control.errors?.['pattern']) {
-          @switch (fieldName) {
-            @case ('motDePasse') {
-              <p>Le mot de passe doit contenir une minuscule, une majuscule, un chiffre, un caractère spécial et minimum 8 caractères</p>
-            }
-            @case ('telephone') {
-              <p>Numéro de téléphone invalide</p>
-            }
-            @case ('siret') {
-              <p>Numéro SIRET invalide</p>
-            }
-            @case ('adresseCodePostal') {
-              <p>Code postal invalide</p>
-            }
-            @case ('adresseNumero') {
-              <p>Numéro de voie invalide</p>
-            }
-            @default {
-              <p>Format invalide</p>
+      @if (control?.invalid && (control.touched || control.dirty)) {
+        <div @fadeInOut>
+          @if (control.errors?.['required']) {
+            <p>Ce champ est requis</p>
+          }
+          @if (control.errors?.['photoRequired']) {
+            <p>Vous devez ajouter une photo</p>
+          }
+          @if (control.errors?.['themeRequired']) {
+            <p>Vous devez sélectionner au moins un thème</p>
+          }
+          @if (control.errors?.['email']) {
+            <p>Adresse e-mail invalide</p>
+          }
+          @if (control.errors?.['pattern']) {
+            @switch (fieldName) {
+              @case ('motDePasse') {
+                <p>Le mot de passe doit contenir une minuscule, une majuscule, un chiffre, un caractère spécial et minimum 8 caractères</p>
+              }
+              @case ('telephone') {
+                <p>Numéro de téléphone invalide</p>
+              }
+              @case ('siret') {
+                <p>Numéro SIRET invalide</p>
+              }
+              @case ('adresseCodePostal') {
+                <p>Code postal invalide</p>
+              }
+              @case ('adresseNumero') {
+                <p>Numéro de voie invalide</p>
+              }
+              @case ('requieredVoluntary') {
+                <p>La valeur doit un nombre entier</p>
+              }
+              @default {
+                <p>Format invalide</p>
+              }
             }
           }
           @if (control.errors?.['minlength']) {
@@ -35,8 +46,8 @@
           @if (control.errors?.['maxlength']) {
             <p>Maximum {{ control.errors['maxlength'].requiredLength }} caractères (actuellement {{ control.errors['maxlength'].actualLength }})</p>
           }
-        }
-      </div>
+        </div>
+      }
     }
     @if (showPasswordMismatchError) {
       <div @fadeInOut>

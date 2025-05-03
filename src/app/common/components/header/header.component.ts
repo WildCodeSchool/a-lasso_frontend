@@ -1,19 +1,20 @@
 import { animate, style, transition, trigger } from '@angular/animations';
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { map, Observable } from 'rxjs';
 import { LoginModalComponent } from 'src/app/features/authentication/components/login-modal/login-modal.component';
 import { RegisterModalComponent } from 'src/app/features/authentication/components/register-modal/register-modal/register-modal.component';
-import { UserType } from 'src/app/features/authentication/models/user.model';
+import { AssociationLogin, UserType, VoluntaryLogin } from 'src/app/features/authentication/models/user.model';
 import { AuthFacade } from 'src/app/features/authentication/services/auth-facade.service';
 import { HeaderMenuComponent } from '../header-menu/header-menu.component';
+import { SingleButtonComponent } from '../single-button/single-button.component';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [RegisterModalComponent, CommonModule, RouterLink, LoginModalComponent, HeaderMenuComponent],
+  imports: [RegisterModalComponent, CommonModule, RouterLink, LoginModalComponent, HeaderMenuComponent, SingleButtonComponent],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
   providers: [MessageService],
@@ -26,12 +27,13 @@ import { HeaderMenuComponent } from '../header-menu/header-menu.component';
 })
 export class HeaderComponent {
   private _auth = inject(AuthFacade);
+  private _router = inject(Router);
 
   showRegisterModal = false;
   showLoginModal = false;
 
   isAuthenticated$ = this._auth.isAuthenticated$;
-  user$ = this._auth.user$;
+  user$: Observable<VoluntaryLogin | AssociationLogin> = this._auth.user$;
 
   userDisplayName$: Observable<string | null> = this.user$.pipe(
     map(user => {
@@ -49,5 +51,13 @@ export class HeaderComponent {
 
   openLoginModal(): void {
     this.showLoginModal = true;
+  }
+
+  isAnAssociation(user: VoluntaryLogin | AssociationLogin): boolean {
+    return user.type === UserType.Association;
+  }
+
+  isOnActivityCreationPage(): boolean {
+    return this._router.url === '/activity/creation';
   }
 }

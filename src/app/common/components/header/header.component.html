@@ -5,6 +5,18 @@
   </div>
 
   @if (isAuthenticated$ | async) {
+    @if (user$ | async; as user) {
+      @if (isAnAssociation(user) && !isOnActivityCreationPage()) {
+        <app-single-button
+          [type]="'button'"
+          [id]="1"
+          [routerLink]="['/activity', 'creation']"
+          routerLinkActive="active"
+          [label]="'Publier une activitée 🚀'"
+          [ariaLabel]="'button de navigation vers la page de creation des activitées'">
+        </app-single-button>
+      }
+    }
     <div class="user-info">
       <p class="user-name" @fadeInOut>Bonjour, {{ userDisplayName$ | async }} !</p>
       <app-header-menu></app-header-menu>

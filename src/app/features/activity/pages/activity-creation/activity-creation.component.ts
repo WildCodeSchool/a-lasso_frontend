@@ -1,44 +1,44 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { ActivityFilterComponent } from '../../components/activity-filter/activity-filter.component';
-import { ThemeName } from '../../models/activity.model';
 import { ActivityFacadeService } from '../../services/activity-facade.service';
 import { ActivityAddPhotoComponent } from '../../components/activity-add-photo/activity-add-photo.component';
-
 import { InputFieldConfig } from 'src/app/common/models/input.models';
 import { SingleButtonComponent } from '../../../../common/components/single-button/single-button.component';
-import { MessageService as Toast } from 'primeng/api';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { MAX_LENGTH } from 'src/app/features/authentication/constants/form.constants';
-import { InputFieldComponent } from '../../../../common/components/input-field/input-field.component';
+import {
+  ACTIVITY_DESCRIPTION_MAX_LENGTH,
+  HOUR_REGEX,
+  MAX_LENGTH,
+  MIN_LENGTH,
+  NUMBER_REGEX,
+  POSTAL_CODE_REGEX,
+  DATE_REGEX,
+} from 'src/app/features/authentication/constants/form.constants';
 import { MultipleInputFieldComponent } from 'src/app/common/components/multiple-input-field/multiple-input-field.component';
+import { photoRequiredValidator, themeRequiredValidator } from 'src/app/features/authentication/utils/form.validators';
 
 @Component({
   selector: 'app-activity-creation',
-  imports: [
-    ActivityFilterComponent,
-    FormsModule,
-    ReactiveFormsModule,
-    ActivityAddPhotoComponent,
-    MultipleInputFieldComponent,
-    SingleButtonComponent,
-    InputFieldComponent,
-  ],
+  imports: [ActivityFilterComponent, FormsModule, ReactiveFormsModule, ActivityAddPhotoComponent, MultipleInputFieldComponent, SingleButtonComponent],
   templateUrl: './activity-creation.component.html',
   styleUrl: './activity-creation.component.scss',
 })
 export class ActivityCreationComponent implements OnInit {
   activityFacadeService: ActivityFacadeService = inject(ActivityFacadeService);
   private _fb: FormBuilder = new FormBuilder();
-  private _toast: Toast = inject(Toast);
-  selectedThemesName: ThemeName[] = [];
+
+  formThemeField = 'selectedThemesName';
 
   activityForm: FormGroup = this._fb.group({
-    title: ['', [Validators.required, Validators.maxLength(MAX_LENGTH)]],
-    requieredVoluntary: ['', [Validators.required]],
-    date: ['', [Validators.required]],
-    hour: ['', [Validators.required]],
-    description: ['', [Validators.required, Validators.maxLength(MAX_LENGTH)]],
-    photo_1: [null, Validators.required],
+    title: ['', [Validators.required, Validators.maxLength(MAX_LENGTH), Validators.minLength(MIN_LENGTH)]],
+    requieredVoluntary: ['', [Validators.required, Validators.pattern(NUMBER_REGEX)]],
+    date: ['', [Validators.required, Validators.pattern(DATE_REGEX)]],
+    hour: ['', [Validators.required, Validators.pattern(HOUR_REGEX)]],
+    zipCode: ['', [Validators.required, Validators.pattern(POSTAL_CODE_REGEX)]],
+    city: ['', [Validators.required]],
+    selectedThemesName: [[], themeRequiredValidator()],
+    description: ['', [Validators.required, Validators.maxLength(ACTIVITY_DESCRIPTION_MAX_LENGTH)]],
+    photo_1: [null, photoRequiredValidator()],
     photo_2: [null],
     photo_3: [null],
   });
@@ -67,20 +67,42 @@ export class ActivityCreationComponent implements OnInit {
 
   onSubmit(): void {
     console.log(this.activityForm.value);
-    this._toast.add({
-      severity: 'success',
-      summary: 'Activité publié',
-    });
+    this._triggerValidatorsCheck();
+    // const value = form.value;
+    //     const data: AssociationRegister = {
+    //       siret: value.siret,
+    //       name: value.nom,
+    //       email: value.email,
+    //       password: value.motDePasse,
+    //       mobile_phone: value.telephone,
+    //       address: {
+    //         house_number: value.adresseNumero || '',
+    //         street_name: value.adresseRue,
+    //         adress_suffix: value.adresseComplement || null,
+    //         zipCode: value.adresseCodePostal,
+    //         city: value.adresseVille,
+    //         country: value.adressePays,
+    //       },
+    //     };
+    //     this._authService
+    //       .registerAssociation(data)
+    //       .pipe(takeUntilDestroyed(this._destroyRef))
+    //       .subscribe((success: boolean) => {
+    //         if (success) this.hideModal();
+    //       });
+    //   }
   }
 
-  onSelectedThemeChanges(updatedSelectedThemesName: ThemeName[]): void {
-    this.selectedThemesName = updatedSelectedThemesName;
-  }
+  // onSelectedThemeChanges(updatedSelectedThemesName: ThemeName[]): void {
+  //   this.activityForm.get('selectedThemesName')?.setValue(updatedSelectedThemesName);
+  //   // this.activityForm.get('selectedThemesName')?.markAsTouched(); // optional: for error display
+  //   // this.activityForm.get('selectedThemesName')?.updateValueAndValidity(); // triggers validation
+  // }
 
-  onInputValuesChanged(values: Record<string, string>): void {
-    console.log(values);
-    // if (value.description) {
-    //   {...activityToPublish, description : description}
-    // }
+  private _triggerValidatorsCheck(): void {
+    if (this.activityForm.invalid) {
+      this.activityForm.markAllAsTouched();
+      return;
+    }
   }
 }
