@@ -10,7 +10,7 @@
       </div>
     </li>
   } @else {
-    <li class="menu-item disabled" tabindex="-1">
+    <li class="menu-item" (click)="router.navigate(['/reports'])" (keydown.enter)="router.navigate(['/reports'])" tabindex="1">
       <div class="menu-item-content">
         <i class="fa-solid fa-triangle-exclamation"></i>
         <span>Signalements</span>

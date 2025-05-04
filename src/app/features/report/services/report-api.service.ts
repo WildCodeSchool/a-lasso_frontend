@@ -16,11 +16,15 @@ export class ReportApiService {
     return this._http.get<Report[]>(`${this._apiUrl}/report`);
   }
 
+  getReportsByReportedIdFromApi(reportedId: UUIDTypes): Observable<Report[]> {
+    return this._http.get<Report[]>(`${this._apiUrl}/report/${reportedId}`);
+  }
+
   sendReport(report: Report): Observable<boolean> {
     return this._http.post<boolean>(`${this._apiUrl}/report`, report);
   }
 
-  closeReport(reportId: UUIDTypes): Observable<boolean> {
-    return this._http.delete<boolean>(`${this._apiUrl}/report/${reportId}`);
+  updateReport(report: Report): Observable<boolean> {
+    return this._http.put<boolean>(`${this._apiUrl}/report`, report);
   }
 }

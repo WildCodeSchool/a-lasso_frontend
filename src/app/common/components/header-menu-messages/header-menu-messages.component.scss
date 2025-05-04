@@ -5,6 +5,7 @@
   gap: 5px;
   align-items: center;
   border-radius: 4px;
+  color: var(--font-color-white);
 
   &:hover {
     background: var(--primary-light-color);
@@ -33,15 +34,23 @@
 }
 
 .sub-menu {
-  background: var(--background-color-white);
-  color: var(--primary-dark-color);
-  padding-left: 40px;
-
   .sub-menu-item {
-    padding: 5px 0;
     cursor: pointer;
     display: flex;
+    align-items: center;
     gap: 5px;
+    background: var(--background-color-white);
+    color: var(--primary-dark-color);
+
+    .sub-menu-item-content {
+      padding-left: 40px;
+      padding-top: 5px;
+      padding-bottom: 5px;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
 
     &:hover {
       background: var(--primary-light-color);

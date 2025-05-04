@@ -1,5 +1,5 @@
 import { createReducer, on } from '@ngrx/store';
-import { deleteReport, setReports } from './reports.actions';
+import { updateReport, setReports } from './reports.actions';
 import { Report } from '../models/report.model';
 
 export const initialReportsState: Report[] = [];
@@ -7,7 +7,13 @@ export const initialReportsState: Report[] = [];
 export const reportsReducer = createReducer(
   initialReportsState,
 
-  on(setReports, (_, { reports }) => [...reports]),
+  on(setReports, (state, { reports }) => {
+    const incomingIds = new Set(reports.map(r => r.reportId));
+    const remaining = state.filter(r => !incomingIds.has(r.reportId));
+    return [...remaining, ...reports];
+  }),
 
-  on(deleteReport, (state, { reportId }) => state.filter(report => report.reportId !== reportId))
+  on(updateReport, (state, { reportUpdated }) =>
+    state.map(report => (report.reportId === reportUpdated.reportId ? { ...report, ...reportUpdated } : report))
+  )
 );

@@ -6,5 +6,12 @@ export const selectReportsState = createFeatureSelector<Report[]>('reports');
 
 export const selectReports = createSelector(selectReportsState, reports => reports);
 
-export const selectCommentaryAdmin = (reportId: UUIDTypes): MemoizedSelector<object, string | null> =>
-  createSelector(selectReportsState, reports => (reports || []).find(item => item.reportId === reportId).commentaryAdmin || null);
+export const selectReportsById = (reportId: UUIDTypes): MemoizedSelector<object, Report[]> =>
+  createSelector(selectReportsState, (reports: Report[]) => {
+    const report = reports.find(r => r.reportId === reportId);
+    if (report) {
+      const reportedId = report.reportedUser.id;
+      return reports.filter(r => r.reportedUser.id === reportedId);
+    }
+    return [];
+  });
