@@ -1,0 +1,27 @@
+.menu-item {
+  padding: 10px 15px;
+  cursor: pointer;
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  border-radius: 4px;
+
+  &:hover {
+    background: var(--primary-light-color);
+  }
+}
+
+.menu-item.disabled {
+  color: var(--font-color-grey);
+  cursor: default;
+  background: transparent;
+
+  i {
+    color: var(--font-color-grey);
+  }
+}
+
+app-badge {
+  display: flex;
+  align-items: center;
+}

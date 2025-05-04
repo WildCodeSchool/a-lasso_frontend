@@ -35,23 +35,27 @@ p-card {
         }
       }
 
-      ::ng-deep .p-button {
+      .follow-report-section {
         display: flex;
-        flex-direction: column;
-        gap: 0;
-        height: 100%;
-        background: none;
-        border: none;
-        color: var(--primary-light-color);
 
-        i:hover {
-          transform: scale(1.1);
-          cursor: pointer;
-        }
+        ::ng-deep .p-button {
+          display: flex;
+          flex-direction: column;
+          gap: 0;
+          height: 100%;
+          background: none;
+          border: none;
+          color: var(--primary-light-color);
 
-        p {
-          margin: 0;
-          padding: 4px;
+          i:hover {
+            transform: scale(1.1);
+            cursor: pointer;
+          }
+
+          p {
+            margin: 0;
+            padding: 4px;
+          }
         }
       }
     }
@@ -94,6 +98,7 @@ p-card {
       font-weight: 500;
       margin-bottom: 16px;
     }
+
     .statistics-container {
       /* Correct class */
       display: flex;
@@ -113,6 +118,7 @@ p-card {
         .description {
           height: 48px;
         }
+
         .value {
           color: var(--primary-dark-color);
           font-weight: bold;

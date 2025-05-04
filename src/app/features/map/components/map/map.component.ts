@@ -10,6 +10,7 @@ import { FRANCE_LATITUDE, FRANCE_LONGITUDE } from '../../constants/map.constants
 import { PopupMapComponent } from '../popup-map/popup-map.component';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { environmentSecret } from 'src/environments/environment.secret';
+import { ActivityFacadeService } from '../../../activity/services/activity-facade.service';
 
 @Component({
   selector: 'app-map',
@@ -19,6 +20,7 @@ import { environmentSecret } from 'src/environments/environment.secret';
 })
 export class MapComponent implements AfterViewInit, OnChanges {
   private _destroyRef = inject(DestroyRef);
+  private _activityFacadeService: ActivityFacadeService = inject(ActivityFacadeService);
 
   @Input() filteredActivities$!: Observable<Activity[]>;
   @ViewChild('popupRef') popupComponent!: PopupMapComponent;
@@ -84,6 +86,7 @@ export class MapComponent implements AfterViewInit, OnChanges {
 
       activityMarker.getElement().addEventListener('click', () => {
         this.popupComponent.activity = activity;
+        this.popupComponent.isSavedActivity$ = this._activityFacadeService.getIsSavedActivity(activity.id);
         this.popupComponent.association = null;
         this.popup.setDOMContent(this.popupComponent.element);
         this.popup.setLngLat([activity.location.longitude, activity.location.latitude]);

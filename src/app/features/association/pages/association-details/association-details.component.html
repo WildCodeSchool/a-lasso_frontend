@@ -4,16 +4,20 @@
       <app-toggle-menu [tabs]="navigationItems" [activeTabValue]="0" (chosenTab)="handleNavigation($event)"></app-toggle-menu>
     }
   </div>
+  <div class="activities-association">
+    <div class="cards-activities" [ngClass]="chosenNavigation !== 'Association' ? '' : 'hidden'">
+      @for (activity of activities$ | async; track activity.id) {
+        <app-activity-card [activity]="activity"></app-activity-card>
+      } @empty {
+        <p class="empty">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          Aucune activité proposée par l'association en ce moment !
+        </p>
+      }
+    </div>
 
-  <div class="cards-activities" [ngClass]="chosenNavigation !== 'Association' ? '' : 'hidden'">
-    @for (activity of activities$ | async; track activity.id) {
-      <app-activity-card [activity]="activity"></app-activity-card>
-    } @empty {
-      <p>Aucune activité proposée par l'association en ce moment!</p>
-    }
-  </div>
-
-  <div class="association" [ngClass]="chosenNavigation === 'Association' ? '' : 'hidden'">
-    <app-association-card [association]="association"></app-association-card>
+    <div class="association" [ngClass]="chosenNavigation === 'Association' ? '' : 'hidden'">
+      <app-association-card [association]="association"></app-association-card>
+    </div>
   </div>
 </div>

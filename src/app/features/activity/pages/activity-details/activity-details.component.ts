@@ -6,11 +6,10 @@ import { NgClass } from '@angular/common';
 import { ActivityMessagesCardComponent } from '../../components/activity-messages-card/activity-messages-card.component';
 import { ActivityDescriptionComponent } from '../../components/activity-description/activity-description.component';
 import { MOBILE_SIZE } from '../../../../common/models/scss-variables';
-import { Observable } from 'rxjs';
 import { AuthService } from '../../../authentication/services/auth.service';
 import { Store } from '@ngrx/store';
-import { selectActivitiesUserInfos } from '../../../authentication/store/user.selectors';
-import { ActivitiesUserInfos } from '../../../authentication/models/user.model';
+import { selectActivitiesUserInfos, selectUser } from '../../../authentication/store/user.selectors';
+import { UserType } from '../../../authentication/models/user.model';
 import { Activity } from '../../models/activity.model';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Association } from 'src/app/features/association/models/association.model';
@@ -78,12 +77,18 @@ export class ActivityDetailsComponent implements OnInit {
     };
 
     if (userIsLoggedIn) {
-      const activitiesUserInfos$: Observable<ActivitiesUserInfos[]> = this._store.select(selectActivitiesUserInfos);
-
+      const activitiesUserInfos$ = this._store.select(selectActivitiesUserInfos);
+      const userInfos$ = this._store.select(selectUser);
+      let isActivityOwner: boolean = false;
+      let isRegistered: boolean = false;
       activitiesUserInfos$.pipe(takeUntilDestroyed(this._destroyRef)).subscribe((userInfos): void => {
-        const isRegistered: boolean = userInfos.find((activity): boolean => activity.activityId === this.activity.id)?.isRegistered;
-        setNavigation(!!isRegistered);
+        isRegistered = userInfos.find(activity => activity.activityId === this.activity.id)?.isRegistered ?? false;
+
+        userInfos$.pipe(takeUntilDestroyed(this._destroyRef)).subscribe(user => {
+          isActivityOwner = user?.type === UserType.Association && user?.name === this.activity.association.name;
+        });
       });
+      setNavigation(!!isRegistered || !!isActivityOwner);
     } else {
       setNavigation(false);
     }

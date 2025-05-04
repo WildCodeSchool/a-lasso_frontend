@@ -6,10 +6,11 @@ import { CardModule } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';
 import { environment } from 'src/environments/environment.development';
 import { Observable, take, tap } from 'rxjs';
+import { ReportModalComponent } from '../../../report/report-modal/report-modal.component';
 
 @Component({
   selector: 'app-association-card',
-  imports: [CardModule, ButtonModule, DatePipe, AsyncPipe],
+  imports: [CardModule, ButtonModule, DatePipe, AsyncPipe, ReportModalComponent],
   templateUrl: './association-card.component.html',
   styleUrl: './association-card.component.scss',
 })
@@ -17,8 +18,9 @@ export class AssociationCardComponent implements OnInit {
   @Input() association!: Association;
 
   private _associationFacadeService: AssociationFacadeService = inject(AssociationFacadeService);
-  public apiUrl = environment.apiUrl;
   public isFollowAssociation$: Observable<boolean>;
+  public apiUrl: string = environment.apiUrl;
+  public isShowReportModal: boolean = false;
 
   ngOnInit(): void {
     this.isFollowAssociation$ = this._associationFacadeService.getIsFollowAssociation(this.association.id);
@@ -33,5 +35,9 @@ export class AssociationCardComponent implements OnInit {
         take(1)
       )
       .subscribe();
+  }
+
+  showReportModal(): void {
+    this.isShowReportModal = !this.isShowReportModal;
   }
 }

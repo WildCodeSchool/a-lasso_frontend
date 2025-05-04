@@ -3,15 +3,21 @@
     <img alt="Card" class="activity-image" [src]="apiUrl + association.associationProfileImageURL" />
     <div class="social">
       <a class="link" [href]="association.siteURL" target="_blank">Voir le site</a>
-      <p-button class="follow-button" (click)="toggleFollow()">
-        @if (isFollowAssociation$ | async) {
-          <i class="fa-solid fa-star"></i>
-        } @else {
-          <i class="fa-regular fa-star"></i>
-        }
+      <div class="follow-report-section">
+        <p-button class="follow-button" (click)="toggleFollow()">
+          @if (isFollowAssociation$ | async) {
+            <i class="fa-solid fa-star"></i>
+          } @else {
+            <i class="fa-regular fa-star"></i>
+          }
 
-        <p>Suivre</p>
-      </p-button>
+          <p>Suivre</p>
+        </p-button>
+        <p-button (click)="showReportModal()">
+          <i class="fa-solid fa-triangle-exclamation"></i>
+          <p>Signaler</p>
+        </p-button>
+      </div>
     </div>
   </ng-template>
   <ng-template #title>
@@ -36,3 +42,7 @@
     </div>
   </ng-template>
 </p-card>
+
+@if (isShowReportModal) {
+  <app-report-modal [isShowReportModal]="isShowReportModal" [association]="association"></app-report-modal>
+}

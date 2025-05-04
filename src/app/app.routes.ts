@@ -4,6 +4,8 @@ import { ActivityDetailsComponent } from './features/activity/pages/activity-det
 import { activityDetailsResolver } from './common/resolvers/activity-details.resolver';
 import { AssociationDetailsComponent } from './features/association/pages/association-details/association-details.component';
 import { associationResolver } from './common/resolvers/association.resolver';
+import { ReportHomePageComponent } from './features/report/pages/report-home-page/report-home-page.component';
+import { reportsResolver } from './common/resolvers/reports.resolver';
 import { ActivityCreationComponent } from './features/activity/pages/activity-creation/activity-creation.component';
 import { isLoggedInGuard } from './common/guards/is-logged-in.guard';
 import { isAssociationGuard } from './common/guards/is-association.guard';
@@ -17,6 +19,13 @@ export const routes: Routes = [
     path: 'activity/creation',
     canActivate: [isLoggedInGuard, isAssociationGuard],
     component: ActivityCreationComponent,
+  },
+  {
+    path: 'reports',
+    component: ReportHomePageComponent,
+    resolve: {
+      reports: reportsResolver,
+    },
   },
   {
     path: 'activity/:id',

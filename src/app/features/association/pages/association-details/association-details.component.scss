@@ -1,6 +1,12 @@
 .association-details-page {
   display: flex;
-  height: 80vh;
+  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  background-color: var(--background-color-light);
+  width: 90vw;
+  height: 85vh;
+  margin: auto;
   position: relative;
 
   .navigation {
@@ -10,38 +16,59 @@
     z-index: 1;
   }
 
-  .cards-activities {
+  .activities-association {
     display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 50%;
-    height: 100%;
-  }
-
-  .association {
-    margin-top: 30px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 50%;
-    height: 100%;
-  }
-
-  @media screen and (max-width: 900px) {
-    .hidden {
-      display: none;
-    }
-
-    .navigation {
-      right: 5%;
-    }
+    width: 100%;
+    gap: 2vw;
 
     .cards-activities {
-      width: 100%;
+      width: 50%;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+      height: 100%;
+      padding-bottom: 0;
+      box-sizing: border-box;
+      overflow-y: auto;
+      overflow-x: hidden;
+      position: relative;
+
+      .empty {
+        position: absolute;
+        top: 35%;
+        width: 100%;
+        text-align: center;
+        font-size: 18px;
+        font-style: italic;
+        color: var(--dai-secondary, #888);
+
+        i {
+          margin-right: 8px;
+        }
+      }
     }
 
     .association {
-      width: 100%;
+      width: 50%;
+      flex-grow: 1;
+    }
+
+    @media screen and (max-width: 900px) {
+      .hidden {
+        display: none;
+      }
+
+      .navigation {
+        right: 5%;
+      }
+
+      .cards-activities {
+        width: 100%;
+      }
+
+      .association {
+        width: 100%;
+      }
     }
   }
 }

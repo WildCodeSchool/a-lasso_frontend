@@ -1,4 +1,4 @@
-import { Component, ElementRef, inject, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, inject, Input, ViewChild } from '@angular/core';
 import { Activity, AssociationActivity } from '../../../activity/models/activity.model';
 import { environment } from '../../../../../environments/environment.development';
 import { TruncatePipe } from '../../../../common/pipes/TruncateString.pipe';
@@ -10,7 +10,6 @@ import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { selectActivities } from '../../../activity/store/activities.selector';
 import { Observable, take } from 'rxjs';
-import { ActivityFacadeService } from '../../../activity/services/activity-facade.service';
 import { getImageSource } from 'src/app/common/utils/image.utils';
 
 @Component({
@@ -19,22 +18,17 @@ import { getImageSource } from 'src/app/common/utils/image.utils';
   templateUrl: './popup-map.component.html',
   styleUrl: './popup-map.component.scss',
 })
-export class PopupMapComponent implements OnInit {
+export class PopupMapComponent {
   private _router: Router = inject(Router);
   private _store: Store = inject(Store);
-  private _activityFacadeService: ActivityFacadeService = inject(ActivityFacadeService);
 
   @Input() activity!: Activity;
+  @Input() isSavedActivity$!: Observable<boolean>;
   @Input() association!: AssociationActivity;
   @ViewChild('content', { static: true }) content!: ElementRef;
 
-  public isSavedActivity$: Observable<boolean>;
   public apiUrl: string = environment.apiUrl;
   public activityCountByAssociation: number = 0;
-
-  ngOnInit(): void {
-    this.isSavedActivity$ = this._activityFacadeService.getIsSavedActivity(this.activity.id);
-  }
 
   getImageSrc(): string {
     return getImageSource(this.activity);
