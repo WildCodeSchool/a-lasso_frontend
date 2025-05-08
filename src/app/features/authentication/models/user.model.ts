@@ -56,7 +56,7 @@ export type ActivitiesUserInfos = {
   isRegistered: boolean;
 };
 
-type Address = {
+export type Address = {
   house_number: string;
   street_name: string;
   adress_suffix: string | null;

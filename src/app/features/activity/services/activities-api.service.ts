@@ -7,6 +7,7 @@ import { UUIDTypes } from 'uuid';
 import { Message } from '../models/message.model';
 import { MessageCreation } from '../models/messageCreation';
 import { APIResponseToggleRegister } from '../models/api-reponse.model';
+import { NewActivityCreation } from '../models/activity-creation.model';
 
 @Injectable({
   providedIn: 'root',
@@ -42,5 +43,9 @@ export class ActivitiesApiService {
 
   postActivityMessage(message: MessageCreation): Observable<Message> {
     return this._http.post<Message>(`${this._apiUrl}/messages`, message);
+  }
+
+  publishNewActivity(newActivity: NewActivityCreation): Observable<Activity> {
+    return this._http.post<Activity>(`${this._apiUrl}/activities/publish`, newActivity);
   }
 }

@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit } from '@angular/core';
 import { ActivityFilterComponent } from '../../components/activity-filter/activity-filter.component';
 import { ActivityFacadeService } from '../../services/activity-facade.service';
 import { ActivityAddPhotoComponent } from '../../components/activity-add-photo/activity-add-photo.component';
@@ -16,6 +16,7 @@ import {
 } from 'src/app/features/authentication/constants/form.constants';
 import { MultipleInputFieldComponent } from 'src/app/common/components/multiple-input-field/multiple-input-field.component';
 import { photoRequiredValidator, themeRequiredValidator } from 'src/app/features/authentication/utils/form.validators';
+import { NewActivityCreation } from '../../models/activity-creation.model';
 
 @Component({
   selector: 'app-activity-creation',
@@ -24,8 +25,9 @@ import { photoRequiredValidator, themeRequiredValidator } from 'src/app/features
   styleUrl: './activity-creation.component.scss',
 })
 export class ActivityCreationComponent implements OnInit {
-  activityFacadeService: ActivityFacadeService = inject(ActivityFacadeService);
+  private _activityFacadeService: ActivityFacadeService = inject(ActivityFacadeService);
   private _fb: FormBuilder = new FormBuilder();
+  private _destroyRef = inject(DestroyRef);
 
   formThemeField = 'selectedThemesName';
 
@@ -45,7 +47,7 @@ export class ActivityCreationComponent implements OnInit {
 
   activityFields: InputFieldConfig[][] = [
     [{ name: 'title', label: "Titre de l'activité", placeholder: 'Ex : La maraude' }],
-    [{ name: 'requieredVoluntary', label: 'Volontaires requis', placeholder: 'Ex : 10' }],
+    [{ name: 'requestedVolunteers', label: 'Volontaires requis', placeholder: 'Ex : 10' }],
     [{ name: 'date', label: 'Date', placeholder: 'Ex : 26/09/2025', type: 'date' }],
     [{ name: 'hour', label: 'Heure', placeholder: 'Ex : 6h00' }],
     [{ name: 'zipCode', label: 'Code Postal', placeholder: 'Ex : 44000' }],
@@ -62,47 +64,36 @@ export class ActivityCreationComponent implements OnInit {
   ];
 
   ngOnInit(): void {
-    this.activityFacadeService.getActivityThemesFromApi();
+    this._activityFacadeService.getActivityThemesFromApi();
   }
 
   onSubmit(): void {
-    console.log(this.activityForm.value);
     this._triggerValidatorsCheck();
-    // const value = form.value;
-    //     const data: AssociationRegister = {
-    //       siret: value.siret,
-    //       name: value.nom,
-    //       email: value.email,
-    //       password: value.motDePasse,
-    //       mobile_phone: value.telephone,
-    //       address: {
-    //         house_number: value.adresseNumero || '',
-    //         street_name: value.adresseRue,
-    //         adress_suffix: value.adresseComplement || null,
-    //         zipCode: value.adresseCodePostal,
-    //         city: value.adresseVille,
-    //         country: value.adressePays,
-    //       },
-    //     };
-    //     this._authService
-    //       .registerAssociation(data)
-    //       .pipe(takeUntilDestroyed(this._destroyRef))
-    //       .subscribe((success: boolean) => {
-    //         if (success) this.hideModal();
-    //       });
-    //   }
+    this._publishActivity();
   }
-
-  // onSelectedThemeChanges(updatedSelectedThemesName: ThemeName[]): void {
-  //   this.activityForm.get('selectedThemesName')?.setValue(updatedSelectedThemesName);
-  //   // this.activityForm.get('selectedThemesName')?.markAsTouched(); // optional: for error display
-  //   // this.activityForm.get('selectedThemesName')?.updateValueAndValidity(); // triggers validation
-  // }
 
   private _triggerValidatorsCheck(): void {
     if (this.activityForm.invalid) {
       this.activityForm.markAllAsTouched();
       return;
     }
+  }
+
+  private _publishActivity(): void {
+    const formValue = this.activityForm.value;
+    const data: NewActivityCreation = {
+      associationId: formValue.title,
+      images: [formValue.photo_1, formValue.photo_2, formValue.photo_3],
+      title: formValue.title,
+      requestedVolunteers: formValue.requestedVolunteers,
+      date: formValue.date,
+      hour: formValue.hour,
+      zipCode: formValue.zipCode,
+      city: formValue.city,
+      themes: formValue.selectedThemesName,
+      description: formValue.description,
+    };
+
+    this._activityFacadeService.publishNewActivity(data);
   }
 }
