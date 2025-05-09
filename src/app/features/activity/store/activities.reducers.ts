@@ -10,14 +10,6 @@ export const activitiesReducer = createReducer(
 
   on(ActivityActions.setActivity, (state, { activity }) => [...state, activity]),
 
-  on(ActivityActions.updateFavoriteStatus, (state, { id, isSaved }) =>
-    state.map(activity => (activity.id === id ? { ...activity, isSaved } : activity))
-  ),
-
-  on(ActivityActions.updateRegisterStatus, (state, { id, isRegistered }) =>
-    state.map(activity => (activity.id === id ? { ...activity, isRegistered } : activity))
-  ),
-
   on(ActivityActions.updateActivityParticipants, (state, { id, participants }) =>
     state.map(activity => (activity.id === id ? { ...activity, participants } : activity))
   ),

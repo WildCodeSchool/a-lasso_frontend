@@ -4,7 +4,6 @@ import { AssociationLogin, UserLogin, UserType, VoluntaryLogin } from '../models
 import * as UserActions from '../store/user.actions';
 import * as UserSelectors from '../store/user.selectors';
 import * as ActivitiesActions from '../../activity/store/activities.actions';
-import * as AssociationActions from '../../association/store/association.actions';
 import { AuthService } from './auth.service';
 import { Router } from '@angular/router';
 import { ActivityFacadeService } from '../../activity/services/activity-facade.service';
@@ -83,17 +82,6 @@ export class AuthFacade {
             activityId: activity.activityId,
             isSaved: activity.isSaved,
             isRegistered: activity.isRegistered,
-          })
-        );
-      });
-    }
-
-    if (user.type === UserType.Voluntary) {
-      user.followedAssociations.forEach(association => {
-        this._store.dispatch(
-          AssociationActions.updateFollowStatus({
-            id: association.associationId,
-            isFollow: association.isFollow,
           })
         );
       });

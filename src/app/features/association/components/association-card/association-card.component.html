@@ -3,8 +3,8 @@
     <img alt="Card" class="activity-image" [src]="apiUrl + association.associationProfileImageURL" />
     <div class="social">
       <a class="link" [href]="association.siteURL" target="_blank">Voir le site</a>
-      <p-button class="follow-button" (click)="toggleFollow(association.id, association.isFollow)">
-        @if (association.isFollow) {
+      <p-button class="follow-button" (click)="toggleFollow()">
+        @if (isFollowAssociation$ | async) {
           <i class="fa-solid fa-star"></i>
         } @else {
           <i class="fa-regular fa-star"></i>

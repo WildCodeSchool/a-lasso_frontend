@@ -6,10 +6,6 @@ export const setActivities = createAction('[activities] setActivities', props<{ 
 
 export const setActivity = createAction('[activities] setActivity', props<{ activity: Activity }>());
 
-export const updateFavoriteStatus = createAction('[activities] updateFavoriteStatus', props<{ id: UUIDTypes; isSaved: boolean }>());
-
-export const updateRegisterStatus = createAction('[activities] updateRegisterStatus', props<{ id: UUIDTypes; isRegistered: boolean }>());
-
 export const updateActivityParticipants = createAction(
   '[activities] updateActivityParticipants',
   props<{ id: UUIDTypes; participants: Participant }>()
