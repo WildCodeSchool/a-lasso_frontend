@@ -28,6 +28,8 @@ export const routes: Routes = [
   {
     path: 'association/:id',
     component: AssociationDetailsComponent,
-    association: associationResolver,
+    resolve: {
+      association: associationResolver,
+    },
   },
 ];
