@@ -85,5 +85,18 @@ export const userReducer = createReducer(
         activitiesUserInfos: updated,
       } as VoluntaryLogin,
     };
-  })
+  }),
+
+  on(AuthActions.setNotificationMessages, (state, { activityId }) => ({
+    ...state,
+    userInfos:
+      state.userInfos && 'messageNotifications' in state.userInfos
+        ? {
+            ...state.userInfos,
+            messageNotifications: state.userInfos.messageNotifications.map(n =>
+              n.activityId === activityId ? { ...n, countMessagesNotRead: 0 } : n
+            ),
+          }
+        : state.userInfos,
+  }))
 );

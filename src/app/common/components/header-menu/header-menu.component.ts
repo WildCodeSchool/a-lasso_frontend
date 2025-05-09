@@ -4,12 +4,15 @@ import { Component, inject } from '@angular/core';
 import { Observable, map } from 'rxjs';
 import { AuthFacade } from 'src/app/features/authentication/services/auth-facade.service';
 import { environment } from 'src/environments/environment.development';
-import { UserType } from 'src/app/features/authentication/models/user.model';
+import { MessageNotification, UserType } from 'src/app/features/authentication/models/user.model';
+import { BadgeComponent } from '../badge/badge.component';
+import { UUIDTypes } from 'uuid';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-header-menu',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, BadgeComponent],
   templateUrl: './header-menu.component.html',
   styleUrl: './header-menu.component.scss',
   animations: [
@@ -24,8 +27,10 @@ import { UserType } from 'src/app/features/authentication/models/user.model';
 })
 export class HeaderMenuComponent {
   private _auth = inject(AuthFacade);
+  private _router = inject(Router);
 
   isOpen: boolean = false;
+  isMessagesOpen: boolean = false;
   apiUrl: string = environment.apiUrl;
 
   user$ = this._auth.user$;
@@ -40,6 +45,20 @@ export class HeaderMenuComponent {
     })
   );
 
+  countGlobalNotifications$: Observable<number | null> = this.user$.pipe(
+    map(user => {
+      if (!user) return null;
+      return user.messageNotifications.reduce((total, notification) => total + notification.countMessagesNotRead, 0);
+    })
+  );
+
+  activitiesWithUnreadMessages$: Observable<MessageNotification[] | null> = this.user$.pipe(
+    map(user => {
+      if (!user) return null;
+      return user.messageNotifications;
+    })
+  );
+
   toggleMenu(): void {
     this.isOpen = !this.isOpen;
   }
@@ -47,5 +66,14 @@ export class HeaderMenuComponent {
   logout(): void {
     this._auth.logout();
     this.isOpen = false;
+  }
+
+  toggleMessages(event: Event): void {
+    event.stopPropagation();
+    this.isMessagesOpen = !this.isMessagesOpen;
+  }
+
+  navigateToActivityMessages(activityId: UUIDTypes): void {
+    this._router.navigate([`/activity/${activityId}`]);
   }
 }

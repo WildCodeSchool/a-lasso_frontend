@@ -14,6 +14,8 @@ import { ActivitiesUserInfos } from '../../../authentication/models/user.model';
 import { Activity } from '../../models/activity.model';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Association } from 'src/app/features/association/models/association.model';
+import { UUIDTypes } from 'uuid';
+import { setNotificationMessages } from '../../../authentication/store/user.actions';
 
 @Component({
   selector: 'app-activity-details',
@@ -26,7 +28,6 @@ export class ActivityDetailsComponent implements OnInit {
   private _route: ActivatedRoute = inject(ActivatedRoute);
   private _store: Store = inject(Store);
   private _destroyRef = inject(DestroyRef);
-  activityId!: string;
   activity!: Activity;
   association!: Association;
 
@@ -36,9 +37,9 @@ export class ActivityDetailsComponent implements OnInit {
   screenWidth: number = window.innerWidth;
 
   ngOnInit(): void {
-    this._updateNavigationItems(window.innerWidth);
     this.activity = this._route.snapshot.data['activityDetails']['activity'];
     this.association = this._route.snapshot.data['activityDetails']['association'];
+    this._updateNavigationItems(window.innerWidth);
   }
 
   @HostListener('window:resize', ['$event'])
@@ -50,6 +51,13 @@ export class ActivityDetailsComponent implements OnInit {
 
   handleNavigation(chosenNavigation: string): void {
     this.chosenNavigation = chosenNavigation;
+    if (chosenNavigation === 'Messages') {
+      this.updateNotificationMessages(this.activity.id);
+    }
+  }
+
+  updateNotificationMessages(activityId: UUIDTypes): void {
+    this._store.dispatch(setNotificationMessages({ activityId }));
   }
 
   private _updateNavigationItems(width: number): void {
@@ -72,7 +80,7 @@ export class ActivityDetailsComponent implements OnInit {
       const activitiesUserInfos$: Observable<ActivitiesUserInfos[]> = this._store.select(selectActivitiesUserInfos);
 
       activitiesUserInfos$.pipe(takeUntilDestroyed(this._destroyRef)).subscribe((userInfos): void => {
-        const isRegistered: boolean = userInfos.find((activity): boolean => activity.activityId === this.activityId)?.isRegistered;
+        const isRegistered: boolean = userInfos.find((activity): boolean => activity.activityId === this.activity.id)?.isRegistered;
         setNavigation(!!isRegistered);
       });
     } else {
