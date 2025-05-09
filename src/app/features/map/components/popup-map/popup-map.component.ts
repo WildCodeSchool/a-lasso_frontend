@@ -35,6 +35,10 @@ export class PopupMapComponent implements OnInit {
     this.isSavedActivity$ = this._activityFacadeService.getIsSavedActivity(this.activity.id);
   }
 
+  getImageSrc(): string {
+    return this.activity.images[0]?.url ? this.apiUrl + this.activity.images[0]?.url : this.activity.images[0]?.base64;
+  }
+
   public setCountActivityOfAssociation(association: AssociationActivity): void {
     this.association = association;
     this._store

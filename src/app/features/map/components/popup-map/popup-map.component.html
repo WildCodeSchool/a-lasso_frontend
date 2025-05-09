@@ -1,60 +1,59 @@
 <div #content class="global-popup">
   @if (activity) {
-    <!-- // TODO: à remplacer par app-activity-card-->
-    <div
-      role="button"
-      tabindex="0"
-      class="activity-popup"
-      (keydown.enter)="navigate('activity', activity.id)"
-      (click)="navigate('activity', activity.id)">
-      <img class="activity-img" [src]="apiUrl + activity.images[0]" [alt]="activity.title" />
-      <div>
-        <div class="activity-title">
-          <h3>{{ activity.title }}</h3>
-          <app-inscription-badge [participants]="activity.participants"></app-inscription-badge>
+  <!-- // TODO: à remplacer par app-activity-card-->
+  <div
+    role="button"
+    tabindex="0"
+    class="activity-popup"
+    (keydown.enter)="navigate('activity', activity.id)"
+    (click)="navigate('activity', activity.id)">
+    <img class="activity-img" [src]="getImageSrc()" [alt]="activity.title" />
+    <div>
+      <div class="activity-title">
+        <h3>{{ activity.title }}</h3>
+        <app-inscription-badge [participants]="activity.participants"></app-inscription-badge>
+      </div>
+      <div class="activity-description">
+        <p>{{ activity.description | truncate : 100 }}</p>
+        <div class="info-asso">
+          <img [src]="apiUrl + activity.association.logo" [alt]="activity.association.name" />
+          <p>{{ activity.association.name }}</p>
         </div>
-        <div class="activity-description">
-          <p>{{ activity.description | truncate: 100 }}</p>
-          <div class="info-asso">
-            <img [src]="apiUrl + activity.association.logo" [alt]="activity.association.name" />
-            <p>{{ activity.association.name }}</p>
+      </div>
+
+      <div class="footer-description">
+        <div class="footer-details">
+          <div class="location">
+            <i class="fa-solid fa-location-dot"></i>
+            <p class="mini-p">{{ activity.location.city }}</p>
+          </div>
+          <div class="date">
+            <i class="fa-solid fa-calendar-days"></i>
+            <p class="mini-p">{{ activity.date | date : 'dd/MM/yyyy' }}</p>
           </div>
         </div>
 
-        <div class="footer-description">
-          <div class="footer-details">
-            <div class="location">
-              <i class="fa-solid fa-location-dot"></i>
-              <p class="mini-p">{{ activity.location.city }}</p>
-            </div>
-            <div class="date">
-              <i class="fa-solid fa-calendar-days"></i>
-              <p class="mini-p">{{ activity.date | date: 'dd/MM/yyyy' }}</p>
-            </div>
-          </div>
-
-          <app-favorite-heart [activityId]="activity.id" [isSaved]="isSavedActivity$ | async"></app-favorite-heart>
-        </div>
+        <app-favorite-heart [activityId]="activity.id" [isSaved]="isSavedActivity$ | async"></app-favorite-heart>
       </div>
     </div>
-  }
-  @if (association) {
-    <div
-      class="association-popup"
-      tabindex="0"
-      (keydown.enter)="navigate('association', association.id)"
-      (click)="navigate('association', association.id)">
-      <img class="association-img" [src]="apiUrl + association.logo" [alt]="association.name" />
-      <div>
-        <h3>{{ association.name }}</h3>
-        @if (activityCountByAssociation > 1) {
-          <p>{{ activityCountByAssociation }} activitées proposées actuellement par l'association</p>
-        } @else if (activityCountByAssociation === 1) {
-          <p>{{ activityCountByAssociation }} activitée proposée actuellement par l'association</p>
-        } @else {
-          <p>Aucune activité proposée actuellement par l'association</p>
-        }
-      </div>
+  </div>
+  } @if (association) {
+  <div
+    class="association-popup"
+    tabindex="0"
+    (keydown.enter)="navigate('association', association.id)"
+    (click)="navigate('association', association.id)">
+    <img class="association-img" [src]="apiUrl + association.logo" [alt]="association.name" />
+    <div>
+      <h3>{{ association.name }}</h3>
+      @if (activityCountByAssociation > 1) {
+      <p>{{ activityCountByAssociation }} activitées proposées actuellement par l'association</p>
+      } @else if (activityCountByAssociation === 1) {
+      <p>{{ activityCountByAssociation }} activitée proposée actuellement par l'association</p>
+      } @else {
+      <p>Aucune activité proposée actuellement par l'association</p>
+      }
     </div>
+  </div>
   }
 </div>
