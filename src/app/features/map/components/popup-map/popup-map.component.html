@@ -33,7 +33,7 @@
             </div>
           </div>
 
-          <app-favorite-heart [activityId]="activity.id" [isSaved]="activity.isSaved"></app-favorite-heart>
+          <app-favorite-heart [activityId]="activity.id" [isSaved]="isSavedActivity$ | async"></app-favorite-heart>
         </div>
       </div>
     </div>
