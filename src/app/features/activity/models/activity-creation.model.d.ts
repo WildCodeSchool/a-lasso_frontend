@@ -7,14 +7,15 @@ type Image = {
 };
 
 export type NewActivityCreation = {
-  associationId: UUIDTypes;
-  images: Images[];
+  images: Image[];
   title: string;
   requestedVolunteers: number;
-  date: string;
-  hour: string;
+  dateTime: string; // "yyyy-MM-dd'T'HH:mm:ss"
+  houseNumber: number;
+  streetName: string;
   zipCode: string;
   city: string;
+  country: string;
   themes: ThemeName[];
   description: string;
 };

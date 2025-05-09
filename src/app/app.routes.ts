@@ -20,10 +20,10 @@ export const routes: Routes = [
   },
   {
     path: 'activity/:id',
-    component: ActivityDetailsComponent,
     resolve: {
       activityDetails: activityDetailsResolver,
     },
+    component: ActivityDetailsComponent,
   },
   {
     path: 'association/:id',

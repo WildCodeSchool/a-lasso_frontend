@@ -1,5 +1,5 @@
 import { Component, inject, Input, OnInit } from '@angular/core';
-import { Activity, Participant } from '../../models/activity.model';
+import { Activity, Participant, Image } from '../../models/activity.model';
 import { ActivityFacadeService } from '../../services/activity-facade.service';
 import { AsyncPipe, DatePipe } from '@angular/common';
 import { environment } from 'src/environments/environment.development';
@@ -40,5 +40,9 @@ export class ActivityDescriptionComponent implements OnInit {
         take(1)
       )
       .subscribe();
+  }
+
+  getImageSrc(image: Image): string {
+    return image?.url ? this.apiUrl + image.url : image?.base64;
   }
 }

@@ -30,4 +30,8 @@ export class ActivityCardComponent implements OnInit {
     this.isSavedActivity$ = this._activityFacadeService.getIsSavedActivity(this.activity.id);
     this.voluntariesRegistered$ = this._activityFacadeService.getVoluntariesRegisteredToAnActivity(this.activity.id);
   }
+
+  getImageSrc(): string {
+    return this.activity.images[0]?.url ? this.apiUrl + this.activity.images[0]?.url : this.activity.images[0]?.base64;
+  }
 }

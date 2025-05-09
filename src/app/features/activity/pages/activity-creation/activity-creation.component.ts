@@ -1,4 +1,4 @@
-import { Component, DestroyRef, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { ActivityFilterComponent } from '../../components/activity-filter/activity-filter.component';
 import { ActivityFacadeService } from '../../services/activity-facade.service';
 import { ActivityAddPhotoComponent } from '../../components/activity-add-photo/activity-add-photo.component';
@@ -12,11 +12,11 @@ import {
   MIN_LENGTH,
   NUMBER_REGEX,
   POSTAL_CODE_REGEX,
-  DATE_REGEX,
 } from 'src/app/features/authentication/constants/form.constants';
 import { MultipleInputFieldComponent } from 'src/app/common/components/multiple-input-field/multiple-input-field.component';
 import { photoRequiredValidator, themeRequiredValidator } from 'src/app/features/authentication/utils/form.validators';
 import { NewActivityCreation } from '../../models/activity-creation.model';
+import { format } from 'date-fns';
 
 @Component({
   selector: 'app-activity-creation',
@@ -27,14 +27,13 @@ import { NewActivityCreation } from '../../models/activity-creation.model';
 export class ActivityCreationComponent implements OnInit {
   private _activityFacadeService: ActivityFacadeService = inject(ActivityFacadeService);
   private _fb: FormBuilder = new FormBuilder();
-  private _destroyRef = inject(DestroyRef);
 
   formThemeField = 'selectedThemesName';
 
   activityForm: FormGroup = this._fb.group({
     title: ['', [Validators.required, Validators.maxLength(MAX_LENGTH), Validators.minLength(MIN_LENGTH)]],
-    requieredVoluntary: ['', [Validators.required, Validators.pattern(NUMBER_REGEX)]],
-    date: ['', [Validators.required, Validators.pattern(DATE_REGEX)]],
+    requestedVolunteers: ['', [Validators.required, Validators.pattern(NUMBER_REGEX)]],
+    date: ['', [Validators.required]], // Validators.pattern(DATE_REGEX)]
     hour: ['', [Validators.required, Validators.pattern(HOUR_REGEX)]],
     zipCode: ['', [Validators.required, Validators.pattern(POSTAL_CODE_REGEX)]],
     city: ['', [Validators.required]],
@@ -49,7 +48,7 @@ export class ActivityCreationComponent implements OnInit {
     [{ name: 'title', label: "Titre de l'activité", placeholder: 'Ex : La maraude' }],
     [{ name: 'requestedVolunteers', label: 'Volontaires requis', placeholder: 'Ex : 10' }],
     [{ name: 'date', label: 'Date', placeholder: 'Ex : 26/09/2025', type: 'date' }],
-    [{ name: 'hour', label: 'Heure', placeholder: 'Ex : 6h00' }],
+    [{ name: 'hour', label: 'Heure', placeholder: 'Ex : 06:00' }],
     [{ name: 'zipCode', label: 'Code Postal', placeholder: 'Ex : 44000' }],
     [{ name: 'city', label: 'Ville', placeholder: 'Ex : Nantes' }],
   ];
@@ -81,15 +80,19 @@ export class ActivityCreationComponent implements OnInit {
 
   private _publishActivity(): void {
     const formValue = this.activityForm.value;
+
     const data: NewActivityCreation = {
-      associationId: formValue.title,
-      images: [formValue.photo_1, formValue.photo_2, formValue.photo_3],
+      images: [formValue.photo_1, formValue.photo_2, formValue.photo_3]
+        .filter((img): img is string => typeof img === 'string')
+        .map(base64 => ({ id: null, base64 })),
       title: formValue.title,
       requestedVolunteers: formValue.requestedVolunteers,
-      date: formValue.date,
-      hour: formValue.hour,
+      dateTime: format(new Date(formValue.date), 'yyyy-MM-dd') + 'T' + formValue.hour + ':00',
+      houseNumber: 1, // TODO ADD FORM FIELD FOR THAT OR REPLACE BY NEW SYSTEM TO SEARCH ADRESS (LIB ?)
+      streetName: 'rue de la massonnière', // TODO ADD FORM FIELD FOR THAT OR REPLACE BY NEW SYSTEM TO SEARCH ADRESS (LIB ?)
       zipCode: formValue.zipCode,
       city: formValue.city,
+      country: 'France', // TODO ADD FORM FIELD FOR THAT OR REPLACE BY NEW SYSTEM TO SEARCH ADRESS (LIB ?)
       themes: formValue.selectedThemesName,
       description: formValue.description,
     };
