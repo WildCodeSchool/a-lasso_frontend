@@ -1,0 +1,19 @@
+<div class="association-details-page">
+  <div class="navigation">
+    @if (navigationItems.length) {
+      <app-toggle-menu [tabs]="navigationItems" [activeTabValue]="0" (chosenTab)="handleNavigation($event)"></app-toggle-menu>
+    }
+  </div>
+
+  <div class="cards-activities" [ngClass]="chosenNavigation !== 'Association' ? '' : 'hidden'">
+    @for (activity of activities$ | async; track activity.id) {
+      <app-activity-card [activity]="activity"></app-activity-card>
+    } @empty {
+      <p>Aucune activité proposée par l'association en ce moment!</p>
+    }
+  </div>
+
+  <div class="association" [ngClass]="chosenNavigation === 'Association' ? '' : 'hidden'">
+    <app-association-card [association]="association"></app-association-card>
+  </div>
+</div>

@@ -1,0 +1,47 @@
+.association-details-page {
+  display: flex;
+  height: 80vh;
+  position: relative;
+
+  .navigation {
+    position: absolute;
+    right: 18%;
+    top: 2%;
+    z-index: 1;
+  }
+
+  .cards-activities {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50%;
+    height: 100%;
+  }
+
+  .association {
+    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50%;
+    height: 100%;
+  }
+
+  @media screen and (max-width: 900px) {
+    .hidden {
+      display: none;
+    }
+
+    .navigation {
+      right: 5%;
+    }
+
+    .cards-activities {
+      width: 100%;
+    }
+
+    .association {
+      width: 100%;
+    }
+  }
+}
