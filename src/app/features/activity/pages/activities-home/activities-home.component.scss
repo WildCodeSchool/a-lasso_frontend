@@ -4,14 +4,37 @@
   flex-wrap: wrap;
   justify-content: space-around;
   background-color: var(--background-color-light);
-  width: 90vw;
+  width: 90%;
   height: 85vh;
   margin: auto;
   position: relative;
 
   .search-activities {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     height: 20%;
     width: 100%;
+
+    .input-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+
+      .multiple-input-demo {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+        gap: 25px;
+
+        h3 {
+          color: var(--primary-light-color);
+        }
+      }
+    }
   }
 
   .cards-and-map {
@@ -75,27 +98,6 @@
       bottom: 0;
       left: 50%;
       transform: translateX(-50%);
-    }
-  }
-}
-
-.container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 0 auto 10px;
-  width: 70vw;
-
-  .multiple-input-demo {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
-    gap: 25px;
-
-    h3 {
-      color: var(--primary-light-color);
     }
   }
 }

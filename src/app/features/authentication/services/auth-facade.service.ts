@@ -7,7 +7,7 @@ import * as ActivitiesActions from '../../activity/store/activities.actions';
 import { AuthService } from './auth.service';
 import { Router } from '@angular/router';
 import { ActivityFacadeService } from '../../activity/services/activity-facade.service';
-import { take } from 'rxjs';
+import { Observable, take } from 'rxjs';
 import { selectActivities } from '../../activity/store/activities.selector';
 import { TAKE_1 } from 'src/app/common/constants/observables.constants';
 import { ACTIVITY_LENGTH } from '../constants/auth.constants';
@@ -22,7 +22,7 @@ export class AuthFacade {
   private _activityFacade = inject(ActivityFacadeService);
   private _router = inject(Router);
 
-  readonly user$ = this._store.select(UserSelectors.selectUser);
+  readonly user$: Observable<VoluntaryLogin | AssociationLogin | null> = this._store.select(UserSelectors.selectUser);
   readonly isAuthenticated$ = this._store.select(UserSelectors.selectIsAuthenticated);
   readonly error$ = this._store.select(UserSelectors.selectLoginError);
 

@@ -1,0 +1,31 @@
+<div class="activity-creation-container">
+  <header>
+    <h2>Créer une nouvelle activité</h2>
+  </header>
+
+  <form [formGroup]="activityForm" class="form" (ngSubmit)="onSubmit()">
+    <div class="informations-container">
+      <section class="add-photo-container">
+        <app-activity-add-photo [formGroup]="activityForm"></app-activity-add-photo>
+      </section>
+
+      <div class="details-inputs-areas">
+        <section class="add-informations-container">
+          @for (activityField of activityFields; track $index) {
+            <app-multiple-input-field class="information-field" [fieldConfigs]="activityField" [formGroup]="activityForm"></app-multiple-input-field>
+          }
+        </section>
+        <section class="theme-selection-container">
+          <app-activity-filter [formGroup]="activityForm" [formThemeField]="formThemeField"></app-activity-filter>
+        </section>
+        <section class="description-container">
+          <app-multiple-input-field class="description-field" [fieldConfigs]="descriptionFieldConfigs" [formGroup]="activityForm" />
+        </section>
+      </div>
+
+      <section class="action-buttons-container">
+        <app-single-button [id]="1" type="submit" label="Publier" ariaLabel="publier"> </app-single-button>
+      </section>
+    </div>
+  </form>
+</div>

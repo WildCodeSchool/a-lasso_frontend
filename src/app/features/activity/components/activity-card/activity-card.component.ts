@@ -9,6 +9,7 @@ import { AsyncPipe, DatePipe } from '@angular/common';
 import { Card } from 'primeng/card';
 import { Observable } from 'rxjs';
 import { ActivityFacadeService } from '../../services/activity-facade.service';
+import { getImageSource } from 'src/app/common/utils/image.utils';
 
 @Component({
   selector: 'app-activity-card',
@@ -29,5 +30,9 @@ export class ActivityCardComponent implements OnInit {
   ngOnInit(): void {
     this.isSavedActivity$ = this._activityFacadeService.getIsSavedActivity(this.activity.id);
     this.voluntariesRegistered$ = this._activityFacadeService.getVoluntariesRegisteredToAnActivity(this.activity.id);
+  }
+
+  getImageSrc(): string {
+    return getImageSource(this.activity);
   }
 }

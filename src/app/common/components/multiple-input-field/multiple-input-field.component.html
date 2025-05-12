@@ -1,0 +1,96 @@
+<div class="input-wrapper" [formGroup]="formGroup || null">
+  <div class="search-container">
+    @for (field of inputConfigs; track field.label; let i = $index; let isLast = $last) {
+      <div class="input-container">
+        <div class="field-group">
+          <p-inputGroup>
+            @if (field.type === 'date') {
+              <p-iftalabel class="custom-iftalabel calendar-wrapper" [ngClass]="{ focused: focusedIndex === i }">
+                <p-calendar
+                  [formControlName]="field.name"
+                  [(ngModel)]="field.value"
+                  (onFocus)="focusedIndex = i"
+                  (onBlur)="focusedIndex = null"
+                  [inputId]="'input-' + i"
+                  [placeholder]="field.placeholder"
+                  [showIcon]="true"
+                  inputStyleClass="custom-calendar-input"
+                  dateFormat="dd/mm/yy"
+                  (ngModelChange)="emitValues()" />
+                @if (field.value) {
+                  <button class="clear-btn" type="button" (click)="clearInput(i)">
+                    <i class="fa-solid fa-xmark"></i>
+                  </button>
+                }
+                <label [for]="'input-' + i">{{ field.label }}</label>
+              </p-iftalabel>
+            } @else {
+              <p-iftalabel class="custom-iftalabel">
+                @if (formGroup) {
+                  @if (field.type === 'textArea') {
+                    <textarea
+                      pInputTextarea
+                      [id]="'input-' + i"
+                      [placeholder]="field.placeholder"
+                      [formControlName]="field.name"
+                      rows="4"
+                      class="custom-textarea"
+                      (ngModelChange)="emitValues()"></textarea>
+                  } @else {
+                    <input
+                      pInputText
+                      [id]="'input-' + i"
+                      [placeholder]="field.placeholder"
+                      [type]="field.type"
+                      [formControlName]="field.name"
+                      (ngModelChange)="emitValues()" />
+                  }
+                } @else {
+                  @if (field.type === 'textArea') {
+                    <textarea
+                      pInputTextarea
+                      [id]="'input-' + i"
+                      [placeholder]="field.placeholder"
+                      [(ngModel)]="field.value"
+                      rows="4"
+                      class="custom-textarea"
+                      (ngModelChange)="emitValues()"></textarea>
+                  } @else {
+                    <input
+                      pInputText
+                      [id]="'input-' + i"
+                      [placeholder]="field.placeholder"
+                      [type]="field.type"
+                      [(ngModel)]="field.value"
+                      (ngModelChange)="emitValues()" />
+                  }
+                }
+                @if (field.value) {
+                  <button class="clear-btn" type="button" (click)="clearInput(i)">
+                    <i class="fa-solid fa-xmark"></i>
+                  </button>
+                }
+                <label [for]="'input-' + i">{{ field.label }}</label>
+              </p-iftalabel>
+            }
+          </p-inputGroup>
+        </div>
+
+        @if (formGroup?.get(field.name)?.invalid && formGroup?.get(field.name)?.touched) {
+          <div class="error-message">
+            <app-input-field-error [control]="formGroup.get(field.name)" [fieldName]="field.name" />
+          </div>
+        }
+        @if (!isLast) {
+          <div class="separator"></div>
+        }
+      </div>
+    }
+  </div>
+
+  @if (showSearchButton) {
+    <button pButton type="button" class="search-button">
+      <i class="fa-solid fa-magnifying-glass"></i>
+    </button>
+  }
+</div>

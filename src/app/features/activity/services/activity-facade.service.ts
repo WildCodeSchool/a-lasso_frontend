@@ -16,6 +16,7 @@ import { updateActivitiesUserInfos } from '../../authentication/store/user.actio
 import { TAKE_1 } from 'src/app/common/constants/observables.constants';
 import { selectActivitiesUserInfos } from '../../authentication/store/user.selectors';
 import { ActivitiesUserInfos } from '../../authentication/models/user.model';
+import { NewActivityCreation } from '../models/activity-creation.model';
 
 @Injectable({
   providedIn: 'root',
@@ -168,6 +169,22 @@ export class ActivityFacadeService {
           this._toast.add({
             severity: 'success',
             summary: 'Message envoyé !',
+          });
+        })
+      )
+      .subscribe();
+  }
+
+  publishNewActivity(newActivity: NewActivityCreation): void {
+    this._activitiesApi
+      .publishNewActivity(newActivity)
+      .pipe(
+        tap((activity: Activity): void => {
+          this._store.dispatch(setActivity({ activity: activity }));
+
+          this._toast.add({
+            severity: 'success',
+            summary: 'Activité publiée !',
           });
         })
       )

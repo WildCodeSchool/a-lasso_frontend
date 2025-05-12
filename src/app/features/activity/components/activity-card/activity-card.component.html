@@ -1,7 +1,7 @@
 <div class="card-wrapper">
   <p-card class="card p-slideinup" [routerLink]="['/activity', activity.id]">
     <ng-template #header>
-      <img class="w-full activity-image" [src]="apiUrl + activity.images[0]" [alt]="activity.title" />
+      <img class="w-full activity-image" [src]="getImageSrc()" [alt]="activity.title" />
     </ng-template>
     <ng-template #title>
       <div class="header-description">

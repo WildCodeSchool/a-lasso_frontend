@@ -5,6 +5,12 @@
         @if (control.errors?.['required']) {
           <p>Ce champ est requis</p>
         }
+        @if (control.errors?.['photoRequired']) {
+          <p>Vous devez ajouter une photo</p>
+        }
+        @if (control.errors?.['themeRequired']) {
+          <p>Vous devez sélectionner au moins un thème</p>
+        }
         @if (control.errors?.['email']) {
           <p>Adresse e-mail invalide</p>
         }
@@ -25,16 +31,19 @@
             @case ('adresseNumero') {
               <p>Numéro de voie invalide</p>
             }
+            @case ('requieredVoluntary') {
+              <p>La valeur doit un nombre entier</p>
+            }
             @default {
               <p>Format invalide</p>
             }
           }
-          @if (control.errors?.['minlength']) {
-            <p>Minimum {{ control.errors['minlength'].requiredLength }} caractères (actuellement {{ control.errors['minlength'].actualLength }})</p>
-          }
-          @if (control.errors?.['maxlength']) {
-            <p>Maximum {{ control.errors['maxlength'].requiredLength }} caractères (actuellement {{ control.errors['maxlength'].actualLength }})</p>
-          }
+        }
+        @if (control.errors?.['minlength']) {
+          <p>Minimum {{ control.errors['minlength'].requiredLength }} caractères (actuellement {{ control.errors['minlength'].actualLength }})</p>
+        }
+        @if (control.errors?.['maxlength']) {
+          <p>Maximum {{ control.errors['maxlength'].requiredLength }} caractères (actuellement {{ control.errors['maxlength'].actualLength }})</p>
         }
       </div>
     }

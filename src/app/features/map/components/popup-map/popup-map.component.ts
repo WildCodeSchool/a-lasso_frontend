@@ -11,6 +11,7 @@ import { Store } from '@ngrx/store';
 import { selectActivities } from '../../../activity/store/activities.selector';
 import { Observable, take } from 'rxjs';
 import { ActivityFacadeService } from '../../../activity/services/activity-facade.service';
+import { getImageSource } from 'src/app/common/utils/image.utils';
 
 @Component({
   selector: 'app-popup-map',
@@ -33,6 +34,10 @@ export class PopupMapComponent implements OnInit {
 
   ngOnInit(): void {
     this.isSavedActivity$ = this._activityFacadeService.getIsSavedActivity(this.activity.id);
+  }
+
+  getImageSrc(): string {
+    return getImageSource(this.activity);
   }
 
   public setCountActivityOfAssociation(association: AssociationActivity): void {

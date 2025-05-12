@@ -31,11 +31,16 @@ export type Participant = {
   max: number;
 };
 
+export type Image = {
+  base64: string;
+  url: string;
+};
+
 export type Activity = {
   id: string;
   title: string;
   description: string;
-  images: string[];
+  images: Image[];
   association: AssociationActivity;
   location: Localisation;
   date: Date;

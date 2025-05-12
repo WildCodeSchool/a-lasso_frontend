@@ -5,6 +5,11 @@
   min-height: 100vh;
   white-space: pre-line;
 
+  .outlet-container {
+    max-width: 1920px;
+    margin: auto;
+  }
+
   .push-footer {
     flex-grow: 1;
   }

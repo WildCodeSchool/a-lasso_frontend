@@ -50,6 +50,26 @@
     }
   }
 
+  ::ng-deep .add-activity-button {
+    // background-color: var(--primary-light-color);
+    background-color: var(--background-color-light);
+    color: var(--primary-light-color);
+    border: none;
+    box-shadow: none;
+
+    // color: var(--background-color-white);
+    width: auto;
+    height: auto;
+
+    &:hover {
+      transform: none;
+      text-decoration: underline;
+      background-color: var(--background-color-white) !important;
+      color: var(--primary-light-color);
+      transition: all 0.2 ease;
+    }
+  }
+
   ::ng-deep .p-button.defaultBlue.selected {
     background-color: var(--background-color-white) !important;
     color: var(--primary-light-color);

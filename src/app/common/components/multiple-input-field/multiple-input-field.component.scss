@@ -1,8 +1,8 @@
 .input-wrapper {
   display: flex;
   position: relative;
-  transform: translateX(-25px);
   z-index: 1100;
+  margin-bottom: 15px;
   .search-container {
     display: flex;
     align-items: center;
@@ -13,13 +13,27 @@
     border-bottom-left-radius: 10px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     padding: 5px;
-    width: 50vw;
+    width: 100%;
+    height: 100%;
 
-    .field-group {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
+    .input-container {
+      width: 100%;
       position: relative;
+
+      .field-group {
+        background: var(--background-color-white);
+        z-index: 1;
+      }
+
+      .error-message {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        font-size: 12px;
+        margin-top: 1px;
+        z-index: 2;
+        max-width: 100%;
+      }
 
       .custom-iftalabel {
         width: 100%;
@@ -73,6 +87,29 @@
           &:hover {
             color: var(--primary-light-color);
           }
+        }
+      }
+
+      .custom-textarea {
+        width: 100%;
+        height: 100%;
+        resize: none;
+        padding: 25px 10px 5px 10px;
+        font-size: 14px;
+        font-family: inherit;
+        border: none;
+        box-shadow: none;
+        background: transparent;
+
+        &:focus {
+          outline: none;
+          box-shadow: none;
+          z-index: 0;
+        }
+
+        &::placeholder {
+          color: var(--font-color-grey);
+          font-size: 14px;
         }
       }
 

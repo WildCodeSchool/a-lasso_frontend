@@ -1,23 +1,38 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CalendarModule } from 'primeng/calendar';
 import { IftaLabelModule } from 'primeng/iftalabel';
 import { InputGroupModule } from 'primeng/inputgroup';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 import { InputTextModule } from 'primeng/inputtext';
 import { InputFieldConfig } from 'src/app/common/models/input.models';
+import { InputFieldErrorComponent } from '../input-field-error/input-field-error.component';
 
 @Component({
   selector: 'app-multiple-input-field',
   standalone: true,
-  imports: [CommonModule, FormsModule, IftaLabelModule, InputTextModule, InputGroupModule, InputGroupAddonModule, CalendarModule],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    FormsModule,
+    IftaLabelModule,
+    InputTextModule,
+    InputGroupModule,
+    InputGroupAddonModule,
+    CalendarModule,
+    InputFieldErrorComponent,
+  ],
   templateUrl: './multiple-input-field.component.html',
   styleUrls: ['./multiple-input-field.component.scss'],
 })
 export class MultipleInputFieldComponent implements OnChanges {
   @Output() inputValuesChanged = new EventEmitter<Record<string, string>>();
   @Input() fieldConfigs: InputFieldConfig[] = [];
+  @Input() showSearchButton: boolean = false;
+  @Input() formGroup?: FormGroup;
+
+  // https://angular.fr/forms/ng-model-group.html
 
   focusedIndex: number | null = null;
   inputConfigs: { name: string; label: string; placeholder: string; type: string; value: string }[] = [];

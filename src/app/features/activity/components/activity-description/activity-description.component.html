@@ -17,7 +17,7 @@
     <div class="activity-images">
       @for (image of activity.images; track $index) {
         <div class="image-container">
-          <img [src]="apiUrl + image" [alt]="activity.title" />
+          <img [src]="getImageSrc($index)" [alt]="activity.title" />
         </div>
       }
     </div>

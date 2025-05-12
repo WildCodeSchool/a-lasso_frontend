@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MultipleInputFieldComponent } from 'src/app/common/components/multiple-input-field/multiple-input-field/multiple-input-field.component';
 import { ActivitySearchFilters } from '../../models/activity.model';
+import { MultipleInputFieldComponent } from 'src/app/common/components/multiple-input-field/multiple-input-field.component';
 
 @Component({
   selector: 'app-activity-filter-search',
