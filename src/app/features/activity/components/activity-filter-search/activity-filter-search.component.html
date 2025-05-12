@@ -1,4 +1,8 @@
 <div class="activity-filter-search">
-  <app-multiple-input-field [fieldConfigs]="customFieldConfigs" [showSearchButton]="true" (inputValuesChanged)="onInputValuesChanged($event)">
+  <app-multiple-input-field
+    [fieldConfigs]="customFieldConfigs"
+    [showSearchButton]="true"
+    (inputValuesChanged)="onInputValuesChanged()"
+    [formGroup]="formGroup">
   </app-multiple-input-field>
 </div>

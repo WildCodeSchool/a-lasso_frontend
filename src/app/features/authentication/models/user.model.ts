@@ -31,8 +31,8 @@ export type VoluntaryLogin = {
   };
   followedAssociations: FollowedAssociation[];
   activitiesUserInfos: ActivitiesUserInfos[];
-  notifications: Notification;
-  geolocalisation: {
+  notification: Notification;
+  geolocation: {
     latitude: number;
     longitude: number;
   };
@@ -89,7 +89,7 @@ export type AssociationLogin = {
   address: Address;
   associationLogoImage?: string;
   associationProfileImageURL?: string;
-  notifications: Notification;
+  notification: Notification;
   geolocation: {
     latitude: number;
     longitude: number;

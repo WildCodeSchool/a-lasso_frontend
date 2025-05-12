@@ -10,6 +10,7 @@ import { ActivitySkeletonComponent } from '../../components/activity-skeleton/ac
 import { Activity, ActivitySearchFilters, ThemeName } from '../../models/activity.model';
 import { ActivityFacadeService } from '../../services/activity-facade.service';
 import { ActivityFilterSearchComponent } from '../../components/activity-filter-search/activity-filter-search.component';
+import { NavigationItems } from '../../../../common/models/toggleMenu';
 
 @Component({
   selector: 'app-activities-home',
@@ -35,7 +36,7 @@ export class ActivitiesHomeComponent implements OnInit {
 
   searchFilters: ActivitySearchFilters = { search: '', date: '', location: '' };
   selectedThemesName: ThemeName[] = [];
-  navigationItems: string[] = ['Liste', 'Carte'];
+  navigationItems: NavigationItems[] = [{ name: 'Liste' }, { name: 'Carte' }];
   chosenNavigation: string = 'Liste';
 
   ngOnInit(): void {

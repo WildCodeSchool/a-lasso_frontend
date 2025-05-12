@@ -1,6 +1,6 @@
 import { Component, inject, Input } from '@angular/core';
 import { map, Observable } from 'rxjs';
-import { MessageNotification } from '../../../features/authentication/models/user.model';
+import { AssociationLogin, MessageNotification, VoluntaryLogin } from '../../../features/authentication/models/user.model';
 import { AuthFacade } from '../../../features/authentication/services/auth-facade.service';
 import { BadgeComponent } from '../badge/badge.component';
 import { AsyncPipe, NgClass } from '@angular/common';
@@ -18,21 +18,21 @@ export class HeaderMenuMessagesComponent {
   private _authFacade: AuthFacade = inject(AuthFacade);
   @Input() isOpenMenu!: boolean;
 
-  user$ = this._authFacade.user$;
+  user$: Observable<VoluntaryLogin | AssociationLogin | null> = this._authFacade.user$;
 
   isMessagesOpen: boolean = false;
 
   countGlobalMessageNotifications$: Observable<number | null> = this.user$.pipe(
     map(user => {
-      if (!user || !user.notifications.messages) return null;
-      return user.notifications.messages.reduce((total, notification) => total + notification.countMessagesNotRead, 0);
+      if (!user || !user.notification.messages) return null;
+      return user.notification.messages.reduce((total, notification) => total + notification.countMessagesNotRead, 0);
     })
   );
 
   activitiesWithUnreadMessages$: Observable<MessageNotification[] | null> = this.user$.pipe(
     map(user => {
-      if (!user || !user.notifications.messages) return null;
-      return user.notifications.messages;
+      if (!user || !user.notification.messages) return null;
+      return user.notification.messages;
     })
   );
 

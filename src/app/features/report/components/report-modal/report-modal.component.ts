@@ -1,29 +1,29 @@
-import { Component, DestroyRef, inject, Input, OnInit } from '@angular/core';
+import { Component, DestroyRef, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
 import { DialogModule } from 'primeng/dialog';
 import { ButtonModule } from 'primeng/button';
 import { Select } from 'primeng/select';
-import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { Association } from '../../association/models/association.model';
+import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Association } from '../../../association/models/association.model';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NgStyle } from '@angular/common';
-import { MessageService as Toast } from 'primeng/api';
-import { ReportType, ReportTypeEnum, Report } from '../models/report.model';
-import { ReportFacadeService } from '../services/report-facade.service';
-import { TextareaFieldComponent } from '../../../common/components/textarea-field/textarea-field.component';
+import { TextareaFieldComponent } from '../../../../common/components/textarea-field/textarea-field.component';
+import { ReportFacadeService } from '../../services/report-facade.service';
+import { ReportType, ReportTypeEnum, Report } from '../../models/report.model';
+import { InputFieldErrorComponent } from '../../../../common/components/input-field-error/input-field-error.component';
 
 @Component({
   selector: 'app-report-modal',
-  imports: [DialogModule, ButtonModule, Select, FormsModule, ReactiveFormsModule, NgStyle, TextareaFieldComponent],
+  imports: [DialogModule, ButtonModule, Select, FormsModule, ReactiveFormsModule, NgStyle, TextareaFieldComponent, InputFieldErrorComponent],
   templateUrl: './report-modal.component.html',
   styleUrl: './report-modal.component.scss',
 })
 export class ReportModalComponent implements OnInit {
   private readonly _fb: FormBuilder = new FormBuilder();
   private readonly _destroyRef: DestroyRef = inject(DestroyRef);
-  private readonly _toast: Toast = inject(Toast);
   private readonly _reportFacadeService: ReportFacadeService = inject(ReportFacadeService);
 
-  @Input() isShowReportModal: boolean = false;
+  @Output() visibleChange = new EventEmitter<boolean>();
+  @Input() visible: boolean = false;
   @Input() association!: Association;
 
   public reportTypes: ReportType[] = [
@@ -35,7 +35,7 @@ export class ReportModalComponent implements OnInit {
 
   public reportForm = this._fb.group({
     selectedType: [ReportTypeEnum.InappropriateActivity],
-    reportContent: [''],
+    reportContent: ['', [Validators.required, Validators.maxLength(700)]],
   });
 
   messageContentLength: number = 0;
@@ -50,19 +50,8 @@ export class ReportModalComponent implements OnInit {
   }
 
   sendReport(): void {
-    if (this.messageContentLength === 0) {
-      this._toast.add({
-        severity: 'error',
-        summary: 'Merci de détailler les raisons de votre signalement',
-      });
-      return;
-    }
-
-    if (this.messageContentLength > 700) {
-      this._toast.add({
-        severity: 'error',
-        summary: 'Votre message est trop long, 700 caractères maximum',
-      });
+    if (this.reportForm.invalid) {
+      this.reportForm.markAllAsTouched();
       return;
     }
 
@@ -76,6 +65,10 @@ export class ReportModalComponent implements OnInit {
     };
 
     this._reportFacadeService.sendReport(creationReport);
-    this.isShowReportModal = false;
+    this.closeModal();
+  }
+
+  closeModal(): void {
+    this.visibleChange.emit(!this.visible);
   }
 }

@@ -1,4 +1,7 @@
 import { createAction, props } from '@ngrx/store';
 import { Report } from '../models/report.model';
+import { UUIDTypes } from 'uuid';
 
 export const setReports = createAction('[reports] setReports', props<{ reports: Report[] }>());
+
+export const deleteReport = createAction('[reports] deleteReport', props<{ reportId: UUIDTypes }>());

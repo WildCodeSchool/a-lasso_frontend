@@ -14,6 +14,13 @@ export enum ReportTypeEnum {
   Other = 'OTHER',
 }
 
+export const reportTypeLabels: Record<ReportTypeEnum, string> = {
+  [ReportTypeEnum.InappropriateActivity]: 'Activité inappropriée',
+  [ReportTypeEnum.Harassment]: 'Harcèlement',
+  [ReportTypeEnum.BadBehavior]: 'Comportement déplacé',
+  [ReportTypeEnum.Other]: 'Autre',
+};
+
 export type ReportType = {
   label: string;
   value: string;
@@ -22,12 +29,14 @@ export type ReportType = {
 export type ReportUser = {
   id: UUIDTypes;
   userName: string;
+  type?: 'association' | 'voluntary';
 };
 
 export type Report = {
   reportedUser: ReportUser;
   messageReporter: string;
   reportType: ReportTypeEnum;
+  reportId?: UUIDTypes;
   createdAt?: Date;
   status?: StatusReportEnum;
   commentaryAdmin?: string;

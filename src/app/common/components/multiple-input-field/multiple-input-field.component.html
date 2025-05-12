@@ -1,4 +1,4 @@
-<div class="input-wrapper" [formGroup]="formGroup || null">
+<form class="input-wrapper" [formGroup]="formGroup">
   <div class="search-container">
     @for (field of inputConfigs; track field.label; let i = $index; let isLast = $last) {
       <div class="input-container">
@@ -7,16 +7,15 @@
             @if (field.type === 'date') {
               <p-iftalabel class="custom-iftalabel calendar-wrapper" [ngClass]="{ focused: focusedIndex === i }">
                 <p-calendar
+                  [id]="'input-' + i"
                   [formControlName]="field.name"
-                  [(ngModel)]="field.value"
                   (onFocus)="focusedIndex = i"
                   (onBlur)="focusedIndex = null"
                   [inputId]="'input-' + i"
                   [placeholder]="field.placeholder"
                   [showIcon]="true"
                   inputStyleClass="custom-calendar-input"
-                  dateFormat="dd/mm/yy"
-                  (ngModelChange)="emitValues()" />
+                  dateFormat="dd/mm/yy" />
                 @if (field.value) {
                   <button class="clear-btn" type="button" (click)="clearInput(i)">
                     <i class="fa-solid fa-xmark"></i>
@@ -34,16 +33,9 @@
                       [placeholder]="field.placeholder"
                       [formControlName]="field.name"
                       rows="4"
-                      class="custom-textarea"
-                      (ngModelChange)="emitValues()"></textarea>
+                      class="custom-textarea"></textarea>
                   } @else {
-                    <input
-                      pInputText
-                      [id]="'input-' + i"
-                      [placeholder]="field.placeholder"
-                      [type]="field.type"
-                      [formControlName]="field.name"
-                      (ngModelChange)="emitValues()" />
+                    <input pInputText [id]="'input-' + i" [placeholder]="field.placeholder" [type]="field.type" [formControlName]="field.name" />
                   }
                 } @else {
                   @if (field.type === 'textArea') {
@@ -51,18 +43,11 @@
                       pInputTextarea
                       [id]="'input-' + i"
                       [placeholder]="field.placeholder"
-                      [(ngModel)]="field.value"
+                      [formControlName]="field.name"
                       rows="4"
-                      class="custom-textarea"
-                      (ngModelChange)="emitValues()"></textarea>
+                      class="custom-textarea"></textarea>
                   } @else {
-                    <input
-                      pInputText
-                      [id]="'input-' + i"
-                      [placeholder]="field.placeholder"
-                      [type]="field.type"
-                      [(ngModel)]="field.value"
-                      (ngModelChange)="emitValues()" />
+                    <input pInputText [id]="'input-' + i" [placeholder]="field.placeholder" [type]="field.type" [formControlName]="field.name" />
                   }
                 }
                 @if (field.value) {
@@ -89,8 +74,8 @@
   </div>
 
   @if (showSearchButton) {
-    <button pButton type="button" class="search-button">
+    <button pButton type="submit" class="search-button" (click)="emitValues()">
       <i class="fa-solid fa-magnifying-glass"></i>
     </button>
   }
-</div>
+</form>

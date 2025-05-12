@@ -33,7 +33,7 @@ export class TextareaFieldComponent implements ControlValueAccessor, OnDestroy {
   value: string = '';
   private _destroy$ = new Subject<void>();
 
-  onChange = (value: any): void => {
+  onChange = (value: string): void => {
     this.value = value;
   };
 
@@ -49,16 +49,16 @@ export class TextareaFieldComponent implements ControlValueAccessor, OnDestroy {
     this.onTouched();
   }
 
-  writeValue(value: any): void {
+  writeValue(value: string): void {
     this.value = value;
   }
 
-  registerOnChange(fn: any): void {
-    this.onChange = fn;
+  registerOnChange(onChangeFunction: (value: string) => void): void {
+    this.onChange = onChangeFunction;
   }
 
-  registerOnTouched(fn: any): void {
-    this.onTouched = fn;
+  registerOnTouched(onTouchedFunction: () => void): void {
+    this.onTouched = onTouchedFunction;
   }
 
   setDisabledState(isDisabled: boolean): void {

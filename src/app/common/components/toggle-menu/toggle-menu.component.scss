@@ -10,3 +10,14 @@ p-tab:first-child::ng-deep {
 p-tab:last-child::ng-deep {
   border-radius: 0 5px 5px 0;
 }
+
+.tab-container {
+  position: relative;
+}
+
+.badge-toggle-menu {
+  position: absolute;
+  top: 0;
+  right: 2px;
+  z-index: 10;
+}

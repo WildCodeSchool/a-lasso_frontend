@@ -45,10 +45,10 @@ export class HeaderMenuComponent {
 
   countGlobalNotifications$: Observable<number | null> = this.user$.pipe(
     map(user => {
-      if (!user || !user.notifications) return null;
-      const messagesCount = user.notifications.messages.reduce((total, notification) => total + notification.countMessagesNotRead, 0);
+      if (!user || !user.notification) return null;
+      const messagesCount = user.notification.messages.reduce((total, notification) => total + notification.countMessagesNotRead, 0);
 
-      const reportsCount = user.notifications.reports ?? 0;
+      const reportsCount = user.notification.reports ?? 0;
 
       return messagesCount + reportsCount;
     })

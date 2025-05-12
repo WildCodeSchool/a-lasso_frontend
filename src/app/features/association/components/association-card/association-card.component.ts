@@ -6,7 +6,7 @@ import { CardModule } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';
 import { environment } from 'src/environments/environment.development';
 import { Observable, take, tap } from 'rxjs';
-import { ReportModalComponent } from '../../../report/report-modal/report-modal.component';
+import { ReportModalComponent } from '../../../report/components/report-modal/report-modal.component';
 
 @Component({
   selector: 'app-association-card',

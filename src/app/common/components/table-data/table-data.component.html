@@ -1,4 +1,4 @@
-<p-table [columns]="cols" [value]="data" [tableStyle]="{ 'min-width': '50rem' }">
+<p-table [columns]="cols" [selectionMode]="rowClickHandler ? 'single' : null" [(selection)]="selectedRow" [value]="data">
   <ng-template #header let-columns>
     <tr>
       @for (col of columns; track $index) {
@@ -9,9 +9,9 @@
     </tr>
   </ng-template>
   <ng-template #body let-rowData let-columns="columns">
-    <tr>
+    <tr [pSelectableRow]="rowData" [ngClass]="rowClickHandler ? 'clickable-row' : ''">
       @for (col of columns; track $index) {
-        <td>
+        <td (click)="handleRowClick(rowData)" [attr.data-header]="col.header">
           {{ rowData[col.field] }}
         </td>
       }

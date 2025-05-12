@@ -39,3 +39,5 @@ export const setNotificationMessages = createAction(
     activityId: UUIDTypes;
   }>()
 );
+
+export const setNotificationReports = createAction('[User] Update Notification Reports');

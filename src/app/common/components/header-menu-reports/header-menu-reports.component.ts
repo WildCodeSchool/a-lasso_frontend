@@ -22,10 +22,10 @@ export class HeaderMenuReportsComponent {
   @Input() isOpenMenu!: boolean;
   isAdmin$ = this._authService.getRolesUser().pipe(map((roles: UserRole[]) => roles.some(role => role === UserRole.ADMIN)));
 
-  countGlobalReportsNotifications$: Observable<number | null> = this._user$.pipe(
+  countGlobalReportsNotifications$: Observable<number> = this._user$.pipe(
     map(user => {
-      if (!user || !user.notifications.reports) return null;
-      return user.notifications.reports;
+      if (!user || !user.notification.reports) return 0;
+      return user.notification.reports;
     })
   );
 }

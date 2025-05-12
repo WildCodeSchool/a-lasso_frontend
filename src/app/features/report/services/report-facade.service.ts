@@ -6,7 +6,9 @@ import { MessageService as Toast } from 'primeng/api';
 import { Store } from '@ngrx/store';
 import { selectReports } from '../store/reports.selector';
 import { TAKE_1 } from '../../../common/constants/observables.constants';
-import { setReports } from '../store/reports.actions';
+import { deleteReport, setReports } from '../store/reports.actions';
+import { UUIDTypes } from 'uuid';
+import { setNotificationReports } from '../../authentication/store/user.actions';
 
 @Injectable({
   providedIn: 'root',
@@ -45,6 +47,24 @@ export class ReportFacadeService {
             severity: 'success',
             summary: 'Signalement envoyé !',
           });
+        })
+      )
+      .subscribe();
+  }
+
+  closeReport(reportId: UUIDTypes): void {
+    this._reportApiService
+      .closeReport(reportId)
+      .pipe(
+        tap(() => {
+          this._toast.add({
+            severity: 'success',
+            summary: 'Signalement clos !',
+          });
+
+          this._store.dispatch(deleteReport({ reportId }));
+
+          this._store.dispatch(setNotificationReports());
         })
       )
       .subscribe();

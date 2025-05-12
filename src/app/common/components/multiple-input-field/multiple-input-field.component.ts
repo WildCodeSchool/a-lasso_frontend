@@ -30,9 +30,7 @@ export class MultipleInputFieldComponent implements OnChanges {
   @Output() inputValuesChanged = new EventEmitter<Record<string, string>>();
   @Input() fieldConfigs: InputFieldConfig[] = [];
   @Input() showSearchButton: boolean = false;
-  @Input() formGroup?: FormGroup;
-
-  // https://angular.fr/forms/ng-model-group.html
+  @Input() formGroup: FormGroup;
 
   focusedIndex: number | null = null;
   inputConfigs: { name: string; label: string; placeholder: string; type: string; value: string }[] = [];

@@ -1,8 +1,20 @@
-<script src="../../../activity/pages/activity-details/activity-details.component.ts"></script>
 <div class="report-admin">
   <h1>Signalements</h1>
-  <app-toggle-menu [tabs]="navigationItems"></app-toggle-menu>
+  <div class="navigation">
+    <app-toggle-menu [tabs]="navigationItems" [activeTabValue]="activeNavigation" (chosenTab)="handleNavigation($event)"></app-toggle-menu>
+  </div>
   <div class="report-list">
-    <app-table-data [cols]="" [data]=""></app-table-data>
+    @if (reportsTableData.length > 0) {
+      <app-table-data [rowClickHandler]="onRowClick" [cols]="reportsTableColumns" [data]="reportsTableData"></app-table-data>
+    } @else {
+      <div class="empty-report">
+        <i class="fa-regular fa-handshake"></i>
+        <p>Aucun signalement à traiter actuellement !</p>
+      </div>
+    }
   </div>
 </div>
+
+@if (isReportDetailModalOpen) {
+  <app-report-details-modal [(visible)]="isReportDetailModalOpen" [report]="reportSelected"></app-report-details-modal>
+}

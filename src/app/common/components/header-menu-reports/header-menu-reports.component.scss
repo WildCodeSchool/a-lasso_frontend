@@ -11,6 +11,13 @@
   }
 }
 
+.menu-item-content {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  width: 100%;
+}
+
 .menu-item.disabled {
   color: var(--font-color-grey);
   cursor: default;

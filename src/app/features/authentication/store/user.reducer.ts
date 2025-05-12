@@ -90,14 +90,36 @@ export const userReducer = createReducer(
   on(AuthActions.setNotificationMessages, (state, { activityId }) => ({
     ...state,
     userInfos:
-      state.userInfos && 'notifications' in state.userInfos
+      state.userInfos && 'notification' in state.userInfos
         ? {
             ...state.userInfos,
-            notifications: {
-              ...state.userInfos.notifications,
-              messages: state.userInfos.notifications.messages.map(n => (n.activityId === activityId ? { ...n, countMessagesNotRead: 0 } : n)),
+            notification: {
+              ...state.userInfos.notification,
+              messages: state.userInfos.notification.messages.map(n =>
+                n.activityId === activityId
+                  ? {
+                      ...n,
+                      countMessagesNotRead: 0,
+                    }
+                  : n
+              ),
             },
           }
         : state.userInfos,
-  }))
+  })),
+
+  on(AuthActions.setNotificationReports, state => {
+    if (!state.userInfos || !('notification' in state.userInfos)) return state;
+
+    return {
+      ...state,
+      userInfos: {
+        ...state.userInfos,
+        notification: {
+          ...state.userInfos.notification,
+          reports: state.userInfos.notification.reports !== null ? state.userInfos.notification.reports - 1 : 0,
+        },
+      },
+    };
+  })
 );

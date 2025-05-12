@@ -1,0 +1,27 @@
+.report-admin {
+  padding: 4%;
+  width: 80vw;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  max-height: 80vh;
+
+  h1 {
+    color: var(--primary-light-color);
+  }
+
+  .navigation {
+    width: 16rem;
+  }
+
+  .report-list {
+    padding-top: 2%;
+
+    .empty-report {
+      display: flex;
+      align-items: center;
+      padding: 2%;
+      gap: 2%;
+    }
+  }
+}

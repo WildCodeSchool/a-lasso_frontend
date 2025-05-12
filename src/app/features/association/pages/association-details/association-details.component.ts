@@ -10,6 +10,7 @@ import { ActivatedRoute } from '@angular/router';
 import { map } from 'rxjs/operators';
 import { Association } from '../../models/association.model';
 import { MOBILE_SIZE } from '../../../../common/models/scss-variables';
+import { NavigationItems } from '../../../../common/models/toggleMenu';
 
 @Component({
   selector: 'app-association-details',
@@ -23,7 +24,7 @@ export class AssociationDetailsComponent implements OnInit {
   activities$: Observable<Activity[]> = this._activityFacadeService.activities$;
   association!: Association;
 
-  navigationItems: string[] = [];
+  navigationItems: NavigationItems[] = [];
   chosenNavigation: string = 'Activités';
   screenWidth: number = window.innerWidth;
 
@@ -43,7 +44,7 @@ export class AssociationDetailsComponent implements OnInit {
   private _updateNavigationItems(width: number): void {
     const isMobile: boolean = width < MOBILE_SIZE;
     if (isMobile) {
-      this.navigationItems = ['Activités', 'Association'];
+      this.navigationItems = [{ name: 'Activités' }, { name: 'Association' }];
     } else {
       this.navigationItems = [];
     }

@@ -9,12 +9,14 @@ import { MOBILE_SIZE } from '../../../../common/models/scss-variables';
 import { AuthService } from '../../../authentication/services/auth.service';
 import { Store } from '@ngrx/store';
 import { selectActivitiesUserInfos, selectUser } from '../../../authentication/store/user.selectors';
-import { UserType } from '../../../authentication/models/user.model';
+import { ActivitiesUserInfos, AssociationLogin, UserType, VoluntaryLogin } from '../../../authentication/models/user.model';
 import { Activity } from '../../models/activity.model';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Association } from 'src/app/features/association/models/association.model';
 import { UUIDTypes } from 'uuid';
 import { setNotificationMessages } from '../../../authentication/store/user.actions';
+import { NavigationItems } from '../../../../common/models/toggleMenu';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-activity-details',
@@ -31,12 +33,11 @@ export class ActivityDetailsComponent implements OnInit {
   association!: Association;
 
   activeTab: number = 0;
-  navigationItems: string[] = ['Activité', 'Association'];
+  navigationItems: NavigationItems[] = [{ name: 'Activité' }, { name: 'Association' }];
   chosenNavigation: string = 'Activité';
   screenWidth: number = window.innerWidth;
 
   ngOnInit(): void {
-    this._updateNavigationItems(window.innerWidth);
     this.activity = this._route.snapshot.data['activityDetails']['activity'];
     this.association = this._route.snapshot.data['activityDetails']['association'];
     this._updateNavigationItems(window.innerWidth);
@@ -63,34 +64,48 @@ export class ActivityDetailsComponent implements OnInit {
   private _updateNavigationItems(width: number): void {
     const userIsLoggedIn: boolean = this._authService.isLoggedIn();
 
-    const setNavigation = (hasAccessToMessagesActivity: boolean): void => {
-      const isMobile: boolean = width < MOBILE_SIZE;
-
-      if (hasAccessToMessagesActivity) {
-        this.navigationItems = isMobile ? ['Activité', 'Messages', 'Association'] : ['Messages', 'Association'];
-        this.chosenNavigation = isMobile ? 'Activité' : 'Association';
-        this.activeTab = isMobile ? 0 : 1;
-      } else {
-        this.navigationItems = isMobile ? ['Activité', 'Association'] : [];
-        this.chosenNavigation = isMobile ? 'Activité' : 'Association';
-      }
-    };
-
-    if (userIsLoggedIn) {
-      const activitiesUserInfos$ = this._store.select(selectActivitiesUserInfos);
-      const userInfos$ = this._store.select(selectUser);
-      let isActivityOwner: boolean = false;
-      let isRegistered: boolean = false;
-      activitiesUserInfos$.pipe(takeUntilDestroyed(this._destroyRef)).subscribe((userInfos): void => {
-        isRegistered = userInfos.find(activity => activity.activityId === this.activity.id)?.isRegistered ?? false;
-
-        userInfos$.pipe(takeUntilDestroyed(this._destroyRef)).subscribe(user => {
-          isActivityOwner = user?.type === UserType.Association && user?.name === this.activity.association.name;
-        });
-      });
-      setNavigation(!!isRegistered || !!isActivityOwner);
-    } else {
-      setNavigation(false);
+    if (!userIsLoggedIn) {
+      this._setNavigation(width, false);
+      return;
     }
+
+    const activitiesUserInfos$: Observable<ActivitiesUserInfos[]> = this._store
+      .select(selectActivitiesUserInfos)
+      .pipe(takeUntilDestroyed(this._destroyRef));
+    const userInfos$: Observable<VoluntaryLogin | AssociationLogin> = this._store.select(selectUser).pipe(takeUntilDestroyed(this._destroyRef));
+
+    activitiesUserInfos$.pipe(takeUntilDestroyed(this._destroyRef)).subscribe((userInfos): void => {
+      const isRegistered = this._isUserRegistered(userInfos);
+      let isActivityOwner: boolean = false;
+
+      userInfos$.pipe(takeUntilDestroyed(this._destroyRef)).subscribe(user => {
+        isActivityOwner = user?.type === UserType.Association && user?.name === this.activity.association.name;
+      });
+
+      this._setNavigation(width, !!isRegistered || !!isActivityOwner);
+    });
+  }
+
+  private _setNavigation(width: number, hasAccessToMessagesActivity: boolean): void {
+    const isMobile: boolean = width < MOBILE_SIZE;
+
+    if (hasAccessToMessagesActivity) {
+      this.navigationItems = isMobile
+        ? [{ name: 'Activité' }, { name: 'Messages' }, { name: 'Association' }]
+        : [{ name: 'Messages' }, { name: 'Association' }];
+      this.chosenNavigation = isMobile ? 'Activité' : 'Association';
+      this.activeTab = isMobile ? 0 : 1;
+    } else {
+      this.navigationItems = isMobile ? [{ name: 'Activité' }, { name: 'Association' }] : [];
+      this.chosenNavigation = isMobile ? 'Activité' : 'Association';
+    }
+  }
+
+  private _isUserRegistered(activitiesUserInfos: ActivitiesUserInfos[]): boolean {
+    return activitiesUserInfos.find(activity => activity.activityId === this.activity.id)?.isRegistered ?? false;
+  }
+
+  hasTab(tabName: string): boolean {
+    return this.navigationItems.some(item => item.name === tabName);
   }
 }
