@@ -33,6 +33,6 @@ export class ActivityCardComponent implements OnInit {
   }
 
   getImageSrc(): string {
-    return getImageSource(this.activity)
+    return getImageSource(this.activity);
   }
 }

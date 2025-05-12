@@ -13,10 +13,9 @@ type Picture = string | ArrayBuffer;
 })
 export class ActivityAddPhotoComponent {
   @Input() formGroup?: FormGroup;
-  
+
   private _toast: MessageService = inject(MessageService);
   pictures: Picture[] = ['', '', ''];
-
 
   triggerFileInput(index: number): void {
     const fileInput = document.getElementById('fileInput' + index) as HTMLElement;

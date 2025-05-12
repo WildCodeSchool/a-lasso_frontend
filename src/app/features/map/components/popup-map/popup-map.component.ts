@@ -37,7 +37,7 @@ export class PopupMapComponent implements OnInit {
   }
 
   getImageSrc(): string {
-    return getImageSource(this.activity)
+    return getImageSource(this.activity);
   }
 
   public setCountActivityOfAssociation(association: AssociationActivity): void {

@@ -5,33 +5,31 @@
   </div>
 
   <div class="right-side-container">
-
- @if (isAuthenticated$ | async) {
-    @if (user$ | async; as user) {
-      @if (isAnAssociation(user) && !isOnActivityCreationPage()) {
-        <app-single-button
-          [type]="'button'"
-          [id]="1"
-          [routerLink]="['/activity', 'creation']"
-          routerLinkActive="active"
-          styleClass = "add-activity-button"
-          [label]="'Publier une activitée 🚀'"
-          [ariaLabel]="'button de navigation vers la page de creation des activitées'">
-        </app-single-button>
+    @if (isAuthenticated$ | async) {
+      @if (user$ | async; as user) {
+        @if (isAnAssociation(user) && !isOnActivityCreationPage()) {
+          <app-single-button
+            [type]="'button'"
+            [id]="1"
+            [routerLink]="['/activity', 'creation']"
+            routerLinkActive="active"
+            styleClass="add-activity-button"
+            [label]="'Publier une activitée 🚀'"
+            [ariaLabel]="'button de navigation vers la page de creation des activitées'">
+          </app-single-button>
+        }
       }
+      <div class="user-info">
+        <p class="user-name" @fadeInOut>Bonjour, {{ userDisplayName$ | async }} !</p>
+        <app-header-menu></app-header-menu>
+      </div>
+    } @else {
+      <div class="auth-buttons">
+        <button class="inscription-btn" type="button" (click)="openRegisterModal()">S'inscrire</button>
+        <button class="connexion-btn" type="button" (click)="openLoginModal()">Se connecter</button>
+      </div>
     }
-    <div class="user-info">
-      <p class="user-name" @fadeInOut>Bonjour, {{ userDisplayName$ | async }} !</p>
-      <app-header-menu></app-header-menu>
-    </div>
-  } @else {
-    <div class="auth-buttons">
-      <button class="inscription-btn" type="button" (click)="openRegisterModal()">S'inscrire</button>
-      <button class="connexion-btn" type="button" (click)="openLoginModal()">Se connecter</button>
-    </div>
-  }
   </div>
- 
 </header>
 
 <app-register-modal [(visible)]="showRegisterModal"></app-register-modal>

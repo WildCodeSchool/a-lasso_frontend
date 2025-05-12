@@ -43,8 +43,7 @@ export class ActivityDescriptionComponent implements OnInit {
       .subscribe();
   }
 
-
-  getImageSrc(index : number): string {
-   return getImageSource(this.activity, index)
+  getImageSrc(index: number): string {
+    return getImageSource(this.activity, index);
   }
 }
