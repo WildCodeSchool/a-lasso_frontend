@@ -4,7 +4,9 @@
     <h1>a l'asso !</h1>
   </div>
 
-  @if (isAuthenticated$ | async) {
+  <div class="right-side-container">
+
+ @if (isAuthenticated$ | async) {
     @if (user$ | async; as user) {
       @if (isAnAssociation(user) && !isOnActivityCreationPage()) {
         <app-single-button
@@ -12,6 +14,7 @@
           [id]="1"
           [routerLink]="['/activity', 'creation']"
           routerLinkActive="active"
+          styleClass = "add-activity-button"
           [label]="'Publier une activitée 🚀'"
           [ariaLabel]="'button de navigation vers la page de creation des activitées'">
         </app-single-button>
@@ -27,6 +30,8 @@
       <button class="connexion-btn" type="button" (click)="openLoginModal()">Se connecter</button>
     </div>
   }
+  </div>
+ 
 </header>
 
 <app-register-modal [(visible)]="showRegisterModal"></app-register-modal>

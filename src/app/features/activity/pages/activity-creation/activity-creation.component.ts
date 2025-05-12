@@ -88,11 +88,11 @@ export class ActivityCreationComponent implements OnInit {
       title: formValue.title,
       requestedVolunteers: formValue.requestedVolunteers,
       dateTime: format(new Date(formValue.date), 'yyyy-MM-dd') + 'T' + formValue.hour + ':00',
-      houseNumber: 1, // TODO ADD FORM FIELD FOR THAT OR REPLACE BY NEW SYSTEM TO SEARCH ADRESS (LIB ?)
-      streetName: 'rue de la massonnière', // TODO ADD FORM FIELD FOR THAT OR REPLACE BY NEW SYSTEM TO SEARCH ADRESS (LIB ?)
+      houseNumber: 1, 
+      streetName: 'rue de la massonnière', 
       zipCode: formValue.zipCode,
       city: formValue.city,
-      country: 'France', // TODO ADD FORM FIELD FOR THAT OR REPLACE BY NEW SYSTEM TO SEARCH ADRESS (LIB ?)
+      country: 'France',
       themes: formValue.selectedThemesName,
       description: formValue.description,
     };

@@ -9,6 +9,7 @@ import { AsyncPipe, DatePipe } from '@angular/common';
 import { Card } from 'primeng/card';
 import { Observable } from 'rxjs';
 import { ActivityFacadeService } from '../../services/activity-facade.service';
+import { getImageSource } from 'src/app/common/utils/image.utils';
 
 @Component({
   selector: 'app-activity-card',
@@ -32,6 +33,6 @@ export class ActivityCardComponent implements OnInit {
   }
 
   getImageSrc(): string {
-    return this.activity.images[0]?.url ? this.apiUrl + this.activity.images[0]?.url : this.activity.images[0]?.base64;
+    return getImageSource(this.activity)
   }
 }

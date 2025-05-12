@@ -1,7 +1,6 @@
 .input-wrapper {
   display: flex;
   position: relative;
-  // transform: translateX(-25px); @Seb:
   z-index: 1100;
   margin-bottom: 15px;
   .search-container {
@@ -22,7 +21,7 @@
       position: relative;
 
       .field-group {
-        background: var(--background-color-white); // keep input bg
+        background: var(--background-color-white);
         z-index: 1;
       }
 
@@ -31,7 +30,6 @@
         top: 100%;
         left: 0;
         font-size: 12px;
-        // padding: 6px 10px;
         margin-top: 1px;
         z-index: 2;
         max-width: 100%;

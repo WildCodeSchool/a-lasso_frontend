@@ -1,5 +1,5 @@
 import { Component, inject, Input, OnInit } from '@angular/core';
-import { Activity, Participant, Image } from '../../models/activity.model';
+import { Activity, Participant } from '../../models/activity.model';
 import { ActivityFacadeService } from '../../services/activity-facade.service';
 import { AsyncPipe, DatePipe } from '@angular/common';
 import { environment } from 'src/environments/environment.development';
@@ -8,6 +8,7 @@ import { FavoriteHeartComponent } from '../favorite-heart/favorite-heart.compone
 import { ButtonModule } from 'primeng/button';
 import { SingleButtonComponent } from '../../../../common/components/single-button/single-button.component';
 import { Observable, take, tap } from 'rxjs';
+import { getImageSource } from 'src/app/common/utils/image.utils';
 
 @Component({
   selector: 'app-activity-description',
@@ -42,7 +43,8 @@ export class ActivityDescriptionComponent implements OnInit {
       .subscribe();
   }
 
-  getImageSrc(image: Image): string {
-    return image?.url ? this.apiUrl + image.url : image?.base64;
+
+  getImageSrc(index : number): string {
+   return getImageSource(this.activity, index)
   }
 }

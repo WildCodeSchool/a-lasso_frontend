@@ -3,7 +3,7 @@ import { MessageService } from 'primeng/api';
 import { FormGroup } from '@angular/forms';
 import { InputFieldErrorComponent } from '../../../../common/components/input-field-error/input-field-error.component';
 
-export type Picture = string | ArrayBuffer;
+type Picture = string | ArrayBuffer;
 
 @Component({
   selector: 'app-activity-add-photo',
@@ -13,10 +13,10 @@ export type Picture = string | ArrayBuffer;
 })
 export class ActivityAddPhotoComponent {
   @Input() formGroup?: FormGroup;
-
+  
+  private _toast: MessageService = inject(MessageService);
   pictures: Picture[] = ['', '', ''];
 
-  private _toast: MessageService = inject(MessageService);
 
   triggerFileInput(index: number): void {
     const fileInput = document.getElementById('fileInput' + index) as HTMLElement;
@@ -36,7 +36,7 @@ export class ActivityAddPhotoComponent {
     if (!file) {
       this._toast.add({
         severity: 'error',
-        summary: 'No file',
+        summary: 'Pas de fichier séléctionné',
       });
       return;
     }
@@ -44,7 +44,10 @@ export class ActivityAddPhotoComponent {
     const maxFileSize = 5 * 1024 * 1024; // 5MB limit
 
     if (file.size > maxFileSize) {
-      alert('Le fichier est trop volumineux (max 5MB).');
+      this._toast.add({
+        severity: 'error',
+        summary: 'Le fichier est trop volumineux (max 5MB).',
+      });
       return;
     }
 

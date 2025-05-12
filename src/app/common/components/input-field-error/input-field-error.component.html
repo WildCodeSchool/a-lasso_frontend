@@ -1,6 +1,5 @@
 <div class="animation-wrapper">
   <div class="field-error">
-    @if (control?.invalid && (control.touched || control.dirty)) {
       @if (control?.invalid && (control.touched || control.dirty)) {
         <div @fadeInOut>
           @if (control.errors?.['required']) {
@@ -48,7 +47,6 @@
           }
         </div>
       }
-    }
     @if (showPasswordMismatchError) {
       <div @fadeInOut>
         <p>Les mots de passe ne correspondent pas</p>
