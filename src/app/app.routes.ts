@@ -7,6 +7,8 @@ import { associationResolver } from './common/resolvers/association.resolver';
 import { ActivityCreationComponent } from './features/activity/pages/activity-creation/activity-creation.component';
 import { isLoggedInGuard } from './common/guards/is-logged-in.guard';
 import { isAssociationGuard } from './common/guards/is-association.guard';
+import { ReportHomePageComponent } from './features/report/pages/report-home-page/report-home-page.component';
+import { reportsResolver } from './common/resolvers/reports.resolver';
 
 export const routes: Routes = [
   {
@@ -17,6 +19,13 @@ export const routes: Routes = [
     path: 'activity/creation',
     canActivate: [isLoggedInGuard, isAssociationGuard],
     component: ActivityCreationComponent,
+  },
+  {
+    path: 'reports',
+    component: ReportHomePageComponent,
+    resolve: {
+      reports: reportsResolver,
+    },
   },
   {
     path: 'activity/:id',

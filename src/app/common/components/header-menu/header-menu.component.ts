@@ -4,15 +4,15 @@ import { Component, inject } from '@angular/core';
 import { Observable, map } from 'rxjs';
 import { AuthFacade } from 'src/app/features/authentication/services/auth-facade.service';
 import { environment } from 'src/environments/environment.development';
-import { MessageNotification, UserType } from 'src/app/features/authentication/models/user.model';
+import { UserType } from 'src/app/features/authentication/models/user.model';
 import { BadgeComponent } from '../badge/badge.component';
-import { UUIDTypes } from 'uuid';
-import { Router } from '@angular/router';
+import { HeaderMenuMessagesComponent } from '../header-menu-messages/header-menu-messages.component';
+import { HeaderMenuReportsComponent } from '../header-menu-reports/header-menu-reports.component';
 
 @Component({
   selector: 'app-header-menu',
   standalone: true,
-  imports: [CommonModule, BadgeComponent],
+  imports: [CommonModule, BadgeComponent, HeaderMenuMessagesComponent, HeaderMenuReportsComponent],
   templateUrl: './header-menu.component.html',
   styleUrl: './header-menu.component.scss',
   animations: [
@@ -26,14 +26,12 @@ import { Router } from '@angular/router';
   ],
 })
 export class HeaderMenuComponent {
-  private _auth = inject(AuthFacade);
-  private _router = inject(Router);
+  private _authFacade: AuthFacade = inject(AuthFacade);
 
   isOpen: boolean = false;
-  isMessagesOpen: boolean = false;
   apiUrl: string = environment.apiUrl;
 
-  user$ = this._auth.user$;
+  user$ = this._authFacade.user$;
 
   userAvatar$: Observable<string | null> = this.user$.pipe(
     map(user => {
@@ -47,15 +45,12 @@ export class HeaderMenuComponent {
 
   countGlobalNotifications$: Observable<number | null> = this.user$.pipe(
     map(user => {
-      if (!user) return null;
-      return user.messageNotifications.reduce((total, notification) => total + notification.countMessagesNotRead, 0);
-    })
-  );
+      if (!user || !user.notification) return null;
+      const messagesCount = user.notification.messages.reduce((total, notification) => total + notification.countMessagesNotRead, 0);
 
-  activitiesWithUnreadMessages$: Observable<MessageNotification[] | null> = this.user$.pipe(
-    map(user => {
-      if (!user) return null;
-      return user.messageNotifications;
+      const reportsCount = user.notification.reports ?? 0;
+
+      return messagesCount + reportsCount;
     })
   );
 
@@ -64,16 +59,7 @@ export class HeaderMenuComponent {
   }
 
   logout(): void {
-    this._auth.logout();
+    this._authFacade.logout();
     this.isOpen = false;
-  }
-
-  toggleMessages(event: Event): void {
-    event.stopPropagation();
-    this.isMessagesOpen = !this.isMessagesOpen;
-  }
-
-  navigateToActivityMessages(activityId: UUIDTypes): void {
-    this._router.navigate([`/activity/${activityId}`]);
   }
 }

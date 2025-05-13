@@ -1,0 +1,20 @@
+<p-table [columns]="cols" [selectionMode]="rowClickHandler ? 'single' : null" [(selection)]="selectedRow" [value]="data">
+  <ng-template #header let-columns>
+    <tr>
+      @for (col of columns; track $index) {
+        <th>
+          {{ col.header }}
+        </th>
+      }
+    </tr>
+  </ng-template>
+  <ng-template #body let-rowData let-columns="columns">
+    <tr [pSelectableRow]="rowData" [ngClass]="rowClickHandler ? 'clickable-row' : ''">
+      @for (col of columns; track $index) {
+        <td (click)="handleRowClick(rowData)" [attr.data-header]="col.header">
+          {{ rowData[col.field] }}
+        </td>
+      }
+    </tr>
+  </ng-template>
+</p-table>

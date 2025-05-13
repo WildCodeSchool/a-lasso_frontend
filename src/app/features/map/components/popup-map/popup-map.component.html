@@ -45,7 +45,7 @@
       (keydown.enter)="navigate('association', association.id)"
       (click)="navigate('association', association.id)">
       <img class="association-img" [src]="apiUrl + association.logo" [alt]="association.name" />
-      <div>
+      <div class="association-content">
         <h3>{{ association.name }}</h3>
         @if (activityCountByAssociation > 1) {
           <p>{{ activityCountByAssociation }} activitées proposées actuellement par l'association</p>

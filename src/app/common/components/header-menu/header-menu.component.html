@@ -10,40 +10,8 @@
 
   @if (isOpen) {
     <ul class="menu-list" @fadeMenu>
-      <li class="menu-item" (click)="toggleMessages($event)" (keydown.enter)="toggleMessages($event)" tabindex="0">
-        <div class="menu-item-content">
-          <i class="fa-regular fa-envelope"></i>
-          <span>Mes messages</span>
-
-          <div class="badge-and-caret">
-            @if (countGlobalNotifications$ | async; as countGlobalNotifications) {
-              <app-badge [badgeValue]="countGlobalNotifications" [isWhite]="true"></app-badge>
-            }
-            @if (activitiesWithUnreadMessages$ | async; as activitiesWithUnreadMessages) {
-              @if (activitiesWithUnreadMessages.length) {
-                <i [ngClass]="isMessagesOpen ? 'fa-solid fa-caret-up' : 'fa-solid fa-caret-down'" class="caret-icon"></i>
-              }
-            }
-          </div>
-        </div>
-      </li>
-
-      @if (isMessagesOpen) {
-        <li class="sub-menu">
-          @if (activitiesWithUnreadMessages$ | async; as activitiesWithUnreadMessages) {
-            @for (activity of activitiesWithUnreadMessages; track activity.activityId) {
-              <li
-                class="sub-menu-item"
-                (click)="navigateToActivityMessages(activity.activityId)"
-                (keydown.enter)="navigateToActivityMessages(activity.activityId)"
-                tabindex="0">
-                {{ activity.activityTitle }}
-                <app-badge [badgeValue]="activity.countMessagesNotRead"></app-badge>
-              </li>
-            }
-          }
-        </li>
-      }
+      <app-header-menu-messages [isOpenMenu]="isOpen"></app-header-menu-messages>
+      <app-header-menu-reports [isOpenMenu]="isOpen"></app-header-menu-reports>
       <li class="menu-item" (click)="logout()" (keydown.enter)="logout()" tabindex="1">
         <i class="fa-solid fa-arrow-right-from-bracket"></i>
         Se déconnecter

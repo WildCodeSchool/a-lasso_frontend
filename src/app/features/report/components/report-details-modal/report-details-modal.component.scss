@@ -1,0 +1,100 @@
+.report-details-modal {
+  .report {
+    display: flex;
+    flex-direction: column;
+    width: 80vw;
+    overflow-y: auto;
+    max-height: 60vh;
+    padding: 0 1rem 1rem 1rem;
+
+    h1 {
+      color: var(--primary-dark-color);
+      align-self: center;
+      margin: 0;
+    }
+
+    .report-in-progress {
+      padding: 0 1rem 1rem 1rem;
+
+      .report-in-progress-details {
+        display: flex;
+        gap: 1rem;
+
+        .title-report {
+          min-height: 4rem;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+        }
+
+        h3 {
+          color: var(--primary-light-color);
+        }
+
+        .reporter-section,
+        .admin-section {
+          width: 50%;
+          padding: 1rem;
+        }
+      }
+
+      .action-admin {
+        .actions-reporter-reported {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+
+          p {
+            color: var(--primary-light-color);
+          }
+
+          .actions-reporter,
+          .actions-reported {
+            width: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+            .buttons {
+              display: flex;
+              gap: 1rem;
+            }
+          }
+        }
+      }
+
+      .close-report {
+        display: flex;
+        justify-content: center;
+      }
+    }
+
+    .commentary-section {
+      height: 10rem;
+      border: 1px solid var(--background-color-grey);
+      padding: 1rem;
+      overflow-y: auto;
+      border-radius: var(--border-radius);
+    }
+  }
+
+  .previous-report {
+    padding: 1rem;
+
+    h3 {
+      color: var(--primary-light-color);
+    }
+
+    .previous-report-content {
+      display: flex;
+
+      .table-previous-reports {
+        width: 60%;
+      }
+
+      .statistics {
+        width: 40%;
+      }
+    }
+  }
+}

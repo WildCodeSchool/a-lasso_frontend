@@ -1,0 +1,66 @@
+.menu-item {
+  padding: 10px 15px;
+  cursor: pointer;
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  border-radius: 4px;
+
+  &:hover {
+    background: var(--primary-light-color);
+  }
+
+  .menu-item-content {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    width: 100%;
+
+    .badge-and-caret {
+      display: flex;
+      flex-grow: 1;
+      justify-content: flex-end;
+      gap: 5px;
+    }
+
+    .caret-icon {
+      font-size: 14px;
+      align-self: end;
+      display: flex;
+      justify-content: end;
+    }
+  }
+}
+
+.sub-menu {
+  background: var(--background-color-white);
+  color: var(--primary-dark-color);
+  padding-left: 40px;
+
+  .sub-menu-item {
+    padding: 5px 0;
+    cursor: pointer;
+    display: flex;
+    gap: 5px;
+
+    &:hover {
+      background: var(--primary-light-color);
+      color: var(--background-color-white);
+    }
+  }
+}
+
+.menu-item.disabled {
+  color: var(--font-color-grey);
+  cursor: default;
+  background: transparent;
+
+  i {
+    color: var(--font-color-grey);
+  }
+}
+
+app-badge {
+  display: flex;
+  align-items: center;
+}

@@ -1,0 +1,72 @@
+<div class="report-details-modal">
+  <p-dialog [dismissableMask]="true" [modal]="true" [(visible)]="visible" (visibleChange)="visibleChange.emit($event)">
+    <div class="report">
+      <h1>{{ report.reportedUser.userName }}</h1>
+      <div class="card report-in-progress">
+        <div class="report-in-progress-details">
+          <div class="reporter-section">
+            <div class="title-report">
+              <h3>Le {{ report.createdAt | date: 'dd/MM/yyyy' }} pour : {{ reportTypeLabels[report.reportType] }}</h3>
+              <h3>Signalement opéré par : {{ report.reporterUser.userName }}</h3>
+            </div>
+            <div class="commentary-section">
+              {{ report.messageReporter }}
+            </div>
+          </div>
+          <div class="admin-section">
+            <h3 class="title-report">Commentaire de l'administrateur</h3>
+            <div class="commentary-section">{{ report.commentaryAdmin }}</div>
+          </div>
+        </div>
+
+        <div class="action-admin">
+          <div class="actions-reporter-reported">
+            <div class="actions-reporter">
+              <p>Plaignant</p>
+              <div class="buttons">
+                <p-button>
+                  <i class="fa-regular fa-paper-plane"></i>
+                  Contacter
+                </p-button>
+                <p-button severity="warn">
+                  <i class="fa-solid fa-user-xmark"></i>
+                  Bannir
+                </p-button>
+              </div>
+            </div>
+            <div class="actions-reported">
+              <p>Mis en cause</p>
+              <div class="buttons">
+                <p-button>
+                  <i class="fa-regular fa-paper-plane"></i>
+                  Contacter
+                </p-button>
+                <p-button severity="warn">
+                  <i class="fa-solid fa-user-xmark"></i>
+                  Bannir
+                </p-button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p-button class="close-report" severity="success" (click)="closeReport()">
+          <i class="fa-solid fa-check"></i>
+          Clôturer
+        </p-button>
+      </div>
+      <div class="card previous-report">
+        <h3>Signalements précédents</h3>
+        <div class="previous-report-content">
+          <div class="table-previous-reports">
+            <p>Joli tableau</p>
+            <app-table-data></app-table-data>
+          </div>
+          <div class="statistics">
+            <h3>Statistiques</h3>
+            <p>jolies stats</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </p-dialog>
+</div>

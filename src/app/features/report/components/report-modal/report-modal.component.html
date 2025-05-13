@@ -1,0 +1,23 @@
+<div class="report-modal">
+  <p-dialog [dismissableMask]="true" [modal]="true" [(visible)]="visible" (visibleChange)="visibleChange.emit($event)">
+    <form class="report-container" [formGroup]="reportForm" (ngSubmit)="sendReport()">
+      <h2>Signaler {{ association.name }}</h2>
+      <div class="report-type">
+        <h3>Type</h3>
+        <p-select [options]="reportTypes" optionLabel="label" optionValue="value" formControlName="selectedType" />
+      </div>
+      <div class="commentary-report">
+        <h3>Commentaire libre</h3>
+        <app-textarea-field [placeholder]="'Saisir les raisons de votre signalement ici'" [formControlName]="'reportContent'" [rows]="5" [cols]="1">
+        </app-textarea-field>
+        <app-input-field-error [control]="reportForm.get('reportContent')" fieldName="reportContent"></app-input-field-error>
+        <p [ngStyle]="{ color: messageContentLength > 700 ? 'red' : 'grey' }">{{ messageContentLength }} / 700 caractères maximum</p>
+      </div>
+
+      <div class="actions-footer">
+        <p-button label="Annuler" severity="secondary" (click)="closeModal()" />
+        <p-button label="Envoyer" type="submit" />
+      </div>
+    </form>
+  </p-dialog>
+</div>

@@ -2,6 +2,7 @@ import { Component, EventEmitter, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivitySearchFilters } from '../../models/activity.model';
 import { MultipleInputFieldComponent } from 'src/app/common/components/multiple-input-field/multiple-input-field.component';
+import { FormBuilder } from '@angular/forms';
 
 @Component({
   selector: 'app-activity-filter-search',
@@ -11,6 +12,7 @@ import { MultipleInputFieldComponent } from 'src/app/common/components/multiple-
   styleUrls: ['./activity-filter-search.component.scss'],
 })
 export class ActivityFilterSearchComponent {
+  private readonly _fb: FormBuilder = new FormBuilder();
   @Output() searchFiltersChanged = new EventEmitter<ActivitySearchFilters>();
 
   customFieldConfigs = [
@@ -19,11 +21,17 @@ export class ActivityFilterSearchComponent {
     { name: 'location', label: 'Localisation', placeholder: 'Ex : Dijon' },
   ];
 
-  onInputValuesChanged(values: Record<string, string>): void {
+  public formGroup = this._fb.group({
+    search: [''],
+    date: [''],
+    location: [''],
+  });
+
+  onInputValuesChanged(): void {
     const filters: ActivitySearchFilters = {
-      search: values['search'] ?? '',
-      date: values['date'] ?? '',
-      location: values['location'] ?? '',
+      search: this.formGroup.value.search,
+      date: this.formGroup.value.date,
+      location: this.formGroup.value.location,
     };
 
     this.searchFiltersChanged.emit(filters);

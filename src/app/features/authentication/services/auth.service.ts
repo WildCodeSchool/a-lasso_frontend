@@ -1,11 +1,11 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { environment } from 'src/environments/environment.development';
 import { AssociationRegister, UserLogin, VoluntaryRegister } from '../models/user.model';
 import { jwtDecode } from 'jwt-decode';
 import { ApiResponseLogin, JwtDecodedToken } from '../models/api-response.model';
-import { EXPIRACY_MULTIPLIER } from '../constants/auth.constants';
+import { EXPIRACY_MULTIPLIER, TokenRole, UserRole } from '../constants/auth.constants';
 
 @Injectable({
   providedIn: 'root',
@@ -46,7 +46,7 @@ export class AuthService {
     localStorage.removeItem('userState');
   }
 
-  isLoggedIn(): boolean {
+  public isLoggedIn(): boolean {
     const token = this.getToken();
     if (!token) return false;
     const decodedToken: JwtDecodedToken = jwtDecode(token);
@@ -56,5 +56,14 @@ export class AuthService {
       return false;
     }
     return true;
+  }
+
+  public getRolesUser(): Observable<UserRole[]> {
+    const token = this.getToken();
+    if (!token) return of([]);
+
+    const decodedToken: JwtDecodedToken = jwtDecode(token);
+    const roles = decodedToken.roles.map((role: TokenRole) => role.authority);
+    return of(roles);
   }
 }

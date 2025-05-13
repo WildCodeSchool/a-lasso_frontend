@@ -12,13 +12,13 @@
     [ngClass]="{
       hidden: chosenNavigation === 'Activité' && screenWidth < 900,
       'show-association': chosenNavigation === 'Association' || chosenNavigation === 'Activité',
-      'show-messages': chosenNavigation === 'Messages',
+      'show-messages': chosenNavigation === 'Messages'
     }">
     <div class="association" [ngClass]="chosenNavigation !== 'Association' ? 'hidden' : ''">
       <app-association-card [association]="association"></app-association-card>
     </div>
 
-    @if (navigationItems.includes('Messages')) {
+    @if (hasTab('Messages')) {
       <div class="messages" [ngClass]="chosenNavigation === 'Messages' ? 'show-messages' : ''">
         <app-activity-messages-card [activityId]="activity.id"></app-activity-messages-card>
       </div>

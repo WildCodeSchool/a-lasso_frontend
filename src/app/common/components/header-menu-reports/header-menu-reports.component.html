@@ -1,0 +1,20 @@
+@if (isAdmin$ | async) {
+  @if (countGlobalReportsNotifications$ | async; as countGlobalReportsNotifications) {
+    <li class="menu-item" (click)="router.navigate(['/reports'])" (keydown.enter)="router.navigate(['/reports'])" tabindex="1">
+      <div class="menu-item-content">
+        <i class="fa-solid fa-triangle-exclamation"></i>
+        <span>Signalements</span>
+      </div>
+      <div class="badge-and-caret">
+        <app-badge [badgeValue]="countGlobalReportsNotifications" [isWhite]="true"></app-badge>
+      </div>
+    </li>
+  } @else {
+    <li class="menu-item disabled" tabindex="-1">
+      <div class="menu-item-content">
+        <i class="fa-solid fa-triangle-exclamation"></i>
+        <span>Signalements</span>
+      </div>
+    </li>
+  }
+}
