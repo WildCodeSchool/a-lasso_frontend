@@ -1,0 +1,84 @@
+.input-wrapper {
+  display: flex;
+  position: relative;
+  z-index: 1100;
+  margin-bottom: 15px;
+
+  .search-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: var(--background-color-white);
+    border-radius: 0;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    padding: 5px;
+    width: 100%;
+    height: 100%;
+
+    .input-container {
+      width: 100%;
+      position: relative;
+
+      .field-group {
+        background: var(--background-color-white);
+        z-index: 1;
+      }
+
+      .error-message {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        font-size: 12px;
+        margin-top: 1px;
+        z-index: 2;
+        max-width: 100%;
+      }
+
+      ::ng-deep p-autoComplete {
+        width: 100% !important;
+      }
+
+      ::ng-deep .p-inputtext:focus {
+        outline: none !important;
+        box-shadow: none !important;
+      }
+
+      ::ng-deep .p-autocomplete {
+        width: 100% !important;
+        border: none !important;
+        box-shadow: none !important;
+      }
+
+      ::ng-deep .p-autocomplete-panel {
+        max-height: 200px;
+        overflow-y: auto;
+      }
+
+      ::ng-deep .p-inputtext {
+        width: 100% !important;
+        border: none !important;
+        box-shadow: none !important;
+        padding: 10px !important;
+        font-size: 14px;
+        background: transparent;
+      }
+
+      ::ng-deep .p-autocomplete-dropdown {
+        display: none !important;
+      }
+
+      ::ng-deep .p-autocomplete-dropdown {
+        border: none !important;
+        box-shadow: none !important;
+        background: transparent !important;
+      }
+
+      ::ng-deep .p-autocomplete-panel {
+        box-shadow: none !important;
+        border: none !important;
+      }
+    }
+  }
+}

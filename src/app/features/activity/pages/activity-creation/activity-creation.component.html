@@ -12,14 +12,13 @@
       <div class="details-inputs-areas">
         <section class="add-informations-container">
           @for (activityField of activityFields; track $index) {
-            <div class="field-group">
-              <app-input-field class="information-field" [useIftaLabel]="true" [fieldConfig]="activityField" [formGroup]="activityForm">
-              </app-input-field>
-              <app-input-field-error [control]="activityForm.get(activityField.name)" [fieldName]="activityField.name"> </app-input-field-error>
-            </div>
+          <div class="field-group">
+            <app-input-field class="information-field" [useIftaLabel]="true" [fieldConfig]="activityField" [formGroup]="activityForm">
+            </app-input-field>
+            <app-input-field-error [control]="activityForm.get(activityField.name)" [fieldName]="activityField.name"> </app-input-field-error>
+          </div>
           }
         </section>
-
         <section class="description-container">
           <app-textarea-field
             [fieldConfig]="descriptionFieldConfigs"

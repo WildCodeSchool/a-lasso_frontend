@@ -1,5 +1,6 @@
 import { UUIDTypes } from 'uuid';
 import { ThemeName } from './activity.model';
+import { Address } from '../../authentication/models/user.model';
 
 type Image = {
   id: UUIDTypes | null;
@@ -11,11 +12,7 @@ export type NewActivityCreation = {
   title: string;
   requestedVolunteers: number;
   dateTime: string; // "yyyy-MM-dd'T'HH:mm:ss"
-  houseNumber: number;
-  streetName: string;
-  zipCode: string;
-  city: string;
-  country: string;
+  address: Address;
   themes: ThemeName[];
   description: string;
 };

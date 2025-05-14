@@ -1,0 +1,25 @@
+<div class="input-wrapper" [formGroup]="formGroup || null">
+  <div class="search-container">
+    @for (field of fieldConfigs; track field.name; let i = $index) {
+    <div class="input-container">
+      <div class="field-group">
+        <p-autoComplete
+          [formControlName]="field.name"
+          [suggestions]="searchAdressResults"
+          field="display_name"
+          placeholder="Entrez une adresse"
+          [minLength]="3"
+          [dropdown]="true"
+          [virtualScroll]="true"
+          [emptyMessage]="'Aucune adresse trouvée'"></p-autoComplete>
+
+        @if (formGroup?.get(field.name)?.invalid && formGroup?.get(field.name)?.touched) {
+        <div class="error-message">
+          <app-input-field-error [control]="formGroup.get(field.name)" [fieldName]="field.name" />
+        </div>
+        }
+      </div>
+    </div>
+    }
+  </div>
+</div>

@@ -72,12 +72,13 @@ export class RegisterModalComponent {
       password: value.password,
       mobile_phone: value.phone,
       address: {
-        house_number: value.addressNumber || '',
-        street_name: value.street,
-        adress_suffix: value.complement || null,
-        zipCode: value.zipCode,
-        city: value.city,
-        country: value.country,
+        houseNumber: value.adresseNumero || '',
+        streetName: value.adresseRue,
+        zipCode: value.adresseCodePostal,
+        city: value.adresseVille,
+        country: value.adressePays,
+        lat: '',
+        lon: '',
       },
     };
 

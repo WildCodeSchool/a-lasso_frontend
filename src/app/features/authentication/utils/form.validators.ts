@@ -18,3 +18,21 @@ export function themeRequiredValidator(): ValidatorFn {
     return Array.isArray(value) && value.length > 0 ? null : { themeRequired: true };
   };
 }
+
+export function addressRequiredValidator(): ValidatorFn {
+  return (control: AbstractControl): ValidationErrors | null => {
+    const value = control.value;
+
+    if (
+      typeof value === 'object' &&
+      value !== null &&
+      typeof value.display_name === 'string' &&
+      typeof value.lat === 'string' &&
+      typeof value.lon === 'string'
+    ) {
+      return null;
+    }
+
+    return { invalidAddress: true };
+  };
+}

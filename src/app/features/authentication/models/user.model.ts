@@ -61,13 +61,34 @@ export type ActivitiesUserInfos = {
   isRegistered: boolean;
 };
 
+export type AddressApiResult = {
+  display_name: string;
+  lat: string;
+  lon: string;
+  address: {
+    house_number?: string;
+    road?: string;
+    suburb?: string;
+    neighbourhood?: string;
+    postcode?: string;
+    city?: string;
+    town?: string;
+    village?: string;
+    county?: string;
+    state?: string;
+    country?: string;
+    country_code?: string;
+  };
+};
+
 export type Address = {
-  house_number: string;
-  street_name: string;
-  adress_suffix: string | null;
+  houseNumber: string;
+  streetName: string;
   zipCode: string;
   city: string;
   country: string;
+  lat: string;
+  lon: string;
 };
 
 export type AssociationRegister = {
