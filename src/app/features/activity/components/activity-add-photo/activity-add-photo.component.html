@@ -7,7 +7,7 @@
         } @else {
           <i class="fa-solid fa-plus"></i>
           <i class="fa-solid fa-camera"></i>
-          <h3>Ajouter une photo</h3>
+          <p class="add-photo">Ajouter une photo</p>
         }
       </button>
       <input type="file" accept="image/*" [id]="'fileInput' + $index" class="input-import-image" (change)="handleFileInput($event, $index)" />

@@ -1,4 +1,5 @@
-p-floatlabel {
+p-floatlabel,
+p-iftalabel {
   input,
   ::ng-deep p-calendar span input,
   ::ng-deep p-password div input {
@@ -9,12 +10,14 @@ p-floatlabel {
     border-radius: 8px;
     transition: border-color 0.3s ease-in-out;
     color: black;
+    padding: 25px 10px 5px 10px;
 
     &:focus,
     &:hover,
     &:active {
       border-color: var(--primary-light-color) !important;
       outline: none;
+
       ~ label {
         color: var(--primary-light-color);
       }

@@ -4,7 +4,7 @@ import { TableModule } from 'primeng/table';
 import { TableDataComponent } from '../../../../common/components/table-data/table-data.component';
 import { Report, reportTypeLabels } from '../../models/report.model';
 import { Column, TableData } from '../../../../common/models/table-data';
-import { NavigationItems } from '../../../../common/models/toggleMenu';
+import { NavigationItems } from '../../../../common/models/toggle-menu';
 import { ReportDetailsModalComponent } from '../../components/report-details-modal/report-details-modal.component';
 import { ActivatedRoute } from '@angular/router';
 

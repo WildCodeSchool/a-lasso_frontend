@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
-import { ButtonClicked } from '../../models/buttonClicked';
+import { ButtonClicked, ButtonStyleClass } from '../../models/button';
 
 @Component({
   selector: 'app-single-button',
@@ -15,7 +15,7 @@ export class SingleButtonComponent {
   @Input() icon?: string;
   @Input() ariaLabel?: string;
   @Input() size?: 'small' | 'large' | undefined;
-  @Input() styleClass?: string;
+  @Input() styleClass?: ButtonStyleClass;
   @Input() backgroundColor?: string;
   @Input() disabled: boolean = false;
   @Input() type?: 'submit' | 'button';

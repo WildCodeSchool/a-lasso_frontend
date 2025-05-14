@@ -1,13 +1,8 @@
-<p-iftalabel>
-  <textarea
-    pTextarea
-    [id]="id"
-    [placeholder]="placeholder"
-    [rows]="rows"
-    [cols]="cols"
-    [value]="value"
-    (input)="updateValue($event)"
-    (blur)="onTouched()">
-  </textarea>
-  <label [for]="id">{{ label }}</label>
-</p-iftalabel>
+<form [formGroup]="formGroup">
+  <p-iftalabel>
+    <textarea pTextarea [id]="id" [placeholder]="fieldConfig.placeholder" [rows]="rows" [cols]="cols" [formControlName]="fieldConfig.name">
+    </textarea>
+    <label [for]="id">{{ fieldConfig.label }}</label>
+  </p-iftalabel>
+  <p [ngStyle]="{ color: fieldContentLength > maxlength ? 'red' : 'grey' }">{{ fieldContentLength }} / {{ maxlength }} caractères maximum</p>
+</form>

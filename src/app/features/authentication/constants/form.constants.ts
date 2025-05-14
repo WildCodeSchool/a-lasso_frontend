@@ -1,6 +1,6 @@
 export const MIN_LENGTH = 2;
 export const MAX_LENGTH = 50;
-export const ACTIVITY_DESCRIPTION_MAX_LENGTH = 250;
+export const ACTIVITY_DESCRIPTION_MAX_LENGTH = 1000;
 export const MAX_ADDRESS_LENGTH = 100;
 export const PASSWORD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_\-+=[\]{};':"\\|,.<>/?]).{8,}$/;
 export const SIRET_REGEX = /^\d{14}$/;

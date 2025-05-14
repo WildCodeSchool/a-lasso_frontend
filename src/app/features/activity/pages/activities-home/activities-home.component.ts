@@ -10,7 +10,7 @@ import { ActivitySkeletonComponent } from '../../components/activity-skeleton/ac
 import { Activity, ActivitySearchFilters, ThemeName } from '../../models/activity.model';
 import { ActivityFacadeService } from '../../services/activity-facade.service';
 import { ActivityFilterSearchComponent } from '../../components/activity-filter-search/activity-filter-search.component';
-import { NavigationItems } from '../../../../common/models/toggleMenu';
+import { NavigationItems } from '../../../../common/models/toggle-menu';
 
 @Component({
   selector: 'app-activities-home',

@@ -35,7 +35,9 @@
         gap: 2vh;
         width: 100%;
 
-        .information-field {
+        .field-group {
+          display: flex;
+          flex-direction: column;
           width: 100%;
           box-sizing: border-box;
         }
@@ -43,14 +45,13 @@
 
       .theme-selection-container {
         display: flex;
-        background-color: white;
-        border-radius: 0;
-        border-top-left-radius: 10px;
-        border-bottom-left-radius: 10px;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
         width: 100%;
         font-size: 14px;
         color: var(--font-color);
+        margin-top: 50px;
       }
 
       .description-container {
@@ -70,7 +71,6 @@
   }
 }
 
-h2,
-h3 {
-  font-weight: 400;
+h2 {
+  font-weight: 500;
 }

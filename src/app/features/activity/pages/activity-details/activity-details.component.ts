@@ -15,7 +15,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Association } from 'src/app/features/association/models/association.model';
 import { UUIDTypes } from 'uuid';
 import { setNotificationMessages } from '../../../authentication/store/user.actions';
-import { NavigationItems } from '../../../../common/models/toggleMenu';
+import { NavigationItems } from '../../../../common/models/toggle-menu';
 import { Observable } from 'rxjs';
 
 @Component({

@@ -1,10 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { ActivityFilterComponent } from '../../components/activity-filter/activity-filter.component';
-import { ActivityFacadeService } from '../../services/activity-facade.service';
-import { ActivityAddPhotoComponent } from '../../components/activity-add-photo/activity-add-photo.component';
-import { InputFieldConfig } from 'src/app/common/models/input.models';
-import { SingleButtonComponent } from '../../../../common/components/single-button/single-button.component';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { format } from 'date-fns';
+import { InputFieldComponent } from 'src/app/common/components/input-field/input-field.component';
 import {
   ACTIVITY_DESCRIPTION_MAX_LENGTH,
   HOUR_REGEX,
@@ -13,14 +10,29 @@ import {
   NUMBER_REGEX,
   POSTAL_CODE_REGEX,
 } from 'src/app/features/authentication/constants/form.constants';
-import { MultipleInputFieldComponent } from 'src/app/common/components/multiple-input-field/multiple-input-field.component';
+import { FormField } from 'src/app/features/authentication/models/form.model';
 import { photoRequiredValidator, themeRequiredValidator } from 'src/app/features/authentication/utils/form.validators';
+import { SingleButtonComponent } from '../../../../common/components/single-button/single-button.component';
+import { TextareaFieldComponent } from '../../../../common/components/textarea-field/textarea-field.component';
+import { ActivityAddPhotoComponent } from '../../components/activity-add-photo/activity-add-photo.component';
+import { ActivityFilterComponent } from '../../components/activity-filter/activity-filter.component';
 import { NewActivityCreation } from '../../models/activity-creation.model';
-import { format } from 'date-fns';
+import { ActivityFacadeService } from '../../services/activity-facade.service';
+import { InputFieldErrorComponent } from 'src/app/common/components/input-field-error/input-field-error.component';
+import { UUIDTypes } from 'uuid';
 
 @Component({
   selector: 'app-activity-creation',
-  imports: [ActivityFilterComponent, FormsModule, ReactiveFormsModule, ActivityAddPhotoComponent, MultipleInputFieldComponent, SingleButtonComponent],
+  imports: [
+    ActivityFilterComponent,
+    FormsModule,
+    ReactiveFormsModule,
+    ActivityAddPhotoComponent,
+    SingleButtonComponent,
+    InputFieldComponent,
+    InputFieldErrorComponent,
+    TextareaFieldComponent,
+  ],
   templateUrl: './activity-creation.component.html',
   styleUrl: './activity-creation.component.scss',
 })
@@ -29,6 +41,7 @@ export class ActivityCreationComponent implements OnInit {
   private _fb: FormBuilder = new FormBuilder();
 
   formThemeField = 'selectedThemesName';
+  descriptionMaxLength = ACTIVITY_DESCRIPTION_MAX_LENGTH;
 
   activityForm: FormGroup = this._fb.group({
     title: ['', [Validators.required, Validators.maxLength(MAX_LENGTH), Validators.minLength(MIN_LENGTH)]],
@@ -44,23 +57,21 @@ export class ActivityCreationComponent implements OnInit {
     photo_3: [null],
   });
 
-  activityFields: InputFieldConfig[][] = [
-    [{ name: 'title', label: "Titre de l'activité", placeholder: 'Ex : La maraude' }],
-    [{ name: 'requestedVolunteers', label: 'Volontaires requis', placeholder: 'Ex : 10' }],
-    [{ name: 'date', label: 'Date', placeholder: 'Ex : 26/09/2025', type: 'date' }],
-    [{ name: 'hour', label: 'Heure', placeholder: 'Ex : 06:00' }],
-    [{ name: 'zipCode', label: 'Code Postal', placeholder: 'Ex : 44000' }],
-    [{ name: 'city', label: 'Ville', placeholder: 'Ex : Nantes' }],
+  activityFields: FormField[] = [
+    { name: 'title', label: "Titre de l'activité", placeholder: 'Ex : La maraude' },
+    { name: 'requestedVolunteers', label: 'Volontaires requis', placeholder: 'Ex : 10' },
+    { name: 'date', label: 'Date', placeholder: 'Ex : 26/09/2025', type: 'date' },
+    { name: 'hour', label: 'Heure', placeholder: 'Ex : 06:00' },
+    { name: 'zipCode', label: 'Code Postal', placeholder: 'Ex : 44000' },
+    { name: 'city', label: 'Ville', placeholder: 'Ex : Nantes' },
   ];
 
-  descriptionFieldConfigs: InputFieldConfig[] = [
-    {
-      name: 'description',
-      label: 'Description',
-      placeholder: 'Ex : Participez à des maraudes pour créer du lien social avec les personnes sans-abri... ',
-      type: 'textArea',
-    },
-  ];
+  descriptionFieldConfigs: FormField = {
+    name: 'description',
+    label: 'Description',
+    placeholder: 'Ex : Participez à des maraudes pour créer du lien social avec les personnes sans-abri... ',
+    type: 'textArea',
+  };
 
   ngOnInit(): void {
     this._activityFacadeService.getActivityThemesFromApi();
@@ -84,7 +95,7 @@ export class ActivityCreationComponent implements OnInit {
     const data: NewActivityCreation = {
       images: [formValue.photo_1, formValue.photo_2, formValue.photo_3]
         .filter((img): img is string => typeof img === 'string')
-        .map(base64 => ({ id: null, base64 })),
+        .map(base64 => ({ id: null as UUIDTypes | null, base64 })),
       title: formValue.title,
       requestedVolunteers: formValue.requestedVolunteers,
       dateTime: format(new Date(formValue.date), 'yyyy-MM-dd') + 'T' + formValue.hour + ':00',

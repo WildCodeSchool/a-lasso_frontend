@@ -25,31 +25,8 @@
               </p-iftalabel>
             } @else {
               <p-iftalabel class="custom-iftalabel">
-                @if (formGroup) {
-                  @if (field.type === 'textArea') {
-                    <textarea
-                      pInputTextarea
-                      [id]="'input-' + i"
-                      [placeholder]="field.placeholder"
-                      [formControlName]="field.name"
-                      rows="4"
-                      class="custom-textarea"></textarea>
-                  } @else {
-                    <input pInputText [id]="'input-' + i" [placeholder]="field.placeholder" [type]="field.type" [formControlName]="field.name" />
-                  }
-                } @else {
-                  @if (field.type === 'textArea') {
-                    <textarea
-                      pInputTextarea
-                      [id]="'input-' + i"
-                      [placeholder]="field.placeholder"
-                      [formControlName]="field.name"
-                      rows="4"
-                      class="custom-textarea"></textarea>
-                  } @else {
-                    <input pInputText [id]="'input-' + i" [placeholder]="field.placeholder" [type]="field.type" [formControlName]="field.name" />
-                  }
-                }
+                <input pInputText [id]="'input-' + i" [placeholder]="field.placeholder" [type]="field.type" [formControlName]="field.name" />
+
                 @if (field.value) {
                   <button class="clear-btn" type="button" (click)="clearInput(i)">
                     <i class="fa-solid fa-xmark"></i>
@@ -61,11 +38,6 @@
           </p-inputGroup>
         </div>
 
-        @if (formGroup?.get(field.name)?.invalid && formGroup?.get(field.name)?.touched) {
-          <div class="error-message">
-            <app-input-field-error [control]="formGroup.get(field.name)" [fieldName]="field.name" />
-          </div>
-        }
         @if (!isLast) {
           <div class="separator"></div>
         }

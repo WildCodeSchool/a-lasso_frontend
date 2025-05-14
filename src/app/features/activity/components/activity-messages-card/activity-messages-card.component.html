@@ -24,12 +24,7 @@
           </button>
 
           <div class="input">
-            <form [formGroup]="messageForm">
-              <app-input-field
-                [label]="newMessageField.label"
-                [type]="newMessageField.type"
-                [formControlName]="newMessageField.name"></app-input-field>
-            </form>
+            <app-input-field [fieldConfig]="newMessageField" [formGroup]="messageForm"></app-input-field>
           </div>
 
           <button (click)="postMessage()" type="button">

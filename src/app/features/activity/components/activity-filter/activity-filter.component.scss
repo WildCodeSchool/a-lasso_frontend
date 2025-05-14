@@ -3,7 +3,6 @@
   height: 100%;
   display: flex;
   flex-direction: column;
-  position: relative;
 
   .filter-buttons {
     display: flex;
@@ -14,16 +13,6 @@
     width: 100%;
     height: auto;
     padding: 1rem;
-  }
-
-  .error-message {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    font-size: 12px;
-    margin-top: 1px;
-    z-index: 2;
-    max-width: 100%;
   }
 }
 
