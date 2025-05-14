@@ -1,0 +1,30 @@
+@if (user$ | async; as user) {
+  <div class="security-container">
+    <h1 class="security-title">Sécurité</h1>
+    <div class="security-wrapper">
+      <div class="security-password-container module">
+        <p>Mot de passe</p>
+        <p class="security-password">*****************</p>
+        <app-single-button [id]="1" label="Modifier" size="small" [styleClass]="ButtonStyleClass.defaultBlue" (buttonClicked)="onPasswordEdit()">
+        </app-single-button>
+      </div>
+
+      <div class="separate"></div>
+
+      <div class="security-info-container module">
+        <p>Date de création du compte :</p>
+        <p class="security-created">{{ user.createdAt | date: 'dd/MM/yyyy' }}</p>
+        <app-single-button
+          [id]="2"
+          label="Supprimer le compte"
+          size="small"
+          [styleClass]="ButtonStyleClass.defaultWhite"
+          (buttonClicked)="onDeleteAccount()">
+        </app-single-button>
+      </div>
+    </div>
+  </div>
+}
+
+<app-password-change-dialog [(visible)]="isPasswordDialogVisible"></app-password-change-dialog>
+<p-confirmDialog></p-confirmDialog>

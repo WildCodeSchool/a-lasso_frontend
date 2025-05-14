@@ -25,6 +25,7 @@ import { SearchAddressComponent } from '../../../../common/components/search-add
 import { ActivityFacadeService } from '../../services/activity-facade.service';
 import { InputFieldErrorComponent } from 'src/app/common/components/input-field-error/input-field-error.component';
 import { getFormattedAddress } from 'src/app/common/utils/address.utils';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-activity-creation',
@@ -46,6 +47,7 @@ import { getFormattedAddress } from 'src/app/common/utils/address.utils';
 export class ActivityCreationComponent implements OnInit {
   private _activityFacadeService: ActivityFacadeService = inject(ActivityFacadeService);
   private _fb: FormBuilder = new FormBuilder();
+  private _router: Router = inject(Router);
 
   formThemeField = 'selectedThemesName';
   descriptionMaxLength = ACTIVITY_DESCRIPTION_MAX_LENGTH;
@@ -100,6 +102,10 @@ export class ActivityCreationComponent implements OnInit {
   }
 
   private _publishActivity(): void {
+    if (this.activityForm.invalid) {
+      return;
+    }
+
     const formValue = this.activityForm.value;
 
     const data: NewActivityCreation = {
@@ -117,6 +123,10 @@ export class ActivityCreationComponent implements OnInit {
       description: formValue.description,
     };
 
-    this._activityFacadeService.publishNewActivity(data);
+    this._activityFacadeService.publishNewActivity(data).subscribe({
+      next: () => {
+        this._router.navigate(['/profile/association/activities']);
+      },
+    });
   }
 }

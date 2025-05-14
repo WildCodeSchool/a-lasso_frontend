@@ -1,13 +1,14 @@
 import { animate, style, transition, trigger } from '@angular/animations';
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
-import { Observable, map } from 'rxjs';
+import { Component, ElementRef, HostListener, inject } from '@angular/core';
+import { map, Observable } from 'rxjs';
 import { AuthFacade } from 'src/app/features/authentication/services/auth-facade.service';
 import { environment } from 'src/environments/environment.development';
 import { UserType } from 'src/app/features/authentication/models/user.model';
 import { BadgeComponent } from '../badge/badge.component';
 import { HeaderMenuMessagesComponent } from '../header-menu-messages/header-menu-messages.component';
 import { HeaderMenuReportsComponent } from '../header-menu-reports/header-menu-reports.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-header-menu',
@@ -27,6 +28,8 @@ import { HeaderMenuReportsComponent } from '../header-menu-reports/header-menu-r
 })
 export class HeaderMenuComponent {
   private _authFacade: AuthFacade = inject(AuthFacade);
+  private _router = inject(Router);
+  private _elementRef = inject(ElementRef);
 
   isOpen: boolean = false;
   apiUrl: string = environment.apiUrl;
@@ -54,8 +57,20 @@ export class HeaderMenuComponent {
     })
   );
 
+  @HostListener('document:click', ['$event'])
+  onClickOutside(event: MouseEvent): void {
+    if (!this._elementRef.nativeElement.contains(event.target)) {
+      this.isOpen = false;
+    }
+  }
+
   toggleMenu(): void {
     this.isOpen = !this.isOpen;
+  }
+
+  goToProfile(): void {
+    this.isOpen = false;
+    this._router.navigate(['/profile/association/activities']);
   }
 
   logout(): void {

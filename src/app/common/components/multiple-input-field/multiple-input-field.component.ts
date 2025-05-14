@@ -7,6 +7,7 @@ import { InputGroupModule } from 'primeng/inputgroup';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 import { InputTextModule } from 'primeng/inputtext';
 import { FormField } from 'src/app/features/authentication/models/form.model';
+import { InputFieldErrorComponent } from '../input-field-error/input-field-error.component';
 
 @Component({
   selector: 'app-multiple-input-field',
@@ -20,14 +21,19 @@ import { FormField } from 'src/app/features/authentication/models/form.model';
     InputGroupModule,
     InputGroupAddonModule,
     CalendarModule,
+    InputFieldErrorComponent,
   ],
   templateUrl: './multiple-input-field.component.html',
   styleUrls: ['./multiple-input-field.component.scss'],
 })
 export class MultipleInputFieldComponent implements OnChanges {
   @Output() inputValuesChanged = new EventEmitter<Record<string, string>>();
+  @Output() save = new EventEmitter<void>();
+
   @Input() fieldConfigs: FormField[] = [];
   @Input() showSearchButton: boolean = false;
+  @Input() showSaveButton = false;
+  @Input() showErrors = false;
   @Input() formGroup: FormGroup;
 
   focusedIndex: number | null = null;

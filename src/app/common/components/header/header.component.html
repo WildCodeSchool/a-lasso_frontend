@@ -9,6 +9,7 @@
       @if (userRoles.length > 0) {
         @if (userRoles.includes(UserRoleType.ASSOCIATION) && !isOnActivityCreationPage()) {
           <app-single-button
+            class="underline-animate"
             [type]="'button'"
             [id]="1"
             [routerLink]="['/activity', 'creation']"

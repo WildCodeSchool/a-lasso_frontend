@@ -1,28 +1,30 @@
 <form class="input-wrapper" [formGroup]="formGroup">
-  <div class="search-container">
+  <div class="search-container" [ngClass]="showSearchButton ? 'with-search' : 'without-search'">
     @for (field of inputConfigs; track field.label; let i = $index; let isLast = $last) {
       <div class="input-container">
         <div class="field-group">
           <p-inputGroup>
             @if (field.type === 'date') {
-              <p-iftalabel class="custom-iftalabel calendar-wrapper" [ngClass]="{ focused: focusedIndex === i }">
-                <p-calendar
-                  [id]="'input-' + i"
-                  [formControlName]="field.name"
-                  (onFocus)="focusedIndex = i"
-                  (onBlur)="focusedIndex = null"
-                  [inputId]="'input-' + i"
-                  [placeholder]="field.placeholder"
-                  [showIcon]="true"
-                  inputStyleClass="custom-calendar-input"
-                  dateFormat="dd/mm/yy" />
-                @if (field.value) {
-                  <button class="clear-btn" type="button" (click)="clearInput(i)">
-                    <i class="fa-solid fa-xmark"></i>
-                  </button>
-                }
-                <label [for]="'input-' + i">{{ field.label }}</label>
-              </p-iftalabel>
+              <div class="calendar-wrapper" [ngClass]="{ focused: focusedIndex === i }">
+                <p-iftalabel class="custom-iftalabel">
+                  <p-calendar
+                    [id]="'input-' + i"
+                    [formControlName]="field.name"
+                    (onFocus)="focusedIndex = i"
+                    (onBlur)="focusedIndex = null"
+                    [inputId]="'input-' + i"
+                    [placeholder]="field.placeholder"
+                    [showIcon]="true"
+                    inputStyleClass="custom-calendar-input"
+                    dateFormat="dd/mm/yy" />
+                  @if (field.value) {
+                    <button class="clear-btn" type="button" (click)="clearInput(i)">
+                      <i class="fa-solid fa-xmark"></i>
+                    </button>
+                  }
+                  <label [for]="'input-' + i">{{ field.label }}</label>
+                </p-iftalabel>
+              </div>
             } @else {
               <p-iftalabel class="custom-iftalabel">
                 <input pInputText [id]="'input-' + i" [placeholder]="field.placeholder" [type]="field.type" [formControlName]="field.name" />
@@ -38,6 +40,9 @@
           </p-inputGroup>
         </div>
 
+        @if (showErrors) {
+          <app-input-field-error [control]="formGroup.get(field.name)" [fieldName]="field.name" class="input-error-message"> </app-input-field-error>
+        }
         @if (!isLast) {
           <div class="separator"></div>
         }
@@ -48,6 +53,11 @@
   @if (showSearchButton) {
     <button pButton type="submit" class="search-button" (click)="emitValues()">
       <i class="fa-solid fa-magnifying-glass"></i>
+    </button>
+  }
+  @if (showSaveButton) {
+    <button pButton type="button" class="save-button" (click)="save.emit()">
+      <i class="fa-solid fa-floppy-disk"></i>
     </button>
   }
 </form>

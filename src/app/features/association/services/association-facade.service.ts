@@ -1,17 +1,17 @@
 import { inject, Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { AssociationApiService } from './association-api.service';
 import { Observable, of, switchMap, take, tap } from 'rxjs';
-import { setAssociations } from '../store/association.actions';
-import { selectAssociation, selectAssociations } from '../store/association.selector';
+import { TAKE_1 } from 'src/app/common/constants/observables.constants';
 import { UUIDTypes } from 'uuid';
 import { updateFollowedAssociations } from '../../authentication/store/user.actions';
-import { TAKE_1 } from 'src/app/common/constants/observables.constants';
 import * as UserSelectors from '../../authentication/store/user.selectors';
 import { Association } from '../models/association.model';
 import { selectActivitiesUserInfos } from '../../authentication/store/user.selectors';
 import { ActivitiesUserInfos, FollowedAssociation } from '../../authentication/models/user.model';
 import { Image } from '../../activity/models/activity.model';
+import { setAssociations } from '../store/association.actions';
+import * as AssociationSelectors from '../store/association.selector';
+import { AssociationApiService } from './association-api.service';
 
 @Injectable({
   providedIn: 'root',
@@ -20,14 +20,15 @@ export class AssociationFacadeService {
   private _store: Store = inject(Store);
   private _associationApiService: AssociationApiService = inject(AssociationApiService);
 
-  associations$: Observable<Association[]> = this._store.select(selectAssociations);
+  associations$: Observable<Association[]> = this._store.select(AssociationSelectors.selectAssociations);
+  associationId$: Observable<UUIDTypes> = this._store.select(UserSelectors.selectConnectedAssociationId);
 
   getAssociationCard(associationId: UUIDTypes): Observable<Association> {
     return this._getAssociationFromStore(associationId);
   }
 
   private _getAssociationFromStore(associationId: UUIDTypes): Observable<Association> {
-    return this._store.select(selectAssociation(associationId)).pipe(
+    return this._store.select(AssociationSelectors.selectAssociation(associationId)).pipe(
       switchMap(association => {
         if (association) {
           return this._patchFollowStatus(association);

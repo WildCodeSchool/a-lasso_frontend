@@ -21,3 +21,5 @@ export const updateActivitiesUserInfos = createAction(
 );
 
 export const clearUserActivityInfos = createAction('[Activity] Clear User Activity Infos');
+
+export const deleteActivity = createAction('[Activity] Delete Activity', props<{ activityId: UUIDTypes }>());
