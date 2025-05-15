@@ -3,24 +3,16 @@ import { Component, EventEmitter, Output, inject } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { InputFieldComponent } from 'src/app/common/components/input-field/input-field.component';
-import {
-  ADDRESS_NUMBER_REGEX,
-  MAX_ADDRESS_LENGTH,
-  MAX_LENGTH,
-  MIN_LENGTH,
-  PASSWORD_REGEX,
-  PHONE_REGEX,
-  POSTAL_CODE_REGEX,
-  SIRET_REGEX,
-} from '../../../constants/form.constants';
+import { MAX_LENGTH, MIN_LENGTH, PASSWORD_REGEX, PHONE_REGEX, SIRET_REGEX } from '../../../constants/form.constants';
 import { FormField } from '../../../models/form.model';
-import { passwordsMatchValidator } from '../../../utils/form.validators';
+import { addressRequiredValidator, passwordsMatchValidator } from '../../../utils/form.validators';
 import { InputFieldErrorComponent } from '../../../../../common/components/input-field-error/input-field-error.component';
+import { SearchAddressComponent } from 'src/app/common/components/search-address/search-address.component';
 
 @Component({
   selector: 'app-register-association-form',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, InputFieldComponent, ButtonModule, InputFieldErrorComponent],
+  imports: [CommonModule, ReactiveFormsModule, InputFieldComponent, ButtonModule, InputFieldErrorComponent, SearchAddressComponent],
   templateUrl: './register-association-form.component.html',
   styleUrls: ['../styles/register-form.component.scss'],
 })
@@ -33,12 +25,7 @@ export class RegisterAssociationFormComponent {
       siret: ['', [Validators.required, Validators.pattern(SIRET_REGEX)]],
       name: ['', [Validators.required, Validators.minLength(MIN_LENGTH), Validators.maxLength(MAX_LENGTH)]],
       phone: ['', [Validators.pattern(PHONE_REGEX)]],
-      addressNumber: ['', [Validators.required, Validators.pattern(ADDRESS_NUMBER_REGEX)]],
-      street: ['', [Validators.required, Validators.minLength(MIN_LENGTH), Validators.maxLength(MAX_ADDRESS_LENGTH)]],
-      complement: [''],
-      zipCode: ['', [Validators.required, Validators.pattern(POSTAL_CODE_REGEX)]],
-      city: ['', [Validators.required, Validators.minLength(MIN_LENGTH), Validators.maxLength(MAX_LENGTH)]],
-      country: ['', [Validators.required, Validators.minLength(MIN_LENGTH), Validators.maxLength(MAX_LENGTH)]],
+      address: ['', addressRequiredValidator()],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.pattern(PASSWORD_REGEX)]],
       confirmPassword: ['', [Validators.required]],
@@ -54,14 +41,7 @@ export class RegisterAssociationFormComponent {
     { name: 'phone', label: 'Téléphone', type: 'tel', required: true },
   ];
 
-  addressFields: FormField[] = [
-    { name: 'addressNumber', label: 'Numéro', type: 'text' },
-    { name: 'street', label: 'Rue', type: 'text', required: true },
-    { name: 'complement', label: 'Complément', type: 'text' },
-    { name: 'zipCode', label: 'Code Postal', type: 'text', required: true },
-    { name: 'city', label: 'Ville', type: 'text', required: true },
-    { name: 'country', label: 'Pays', type: 'text', required: true },
-  ];
+  addressField: FormField = { name: 'address', label: 'Adresse' };
 
   authFields: FormField[] = [
     { name: 'email', label: 'E-mail', type: 'email', required: true },

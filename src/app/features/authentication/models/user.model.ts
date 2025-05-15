@@ -87,8 +87,8 @@ export type Address = {
   zipCode: string;
   city: string;
   country: string;
-  lat: string;
-  lon: string;
+  lat: number;
+  lon: number;
 };
 
 export type AssociationRegister = {

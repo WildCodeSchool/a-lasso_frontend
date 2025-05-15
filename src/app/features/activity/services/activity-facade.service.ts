@@ -175,8 +175,8 @@ export class ActivityFacadeService {
       .subscribe();
   }
 
-  searchAdress(query: string):  Observable<any> { 
-   return this._activitiesApi.getAdressFromApi(query)
+  searchAdress(query: string): Observable<any> {
+    return this._activitiesApi.getAdressFromApi(query);
   }
 
   publishNewActivity(newActivity: NewActivityCreation): void {

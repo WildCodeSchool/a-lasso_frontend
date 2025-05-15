@@ -12,6 +12,16 @@ export function photoRequiredValidator(): ValidatorFn {
     return isPhotoUploaded ? null : { photoRequired: true };
   };
 }
+
+export function dateRequiredValidator(): ValidatorFn {
+  const today = new Date();
+
+  return (control: AbstractControl): ValidationErrors | null => {
+    const date = control.value;
+    return date && date >= today ? null : { dateRequired: true };
+  };
+}
+
 export function themeRequiredValidator(): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {
     const value = control.value;

@@ -14,10 +14,14 @@ import { SingleButtonComponent } from '../../../../common/components/single-butt
 import { TextareaFieldComponent } from '../../../../common/components/textarea-field/textarea-field.component';
 import { ActivityAddPhotoComponent } from '../../components/activity-add-photo/activity-add-photo.component';
 import { ActivityFilterComponent } from '../../components/activity-filter/activity-filter.component';
-import { MultipleInputFieldComponent } from 'src/app/common/components/multiple-input-field/multiple-input-field.component';
-import { photoRequiredValidator, themeRequiredValidator, addressRequiredValidator } from 'src/app/features/authentication/utils/form.validators';
+import {
+  photoRequiredValidator,
+  themeRequiredValidator,
+  addressRequiredValidator,
+  dateRequiredValidator,
+} from 'src/app/features/authentication/utils/form.validators';
 import { NewActivityCreation } from '../../models/activity-creation.model';
-import { ActivitySearchAdressComponent } from '../../activity-search-adress/activity-search-adress.component';
+import { SearchAddressComponent } from '../../../../common/components/search-address/search-address.component';
 import { ActivityFacadeService } from '../../services/activity-facade.service';
 import { InputFieldErrorComponent } from 'src/app/common/components/input-field-error/input-field-error.component';
 import { UUIDTypes } from 'uuid';
@@ -34,8 +38,7 @@ import { getFormattedAddress } from 'src/app/common/utils/address.utils';
     InputFieldComponent,
     InputFieldErrorComponent,
     TextareaFieldComponent,
-    MultipleInputFieldComponent,
-    ActivitySearchAdressComponent,
+    SearchAddressComponent,
   ],
 
   templateUrl: './activity-creation.component.html',
@@ -51,7 +54,7 @@ export class ActivityCreationComponent implements OnInit {
   activityForm: FormGroup = this._fb.group({
     title: ['', [Validators.required, Validators.maxLength(MAX_LENGTH), Validators.minLength(MIN_LENGTH)]],
     requestedVolunteers: ['', [Validators.required, Validators.pattern(NUMBER_REGEX)]],
-    date: ['', [Validators.required]], // Validators.pattern(DATE_REGEX)]
+    date: ['', [dateRequiredValidator()]],
     hour: ['', [Validators.required, Validators.pattern(HOUR_REGEX)]],
     matchedAddress: [null, [addressRequiredValidator()]],
     selectedThemesName: [[], themeRequiredValidator()],
@@ -66,21 +69,19 @@ export class ActivityCreationComponent implements OnInit {
     { name: 'requestedVolunteers', label: 'Volontaires requis', placeholder: 'Ex : 10' },
     { name: 'date', label: 'Date', placeholder: 'Ex : 26/09/2025', type: 'date' },
     { name: 'hour', label: 'Heure', placeholder: 'Ex : 06:00' },
-    { name: 'zipCode', label: 'Code Postal', placeholder: 'Ex : 44000' },
-    { name: 'city', label: 'Ville', placeholder: 'Ex : Nantes' },
   ];
+
+  adressFieldConfig: FormField = {
+    name: 'matchedAddress',
+    label: 'Adresse',
+    placeholder: 'Ex : 6 rue de la paix 75002 Paris France',
+  };
 
   descriptionFieldConfigs: FormField = {
     name: 'description',
     label: 'Description',
     placeholder: 'Ex : Participez à des maraudes pour créer du lien social avec les personnes sans-abri... ',
     type: 'textArea',
-  };
-
-  adressFieldConfigs: FormField = {
-    name: 'matchedAddress',
-    label: 'Adresse',
-    placeholder: 'Ex : 6 rue de la paix 75002 Paris France',
   };
 
   ngOnInit(): void {
@@ -101,7 +102,6 @@ export class ActivityCreationComponent implements OnInit {
 
   private _publishActivity(): void {
     const formValue = this.activityForm.value;
-    console.log('formValue', formValue);
 
     const data: NewActivityCreation = {
       images: [formValue.photo_1, formValue.photo_2, formValue.photo_3]
@@ -110,11 +110,10 @@ export class ActivityCreationComponent implements OnInit {
       title: formValue.title,
       requestedVolunteers: formValue.requestedVolunteers,
       dateTime: format(new Date(formValue.date), 'yyyy-MM-dd') + 'T' + formValue.hour + ':00',
-      address: getFormattedAddress(formValue.matchedAddresses),
+      address: getFormattedAddress(formValue.matchedAddress),
       themes: formValue.selectedThemesName,
       description: formValue.description,
     };
-    console.log(data);
     this._activityFacadeService.publishNewActivity(data);
   }
 }

@@ -10,6 +10,8 @@
       <p>Vous devez sélectionner au moins un thème</p>
       } @if (control.errors?.['invalidAddress']) {
       <p>L'adresse sélectionnée est invalide. Veuillez en choisir une depuis la liste</p>
+      } @if(control.errors?.['dateRequired']) {
+      <p>La date saisie doit être dans le futur</p>
       } @if (control.errors?.['email']) {
       <p>Adresse e-mail invalide</p>
       } @if (control.errors?.['pattern']) { @switch (fieldName) { @case ('motDePasse') {

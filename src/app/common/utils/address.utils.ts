@@ -7,7 +7,7 @@ export function getFormattedAddress(matchedApiAddress: AddressApiResult): Addres
     zipCode: matchedApiAddress.address.postcode,
     city: matchedApiAddress.address.town,
     country: matchedApiAddress.address.country,
-    lat: matchedApiAddress.lat,
-    lon: matchedApiAddress.lon,
+    lat: parseFloat(matchedApiAddress.lat),
+    lon: parseFloat(matchedApiAddress.lon),
   };
 }
