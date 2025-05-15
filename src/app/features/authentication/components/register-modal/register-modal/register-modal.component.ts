@@ -45,14 +45,14 @@ export class RegisterModalComponent {
   onRegisterVoluntary(form: FormGroup): void {
     const value = form.value;
     const data: VoluntaryRegister = {
-      first_name: value.prenom,
-      last_name: value.nom,
+      first_name: value.first_name,
+      last_name: value.last_name,
       email: value.email,
-      password: value.motDePasse,
-      mobile_phone: value.telephone || '',
-      city: value.ville,
-      country: value.pays,
-      birth_date: this._formatDate(value.dateNaissance),
+      password: value.password,
+      mobile_phone: value.phone || '',
+      city: value.city,
+      country: value.country,
+      birth_date: this._formatDate(value.birthdate),
     };
 
     this._authService
@@ -67,17 +67,17 @@ export class RegisterModalComponent {
     const value = form.value;
     const data: AssociationRegister = {
       siret: value.siret,
-      name: value.nom,
+      name: value.name,
       email: value.email,
-      password: value.motDePasse,
-      mobile_phone: value.telephone,
+      password: value.password,
+      mobile_phone: value.phone,
       address: {
-        house_number: value.adresseNumero || '',
-        street_name: value.adresseRue,
-        adress_suffix: value.adresseComplement || null,
-        zipCode: value.adresseCodePostal,
-        city: value.adresseVille,
-        country: value.adressePays,
+        house_number: value.addressNumber || '',
+        street_name: value.street,
+        adress_suffix: value.complement || null,
+        zipCode: value.zipCode,
+        city: value.city,
+        country: value.country,
       },
     };
 

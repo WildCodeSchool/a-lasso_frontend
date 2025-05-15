@@ -6,8 +6,7 @@ import { IftaLabelModule } from 'primeng/iftalabel';
 import { InputGroupModule } from 'primeng/inputgroup';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 import { InputTextModule } from 'primeng/inputtext';
-import { InputFieldConfig } from 'src/app/common/models/input.models';
-import { InputFieldErrorComponent } from '../input-field-error/input-field-error.component';
+import { FormField } from 'src/app/features/authentication/models/form.model';
 
 @Component({
   selector: 'app-multiple-input-field',
@@ -21,14 +20,13 @@ import { InputFieldErrorComponent } from '../input-field-error/input-field-error
     InputGroupModule,
     InputGroupAddonModule,
     CalendarModule,
-    InputFieldErrorComponent,
   ],
   templateUrl: './multiple-input-field.component.html',
   styleUrls: ['./multiple-input-field.component.scss'],
 })
 export class MultipleInputFieldComponent implements OnChanges {
   @Output() inputValuesChanged = new EventEmitter<Record<string, string>>();
-  @Input() fieldConfigs: InputFieldConfig[] = [];
+  @Input() fieldConfigs: FormField[] = [];
   @Input() showSearchButton: boolean = false;
   @Input() formGroup: FormGroup;
 

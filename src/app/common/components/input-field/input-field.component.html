@@ -1,47 +1,58 @@
-<p-floatlabel [variant]="variant">
-  @if (type === 'date') {
-    <p-calendar
-      [inputId]="'input_' + label"
-      [(ngModel)]="value"
-      (ngModelChange)="updateValue($event)"
-      [disabled]="disabled"
-      dateFormat="dd.mm.yy"
-      ariaLabel="date">
-    </p-calendar>
-  } @else if (type === 'password') {
-    <p-password
-      [inputId]="'input_' + label"
-      [(ngModel)]="value"
-      (ngModelChange)="updateValue($event)"
-      [disabled]="disabled"
-      [feedback]="showPasswordRules"
-      [toggleMask]="true"
-      autocomplete="on"
-      ariaLabel="password">
-      @if (showPasswordRules) {
-        <ng-template #footer>
-          <p-divider></p-divider>
-          <ul>
-            <li>Au moins une lettre minuscule</li>
-            <li>Au moins une lettre majuscule</li>
-            <li>Au moins un caractère spécial</li>
-            <li>Au moins un chiffre</li>
-            <li>Minimum 8 caractères</li>
-          </ul>
-        </ng-template>
-      }
-    </p-password>
-  } @else {
-    <input
-      pInputText
-      [id]="'input_' + label"
-      [(ngModel)]="value"
-      (ngModelChange)="updateValue($event)"
-      [type]="type"
-      [disabled]="disabled"
-      autocomplete="on"
-      [ariaLabel]="label" />
-  }
+<form [formGroup]="formGroup">
+  <ng-template #inputField>
+    @if (fieldConfig.type === 'date') {
+      <p-calendar
+        [inputId]="inputId"
+        [disabled]="disabled"
+        [formControlName]="fieldConfig.name"
+        dateFormat="dd.mm.yy"
+        [ariaLabel]="fieldConfig.label"
+        [placeholder]="fieldConfig.placeholder ?? ''">
+      </p-calendar>
+    } @else if (fieldConfig.type === 'password') {
+      <p-password
+        [inputId]="inputId"
+        [disabled]="disabled"
+        [formControlName]="fieldConfig.name"
+        [feedback]="showPasswordRules"
+        [toggleMask]="true"
+        autocomplete="on"
+        [ariaLabel]="fieldConfig.label">
+        @if (showPasswordRules) {
+          <ng-template #footer>
+            <p-divider></p-divider>
+            <ul>
+              <li>Au moins une lettre minuscule</li>
+              <li>Au moins une lettre majuscule</li>
+              <li>Au moins un caractère spécial</li>
+              <li>Au moins un chiffre</li>
+              <li>Minimum 8 caractères</li>
+            </ul>
+          </ng-template>
+        }
+      </p-password>
+    } @else {
+      <input
+        pInputText
+        [id]="inputId"
+        [formControlName]="fieldConfig.name"
+        [type]="inputType"
+        [disabled]="disabled"
+        [placeholder]="fieldConfig.placeholder ?? ''"
+        autocomplete="on"
+        [ariaLabel]="fieldConfig.label" />
+    }
+  </ng-template>
 
-  <label [for]="'input_' + label">{{ label }}</label>
-</p-floatlabel>
+  @if (useIftaLabel) {
+    <p-iftalabel>
+      <ng-container *ngTemplateOutlet="inputField"></ng-container>
+      <label [for]="inputId">{{ fieldConfig.label }}</label>
+    </p-iftalabel>
+  } @else {
+    <p-floatlabel [variant]="variant">
+      <ng-container *ngTemplateOutlet="inputField"></ng-container>
+      <label [for]="inputId">{{ fieldConfig.label }}</label>
+    </p-floatlabel>
+  }
+</form>

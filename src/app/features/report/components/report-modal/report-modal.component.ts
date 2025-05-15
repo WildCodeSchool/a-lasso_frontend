@@ -1,25 +1,22 @@
-import { Component, DestroyRef, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
-import { DialogModule } from 'primeng/dialog';
-import { ButtonModule } from 'primeng/button';
-import { Select } from 'primeng/select';
+import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Association } from '../../../association/models/association.model';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { NgStyle } from '@angular/common';
+import { ButtonModule } from 'primeng/button';
+import { DialogModule } from 'primeng/dialog';
+import { Select } from 'primeng/select';
+import { FormField } from 'src/app/features/authentication/models/form.model';
 import { TextareaFieldComponent } from '../../../../common/components/textarea-field/textarea-field.component';
+import { Association } from '../../../association/models/association.model';
+import { Report, ReportType, ReportTypeEnum } from '../../models/report.model';
 import { ReportFacadeService } from '../../services/report-facade.service';
-import { ReportType, ReportTypeEnum, Report } from '../../models/report.model';
-import { InputFieldErrorComponent } from '../../../../common/components/input-field-error/input-field-error.component';
 
 @Component({
   selector: 'app-report-modal',
-  imports: [DialogModule, ButtonModule, Select, FormsModule, ReactiveFormsModule, NgStyle, TextareaFieldComponent, InputFieldErrorComponent],
+  imports: [DialogModule, ButtonModule, Select, FormsModule, ReactiveFormsModule, TextareaFieldComponent],
   templateUrl: './report-modal.component.html',
   styleUrl: './report-modal.component.scss',
 })
-export class ReportModalComponent implements OnInit {
+export class ReportModalComponent {
   private readonly _fb: FormBuilder = new FormBuilder();
-  private readonly _destroyRef: DestroyRef = inject(DestroyRef);
   private readonly _reportFacadeService: ReportFacadeService = inject(ReportFacadeService);
 
   @Output() visibleChange = new EventEmitter<boolean>();
@@ -33,21 +30,18 @@ export class ReportModalComponent implements OnInit {
     { label: 'Autre...', value: ReportTypeEnum.Other },
   ];
 
+  public messageMaxLength: number = 700;
   public reportForm = this._fb.group({
     selectedType: [ReportTypeEnum.InappropriateActivity],
-    reportContent: ['', [Validators.required, Validators.maxLength(700)]],
+    reportContent: ['', [Validators.required, Validators.maxLength(this.messageMaxLength)]],
   });
 
-  messageContentLength: number = 0;
-
-  ngOnInit(): void {
-    this.reportForm
-      .get('reportContent')!
-      .valueChanges.pipe(takeUntilDestroyed(this._destroyRef))
-      .subscribe(value => {
-        this.messageContentLength = value.length;
-      });
-  }
+  public fieldConfig: FormField = {
+    name: 'reportContent',
+    label: 'Raisons du signalement',
+    placeholder: 'Saisir les raisons de votre signalement ici',
+    required: true,
+  };
 
   sendReport(): void {
     if (this.reportForm.invalid) {

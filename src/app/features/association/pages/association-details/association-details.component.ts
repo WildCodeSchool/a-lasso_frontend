@@ -10,7 +10,7 @@ import { ActivatedRoute } from '@angular/router';
 import { map } from 'rxjs/operators';
 import { Association } from '../../models/association.model';
 import { MOBILE_SIZE } from '../../../../common/models/scss-variables';
-import { NavigationItems } from '../../../../common/models/toggleMenu';
+import { NavigationItems } from '../../../../common/models/toggle-menu';
 
 @Component({
   selector: 'app-association-details',

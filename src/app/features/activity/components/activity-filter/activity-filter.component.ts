@@ -1,17 +1,17 @@
-import { Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
-import { ActivityFacadeService } from '../../services/activity-facade.service';
-import { Observable } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
-import { ButtonModule } from 'primeng/button';
-import { Theme, ThemeName } from '../../models/activity.model';
-import { SingleButtonComponent } from '../../../../common/components/single-button/single-button.component';
-import { ButtonClicked } from 'src/app/common/models/buttonClicked';
+import { Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { InputFieldErrorComponent } from 'src/app/common/components/input-field-error/input-field-error.component';
+import { ButtonModule } from 'primeng/button';
+import { Observable } from 'rxjs';
+import { ButtonClicked } from 'src/app/common/models/button';
+import { SingleButtonComponent } from '../../../../common/components/single-button/single-button.component';
+import { Theme, ThemeName } from '../../models/activity.model';
+import { ActivityFacadeService } from '../../services/activity-facade.service';
+import { ButtonStyleClass } from 'src/app/common/models/button';
 
 @Component({
   selector: 'app-activity-filter',
-  imports: [AsyncPipe, ButtonModule, SingleButtonComponent, InputFieldErrorComponent],
+  imports: [AsyncPipe, ButtonModule, SingleButtonComponent],
   templateUrl: './activity-filter.component.html',
   styleUrl: './activity-filter.component.scss',
 })
@@ -22,6 +22,7 @@ export class ActivityFilterComponent implements OnInit {
   @Input() formThemeField?: string;
   themes$!: Observable<Theme[]>;
   selected: ThemeName[] = [];
+  ButtonStyleClass = ButtonStyleClass;
 
   ngOnInit(): void {
     this.themes$ = this._activityFacadeService.getActivityThemesFromApi();

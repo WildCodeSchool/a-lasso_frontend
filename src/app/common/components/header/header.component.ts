@@ -10,6 +10,7 @@ import { AssociationLogin, UserType, VoluntaryLogin } from 'src/app/features/aut
 import { AuthFacade } from 'src/app/features/authentication/services/auth-facade.service';
 import { HeaderMenuComponent } from '../header-menu/header-menu.component';
 import { SingleButtonComponent } from '../single-button/single-button.component';
+import { ButtonStyleClass } from 'src/app/common/models/button';
 
 @Component({
   selector: 'app-header',
@@ -31,6 +32,7 @@ export class HeaderComponent {
 
   showRegisterModal = false;
   showLoginModal = false;
+  ButtonStyleClass = ButtonStyleClass;
 
   isAuthenticated$ = this._auth.isAuthenticated$;
   user$: Observable<VoluntaryLogin | AssociationLogin> = this._auth.user$;

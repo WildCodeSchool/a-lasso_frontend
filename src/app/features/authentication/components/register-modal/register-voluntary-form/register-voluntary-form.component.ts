@@ -52,7 +52,6 @@ export class RegisterVoluntaryFormComponent {
         { name: 'country', label: 'Pays', type: 'text', required: true },
       ],
     },
-
     { name: 'birthdate', label: 'Date de naissance', type: 'date', required: true },
   ];
 

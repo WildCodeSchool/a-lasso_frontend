@@ -9,6 +9,7 @@ import { ButtonModule } from 'primeng/button';
 import { SingleButtonComponent } from '../../../../common/components/single-button/single-button.component';
 import { Observable, take, tap } from 'rxjs';
 import { getImageSource } from 'src/app/common/utils/image.utils';
+import { ButtonStyleClass } from 'src/app/common/models/button';
 
 @Component({
   selector: 'app-activity-description',
@@ -21,6 +22,7 @@ export class ActivityDescriptionComponent implements OnInit {
 
   private _activityFacadeService: ActivityFacadeService = inject(ActivityFacadeService);
 
+  ButtonStyleClass = ButtonStyleClass;
   public apiUrl = environment.apiUrl;
   public isRegisteredActivity$: Observable<boolean>;
   public isSavedActivity$: Observable<boolean>;

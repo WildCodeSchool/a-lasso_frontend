@@ -24,7 +24,7 @@
     <app-single-button
       [id]="1"
       (buttonClicked)="toggleRegister(activity)"
-      [styleClass]="(isRegisteredActivity$ | async) ? 'unsubscribe' : 'subscribe'"
+      [styleClass]="(isRegisteredActivity$ | async) ? ButtonStyleClass.unsubscribe : ButtonStyleClass.subscribe"
       [label]="(isRegisteredActivity$ | async) ? 'Me désinscrire' : 'Minscrire 🚀'"
       [ariaLabel]="'bouton de ' + (isRegisteredActivity$ | async) ? 'désinscription' : 'inscription'">
     </app-single-button>

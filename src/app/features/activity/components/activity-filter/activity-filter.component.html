@@ -5,7 +5,7 @@
         [type]="'button'"
         [id]="$index"
         (buttonClicked)="updateSelectedThemes($event)"
-        [styleClass]="selected.includes(theme.name) ? 'defaultWhite selected' : 'defaultWhite'"
+        [styleClass]="selected.includes(theme.name) ? ButtonStyleClass.defaultWhiteSelected : ButtonStyleClass.defaultWhite"
         [label]="theme.name"
         [icon]="theme.iconUrl"
         [ariaLabel]="'bouton de thème ' + theme.name"
@@ -13,9 +13,4 @@
       </app-single-button>
     }
   </div>
-  @if (formGroup?.get(formThemeField)?.invalid && formGroup?.get(formThemeField)?.touched) {
-    <div class="error-message">
-      <app-input-field-error [control]="formGroup.get(formThemeField)" [fieldName]="formThemeField" />
-    </div>
-  }
 </div>

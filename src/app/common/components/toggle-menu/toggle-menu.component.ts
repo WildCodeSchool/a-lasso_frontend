@@ -1,6 +1,6 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { Tab, TabList, Tabs } from 'primeng/tabs';
-import { NavigationItems } from '../../models/toggleMenu';
+import { NavigationItems } from '../../models/toggle-menu';
 import { BadgeComponent } from '../badge/badge.component';
 
 @Component({

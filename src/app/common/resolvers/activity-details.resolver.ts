@@ -5,7 +5,7 @@ import { Activity } from 'src/app/features/activity/models/activity.model';
 import { ActivityFacadeService } from 'src/app/features/activity/services/activity-facade.service';
 import { Association } from 'src/app/features/association/models/association.model';
 import { AssociationFacadeService } from 'src/app/features/association/services/association-facade.service';
-import { ActivityDetailsResolver } from '../models/activityDetails-resolver';
+import { ActivityDetailsResolver } from '../models/activity-details-resolver';
 
 export const activityDetailsResolver: ResolveFn<ActivityDetailsResolver> = (route): Observable<ActivityDetailsResolver> => {
   const activityFacadeService = inject(ActivityFacadeService);

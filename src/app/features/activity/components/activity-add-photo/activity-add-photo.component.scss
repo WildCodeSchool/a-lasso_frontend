@@ -4,12 +4,6 @@
   gap: 5vw;
   justify-content: center;
 
-  .add-photo-container:first-child {
-    .photo-box {
-      border: 1px solid black;
-    }
-  }
-
   .add-photo-container {
     display: flex;
     flex-direction: column;
@@ -18,11 +12,14 @@
       height: 150px;
       position: relative;
       background-color: white;
-      border: 1px dashed black;
+      border: none;
+      box-shadow: var(--box-shadow);
+      border-radius: 8px;
+      transition: all 0.2s ease;
 
       &:hover {
-        border: 1px solid black;
         cursor: pointer;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
       }
 
       .fa-solid {
@@ -33,7 +30,7 @@
       .fa-plus {
         font-size: 2.5rem;
         position: absolute;
-        top: 0rem;
+        top: 0.5rem;
         left: 1rem;
       }
 
@@ -45,9 +42,8 @@
         max-height: 100%;
       }
 
-      h3 {
-        padding-top: 15px;
-        font-weight: 400;
+      .add-photo {
+        margin: 12px 0 0 0;
       }
     }
 

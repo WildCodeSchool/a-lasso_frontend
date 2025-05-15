@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { BadgeModule } from 'primeng/badge';
-import { BadgeSize } from '../../models/badgeSizeEnum';
+import { BadgeSize } from '../../models/badge-size-enum';
 import { NgClass } from '@angular/common';
 
 @Component({
