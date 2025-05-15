@@ -1,32 +1,32 @@
 @if (activity) {
-<section class="activity-description-section">
-  <div class="header">
-    <div class="title">
-      <h1>{{ activity.title }}</h1>
-      <app-inscription-badge [participants]="voluntariesRegistered$ | async"></app-inscription-badge>
+  <section class="activity-description-section">
+    <div class="header">
+      <div class="title">
+        <h1>{{ activity.title }}</h1>
+        <app-inscription-badge [participants]="voluntariesRegistered$ | async"></app-inscription-badge>
+      </div>
+
+      <app-favorite-heart [activityId]="activity.id" [isSaved]="isSavedActivity$ | async"></app-favorite-heart>
+    </div>
+    <div class="sub-title">
+      <p>Le {{ activity.date | date: 'dd/MM/yyyy' }} à {{ activity.date | date: 'HH:mm' }}</p>
+      <p>{{ activity.location.city }}</p>
     </div>
 
-    <app-favorite-heart [activityId]="activity.id" [isSaved]="isSavedActivity$ | async"></app-favorite-heart>
-  </div>
-  <div class="sub-title">
-    <p>Le {{ activity.date | date : 'dd/MM/yyyy' }} à {{ activity.date | date : 'HH:mm' }}</p>
-    <p>{{ activity.location.city }}</p>
-  </div>
-
-  <p>{{ activity.description }}</p>
-  <div class="activity-images">
-    @for (image of activity.images; track $index) {
-    <div class="image-container">
-      <img [src]="getImageSrc($index)" [alt]="activity.title" />
+    <p>{{ activity.description }}</p>
+    <div class="activity-images">
+      @for (image of activity.images; track $index) {
+        <div class="image-container">
+          <img [src]="getImageSrc($index)" [alt]="activity.title" />
+        </div>
+      }
     </div>
-    }
-  </div>
-  <app-single-button
-    [id]="1"
-    (buttonClicked)="toggleRegister(activity)"
-    [styleClass]="(isRegisteredActivity$ | async) ? ButtonStyleClass.unsubscribe : ButtonStyleClass.subscribe"
-    [label]="(isRegisteredActivity$ | async) ? 'Me désinscrire' : 'Minscrire 🚀'"
-    [ariaLabel]="'bouton de ' + (isRegisteredActivity$ | async) ? 'désinscription' : 'inscription'">
-  </app-single-button>
-</section>
+    <app-single-button
+      [id]="1"
+      (buttonClicked)="toggleRegister(activity)"
+      [styleClass]="(isRegisteredActivity$ | async) ? ButtonStyleClass.unsubscribe : ButtonStyleClass.subscribe"
+      [label]="(isRegisteredActivity$ | async) ? 'Me désinscrire' : 'Minscrire 🚀'"
+      [ariaLabel]="'bouton de ' + (isRegisteredActivity$ | async) ? 'désinscription' : 'inscription'">
+    </app-single-button>
+  </section>
 }

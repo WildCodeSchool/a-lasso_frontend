@@ -1,20 +1,21 @@
 <form class="form-association">
   @for (field of fields; track $index) {
-  <div class="form-field">
-    <app-input-field [fieldConfig]="field" [formGroup]="form" />
-    <app-input-field-error [control]="form.get(field.name)" [fieldName]="field.name" />
-  </div>
-  } @for (field of authFields; track $index) {
-  <div class="form-field">
-    <app-input-field [fieldConfig]="field" [formGroup]="form" [showPasswordRules]="field.showPasswordRules || false" />
+    <div class="form-field">
+      <app-input-field [fieldConfig]="field" [formGroup]="form" />
+      <app-input-field-error [control]="form.get(field.name)" [fieldName]="field.name" />
+    </div>
+  }
+  @for (field of authFields; track $index) {
+    <div class="form-field">
+      <app-input-field [fieldConfig]="field" [formGroup]="form" [showPasswordRules]="field.showPasswordRules || false" />
 
-    <app-input-field-error
-      [control]="form.get(field.name)"
-      [fieldName]="field.name"
-      [showPasswordMismatchError]="
+      <app-input-field-error
+        [control]="form.get(field.name)"
+        [fieldName]="field.name"
+        [showPasswordMismatchError]="
           field.name === 'confirmationMotDePasse' && form.errors?.['passwordsMismatch'] && form.get('confirmationMotDePasse')?.touched
         " />
-  </div>
+    </div>
   }
 
   <div class="address-fields">
