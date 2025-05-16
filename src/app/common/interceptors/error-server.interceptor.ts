@@ -10,6 +10,7 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
   const authService: AuthService = inject(AuthService);
   const toast: Toast = inject(Toast);
   const router: Router = inject(Router);
+  console.log("req");
 
   return next(req).pipe(
     catchError((error: HttpErrorResponse) => {
@@ -36,6 +37,7 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
 
           authService.clearToken();
           authService.clearUserState();
+          authService.isLoggedIn();
           router.navigate(['/']);
         } else {
           summary = 'Authentification';

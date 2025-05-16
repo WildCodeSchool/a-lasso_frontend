@@ -38,13 +38,14 @@ export class HeaderComponent {
   ButtonStyleClass = ButtonStyleClass;
   UserRoleType = UserRole;
 
-  userRoles$: Observable<UserRole[]> = this._authService.getRolesUser().pipe(tap(val => console.log(val)));
+  userRoles$: Observable<UserRole[]> = this._authService.getRolesUser().pipe(tap(val => console.log("TAP VAL", val)));
 
   isAuthenticated$ = this._authFacade.isAuthenticated$;
   user$: Observable<VoluntaryLogin | AssociationLogin> = this._authFacade.user$;
 
   userDisplayName$: Observable<string | null> = this.user$.pipe(
     map(user => {
+
       if (!user) return null;
       if (user.type === UserType.Voluntary) {
         return `${user.first_name} ${user.last_name}`;

@@ -1,21 +1,21 @@
 <div class="logo-wrapper" (click)="toggleMenu()" (keydown.enter)="toggleMenu()" tabindex="0">
   <img [src]="apiUrl + (userAvatar$ | async)" alt="User Avatar" class="user-avatar" />
   @if (countGlobalNotifications$ | async; as countGlobalNotifications) {
-    @if (countGlobalNotifications > 0) {
-      <div class="global-badge-menu">
-        <app-badge [badgeValue]="countGlobalNotifications"></app-badge>
-      </div>
-    }
+  @if (countGlobalNotifications > 0) {
+  <div class="global-badge-menu">
+    <app-badge [badgeValue]="countGlobalNotifications"></app-badge>
+  </div>
+  }
   }
 
   @if (isOpen) {
-    <ul class="menu-list" @fadeMenu>
-      <app-header-menu-messages [isOpenMenu]="isOpen"></app-header-menu-messages>
-      <app-header-menu-reports [isOpenMenu]="isOpen"></app-header-menu-reports>
-      <li class="menu-item" (click)="logout()" (keydown.enter)="logout()" tabindex="1">
-        <i class="fa-solid fa-arrow-right-from-bracket"></i>
-        Se déconnecter
-      </li>
-    </ul>
+  <ul class="menu-list" @fadeMenu>
+    <app-header-menu-messages [isOpenMenu]="isOpen"></app-header-menu-messages>
+    <app-header-menu-reports [isOpenMenu]="isOpen"></app-header-menu-reports>
+    <li class="menu-item" (click)="logout()" (keydown.enter)="logout()" tabindex="1">
+      <i class="fa-solid fa-arrow-right-from-bracket"></i>
+      Se déconnecter
+    </li>
+  </ul>
   }
 </div>

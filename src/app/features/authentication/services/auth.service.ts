@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { BehaviorSubject, Observable, of, switchMap } from 'rxjs';
 import { environment } from 'src/environments/environment.development';
 import { AssociationRegister, UserLogin, VoluntaryRegister } from '../models/user.model';
 import { jwtDecode } from 'jwt-decode';
@@ -13,6 +13,7 @@ import { EXPIRACY_MULTIPLIER, TokenRole, UserRole } from '../constants/auth.cons
 export class AuthService {
   private _http: HttpClient = inject(HttpClient);
   private _apiUrl = environment.apiUrl;
+  private _authState$ = new BehaviorSubject<boolean>(false);
 
   registerVoluntary(data: VoluntaryRegister): Observable<boolean> {
     return this._http.post<boolean>(`${this._apiUrl}/auth/register/voluntary`, data);
@@ -48,22 +49,44 @@ export class AuthService {
 
   public isLoggedIn(): boolean {
     const token = this.getToken();
-    if (!token) return false;
+    if (!token) {
+      this._setAuthState(false)
+      return this._getAuthState();
+    }
+
     const decodedToken: JwtDecodedToken = jwtDecode(token);
     const expiryDate = new Date(decodedToken.exp * EXPIRACY_MULTIPLIER);
+
     if (expiryDate < new Date()) {
       this.clearToken();
-      return false;
+      this._setAuthState(false)
+      return this._getAuthState();
     }
-    return true;
+
+    this._setAuthState(true)
+    return this._getAuthState();
+  }
+
+  private _setAuthState(bo: boolean): void {
+    this._authState$.next(bo);
+  }
+
+  private _getAuthState(): boolean {
+    return this._authState$.value;
   }
 
   public getRolesUser(): Observable<UserRole[]> {
-    const token = this.getToken();
-    if (!token) return of([]);
+    return this._authState$.pipe(
+      switchMap((bo: boolean) => {
+        if (!bo) {
+          return of([]);
+        }
+        const token = this.getToken();
 
-    const decodedToken: JwtDecodedToken = jwtDecode(token);
-    const roles = decodedToken.roles.map((role: TokenRole) => role.authority);
-    return of(roles);
+        const decodedToken: JwtDecodedToken = jwtDecode(token);
+        const roles = decodedToken.roles.map((role: TokenRole) => role.authority);
+        return of(roles);
+      })
+    )
   }
 }
