@@ -5,30 +5,30 @@
   </div>
 
   <div class="right-side-container">
-    @if (isAuthenticated$ | async) {
-      @if (user$ | async; as user) {
-        @if (isAnAssociation(user) && !isOnActivityCreationPage()) {
-          <app-single-button
-            [type]="'button'"
-            [id]="1"
-            [routerLink]="['/activity', 'creation']"
-            routerLinkActive="active"
-            [styleClass]="ButtonStyleClass.addActivityButton"
-            [label]="'Publier une activitée 🚀'"
-            [ariaLabel]="'button de navigation vers la page de creation des activitées'">
-          </app-single-button>
-        }
-      }
-      <div class="user-info">
-        <p class="user-name" @fadeInOut>Bonjour, {{ userDisplayName$ | async }} !</p>
-        <app-header-menu></app-header-menu>
-      </div>
-    } @else {
-      <div class="auth-buttons">
-        <button class="inscription-btn" type="button" (click)="openRegisterModal()">S'inscrire</button>
-        <button class="connexion-btn" type="button" (click)="openLoginModal()">Se connecter</button>
-      </div>
+    @if (userRoles$ | async; as userRoles ) { @if (userRoles.length > 0 ) { @if (userRoles.includes(UserRoleType.ASSOCIATION) &&
+    !isOnActivityCreationPage()) {
+
+    <app-single-button
+      [type]="'button'"
+      [id]="1"
+      [routerLink]="['/activity', 'creation']"
+      routerLinkActive="active"
+      [styleClass]="ButtonStyleClass.addActivityButton"
+      [label]="'Publier une activitée 🚀'"
+      [ariaLabel]="'button de navigation vers la page de creation des activitées'">
+    </app-single-button>
     }
+
+    <div class="user-info">
+      <p class="user-name" @fadeInOut>Bonjour, {{ userDisplayName$ | async }} !</p>
+      <app-header-menu></app-header-menu>
+    </div>
+    } @else {
+    <div class="auth-buttons">
+      <button class="inscription-btn" type="button" (click)="openRegisterModal()">S'inscrire</button>
+      <button class="connexion-btn" type="button" (click)="openLoginModal()">Se connecter</button>
+    </div>
+    } }
   </div>
 </header>
 

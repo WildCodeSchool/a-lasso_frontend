@@ -47,7 +47,6 @@ export class ActivitiesApiService {
 
   getAdressFromApi(query: string): Observable<any> {
     const lang = navigator.language || 'fr';
-    console.log(lang);
     return this._http.get<any[]>(`https://nominatim.openstreetmap.org/search`, {
       params: {
         q: query,

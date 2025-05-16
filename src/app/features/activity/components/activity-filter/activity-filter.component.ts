@@ -38,14 +38,8 @@ export class ActivityFilterComponent implements OnInit {
     }
 
     this.selectedThemes.emit([...this.selected]);
-    console.log('selected theme', this.selected);
-    console.log('this.formGroup', this.formGroup);
-    console.log('this.formThemeField', this.formThemeField);
     if (this.formGroup && this.formThemeField) {
-      console.log('ici');
       const selectedThemesForm = this.formGroup.get(this.formThemeField);
-      console.log('selectedThemesForm', selectedThemesForm);
-
       selectedThemesForm.setValue(this.selected);
       selectedThemesForm.markAsTouched();
     }
