@@ -50,7 +50,7 @@ export class AuthService {
   public isLoggedIn(): boolean {
     const token = this.getToken();
     if (!token) {
-      this._setAuthState(false)
+      this._setAuthState(false);
       return this._getAuthState();
     }
 
@@ -59,11 +59,11 @@ export class AuthService {
 
     if (expiryDate < new Date()) {
       this.clearToken();
-      this._setAuthState(false)
+      this._setAuthState(false);
       return this._getAuthState();
     }
 
-    this._setAuthState(true)
+    this._setAuthState(true);
     return this._getAuthState();
   }
 
@@ -87,6 +87,6 @@ export class AuthService {
         const roles = decodedToken.roles.map((role: TokenRole) => role.authority);
         return of(roles);
       })
-    )
+    );
   }
 }
