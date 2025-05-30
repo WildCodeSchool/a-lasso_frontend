@@ -37,7 +37,7 @@ export class AuthFacade {
 
   logout(): void {
     this._authService.clearToken();
-    this._authService.isLoggedIn();
+    this._authService.updateAuthState();
     this._store.dispatch(UserActions.logout());
     this._store.dispatch(ActivitiesActions.clearUserActivityInfos());
     this._router.navigate(['/']);
@@ -50,7 +50,7 @@ export class AuthFacade {
 
   private _handleLoginSuccess({ token, user }: ApiResponseLogin): void {
     this._authService.saveToken(token);
-    this._authService.isLoggedIn();
+    this._authService.updateAuthState();
 
     if (!user) {
       this._store.dispatch(UserActions.loginFailure({ error: 'Utilisateur invalide' }));

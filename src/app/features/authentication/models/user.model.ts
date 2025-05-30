@@ -1,4 +1,5 @@
 import { UUIDTypes } from 'uuid';
+import { Image } from '../../activity/models/activity.model';
 
 export enum UserType {
   Association = 'association',
@@ -26,9 +27,7 @@ export type VoluntaryLogin = {
   city: string;
   country: string;
   birth_date: string;
-  avatar?: {
-    url: string;
-  };
+  avatar?: Image;
   followedAssociations: FollowedAssociation[];
   activitiesUserInfos: ActivitiesUserInfos[];
   notification: Notification;
@@ -108,8 +107,8 @@ export type AssociationLogin = {
   password: string;
   mobile_phone: string;
   address: Address;
-  associationLogoImage?: string;
-  associationProfileImageURL?: string;
+  associationLogoImage?: Image;
+  associationProfileImage?: Image;
   notification: Notification;
   geolocation: {
     latitude: number;

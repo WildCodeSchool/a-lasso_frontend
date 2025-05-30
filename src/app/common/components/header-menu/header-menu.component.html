@@ -1,5 +1,5 @@
 <div class="logo-wrapper" (click)="toggleMenu()" (keydown.enter)="toggleMenu()" tabindex="0">
-  <img [src]="apiUrl + (userAvatar$ | async)" alt="User Avatar" class="user-avatar" />
+  <img [src]="userAvatar$ | async" alt="User Avatar" class="user-avatar" />
   @if (countGlobalNotifications$ | async; as countGlobalNotifications) {
     @if (countGlobalNotifications > 0) {
       <div class="global-badge-menu">
@@ -7,7 +7,6 @@
       </div>
     }
   }
-
   @if (isOpen) {
     <ul class="menu-list" @fadeMenu>
       <app-header-menu-messages [isOpenMenu]="isOpen"></app-header-menu-messages>

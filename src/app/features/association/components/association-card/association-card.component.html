@@ -1,6 +1,6 @@
 <p-card class="card">
   <ng-template #header>
-    <img alt="Card" class="activity-image" [src]="apiUrl + association.associationProfileImageURL" />
+    <img alt="Card" class="activity-image" [src]="association.associationProfileImage.image" />
     <div class="social">
       <a class="link" [href]="association.siteURL" target="_blank">Voir le site</a>
       <div class="follow-report-section">
@@ -21,7 +21,7 @@
     </div>
   </ng-template>
   <ng-template #title>
-    <img alt="Card" class="activity-logo" [src]="apiUrl + association.associationLogoImage" />
+    <img alt="Card" class="activity-logo" [src]="association.associationLogoImage.image" />
     <h2 id="association-name">{{ association.name }}</h2>
   </ng-template>
   <ng-template #subtitle>

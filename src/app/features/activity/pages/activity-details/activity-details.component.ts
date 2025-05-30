@@ -62,7 +62,7 @@ export class ActivityDetailsComponent implements OnInit {
   }
 
   private _updateNavigationItems(width: number): void {
-    const userIsLoggedIn: boolean = this._authService.isLoggedIn();
+    const userIsLoggedIn: boolean = this._authService.getAuthState();
 
     if (!userIsLoggedIn) {
       this._setNavigation(width, false);

@@ -1,5 +1,5 @@
 <div class="add-photo-area">
-  @for (picture of pictures; track $index) {
+  @for (picture of uploadedPictures; track $index) {
     <div class="add-photo-container">
       <button type="button" class="photo-box" (click)="triggerFileInput($index)">
         @if (picture) {
@@ -10,8 +10,10 @@
           <p class="add-photo">Ajouter une photo</p>
         }
       </button>
+      <!-- Modal  -->
       <input type="file" accept="image/*" [id]="'fileInput' + $index" class="input-import-image" (change)="handleFileInput($event, $index)" />
       <app-input-field-error [control]="formGroup.get('photo_' + ($index + 1))" [fieldName]="'photo_' + ($index + 1)" />
+      <!-- Modal  -->
     </div>
   }
 </div>

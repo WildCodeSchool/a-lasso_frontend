@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { UUIDTypes } from 'uuid';
 import { Association } from '../models/association.model';
 import { environment } from 'src/environments/environment.development';
+import { Image } from '../../activity/models/activity.model';
 
 @Injectable({
   providedIn: 'root',
@@ -15,6 +16,10 @@ export class AssociationApiService {
 
   getAssociationCard(id: UUIDTypes): Observable<Association> {
     return this._http.get<Association>(`${this._apiUrl}/association/${id}`);
+  }
+
+  getExistingActivityPictures(): Observable<Image[]> {
+    return this._http.get<Image[]>(`${this._apiUrl}/association/activities-images`);
   }
 
   updateFollowStatus(associationId: UUIDTypes, isFollow: boolean): Observable<boolean> {

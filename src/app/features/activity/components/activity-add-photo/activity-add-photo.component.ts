@@ -1,7 +1,10 @@
-import { Component, inject, Input } from '@angular/core';
+import { Component, inject, Input, OnInit } from '@angular/core';
 import { MessageService } from 'primeng/api';
 import { FormGroup } from '@angular/forms';
 import { InputFieldErrorComponent } from '../../../../common/components/input-field-error/input-field-error.component';
+import { AssociationFacadeService } from 'src/app/features/association/services/association-facade.service';
+import { Observable } from 'rxjs';
+import { Image } from '../../models/activity.model';
 
 type Picture = string | ArrayBuffer;
 
@@ -11,11 +14,18 @@ type Picture = string | ArrayBuffer;
   styleUrls: ['./activity-add-photo.component.scss'],
   imports: [InputFieldErrorComponent],
 })
-export class ActivityAddPhotoComponent {
+export class ActivityAddPhotoComponent implements OnInit {
+  private _associationFacadeService: AssociationFacadeService = inject(AssociationFacadeService);
+  private _toast: MessageService = inject(MessageService);
+
   @Input() formGroup?: FormGroup;
 
-  private _toast: MessageService = inject(MessageService);
-  pictures: Picture[] = ['', '', ''];
+  uploadedPictures: Picture[] = ['', '', ''];
+  existingDataBasePictures: Observable<Image[]>;
+
+  ngOnInit(): void {
+    this.existingDataBasePictures = this._associationFacadeService.getExistingActivityPictures();
+  }
 
   triggerFileInput(index: number): void {
     const fileInput = document.getElementById('fileInput' + index) as HTMLElement;
@@ -59,7 +69,7 @@ export class ActivityAddPhotoComponent {
         file: reader.result,
       });
 
-      this.pictures[pictureIndex] = reader.result;
+      this.uploadedPictures[pictureIndex] = reader.result;
 
       this.formGroup.patchValue({
         ['photo_' + (pictureIndex + 1)]: reader.result,

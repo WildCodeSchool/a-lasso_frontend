@@ -7,7 +7,7 @@
       class="activity-popup"
       (keydown.enter)="navigate('activity', activity.id)"
       (click)="navigate('activity', activity.id)">
-      <img class="activity-img" [src]="getImageSrc()" [alt]="activity.title" />
+      <img class="activity-img" [src]="activity.images[0].image" [alt]="activity.title" />
       <div>
         <div class="activity-title">
           <h3>{{ activity.title }}</h3>

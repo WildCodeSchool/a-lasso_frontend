@@ -2,7 +2,7 @@ import { UUIDTypes } from 'uuid';
 import { ThemeName } from './activity.model';
 import { Address } from '../../authentication/models/user.model';
 
-type Image = {
+export type Image = {
   id: UUIDTypes | null;
   base64: string;
 };

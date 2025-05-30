@@ -17,7 +17,7 @@
     <div class="activity-images">
       @for (image of activity.images; track $index) {
         <div class="image-container">
-          <img [src]="getImageSrc($index)" [alt]="activity.title" />
+          <img [src]="activity.images[$index].image" [alt]="activity.title" />
         </div>
       }
     </div>

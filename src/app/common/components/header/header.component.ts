@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { MessageService } from 'primeng/api';
-import { map, Observable, tap } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { LoginModalComponent } from 'src/app/features/authentication/components/login-modal/login-modal.component';
 import { RegisterModalComponent } from 'src/app/features/authentication/components/register-modal/register-modal/register-modal.component';
 import { AssociationLogin, UserType, VoluntaryLogin } from 'src/app/features/authentication/models/user.model';
@@ -38,7 +38,7 @@ export class HeaderComponent {
   ButtonStyleClass = ButtonStyleClass;
   UserRoleType = UserRole;
 
-  userRoles$: Observable<UserRole[]> = this._authService.getRolesUser().pipe(tap(val => console.log('TAP VAL', val)));
+  userRoles$: Observable<UserRole[]> = this._authService.getRolesUser();
 
   isAuthenticated$ = this._authFacade.isAuthenticated$;
   user$: Observable<VoluntaryLogin | AssociationLogin> = this._authFacade.user$;

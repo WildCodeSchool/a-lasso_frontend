@@ -8,7 +8,6 @@ import { FavoriteHeartComponent } from '../favorite-heart/favorite-heart.compone
 import { ButtonModule } from 'primeng/button';
 import { SingleButtonComponent } from '../../../../common/components/single-button/single-button.component';
 import { Observable, take, tap } from 'rxjs';
-import { getImageSource } from 'src/app/common/utils/image.utils';
 import { ButtonStyleClass } from 'src/app/common/models/button';
 
 @Component({
@@ -43,9 +42,5 @@ export class ActivityDescriptionComponent implements OnInit {
         take(1)
       )
       .subscribe();
-  }
-
-  getImageSrc(index: number): string {
-    return getImageSource(this.activity, index);
   }
 }

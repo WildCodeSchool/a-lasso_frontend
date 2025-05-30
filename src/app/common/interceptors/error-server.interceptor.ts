@@ -10,7 +10,6 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
   const authService: AuthService = inject(AuthService);
   const toast: Toast = inject(Toast);
   const router: Router = inject(Router);
-  console.log('req');
 
   return next(req).pipe(
     catchError((error: HttpErrorResponse) => {
@@ -28,8 +27,6 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
         const message = error?.error?.message;
         const isTokenExpired = message === 'Token expired';
 
-        console.log('ici bb');
-
         if (isTokenExpired) {
           summary = 'Session expirée';
           detail = 'Merci de vous reconnecter.';
@@ -37,7 +34,7 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
 
           authService.clearToken();
           authService.clearUserState();
-          authService.isLoggedIn();
+          authService.updateAuthState();
           router.navigate(['/']);
         } else {
           summary = 'Authentification';

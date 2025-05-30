@@ -11,6 +11,7 @@ import * as UserSelectors from '../../authentication/store/user.selectors';
 import { Association } from '../models/association.model';
 import { selectActivitiesUserInfos } from '../../authentication/store/user.selectors';
 import { ActivitiesUserInfos, FollowedAssociation } from '../../authentication/models/user.model';
+import { Image } from '../../activity/models/activity.model';
 
 @Injectable({
   providedIn: 'root',
@@ -71,6 +72,10 @@ export class AssociationFacadeService {
         return of(activityInfos.isSaved);
       })
     );
+  }
+
+  getExistingActivityPictures(): Observable<Image[]> {
+    return this._associationApiService.getExistingActivityPictures();
   }
 
   toggleFollow(associationId: UUIDTypes, isFollow: boolean): void {
