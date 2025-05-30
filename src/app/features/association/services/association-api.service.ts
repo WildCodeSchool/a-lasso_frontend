@@ -18,8 +18,13 @@ export class AssociationApiService {
     return this._http.get<Association>(`${this._apiUrl}/association/${id}`);
   }
 
-  getExistingActivityPictures(): Observable<Image[]> {
-    return this._http.get<Image[]>(`${this._apiUrl}/association/activities-images`);
+  getExistingActivityPictures(currentOffset: number, pageSize: number): Observable<Image[]> {
+    const params = {
+      offset: currentOffset,
+      limit: pageSize,
+    };
+
+    return this._http.get<Image[]>(`${this._apiUrl}/association/activities-images`, { params });
   }
 
   updateFollowStatus(associationId: UUIDTypes, isFollow: boolean): Observable<boolean> {

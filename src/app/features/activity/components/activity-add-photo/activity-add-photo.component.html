@@ -1,19 +1,75 @@
 <div class="add-photo-area">
-  @for (picture of uploadedPictures; track $index) {
+  @for (picture of picturesChosen; track $index) {
     <div class="add-photo-container">
-      <button type="button" class="photo-box" (click)="triggerFileInput($index)">
+      <button
+        type="button"
+        class="photo-box"
+        (click)="openSelectionModal($index)"
+        (keydown.enter)="openSelectionModal($index)"
+        (keydown.space)="openSelectionModal($index)">
         @if (picture) {
           <img [src]="picture" alt="Preview" />
+          <button type="button" class="remove-photo-btn" (click)="removePicture($index); $event.stopPropagation()" aria-label="Supprimer la photo">
+            &times;
+          </button>
         } @else {
           <i class="fa-solid fa-plus"></i>
           <i class="fa-solid fa-camera"></i>
           <p class="add-photo">Ajouter une photo</p>
         }
       </button>
-      <!-- Modal  -->
+
       <input type="file" accept="image/*" [id]="'fileInput' + $index" class="input-import-image" (change)="handleFileInput($event, $index)" />
+
       <app-input-field-error [control]="formGroup.get('photo_' + ($index + 1))" [fieldName]="'photo_' + ($index + 1)" />
-      <!-- Modal  -->
     </div>
   }
+
+  <div class="modal-container">
+    <p-dialog
+      header="Sélectionner une photo"
+      [(visible)]="isModalVisible"
+      [modal]="true"
+      styleClass="custom-dialog"
+      contentStyleClass="custom-dialog-content">
+      <div class="modal-options">
+        <div class="existing-photos">
+          @if (existingImages) {
+            @for (pic of existingImages; track pic.id) {
+              <img
+                [src]="pic.image"
+                class="selectable-photo"
+                (click)="selectExistingPicture(pic.image, modalTargetIndex, pic.id)"
+                (keydown.enter)="selectExistingPicture(pic.image, modalTargetIndex, pic.id)"
+                (keydown.space)="selectExistingPicture(pic.image, modalTargetIndex, pic.id)"
+                tabindex="0"
+                alt="photos d'une ancienne activité" />
+            }
+          }
+        </div>
+      </div>
+
+      <div class="footer-buttons">
+        <app-single-button
+          [id]="1"
+          [type]="'button'"
+          (buttonClicked)="loadMorePictures()"
+          [styleClass]="ButtonStyleClass.defaultWhite"
+          label="Charger plus d'images"
+          ariaLabel="button pour charger plus de photos"
+          size="small">
+        </app-single-button>
+
+        <app-single-button
+          [id]="2"
+          [type]="'button'"
+          (buttonClicked)="triggerFileInput(modalTargetIndex)"
+          [styleClass]="ButtonStyleClass.defaultBlue"
+          label="Ajouter une nouvelle photo"
+          ariaLabel="button pour ajouter une nouvelle photo"
+          size="small">
+        </app-single-button>
+      </div>
+    </p-dialog>
+  </div>
 </div>

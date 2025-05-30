@@ -24,7 +24,6 @@ import { NewActivityCreation } from '../../models/activity-creation.model';
 import { SearchAddressComponent } from '../../../../common/components/search-address/search-address.component';
 import { ActivityFacadeService } from '../../services/activity-facade.service';
 import { InputFieldErrorComponent } from 'src/app/common/components/input-field-error/input-field-error.component';
-import { UUIDTypes } from 'uuid';
 import { getFormattedAddress } from 'src/app/common/utils/address.utils';
 
 @Component({
@@ -59,9 +58,9 @@ export class ActivityCreationComponent implements OnInit {
     matchedAddress: [null, [addressRequiredValidator()]],
     selectedThemesName: [[], themeRequiredValidator()],
     description: ['', [Validators.required, Validators.maxLength(ACTIVITY_DESCRIPTION_MAX_LENGTH)]],
-    photo_1: [null, photoRequiredValidator()],
-    photo_2: [null],
-    photo_3: [null],
+    photo_1: [{ id: null, image: null }, photoRequiredValidator()],
+    photo_2: [{ id: null, image: null }],
+    photo_3: [{ id: null, image: null }],
   });
 
   activityFields: FormField[] = [
@@ -105,8 +104,11 @@ export class ActivityCreationComponent implements OnInit {
 
     const data: NewActivityCreation = {
       images: [formValue.photo_1, formValue.photo_2, formValue.photo_3]
-        .filter((img): img is string => typeof img === 'string')
-        .map(base64 => ({ id: null as UUIDTypes | null, base64 })),
+        .filter(img => img.id || img.image)
+        .map(img => ({
+          id: img.id,
+          base64: img.image,
+        })),
       title: formValue.title,
       requestedVolunteers: formValue.requestedVolunteers,
       dateTime: format(new Date(formValue.date), 'yyyy-MM-dd') + 'T' + formValue.hour + ':00',
@@ -114,6 +116,7 @@ export class ActivityCreationComponent implements OnInit {
       themes: formValue.selectedThemesName,
       description: formValue.description,
     };
+
     this._activityFacadeService.publishNewActivity(data);
   }
 }

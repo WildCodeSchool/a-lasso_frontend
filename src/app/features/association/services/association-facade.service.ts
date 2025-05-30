@@ -74,8 +74,8 @@ export class AssociationFacadeService {
     );
   }
 
-  getExistingActivityPictures(): Observable<Image[]> {
-    return this._associationApiService.getExistingActivityPictures();
+  getExistingActivityPictures(currentOffset: number, pageSize: number): Observable<Image[]> {
+    return this._associationApiService.getExistingActivityPictures(currentOffset, pageSize);
   }
 
   toggleFollow(associationId: UUIDTypes, isFollow: boolean): void {
