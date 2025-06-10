@@ -1,4 +1,5 @@
 import { Component, inject, Input, OnInit } from '@angular/core';
+import { ImageCroppedEvent, ImageCropperComponent } from 'ngx-image-cropper';
 import { MessageService } from 'primeng/api';
 import { FormGroup } from '@angular/forms';
 import { InputFieldErrorComponent } from '../../../../common/components/input-field-error/input-field-error.component';
@@ -11,13 +12,11 @@ import { SingleButtonComponent } from '../../../../common/components/single-butt
 import { ButtonStyleClass } from 'src/app/common/models/button';
 import { TAKE_1 } from 'src/app/common/constants/observables.constants';
 
-type Picture = string | ArrayBuffer;
-
 @Component({
   selector: 'app-activity-add-photo',
   templateUrl: './activity-add-photo.component.html',
   styleUrls: ['./activity-add-photo.component.scss'],
-  imports: [InputFieldErrorComponent, DialogModule, SingleButtonComponent],
+  imports: [InputFieldErrorComponent, DialogModule, SingleButtonComponent, ImageCropperComponent],
 })
 export class ActivityAddPhotoComponent implements OnInit {
   private _associationFacadeService: AssociationFacadeService = inject(AssociationFacadeService);
@@ -25,11 +24,17 @@ export class ActivityAddPhotoComponent implements OnInit {
 
   @Input() formGroup?: FormGroup;
 
-  picturesChosen: Picture[] = ['', '', ''];
+  picturesChosen: string[] = ['', '', ''];
   existingImages: Image[] = [];
   ButtonStyleClass = ButtonStyleClass;
   isModalVisible = false;
   modalTargetIndex = 0;
+
+  croppedImage: string = null;
+  imageChangedEvent: Event | null = null;
+  isCropperVisible = false;
+  currentPictureIndex = 0;
+
   private _currentOffset = 0;
   private readonly _pageSize = 2;
 
@@ -65,7 +70,6 @@ export class ActivityAddPhotoComponent implements OnInit {
       .getExistingActivityPictures(this._currentOffset, this._pageSize)
       .pipe(
         tap(images => {
-          console.log(images);
           this.existingImages = [...this.existingImages, ...images];
           this._currentOffset += this._pageSize;
         }),
@@ -84,33 +88,41 @@ export class ActivityAddPhotoComponent implements OnInit {
     const file = input.files?.[0];
 
     if (!file) {
-      this._toast.add({ severity: 'error', summary: 'Pas de fichier séléctionné' });
+      this._toast.add({ severity: 'error', summary: 'Pas de fichier sélectionné' });
       return;
     }
 
     const maxFileSize = 5 * 1024 * 1024;
-
     if (file.size > maxFileSize) {
-      this._toast.add({
-        severity: 'error',
-        summary: 'Le fichier est trop volumineux (max 5MB).',
-      });
+      this._toast.add({ severity: 'error', summary: 'Le fichier est trop volumineux (max 5MB).' });
       return;
     }
 
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
+    this.imageChangedEvent = event;
+    this.currentPictureIndex = pictureIndex;
+    this.isCropperVisible = true;
+  }
 
-    reader.onload = (): void => {
-      const imageData = reader.result;
-      this.picturesChosen[pictureIndex] = imageData;
-      this.formGroup.patchValue({
-        [`photo_${pictureIndex + 1}`]: {
-          id: null,
-          image: imageData,
-        },
-      });
-      this.isModalVisible = false;
-    };
+  imageCropped(event: ImageCroppedEvent): void {
+    if (event.base64) {
+      this.croppedImage = event.base64;
+    }
+  }
+
+  saveCroppedImage(): void {
+    if (!this.croppedImage) return;
+
+    this.picturesChosen[this.currentPictureIndex] = this.croppedImage;
+    this.formGroup.patchValue({
+      [`photo_${this.currentPictureIndex + 1}`]: {
+        id: null,
+        image: this.croppedImage,
+      },
+    });
+
+    this.isCropperVisible = false;
+    this.imageChangedEvent = null;
+    this.croppedImage = null;
+    this.isModalVisible = false;
   }
 }

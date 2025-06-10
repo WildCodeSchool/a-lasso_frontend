@@ -46,7 +46,21 @@ export class ActivitiesApiService {
   }
 
   getAdressFromApi(query: string): Observable<any> {
+    // return this._http.get<Activity>(`${this._apiUrl}/geolocation/search`, {
+    //   params: { q: query },
+    // });
     const lang = navigator.language || 'fr';
+
+    // return this._http.get<any[]>(`https://corsproxy.io/?https://nominatim.openstreetmap.org/search`, {
+    //   params: {
+    //     q: query,
+    //     format: 'json',
+    //     addressdetails: '1',
+    //     limit: '10',
+    //     'accept-language': lang,
+    //   },
+    // });
+
     return this._http.get<any[]>(`https://nominatim.openstreetmap.org/search`, {
       params: {
         q: query,

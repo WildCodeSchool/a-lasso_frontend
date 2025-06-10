@@ -71,5 +71,20 @@
         </app-single-button>
       </div>
     </p-dialog>
+    <p-dialog styleClass="cropper-modal" header="Recadrer la photo" [(visible)]="isCropperVisible" [modal]="true">
+      <image-cropper
+        output="base64"
+        [imageChangedEvent]="imageChangedEvent"
+        [maintainAspectRatio]="true"
+        [aspectRatio]="4 / 3"
+        format="png"
+        (imageCropped)="imageCropped($event)">
+      </image-cropper>
+
+      <ng-template pTemplate="footer">
+        <button type="button" class="p-button p-button-secondary" (click)="isCropperVisible = false">Annuler</button>
+        <button type="button" class="p-button p-button-success" (click)="saveCroppedImage()">Valider</button>
+      </ng-template>
+    </p-dialog>
   </div>
 </div>
