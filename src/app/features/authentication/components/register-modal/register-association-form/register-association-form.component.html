@@ -19,12 +19,7 @@
   }
 
   <div class="address-fields">
-    @for (field of addressFields; track $index) {
-      <div class="address-field">
-        <app-input-field [fieldConfig]="field" [formGroup]="form" />
-        <app-input-field-error [control]="form.get(field.name)" [fieldName]="field.name" />
-      </div>
-    }
+    <app-search-address [fieldConfig]="addressField" [formGroup]="form"></app-search-address>
   </div>
 
   <div class="submit-button">

@@ -37,9 +37,9 @@ export class HeaderMenuComponent {
     map(user => {
       if (!user) return null;
       if (user.type === UserType.Voluntary) {
-        return user.avatar.url;
+        return user.avatar.image;
       }
-      return user.associationLogoImage;
+      return user.associationLogoImage.image;
     })
   );
 

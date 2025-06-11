@@ -38,10 +38,9 @@ export class ActivityFilterComponent implements OnInit {
     }
 
     this.selectedThemes.emit([...this.selected]);
-
     if (this.formGroup && this.formThemeField) {
       const selectedThemesForm = this.formGroup.get(this.formThemeField);
-      selectedThemesForm.setValue(this.selected, { emitEvent: false, onlySelf: true });
+      selectedThemesForm.setValue(this.selected);
       selectedThemesForm.markAsTouched();
     }
   }

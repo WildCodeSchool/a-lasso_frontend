@@ -8,18 +8,23 @@ import {
   MAX_LENGTH,
   MIN_LENGTH,
   NUMBER_REGEX,
-  POSTAL_CODE_REGEX,
 } from 'src/app/features/authentication/constants/form.constants';
 import { FormField } from 'src/app/features/authentication/models/form.model';
-import { photoRequiredValidator, themeRequiredValidator } from 'src/app/features/authentication/utils/form.validators';
 import { SingleButtonComponent } from '../../../../common/components/single-button/single-button.component';
 import { TextareaFieldComponent } from '../../../../common/components/textarea-field/textarea-field.component';
 import { ActivityAddPhotoComponent } from '../../components/activity-add-photo/activity-add-photo.component';
 import { ActivityFilterComponent } from '../../components/activity-filter/activity-filter.component';
+import {
+  photoRequiredValidator,
+  themeRequiredValidator,
+  addressRequiredValidator,
+  dateRequiredValidator,
+} from 'src/app/features/authentication/utils/form.validators';
 import { NewActivityCreation } from '../../models/activity-creation.model';
+import { SearchAddressComponent } from '../../../../common/components/search-address/search-address.component';
 import { ActivityFacadeService } from '../../services/activity-facade.service';
 import { InputFieldErrorComponent } from 'src/app/common/components/input-field-error/input-field-error.component';
-import { UUIDTypes } from 'uuid';
+import { getFormattedAddress } from 'src/app/common/utils/address.utils';
 
 @Component({
   selector: 'app-activity-creation',
@@ -32,7 +37,9 @@ import { UUIDTypes } from 'uuid';
     InputFieldComponent,
     InputFieldErrorComponent,
     TextareaFieldComponent,
+    SearchAddressComponent,
   ],
+
   templateUrl: './activity-creation.component.html',
   styleUrl: './activity-creation.component.scss',
 })
@@ -46,15 +53,14 @@ export class ActivityCreationComponent implements OnInit {
   activityForm: FormGroup = this._fb.group({
     title: ['', [Validators.required, Validators.maxLength(MAX_LENGTH), Validators.minLength(MIN_LENGTH)]],
     requestedVolunteers: ['', [Validators.required, Validators.pattern(NUMBER_REGEX)]],
-    date: ['', [Validators.required]], // Validators.pattern(DATE_REGEX)]
+    date: ['', [dateRequiredValidator()]],
     hour: ['', [Validators.required, Validators.pattern(HOUR_REGEX)]],
-    zipCode: ['', [Validators.required, Validators.pattern(POSTAL_CODE_REGEX)]],
-    city: ['', [Validators.required]],
+    matchedAddress: [null, [addressRequiredValidator()]],
     selectedThemesName: [[], themeRequiredValidator()],
     description: ['', [Validators.required, Validators.maxLength(ACTIVITY_DESCRIPTION_MAX_LENGTH)]],
-    photo_1: [null, photoRequiredValidator()],
-    photo_2: [null],
-    photo_3: [null],
+    photo_1: [{ id: null, image: null }, photoRequiredValidator()],
+    photo_2: [{ id: null, image: null }],
+    photo_3: [{ id: null, image: null }],
   });
 
   activityFields: FormField[] = [
@@ -62,9 +68,13 @@ export class ActivityCreationComponent implements OnInit {
     { name: 'requestedVolunteers', label: 'Volontaires requis', placeholder: 'Ex : 10' },
     { name: 'date', label: 'Date', placeholder: 'Ex : 26/09/2025', type: 'date' },
     { name: 'hour', label: 'Heure', placeholder: 'Ex : 06:00' },
-    { name: 'zipCode', label: 'Code Postal', placeholder: 'Ex : 44000' },
-    { name: 'city', label: 'Ville', placeholder: 'Ex : Nantes' },
   ];
+
+  adressFieldConfig: FormField = {
+    name: 'matchedAddress',
+    label: 'Adresse',
+    placeholder: 'Ex : 6 rue de la paix 75002 Paris France',
+  };
 
   descriptionFieldConfigs: FormField = {
     name: 'description',
@@ -94,16 +104,15 @@ export class ActivityCreationComponent implements OnInit {
 
     const data: NewActivityCreation = {
       images: [formValue.photo_1, formValue.photo_2, formValue.photo_3]
-        .filter((img): img is string => typeof img === 'string')
-        .map(base64 => ({ id: null as UUIDTypes | null, base64 })),
+        .filter(img => img.id || img.image)
+        .map(img => ({
+          id: img.id,
+          base64: img.image,
+        })),
       title: formValue.title,
       requestedVolunteers: formValue.requestedVolunteers,
       dateTime: format(new Date(formValue.date), 'yyyy-MM-dd') + 'T' + formValue.hour + ':00',
-      houseNumber: 1,
-      streetName: 'rue de la massonnière',
-      zipCode: formValue.zipCode,
-      city: formValue.city,
-      country: 'France',
+      address: getFormattedAddress(formValue.matchedAddress),
       themes: formValue.selectedThemesName,
       description: formValue.description,
     };

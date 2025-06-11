@@ -1,4 +1,5 @@
 import { UUIDTypes } from 'uuid';
+import { Image } from '../../activity/models/activity.model';
 
 export enum UserType {
   Association = 'association',
@@ -26,9 +27,7 @@ export type VoluntaryLogin = {
   city: string;
   country: string;
   birth_date: string;
-  avatar?: {
-    url: string;
-  };
+  avatar?: Image;
   followedAssociations: FollowedAssociation[];
   activitiesUserInfos: ActivitiesUserInfos[];
   notification: Notification;
@@ -61,13 +60,34 @@ export type ActivitiesUserInfos = {
   isRegistered: boolean;
 };
 
+export type AddressApiResult = {
+  display_name: string;
+  lat: string;
+  lon: string;
+  address: {
+    house_number?: string;
+    road?: string;
+    suburb?: string;
+    neighbourhood?: string;
+    postcode?: string;
+    city?: string;
+    town?: string;
+    village?: string;
+    county?: string;
+    state?: string;
+    country?: string;
+    country_code?: string;
+  };
+};
+
 export type Address = {
-  house_number: string;
-  street_name: string;
-  adress_suffix: string | null;
+  houseNumber: string;
+  streetName: string;
   zipCode: string;
   city: string;
   country: string;
+  lat: number;
+  lon: number;
 };
 
 export type AssociationRegister = {
@@ -87,8 +107,8 @@ export type AssociationLogin = {
   password: string;
   mobile_phone: string;
   address: Address;
-  associationLogoImage?: string;
-  associationProfileImageURL?: string;
+  associationLogoImage?: Image;
+  associationProfileImage?: Image;
   notification: Notification;
   geolocation: {
     latitude: number;

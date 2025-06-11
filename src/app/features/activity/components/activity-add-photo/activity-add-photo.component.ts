@@ -1,31 +1,86 @@
-import { Component, inject, Input } from '@angular/core';
+import { Component, inject, Input, OnInit } from '@angular/core';
+import { ImageCroppedEvent, ImageCropperComponent } from 'ngx-image-cropper';
 import { MessageService } from 'primeng/api';
 import { FormGroup } from '@angular/forms';
 import { InputFieldErrorComponent } from '../../../../common/components/input-field-error/input-field-error.component';
-
-type Picture = string | ArrayBuffer;
+import { AssociationFacadeService } from 'src/app/features/association/services/association-facade.service';
+import { take, tap } from 'rxjs';
+import { Image } from '../../models/activity.model';
+import { DialogModule } from 'primeng/dialog';
+import { UUIDTypes } from 'uuid';
+import { SingleButtonComponent } from '../../../../common/components/single-button/single-button.component';
+import { ButtonStyleClass } from 'src/app/common/models/button';
+import { TAKE_1 } from 'src/app/common/constants/observables.constants';
 
 @Component({
   selector: 'app-activity-add-photo',
   templateUrl: './activity-add-photo.component.html',
   styleUrls: ['./activity-add-photo.component.scss'],
-  imports: [InputFieldErrorComponent],
+  imports: [InputFieldErrorComponent, DialogModule, SingleButtonComponent, ImageCropperComponent],
 })
-export class ActivityAddPhotoComponent {
+export class ActivityAddPhotoComponent implements OnInit {
+  private _associationFacadeService: AssociationFacadeService = inject(AssociationFacadeService);
+  private _toast: MessageService = inject(MessageService);
+
   @Input() formGroup?: FormGroup;
 
-  private _toast: MessageService = inject(MessageService);
-  pictures: Picture[] = ['', '', ''];
+  picturesChosen: string[] = ['', '', ''];
+  existingImages: Image[] = [];
+  ButtonStyleClass = ButtonStyleClass;
+  isModalVisible = false;
+  modalTargetIndex = 0;
+
+  croppedImage: string = null;
+  imageChangedEvent: Event | null = null;
+  isCropperVisible = false;
+  currentPictureIndex = 0;
+
+  private _currentOffset = 0;
+  private readonly _pageSize = 2;
+
+  ngOnInit(): void {
+    this.loadMorePictures();
+  }
+
+  openSelectionModal(index: number): void {
+    this.modalTargetIndex = index;
+    this.isModalVisible = true;
+  }
+
+  selectExistingPicture(imageUrl: string, pictureIndex: number, imageId: UUIDTypes): void {
+    this.picturesChosen[pictureIndex] = imageUrl;
+    this.formGroup.patchValue({
+      [`photo_${pictureIndex + 1}`]: {
+        id: imageId,
+        image: null,
+      },
+    });
+    this.isModalVisible = false;
+  }
+
+  removePicture(index: number): void {
+    this.picturesChosen[index] = '';
+    this.formGroup.patchValue({
+      ['photo_' + (index + 1)]: { id: null, image: null },
+    });
+  }
+
+  loadMorePictures(): void {
+    this._associationFacadeService
+      .getExistingActivityPictures(this._currentOffset, this._pageSize)
+      .pipe(
+        tap(images => {
+          this.existingImages = [...this.existingImages, ...images];
+          this._currentOffset += this._pageSize;
+        }),
+        take(TAKE_1)
+      )
+      .subscribe();
+  }
 
   triggerFileInput(index: number): void {
     const fileInput = document.getElementById('fileInput' + index) as HTMLElement;
     fileInput.click();
-    setTimeout(() => {
-      const controlName = `photo_${index + 1}`;
-      const control = this.formGroup.get(controlName);
-      control?.markAsTouched();
-      control?.updateValueAndValidity();
-    }, 500);
   }
 
   handleFileInput(event: Event, pictureIndex: number): void {
@@ -33,37 +88,41 @@ export class ActivityAddPhotoComponent {
     const file = input.files?.[0];
 
     if (!file) {
-      this._toast.add({
-        severity: 'error',
-        summary: 'Pas de fichier séléctionné',
-      });
+      this._toast.add({ severity: 'error', summary: 'Pas de fichier sélectionné' });
       return;
     }
 
-    const maxFileSize = 5 * 1024 * 1024; // 5MB limit
-
+    const maxFileSize = 5 * 1024 * 1024;
     if (file.size > maxFileSize) {
-      this._toast.add({
-        severity: 'error',
-        summary: 'Le fichier est trop volumineux (max 5MB).',
-      });
+      this._toast.add({ severity: 'error', summary: 'Le fichier est trop volumineux (max 5MB).' });
       return;
     }
 
-    const reader = new FileReader();
+    this.imageChangedEvent = event;
+    this.currentPictureIndex = pictureIndex;
+    this.isCropperVisible = true;
+  }
 
-    reader.readAsDataURL(file);
+  imageCropped(event: ImageCroppedEvent): void {
+    if (event.base64) {
+      this.croppedImage = event.base64;
+    }
+  }
 
-    reader.onload = (): void => {
-      this.formGroup.patchValue({
-        file: reader.result,
-      });
+  saveCroppedImage(): void {
+    if (!this.croppedImage) return;
 
-      this.pictures[pictureIndex] = reader.result;
+    this.picturesChosen[this.currentPictureIndex] = this.croppedImage;
+    this.formGroup.patchValue({
+      [`photo_${this.currentPictureIndex + 1}`]: {
+        id: null,
+        image: this.croppedImage,
+      },
+    });
 
-      this.formGroup.patchValue({
-        ['photo_' + (pictureIndex + 1)]: reader.result,
-      });
-    };
+    this.isCropperVisible = false;
+    this.imageChangedEvent = null;
+    this.croppedImage = null;
+    this.isModalVisible = false;
   }
 }

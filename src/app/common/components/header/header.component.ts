@@ -11,6 +11,8 @@ import { AuthFacade } from 'src/app/features/authentication/services/auth-facade
 import { HeaderMenuComponent } from '../header-menu/header-menu.component';
 import { SingleButtonComponent } from '../single-button/single-button.component';
 import { ButtonStyleClass } from 'src/app/common/models/button';
+import { AuthService } from 'src/app/features/authentication/services/auth.service';
+import { UserRole } from 'src/app/features/authentication/constants/auth.constants';
 
 @Component({
   selector: 'app-header',
@@ -27,15 +29,19 @@ import { ButtonStyleClass } from 'src/app/common/models/button';
   ],
 })
 export class HeaderComponent {
-  private _auth = inject(AuthFacade);
+  private _authFacade = inject(AuthFacade);
+  private _authService = inject(AuthService);
   private _router = inject(Router);
 
   showRegisterModal = false;
   showLoginModal = false;
   ButtonStyleClass = ButtonStyleClass;
+  UserRoleType = UserRole;
 
-  isAuthenticated$ = this._auth.isAuthenticated$;
-  user$: Observable<VoluntaryLogin | AssociationLogin> = this._auth.user$;
+  userRoles$: Observable<UserRole[]> = this._authService.getRolesUser();
+
+  isAuthenticated$ = this._authFacade.isAuthenticated$;
+  user$: Observable<VoluntaryLogin | AssociationLogin> = this._authFacade.user$;
 
   userDisplayName$: Observable<string | null> = this.user$.pipe(
     map(user => {

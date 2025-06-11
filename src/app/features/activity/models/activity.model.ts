@@ -1,3 +1,5 @@
+import { UUIDTypes } from 'uuid';
+
 export enum ThemeName {
   Social = 'Social',
   Sport = 'Sport',
@@ -32,8 +34,8 @@ export type Participant = {
 };
 
 export type Image = {
-  base64: string;
-  url: string;
+  id?: UUIDTypes;
+  image: string;
 };
 
 export type Activity = {

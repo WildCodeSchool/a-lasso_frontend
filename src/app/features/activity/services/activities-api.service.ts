@@ -45,6 +45,20 @@ export class ActivitiesApiService {
     return this._http.post<Message>(`${this._apiUrl}/messages`, message);
   }
 
+  getAdressFromApi(query: string): Observable<any> {
+    const lang = navigator.language || 'fr';
+
+    return this._http.get<any[]>(`https://nominatim.openstreetmap.org/search`, {
+      params: {
+        q: query,
+        format: 'json',
+        addressdetails: '1',
+        limit: '10',
+        'accept-language': lang,
+      },
+    });
+  }
+
   publishNewActivity(newActivity: NewActivityCreation): Observable<Activity> {
     return this._http.post<Activity>(`${this._apiUrl}/activities/publish`, newActivity);
   }

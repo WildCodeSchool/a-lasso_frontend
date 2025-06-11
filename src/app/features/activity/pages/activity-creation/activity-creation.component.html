@@ -19,7 +19,9 @@
             </div>
           }
         </section>
-
+        <section class="search-adress-container">
+          <app-search-address [fieldConfig]="adressFieldConfig" [formGroup]="activityForm"></app-search-address>
+        </section>
         <section class="description-container">
           <app-textarea-field
             [fieldConfig]="descriptionFieldConfigs"

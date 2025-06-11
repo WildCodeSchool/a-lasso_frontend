@@ -9,6 +9,7 @@ import { RegisterAssociationFormComponent } from '../register-association-form/r
 import { RegisterVoluntaryFormComponent } from '../register-voluntary-form/register-voluntary-form.component';
 import { DATE_PAD_LENGTH, MONTH_OFFSET } from '../../../constants/form.constants';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { getFormattedAddress } from 'src/app/common/utils/address.utils';
 
 @Component({
   selector: 'app-register-modal',
@@ -71,14 +72,7 @@ export class RegisterModalComponent {
       email: value.email,
       password: value.password,
       mobile_phone: value.phone,
-      address: {
-        house_number: value.addressNumber || '',
-        street_name: value.street,
-        adress_suffix: value.complement || null,
-        zipCode: value.zipCode,
-        city: value.city,
-        country: value.country,
-      },
+      address: getFormattedAddress(value.address),
     };
 
     this._authService
