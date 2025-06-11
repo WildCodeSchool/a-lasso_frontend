@@ -56,11 +56,11 @@
     "@angular-devkit/build-angular": "^19.0.0",
     "@angular/cli": "^19.0.0",
     "@angular/compiler-cli": "^19.0.0",
-    "@compodoc/compodoc": "^1.1.26",
+    "@compodoc/compodoc": "^1.1.19",
     "@cypress/schematic": "^2.5.2",
     "@ngrx/store-devtools": "^19.0.1",
     "@types/jest": "^29.5.14",
-    "angular-eslint": "19.0.0",
+    "angular-eslint": "^19.0.0",
     "cypress": "latest",
     "eslint": "^9.15.0",
     "http-server": "^14.1.1",
@@ -70,7 +70,7 @@
     "start-server-and-test": "^2.0.9",
     "ts-node": "^10.9.2",
     "typescript": "~5.5.2",
-    "typescript-eslint": "8.15.0",
+    "typescript-eslint": "^8.15.0",
     "wait-on": "^8.0.1"
   }
 }
