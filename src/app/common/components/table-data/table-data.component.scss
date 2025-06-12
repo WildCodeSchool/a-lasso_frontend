@@ -39,5 +39,6 @@
 
   ::ng-deep p-table td:last-child {
     border-bottom: none;
+    flex: 1;
   }
 }

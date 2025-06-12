@@ -1,14 +1,12 @@
 import { inject, Injectable } from '@angular/core';
 import { ReportApiService } from './report-api.service';
-import { Report } from '../models/report.model';
-import { Observable, of, switchMap, take, tap } from 'rxjs';
+import { Report, StatusReportEnum } from '../models/report.model';
+import { Observable, of, switchMap, tap } from 'rxjs';
 import { MessageService as Toast } from 'primeng/api';
 import { Store } from '@ngrx/store';
-import { selectReports } from '../store/reports.selector';
-import { TAKE_1 } from '../../../common/constants/observables.constants';
-import { deleteReport, setReports } from '../store/reports.actions';
-import { UUIDTypes } from 'uuid';
-import { setNotificationReports } from '../../authentication/store/user.actions';
+import { selectReports, selectReportsById } from '../store/reports.selector';
+import { setReports, updateReport } from '../store/reports.actions';
+import { updateNotificationReports } from '../../authentication/store/user.actions';
 
 @Injectable({
   providedIn: 'root',
@@ -28,12 +26,27 @@ export class ReportFacadeService {
 
   getReportsFromStore$(): Observable<Report[]> {
     return this._store.select(selectReports).pipe(
-      take(TAKE_1),
       switchMap(reports => {
         if (reports.length > 0) {
           return of(reports);
         }
         return this.getReportsFromApi();
+      })
+    );
+  }
+
+  getReportsFromStoreById$(report: Report): Observable<Report[]> {
+    if (report.hasLoadedAllReports) {
+      return this._store.select(selectReportsById(report.reportId));
+    }
+
+    return this._reportApiService.getReportsByReportedIdFromApi(report.reportedUser.id).pipe(
+      tap((reports: Report[]) => {
+        const updatedReports: Report[] = reports.map(report => ({
+          ...report,
+          hasLoadedAllReports: true,
+        }));
+        this._store.dispatch(setReports({ reports: updatedReports }));
       })
     );
   }
@@ -47,24 +60,26 @@ export class ReportFacadeService {
             severity: 'success',
             summary: 'Signalement envoyé !',
           });
+          this._store.dispatch(updateNotificationReports({ updateCount: +1 }));
         })
       )
       .subscribe();
   }
 
-  closeReport(reportId: UUIDTypes): void {
+  updateReport(report: Report): void {
     this._reportApiService
-      .closeReport(reportId)
+      .updateReport(report)
       .pipe(
         tap(() => {
           this._toast.add({
             severity: 'success',
-            summary: 'Signalement clos !',
+            summary: `${report.status === StatusReportEnum.Closed ? 'Signalement clôturé' : 'Signalement mis à jour !'}`,
           });
+          this._store.dispatch(updateReport({ reportUpdated: report }));
 
-          this._store.dispatch(deleteReport({ reportId }));
-
-          this._store.dispatch(setNotificationReports());
+          if (report.status === StatusReportEnum.Closed) {
+            this._store.dispatch(updateNotificationReports({ updateCount: -1 }));
+          }
         })
       )
       .subscribe();

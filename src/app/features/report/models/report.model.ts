@@ -21,6 +21,13 @@ export const reportTypeLabels: Record<ReportTypeEnum, string> = {
   [ReportTypeEnum.Other]: 'Autre',
 };
 
+export const reportTypeStatus: Record<StatusReportEnum, string> = {
+  [StatusReportEnum.InProgress]: 'En cours',
+  [StatusReportEnum.VoluntaryBanned]: 'Bénèv. Bannis',
+  [StatusReportEnum.AssociationBanned]: 'Asso. bannis',
+  [StatusReportEnum.Closed]: 'Clôturé',
+};
+
 export type ReportType = {
   label: string;
   value: string;
@@ -36,9 +43,20 @@ export type Report = {
   reportedUser: ReportUser;
   messageReporter: string;
   reportType: ReportTypeEnum;
+  hasLoadedAllReports?: boolean;
   reportId?: UUIDTypes;
   createdAt?: Date;
   status?: StatusReportEnum;
   commentaryAdmin?: string;
   reporterUser?: ReportUser;
+};
+
+export type ReportCountByYear = {
+  year: number;
+  reports: number;
+};
+
+export type ReporterCountByYear = {
+  year: number;
+  uniqueReporters: number;
 };

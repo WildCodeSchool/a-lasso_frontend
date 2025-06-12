@@ -1,21 +1,24 @@
 <div class="report-details-modal">
   <p-dialog [dismissableMask]="true" [modal]="true" [(visible)]="visible" (visibleChange)="visibleChange.emit($event)">
     <div class="report">
-      <h1>{{ report.reportedUser.userName }}</h1>
+      <h1>{{ reportSelected.reportedUser.userName }}</h1>
       <div class="card report-in-progress">
         <div class="report-in-progress-details">
           <div class="reporter-section">
             <div class="title-report">
-              <h3>Le {{ report.createdAt | date: 'dd/MM/yyyy' }} pour : {{ reportTypeLabels[report.reportType] }}</h3>
-              <h3>Signalement opéré par : {{ report.reporterUser.userName }}</h3>
+              <h3>Le {{ reportSelected.createdAt | date: 'dd/MM/yyyy' }} pour : {{ reportTypeLabels[reportSelected.reportType] }}</h3>
+              <h3>Signalement opéré par : {{ reportSelected.reporterUser.userName }}</h3>
             </div>
             <div class="commentary-section">
-              {{ report.messageReporter }}
+              {{ reportSelected.messageReporter }}
             </div>
           </div>
           <div class="admin-section">
             <h3 class="title-report">Commentaire de l'administrateur</h3>
-            <div class="commentary-section">{{ report.commentaryAdmin }}</div>
+            <form [formGroup]="reportForm">
+              <app-textarea-field [fieldConfig]="fieldCommentary" [formGroup]="reportForm" [maxlength]="maxLengthCommentary" [rows]="7" [cols]="1">
+              </app-textarea-field>
+            </form>
           </div>
         </div>
 
@@ -49,21 +52,50 @@
             </div>
           </div>
         </div>
-        <p-button class="close-report" severity="success" (click)="closeReport()">
-          <i class="fa-solid fa-check"></i>
-          Clôturer
-        </p-button>
+        @if (reportSelected.status === StatusReportEnum.InProgress) {
+          <div class="save-admin">
+            <p-button class="close-report" severity="success" type="submit" (click)="saveReport()">
+              <i class="fa-regular fa-floppy-disk"></i>
+              Sauvegarder
+            </p-button>
+            <p-button class="close-report" severity="success" type="submit" (click)="closeReport()">
+              <i class="fa-solid fa-check"></i>
+              Clôturer
+            </p-button>
+          </div>
+        } @else {
+          <div class="save-admin">
+            <h2>Signalement Clos</h2>
+          </div>
+        }
       </div>
       <div class="card previous-report">
-        <h3>Signalements précédents</h3>
         <div class="previous-report-content">
           <div class="table-previous-reports">
-            <p>Joli tableau</p>
-            <app-table-data></app-table-data>
+            <h3>Autres Signalements</h3>
+            <app-table-data
+              (rowClickHandler)="onSelectedOtherReport($event)"
+              [cols]="otherReportsTableColumns"
+              [data]="otherReportsTableData"></app-table-data>
           </div>
           <div class="statistics">
             <h3>Statistiques</h3>
-            <p>jolies stats</p>
+            <div class="stats-details">
+              <div class="select-year">
+                <p>Année :</p>
+                <p-select [options]="yearOptions" [(ngModel)]="selectedYear" placeholder="Sélectionnez une année"></p-select>
+              </div>
+              <div class="details-reports-stats">
+                <div>
+                  <p>Total signalements</p>
+                  <p>{{ getStatsByYear(selectedYear).totalReports }}</p>
+                </div>
+                <div>
+                  <p>Utilisateurs uniques</p>
+                  <p>{{ getStatsByYear(selectedYear).uniqueReporters }}</p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>

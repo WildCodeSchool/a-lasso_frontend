@@ -1,13 +1,13 @@
 import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
+import { ButtonModule } from 'primeng/button';
 import { Select } from 'primeng/select';
 import { FormField } from 'src/app/features/authentication/models/form.model';
 import { TextareaFieldComponent } from '../../../../common/components/textarea-field/textarea-field.component';
 import { Association } from '../../../association/models/association.model';
-import { Report, ReportType, ReportTypeEnum } from '../../models/report.model';
 import { ReportFacadeService } from '../../services/report-facade.service';
+import { ReportType, ReportTypeEnum, Report } from '../../models/report.model';
 
 @Component({
   selector: 'app-report-modal',

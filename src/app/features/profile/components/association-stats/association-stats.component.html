@@ -14,7 +14,7 @@
           <button class="add-btn" (click)="addCard(cards)" type="button">+</button>
         </div>
       }
-      @for (card of cards; let i = $index; track card.description) {
+      @for (card of cards; track card.description; let i = $index) {
         <div class="stat-card">
           <button class="close-btn" (click)="removeCard(cards, i)" type="button">×</button>
           <div class="value">{{ card.value | number }}</div>

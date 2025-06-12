@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { TableModule } from 'primeng/table';
 import { Column, TableData } from '../../models/table-data';
 import { NgClass } from '@angular/common';
@@ -13,13 +13,13 @@ export class TableDataComponent {
   @Input() cols!: Column[];
   @Input() data!: TableData[];
 
-  @Input() rowClickHandler?: (row: TableData) => void;
+  @Output() rowClickHandler: EventEmitter<TableData> = new EventEmitter<TableData>();
 
   selectedRow: TableData;
 
   handleRowClick(row: TableData): void {
     if (this.rowClickHandler) {
-      this.rowClickHandler(row);
+      this.rowClickHandler.emit(row);
       this.selectedRow = row;
     }
   }

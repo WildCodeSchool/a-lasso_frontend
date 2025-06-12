@@ -41,7 +41,12 @@ export const setNotificationMessages = createAction(
   }>()
 );
 
-export const setNotificationReports = createAction('[User] Update Notification Reports');
+export const updateNotificationReports = createAction(
+  '[User] Update Notification Reports',
+  props<{
+    updateCount: number;
+  }>()
+);
 
 export const updateAssociationGeneralInfo = createAction(
   '[User] Update Association General Info',

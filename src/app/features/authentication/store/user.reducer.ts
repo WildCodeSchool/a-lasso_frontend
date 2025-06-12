@@ -108,8 +108,10 @@ export const userReducer = createReducer(
         : state.userInfos,
   })),
 
-  on(AuthActions.setNotificationReports, state => {
-    if (!state.userInfos || !('notification' in state.userInfos)) return state;
+  on(AuthActions.updateNotificationReports, (state, { updateCount }) => {
+    if (!state.userInfos || !('notification' in state.userInfos)) {
+      return state;
+    }
 
     return {
       ...state,
@@ -117,7 +119,7 @@ export const userReducer = createReducer(
         ...state.userInfos,
         notification: {
           ...state.userInfos.notification,
-          reports: state.userInfos.notification.reports !== null ? state.userInfos.notification.reports - 1 : 0,
+          reports: state.userInfos.notification.reports !== null ? state.userInfos.notification.reports + updateCount : 0,
         },
       },
     };
