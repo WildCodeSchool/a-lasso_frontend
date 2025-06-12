@@ -15,7 +15,7 @@ export class AuthService {
   toast: Toast = inject(Toast);
   private _http: HttpClient = inject(HttpClient);
   private _apiUrl = environment.apiUrl;
-  private _authState$ = new BehaviorSubject<boolean>(false);
+  private _authState$ = new BehaviorSubject<boolean>(this._checkTokenValidOnInit());
 
   registerVoluntary(data: VoluntaryRegister): Observable<boolean> {
     return this._http.post<boolean>(`${this._apiUrl}/auth/register/voluntary`, data);
@@ -27,6 +27,17 @@ export class AuthService {
 
   login(data: UserLogin): Observable<ApiResponseLogin> {
     return this._http.post<ApiResponseLogin>(`${this._apiUrl}/auth/login`, data);
+  }
+
+  changePassword(oldPassword: string, newPassword: string): Observable<void> {
+    return this._http.patch<void>(`${this._apiUrl}/auth/change-password`, {
+      oldPassword,
+      newPassword,
+    });
+  }
+
+  deleteAccount(): Observable<void> {
+    return this._http.delete<void>(`${this._apiUrl}/auth/delete-account`);
   }
 
   public saveToken(token: string): void {
@@ -97,5 +108,18 @@ export class AuthService {
         return of(roles);
       })
     );
+  }
+
+  private _checkTokenValidOnInit(): boolean {
+    const token = this.getToken();
+    if (!token) return false;
+    try {
+      const decodedToken: JwtDecodedToken = jwtDecode(token);
+      const expiryDate = new Date(decodedToken.exp * EXPIRACY_MULTIPLIER);
+      return expiryDate > new Date();
+    } catch {
+      this.clearToken();
+      return false;
+    }
   }
 }

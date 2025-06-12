@@ -1,0 +1,16 @@
+<div class="activity-menu-container">
+  <div class="activity-menu-header">
+    <h1 class="activity-menu-title">Nos activités</h1>
+    <span class="tabs_wrapper">
+      <app-toggle-menu [tabs]="navigationItems" [activeTabValue]="activeTab" (chosenTab)="handleNavigation($event)" />
+    </span>
+  </div>
+
+  @if (chosenNavigation$ | async; as currentTab) {
+    @if (currentTab === 'Brouillons') {
+      <app-draft-list />
+    } @else {
+      <app-activity-list [activities]="filteredActivities$ | async" />
+    }
+  }
+</div>

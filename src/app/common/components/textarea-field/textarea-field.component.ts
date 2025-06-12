@@ -1,21 +1,25 @@
-import { NgStyle } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { IftaLabelModule } from 'primeng/iftalabel';
 import { TextareaModule } from 'primeng/textarea';
 import { FormField } from 'src/app/features/authentication/models/form.model';
+import { InputFieldErrorComponent } from '../input-field-error/input-field-error.component';
+import { NgClass } from '@angular/common';
 
-export const DEFAULT_ROWS: number = 5;
-export const DEFAULT_COLS: number = 30;
+const DEFAULT_ROWS: number = 5;
+const DEFAULT_COLS: number = 30;
 
 @Component({
   selector: 'app-textarea-field',
   standalone: true,
-  imports: [NgStyle, FormsModule, TextareaModule, IftaLabelModule, ReactiveFormsModule],
+  imports: [FormsModule, TextareaModule, IftaLabelModule, ReactiveFormsModule, InputFieldErrorComponent, NgClass],
   templateUrl: './textarea-field.component.html',
   styleUrl: './textarea-field.component.scss',
 })
 export class TextareaFieldComponent {
+  @Output() save = new EventEmitter<void>();
+
+  @Input() showSaveButton = false;
   @Input() disabled: boolean = false;
   @Input() rows: number = DEFAULT_ROWS;
   @Input() cols: number = DEFAULT_COLS;

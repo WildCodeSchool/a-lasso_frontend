@@ -1,0 +1,32 @@
+.activity-list {
+  padding: 16px 0 0;
+  width: 86vw;
+
+  .empty-message {
+    color: var(--font-color-grey);
+    font-style: italic;
+    text-align: center;
+    margin-top: 2rem;
+  }
+
+  .card-grid {
+    display: flex;
+    flex-direction: row;
+    overflow-x: auto;
+    gap: 16px;
+    padding: 0 32px 32px 16px;
+
+    & > * {
+      flex: 0 0 auto;
+    }
+  }
+
+  .card-grid::-webkit-scrollbar {
+    height: 8px;
+  }
+
+  .card-grid::-webkit-scrollbar-thumb {
+    background-color: var(--primary-light-color);
+    border-radius: 8px;
+  }
+}

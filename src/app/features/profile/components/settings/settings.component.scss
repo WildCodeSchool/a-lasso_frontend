@@ -1,0 +1,62 @@
+.settings-container {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  padding: 16px;
+  width: 100%;
+  height: 75%;
+
+  .settings-title {
+    color: var(--primary-dark-color);
+    margin: 0;
+  }
+
+  .settings-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    gap: 64px;
+    .module {
+      width: 50%;
+      height: auto;
+      display: flex;
+      justify-content: space-between;
+      gap: 64px;
+
+      .settings-email,
+      .settings-phone {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 32px;
+        margin-right: 90px;
+      }
+
+      .settings-theme {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 32px;
+
+        p {
+          opacity: 0.5;
+          transition: opacity 0.2s;
+
+          &.active {
+            opacity: 1;
+            font-weight: bold;
+          }
+        }
+      }
+    }
+
+    .separate {
+      width: 75%;
+      height: 1px;
+      background-color: var(--icon-color);
+      margin: 16px 0;
+    }
+  }
+}
