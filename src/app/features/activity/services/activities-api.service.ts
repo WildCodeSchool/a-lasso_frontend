@@ -62,4 +62,8 @@ export class ActivitiesApiService {
   publishNewActivity(newActivity: NewActivityCreation): Observable<Activity> {
     return this._http.post<Activity>(`${this._apiUrl}/activities/publish`, newActivity);
   }
+
+  deleteActivity(activityId: UUIDTypes): Observable<void> {
+    return this._http.delete<void>(`${this._apiUrl}/activities/delete/${activityId}`);
+  }
 }
