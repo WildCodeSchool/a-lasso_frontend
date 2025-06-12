@@ -30,4 +30,8 @@ export class AssociationApiService {
   updateFollowStatus(associationId: UUIDTypes, isFollow: boolean): Observable<boolean> {
     return this._http.patch<boolean>(`${this._apiUrl}/association/${associationId}/updateFollow`, { isFollow });
   }
+
+  patchAssociationField(associationId: UUIDTypes, payload: Partial<Association>): Observable<Association> {
+    return this._http.patch<Association>(`${this._apiUrl}/association/${associationId}`, payload);
+  }
 }

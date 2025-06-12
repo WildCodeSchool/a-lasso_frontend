@@ -1,5 +1,5 @@
 <p-tabs [(value)]="activeTabValue">
-  <p-tablist>
+  <p-tablist class="tabs_wrapper">
     @for (tab of tabs; track $index) {
       <div class="tab-container">
         <p-tab [value]="$index" (click)="updateNavigation($index)">

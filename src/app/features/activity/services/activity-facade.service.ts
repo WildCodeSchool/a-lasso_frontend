@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { Activity, Participant, Theme } from '../models/activity.model';
-import { map, Observable, of, switchMap, take, tap } from 'rxjs';
+import { filter, map, Observable, of, switchMap, take, tap } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { selectActivities, selectActivityById } from '../store/activities.selector';
 import { setActivities, setActivity, updateActivityParticipants } from '../store/activities.actions';
@@ -17,6 +17,8 @@ import { TAKE_1 } from 'src/app/common/constants/observables.constants';
 import { selectActivitiesUserInfos } from '../../authentication/store/user.selectors';
 import { ActivitiesUserInfos } from '../../authentication/models/user.model';
 import { NewActivityCreation } from '../models/activity-creation.model';
+import { selectConnectedAssociationId } from '../../authentication/store/user.selectors';
+import * as ActivityActions from '../store/activities.actions';
 
 @Injectable({
   providedIn: 'root',
@@ -25,7 +27,9 @@ export class ActivityFacadeService {
   private _store: Store = inject(Store);
   private _toast: Toast = inject(Toast);
   private _activitiesApi: ActivitiesApiService = inject(ActivitiesApiService);
+
   activities$: Observable<Activity[]> = this._store.select(selectActivities);
+  associationId$: Observable<UUIDTypes> = this._store.select(selectConnectedAssociationId).pipe(filter((id): id is UUIDTypes => !!id));
 
   getActivityThemesFromApi(): Observable<Theme[]> {
     return this._activitiesApi.getActivityThemes();
@@ -179,19 +183,30 @@ export class ActivityFacadeService {
     return this._activitiesApi.getAdressFromApi(query);
   }
 
-  publishNewActivity(newActivity: NewActivityCreation): void {
-    this._activitiesApi
-      .publishNewActivity(newActivity)
-      .pipe(
-        tap((activity: Activity): void => {
-          this._store.dispatch(setActivity({ activity: activity }));
+  publishNewActivity(newActivity: NewActivityCreation): Observable<Activity> {
+    return this._activitiesApi.publishNewActivity(newActivity).pipe(
+      tap((activity: Activity): void => {
+        this._store.dispatch(setActivity({ activity: activity }));
+        this._toast.add({
+          severity: 'success',
+          summary: 'Activité publiée !',
+        });
+      })
+    );
+  }
 
-          this._toast.add({
-            severity: 'success',
-            summary: 'Activité publiée !',
-          });
-        })
-      )
-      .subscribe();
+  deleteActivity(activityId: UUIDTypes): Observable<void> {
+    return this.associationId$.pipe(
+      take(TAKE_1),
+      switchMap(() => this._activitiesApi.deleteActivity(activityId))
+    );
+  }
+
+  deleteActivityAndUpdateStore(activityId: UUIDTypes): Observable<void> {
+    return this.deleteActivity(activityId).pipe(
+      tap(() => {
+        this._store.dispatch(ActivityActions.deleteActivity({ activityId: activityId }));
+      })
+    );
   }
 }

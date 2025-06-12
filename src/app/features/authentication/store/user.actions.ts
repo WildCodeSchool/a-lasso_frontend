@@ -1,6 +1,7 @@
 import { createAction, props } from '@ngrx/store';
 import { AssociationLogin, UserLogin, VoluntaryLogin } from '../models/user.model';
 import { UUIDTypes } from 'uuid';
+import { Statistic } from '../../association/models/association.model';
 
 export const login = createAction('[User] Login', props<{ credentials: UserLogin }>());
 
@@ -41,3 +42,12 @@ export const setNotificationMessages = createAction(
 );
 
 export const setNotificationReports = createAction('[User] Update Notification Reports');
+
+export const updateAssociationGeneralInfo = createAction(
+  '[User] Update Association General Info',
+  props<{ foundationDate: string; founder: string }>()
+);
+
+export const updateAssociationDescription = createAction('[User] Update Association Description', props<{ description: string }>());
+
+export const updateAssociationStats = createAction('[User] Update Association Stats', props<{ statistics: Statistic[] }>());

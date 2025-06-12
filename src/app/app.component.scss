@@ -2,15 +2,7 @@
   background-color: var(--background-color-light);
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
   white-space: pre-line;
-
-  .outlet-container {
-    max-width: 1920px;
-    margin: auto;
-  }
-
-  .push-footer {
-    flex-grow: 1;
-  }
+  max-width: 1920px;
+  margin: 0 auto;
 }

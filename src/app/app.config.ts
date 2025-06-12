@@ -5,7 +5,7 @@ import { provideRouter } from '@angular/router';
 import { provideStore } from '@ngrx/store';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
 import { providePrimeNG } from 'primeng/config';
-import { MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { messagesReducer } from './features/activity/store/messages/messages.reducers';
 import { routes } from './app.routes';
 import { PRIME_NG_FR } from './common/prime-ng.translate';
@@ -44,5 +44,6 @@ export const appConfig: ApplicationConfig = {
     }),
     MessageService,
     DialogService,
+    ConfirmationService,
   ],
 };

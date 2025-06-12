@@ -1,5 +1,6 @@
 import { UUIDTypes } from 'uuid';
 import { Image } from '../../activity/models/activity.model';
+import { Statistic } from '../../association/models/association.model';
 
 export enum UserType {
   Association = 'association',
@@ -18,6 +19,7 @@ export type VoluntaryRegister = {
 };
 
 export type VoluntaryLogin = {
+  id: UUIDTypes;
   type: UserType.Voluntary;
   first_name: string;
   last_name: string;
@@ -35,6 +37,7 @@ export type VoluntaryLogin = {
     latitude: number;
     longitude: number;
   };
+  createdAt: Date;
 };
 
 export type Notification = {
@@ -100,6 +103,7 @@ export type AssociationRegister = {
 };
 
 export type AssociationLogin = {
+  id: UUIDTypes;
   type: UserType.Association;
   siret: string;
   name: string;
@@ -114,6 +118,11 @@ export type AssociationLogin = {
     latitude: number;
     longitude: number;
   };
+  createdAt: Date;
+  foundationDate: string;
+  founder: string;
+  description: string;
+  statistics?: Statistic[];
 };
 
 export type UserLogin = {

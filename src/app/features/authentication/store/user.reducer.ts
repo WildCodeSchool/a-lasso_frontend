@@ -1,6 +1,6 @@
 import { createReducer, on } from '@ngrx/store';
 import * as AuthActions from './user.actions';
-import { FollowedAssociation, UserState, VoluntaryLogin } from '../models/user.model';
+import { FollowedAssociation, UserState, UserType, VoluntaryLogin } from '../models/user.model';
 import { getInitialUserState } from './meta-reducers';
 
 export const initialState: UserState = getInitialUserState();
@@ -119,6 +119,40 @@ export const userReducer = createReducer(
           ...state.userInfos.notification,
           reports: state.userInfos.notification.reports !== null ? state.userInfos.notification.reports - 1 : 0,
         },
+      },
+    };
+  }),
+
+  on(AuthActions.updateAssociationStats, (state, { statistics }) => {
+    if (!state.userInfos || state.userInfos.type !== UserType.Association) return state;
+    return {
+      ...state,
+      userInfos: {
+        ...state.userInfos,
+        statistics,
+      },
+    };
+  }),
+
+  on(AuthActions.updateAssociationDescription, (state, { description }) => {
+    if (!state.userInfos || state.userInfos.type !== UserType.Association) return state;
+    return {
+      ...state,
+      userInfos: {
+        ...state.userInfos,
+        description,
+      },
+    };
+  }),
+
+  on(AuthActions.updateAssociationGeneralInfo, (state, { foundationDate, founder }) => {
+    if (!state.userInfos || state.userInfos.type !== UserType.Association) return state;
+    return {
+      ...state,
+      userInfos: {
+        ...state.userInfos,
+        foundationDate,
+        founder,
       },
     };
   })

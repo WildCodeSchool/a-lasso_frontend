@@ -20,5 +20,7 @@ export const activitiesReducer = createReducer(
       isSaved: false,
       isRegistered: false,
     }))
-  )
+  ),
+
+  on(ActivityActions.deleteActivity, (state, { activityId }) => state.filter(activity => activity.id !== activityId))
 );

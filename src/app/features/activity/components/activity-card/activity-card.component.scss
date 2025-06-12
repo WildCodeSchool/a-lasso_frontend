@@ -3,13 +3,19 @@
   position: relative;
   padding: 5px;
 
+  ::ng-deep .p-card {
+    background-color: var(--background-color-white);
+  }
+
   .card {
     width: 95%;
+    max-width: 380px;
     transition:
       transform 0.3s ease,
       box-shadow 0.3s ease;
     display: flex;
     flex-direction: column;
+    position: relative;
 
     &:hover {
       transform: scale(1.02);
@@ -22,7 +28,6 @@
     img.activity-image {
       height: 200px;
       object-fit: cover;
-      object-position: center 30%;
       width: 100%;
       filter: brightness(80%);
       border-radius: var(--border-radius) var(--border-radius) 0 0;
@@ -52,7 +57,7 @@
       justify-content: space-between;
 
       .description {
-        height: 72px;
+        min-height: 6vh;
         margin: 0;
       }
 
@@ -90,6 +95,44 @@
           width: 50%;
           gap: 10%;
         }
+      }
+    }
+
+    .delete-btn {
+      position: absolute;
+      bottom: 15px;
+      right: 15px;
+      z-index: 1000;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 1.5px solid var(--secondary-error-color);
+      background: var(--background-color-white);
+      color: var(--secondary-error-color);
+      transition: all 0.3s ease;
+
+      &:hover {
+        background: var(--secondary-error-color);
+        background: var(--background-color-white);
+        border: 1.5px solid var(--secondary-error-color);
+        transform: scale(1.05);
+        cursor: pointer;
+      }
+
+      &.p-button-danger,
+      &.p-button {
+        background: transparent !important;
+        border: 1.5px solid var(--secondary-error-color) !important;
+        color: var(--secondary-error-color) !important;
+        box-shadow: none !important;
+      }
+
+      &:hover,
+      &.p-button-danger:hover,
+      &.p-button:hover {
+        background: var(--secondary-error-color) !important;
+        color: var(--background-color-white) !important;
+        border: 1.5px solid var(--secondary-error-color) !important;
       }
     }
   }

@@ -1,40 +1,84 @@
-label {
-  font-size: 14px;
-  color: var(--font-color);
-  pointer-events: none;
-  transition: color 0.2s ease;
+form {
+  position: relative;
 
-  &:focus,
-  &:hover,
-  &:active {
-    outline: none;
+  label {
+    font-size: 14px;
+    color: var(--font-color);
+    pointer-events: none;
+    transition: color 0.2s ease;
 
-    ~ label {
-      color: var(--primary-light-color);
-      transition: color 0.2s ease;
+    &:focus,
+    &:hover,
+    &:active {
+      outline: none;
+
+      ~ label {
+        color: var(--primary-light-color);
+        transition: color 0.2s ease;
+      }
     }
   }
-}
 
-textarea {
-  width: 100%;
-  font-size: 16px;
-  background-color: var(--background-color-white);
-  border-radius: 8px;
-  border: none;
-  color: black;
-  resize: none;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-
-  &:focus,
-  &:hover,
-  &:active {
-    outline: none;
+  textarea {
+    width: 100%;
+    font-size: 16px;
+    background-color: var(--background-color-white);
+    border-radius: 8px;
     border: none;
+    color: black;
+    resize: none;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+
+    &.with-save-button {
+      padding-right: 75px;
+    }
+
+    &:focus,
+    &:hover,
+    &:active {
+      outline: none !important;
+      border: none !important;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1) !important;
+    }
+
+    &::placeholder {
+      color: var(--font-color-grey);
+      font-size: 14px;
+    }
   }
 
-  &::placeholder {
+  .max-length {
+    display: flex;
+    justify-content: flex-end;
+    margin: 0;
     color: var(--font-color-grey);
     font-size: 14px;
+
+    &--error {
+      color: red;
+      font-weight: 500;
+    }
+  }
+
+  .save-button {
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 70%;
+    background-color: var(--primary-light-color);
+    color: var(--font-color-light);
+    padding: 19.1px 25px;
+    border: none;
+    cursor: pointer;
+    border-radius: 0 10px 10px 0;
+    box-shadow: var(--box-shadow);
+
+    i {
+      font-size: 18px;
+    }
+
+    &:hover {
+      background-color: var(--primary-dark-color);
+    }
   }
 }

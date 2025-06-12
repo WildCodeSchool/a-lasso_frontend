@@ -56,9 +56,8 @@
       height: auto;
 
       &:hover {
-        transform: none;
-        text-decoration: underline;
-        background-color: var(--background-color-white) !important;
+        text-decoration: none;
+        background-color: var(--background-color-light) !important;
         color: var(--primary-light-color);
         transition: all 0.2s ease;
       }
