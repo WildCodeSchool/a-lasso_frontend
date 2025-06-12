@@ -64,6 +64,6 @@ export class ActivitiesApiService {
   }
 
   deleteActivity(activityId: UUIDTypes): Observable<void> {
-    return this._http.delete<void>(`${this._apiUrl}/activities/${activityId}`);
+    return this._http.delete<void>(`${this._apiUrl}/activities/delete/${activityId}`);
   }
 }
