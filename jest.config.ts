@@ -8,6 +8,9 @@ import type { Config } from 'jest';
 const config: Config = {
   preset: 'jest-preset-angular',
   setupFilesAfterEnv: ['<rootDir>/setup-jest.ts'],
+  moduleNameMapper: {
+    '^src/(.*)$': '<rootDir>/src/$1'
+  },
   testPathIgnorePatterns: ['<rootDir>/cypress/'],
   clearMocks: true,
   coverageDirectory: "coverage",
