@@ -11,16 +11,18 @@
   <div class="form-container">
     <form class="form">
       @for (field of loginFields; track $index) {
-        <ng-container>
-          <div class="form-field">
-            <app-input-field [fieldConfig]="field" [formGroup]="loginForm" [showPasswordRules]="field.showPasswordRules || false"> </app-input-field>
-            <app-input-field-error [control]="loginForm.get(field.name)" [fieldName]="field.name" />
-          </div>
-        </ng-container>
+      <ng-container>
+        <div class="form-field">
+          <app-input-field [fieldConfig]="field" [formGroup]="loginForm" [showPasswordRules]="field.showPasswordRules || false"> </app-input-field>
+          <app-input-field-error [control]="loginForm.get(field.name)" [fieldName]="field.name" />
+        </div>
+      </ng-container>
       }
 
       <div class="submit-button">
-        <button pButton type="submit" class="register-btn" [disabled]="loginForm.invalid" (click)="onSubmit()">Se connecter</button>
+        <button id="connexion-submit-button" type="submit" class="register-btn" [disabled]="loginForm.invalid" (click)="onSubmit()">
+          Se connecter
+        </button>
       </div>
 
       <app-input-field-error [globalError]="error" />

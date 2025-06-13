@@ -103,7 +103,7 @@ export class ActivityAddPhotoComponent implements OnInit, OnChanges {
   }
 
   triggerFileInput(index: number): void {
-    const fileInput = document.getElementById('fileInput' + index) as HTMLElement;
+    const fileInput = document.getElementById('file-input-' + index) as HTMLElement;
     fileInput.click();
   }
 
