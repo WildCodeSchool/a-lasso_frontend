@@ -4,19 +4,19 @@ import { MessageService } from 'primeng/api';
 import { FormGroup } from '@angular/forms';
 import { InputFieldErrorComponent } from '../../../../common/components/input-field-error/input-field-error.component';
 import { AssociationFacadeService } from 'src/app/features/association/services/association-facade.service';
-import { take, tap } from 'rxjs';
+import { map, Observable, of, switchMap } from 'rxjs';
 import { Image } from '../../models/activity.model';
 import { DialogModule } from 'primeng/dialog';
 import { UUIDTypes } from 'uuid';
 import { SingleButtonComponent } from '../../../../common/components/single-button/single-button.component';
 import { ButtonStyleClass } from 'src/app/common/models/button';
-import { TAKE_1 } from 'src/app/common/constants/observables.constants';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'app-activity-add-photo',
   templateUrl: './activity-add-photo.component.html',
   styleUrls: ['./activity-add-photo.component.scss'],
-  imports: [InputFieldErrorComponent, DialogModule, SingleButtonComponent, ImageCropperComponent],
+  imports: [InputFieldErrorComponent, DialogModule, SingleButtonComponent, ImageCropperComponent, AsyncPipe],
 })
 export class ActivityAddPhotoComponent implements OnInit {
   private _associationFacadeService: AssociationFacadeService = inject(AssociationFacadeService);
@@ -24,8 +24,8 @@ export class ActivityAddPhotoComponent implements OnInit {
 
   @Input() formGroup?: FormGroup;
 
+  existingImages$: Observable<Image[]> = of([]);
   picturesChosen: string[] = ['', '', ''];
-  existingImages: Image[] = [];
   ButtonStyleClass = ButtonStyleClass;
   isModalVisible = false;
   modalTargetIndex = 0;
@@ -66,16 +66,17 @@ export class ActivityAddPhotoComponent implements OnInit {
   }
 
   loadMorePictures(): void {
-    this._associationFacadeService
-      .getExistingActivityPictures(this._currentOffset, this._pageSize)
-      .pipe(
-        tap(images => {
-          this.existingImages = [...this.existingImages, ...images];
-          this._currentOffset += this._pageSize;
-        }),
-        take(TAKE_1)
+    const nextPageImage$: Observable<Image[]> = this._associationFacadeService.getExistingActivityPictures(this._currentOffset, this._pageSize);
+    this.existingImages$ = this.existingImages$.pipe(
+      switchMap((currentImages: Image[]) =>
+        nextPageImage$.pipe(
+          map((newImages: Image[]) => {
+            this._currentOffset += this._pageSize;
+            return [...currentImages, ...newImages];
+          })
+        )
       )
-      .subscribe();
+    );
   }
 
   triggerFileInput(index: number): void {
@@ -120,6 +121,10 @@ export class ActivityAddPhotoComponent implements OnInit {
       },
     });
 
+    this.closePhotoSelection();
+  }
+
+  closePhotoSelection(): void {
     this.isCropperVisible = false;
     this.imageChangedEvent = null;
     this.croppedImage = null;

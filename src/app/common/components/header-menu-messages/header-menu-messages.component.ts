@@ -6,6 +6,7 @@ import { BadgeComponent } from '../badge/badge.component';
 import { AsyncPipe, NgClass } from '@angular/common';
 import { UUIDTypes } from 'uuid';
 import { Router } from '@angular/router';
+import { MessagesInfo } from '../../models/header-menu';
 
 @Component({
   selector: 'app-header-menu-messages',
@@ -14,7 +15,7 @@ import { Router } from '@angular/router';
   styleUrl: './header-menu-messages.component.scss',
 })
 export class HeaderMenuMessagesComponent {
-  private _router = inject(Router);
+  private _router: Router = inject(Router);
   private _authFacade: AuthFacade = inject(AuthFacade);
   @Input() isOpenMenu!: boolean;
 
@@ -22,17 +23,15 @@ export class HeaderMenuMessagesComponent {
 
   isMessagesOpen: boolean = false;
 
-  countGlobalMessageNotifications$: Observable<number | null> = this.user$.pipe(
-    map(user => {
-      if (!user || !user.notification.messages) return null;
-      return user.notification.messages.reduce((total, notification) => total + notification.countMessagesNotRead, 0);
-    })
-  );
-
-  activitiesWithUnreadMessages$: Observable<MessageNotification[] | null> = this.user$.pipe(
-    map(user => {
-      if (!user || !user.notification.messages) return null;
-      return user.notification.messages;
+  readonly MessagesInfo$: Observable<MessagesInfo> = this.user$.pipe(
+    map((user: VoluntaryLogin | AssociationLogin): MessagesInfo => {
+      const messageNotifications: MessageNotification[] = user?.notification?.messages ?? [];
+      const count: number = messageNotifications.reduce((sum: number, m: MessageNotification): number => sum + m.countMessagesNotRead, 0);
+      return {
+        messageNotifications,
+        count,
+        hasMessages: messageNotifications.length > 0 && count > 0,
+      };
     })
   );
 

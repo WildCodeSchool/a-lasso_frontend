@@ -15,10 +15,11 @@ import { APIResponseToggleRegister } from '../models/api-reponse.model';
 import { updateActivitiesUserInfos } from '../../authentication/store/user.actions';
 import { TAKE_1 } from 'src/app/common/constants/observables.constants';
 import { selectActivitiesUserInfos } from '../../authentication/store/user.selectors';
-import { ActivitiesUserInfos } from '../../authentication/models/user.model';
+import { ActivitiesUserInfos, AddressApiResult } from '../../authentication/models/user.model';
 import { NewActivityCreation } from '../models/activity-creation.model';
 import { selectConnectedAssociationId } from '../../authentication/store/user.selectors';
 import * as ActivityActions from '../store/activities.actions';
+import { showSuccessToast } from 'src/app/common/utils/toast.utils';
 
 @Injectable({
   providedIn: 'root',
@@ -170,27 +171,21 @@ export class ActivityFacadeService {
       .pipe(
         tap((postedMessage: Message) => {
           this._store.dispatch(addMessage({ message: postedMessage }));
-          this._toast.add({
-            severity: 'success',
-            summary: 'Message envoyé !',
-          });
+          showSuccessToast(this._toast);
         })
       )
       .subscribe();
   }
 
-  searchAdress(query: string): Observable<any> {
-    return this._activitiesApi.getAdressFromApi(query);
+  searchAddress(query: string): Observable<AddressApiResult[]> {
+    return this._activitiesApi.getAddressFromApi(query);
   }
 
   publishNewActivity(newActivity: NewActivityCreation): Observable<Activity> {
     return this._activitiesApi.publishNewActivity(newActivity).pipe(
       tap((activity: Activity): void => {
         this._store.dispatch(setActivity({ activity: activity }));
-        this._toast.add({
-          severity: 'success',
-          summary: 'Activité publiée !',
-        });
+        showSuccessToast(this._toast);
       })
     );
   }

@@ -1,5 +1,5 @@
-import { Component, Input, inject, OnChanges, SimpleChanges, DestroyRef, ViewChild, AfterViewInit } from '@angular/core';
-import maplibregl, { Popup } from 'maplibre-gl';
+import { Component, Input, inject, OnChanges, SimpleChanges, ViewChild, AfterViewInit } from '@angular/core';
+import maplibregl, { Marker, Popup } from 'maplibre-gl';
 import { Activity } from 'src/app/features/activity/models/activity.model';
 import { Observable, Subscription } from 'rxjs';
 import { CheckboxModule } from 'primeng/checkbox';
@@ -8,9 +8,9 @@ import { MapDisplayType } from '../../models/map';
 
 import { FRANCE_LATITUDE, FRANCE_LONGITUDE } from '../../constants/map.constants';
 import { PopupMapComponent } from '../popup-map/popup-map.component';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { environmentSecret } from 'src/environments/environment.secret';
 import { ActivityFacadeService } from '../../../activity/services/activity-facade.service';
+import { DestroyableComponent } from '../../../../common/utils/DestroyableComponent';
 
 @Component({
   selector: 'app-map',
@@ -18,8 +18,7 @@ import { ActivityFacadeService } from '../../../activity/services/activity-facad
   imports: [FormsModule, CheckboxModule, PopupMapComponent],
   styleUrl: './map.component.scss',
 })
-export class MapComponent implements AfterViewInit, OnChanges {
-  private _destroyRef = inject(DestroyRef);
+export class MapComponent extends DestroyableComponent implements AfterViewInit, OnChanges {
   private _activityFacadeService: ActivityFacadeService = inject(ActivityFacadeService);
 
   @Input() filteredActivities$!: Observable<Activity[]>;
@@ -56,7 +55,7 @@ export class MapComponent implements AfterViewInit, OnChanges {
   }
 
   addMarkers(): void {
-    this._activitySub = this.filteredActivities$.pipe(takeUntilDestroyed(this._destroyRef)).subscribe(activities => {
+    this._activitySub = this.filteredActivities$.pipe(this.untilDestroyed()).subscribe(activities => {
       this._clearMarkers();
       activities.forEach(activity => {
         this.addActivityMarkers(activity);
@@ -79,39 +78,45 @@ export class MapComponent implements AfterViewInit, OnChanges {
   }
 
   addActivityMarkers(activity: Activity): void {
-    if (activity.location?.longitude && activity.location?.latitude && this.mapDisplay.activities) {
-      const activityMarker = new maplibregl.Marker({ color: 'red' })
-        .setLngLat([activity.location.longitude, activity.location.latitude])
-        .addTo(this._map);
-
-      activityMarker.getElement().addEventListener('click', () => {
+    const { longitude, latitude } = activity.location ?? {};
+    if (longitude && latitude && this.mapDisplay.activities) {
+      const marker = this._createMarker(longitude, latitude, 'red', () => {
         this.popupComponent.activity = activity;
         this.popupComponent.isSavedActivity$ = this._activityFacadeService.getIsSavedActivity(activity.id);
         this.popupComponent.association = null;
-        this.popup.setDOMContent(this.popupComponent.element);
-        this.popup.setLngLat([activity.location.longitude, activity.location.latitude]);
-        this.popup.addTo(this._map);
+        this._openPopup(longitude, latitude);
       });
 
-      this._activityMarkers.push(activityMarker);
+      this._activityMarkers.push(marker);
     }
   }
 
   addAssociationMarkers(activity: Activity): void {
-    if (activity.association?.localisation?.longitude && activity.association?.localisation?.latitude && this.mapDisplay.associations) {
-      const assocMarker = new maplibregl.Marker({ color: 'green' })
-        .setLngLat([activity.association.localisation.longitude, activity.association.localisation.latitude])
-        .addTo(this._map);
-
-      assocMarker.getElement().addEventListener('click', () => {
+    const localisation = activity.association?.localisation;
+    if (localisation?.longitude && localisation?.latitude && this.mapDisplay.associations) {
+      const marker = this._createMarker(localisation.longitude, localisation.latitude, 'green', () => {
         this.popupComponent.association = activity.association;
         this.popupComponent.setCountActivityOfAssociation(activity.association);
         this.popupComponent.activity = null;
-        this.popup.setDOMContent(this.popupComponent.element);
-        this.popup.setLngLat([activity.association.localisation.longitude, activity.association.localisation.latitude]);
-        this.popup.addTo(this._map);
+        this._openPopup(localisation.longitude, localisation.latitude);
       });
-      this._associationMarkers.push(assocMarker);
+
+      this._associationMarkers.push(marker);
     }
+  }
+
+  private _createMarker(lng: number, lat: number, color: string, onClick: () => void): maplibregl.Marker {
+    const marker: Marker = new maplibregl.Marker({ color });
+
+    marker.setLngLat([lng, lat]).addTo(this._map);
+    marker.getElement().addEventListener('click', onClick);
+
+    return marker;
+  }
+
+  private _openPopup(lng: number, lat: number): void {
+    this.popup.setDOMContent(this.popupComponent.element);
+    this.popup.setLngLat([lng, lat]);
+    this.popup.addTo(this._map);
   }
 }

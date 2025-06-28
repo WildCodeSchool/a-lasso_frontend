@@ -135,3 +135,9 @@ export type UserState = {
   isAuthenticated: boolean;
   error: string | null;
 };
+
+export type UserHeaderInfo = {
+  isConnected: boolean;
+  canPublishActivity: boolean;
+  userDisplayName: string;
+};

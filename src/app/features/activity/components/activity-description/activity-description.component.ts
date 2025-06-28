@@ -1,10 +1,9 @@
 import { AsyncPipe, DatePipe } from '@angular/common';
 import { Component, inject, Input, OnInit } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
-import { map, Observable, take, tap } from 'rxjs';
+import { Observable, take } from 'rxjs';
 import { TAKE_1 } from 'src/app/common/constants/observables.constants';
 import { ButtonStyleClass } from 'src/app/common/models/button';
-import { UserRole } from 'src/app/features/authentication/constants/auth.constants';
 import { AuthService } from 'src/app/features/authentication/services/auth.service';
 import { environment } from 'src/environments/environment.development';
 import { SingleButtonComponent } from '../../../../common/components/single-button/single-button.component';
@@ -23,17 +22,15 @@ export class ActivityDescriptionComponent implements OnInit {
   @Input() activity!: Activity;
 
   private _activityFacadeService: ActivityFacadeService = inject(ActivityFacadeService);
-  private _authService = inject(AuthService);
+  private _authService: AuthService = inject(AuthService);
 
   ButtonStyleClass = ButtonStyleClass;
-  public apiUrl = environment.apiUrl;
+  public apiUrl: string = environment.apiUrl;
   public isRegisteredActivity$: Observable<boolean>;
   public isSavedActivity$: Observable<boolean>;
   public voluntariesRegistered$: Observable<Participant>;
 
-  isVoluntary$: Observable<boolean> = this._authService
-    .getRolesUser()
-    .pipe(map((roles: UserRole[]) => roles.some(role => role === UserRole.VOLUNTARY)));
+  isVoluntary$: Observable<boolean> = this._authService.isVoluntaryUser();
 
   ngOnInit(): void {
     this.isRegisteredActivity$ = this._activityFacadeService.getIsRegisteredActivity(this.activity.id);
@@ -42,13 +39,8 @@ export class ActivityDescriptionComponent implements OnInit {
   }
 
   toggleRegister(activity: Activity): void {
-    this.isRegisteredActivity$
-      .pipe(
-        tap((isRegistered: boolean) => {
-          this._activityFacadeService.toggleRegister(activity.id, !isRegistered);
-        }),
-        take(TAKE_1)
-      )
-      .subscribe();
+    this.isRegisteredActivity$.pipe(take(TAKE_1)).subscribe(isRegistered => {
+      this._activityFacadeService.toggleRegister(activity.id, !isRegistered);
+    });
   }
 }

@@ -2,18 +2,18 @@ import { AsyncPipe } from '@angular/common';
 import { Component, inject, Input, OnInit } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
-import { map, Observable, take, tap } from 'rxjs';
+import { Observable, take } from 'rxjs';
 import { TAKE_1 } from 'src/app/common/constants/observables.constants';
-import { UserRole } from 'src/app/features/authentication/constants/auth.constants';
 import { AuthService } from 'src/app/features/authentication/services/auth.service';
 import { environment } from 'src/environments/environment.development';
 import { ReportModalComponent } from '../../../report/components/report-modal/report-modal.component';
 import { Association } from '../../models/association.model';
 import { AssociationFacadeService } from '../../services/association-facade.service';
+import { DateFrPipe } from '../../../../common/pipes/DateFr.pipe';
 
 @Component({
   selector: 'app-association-card',
-  imports: [CardModule, ButtonModule, AsyncPipe, ReportModalComponent],
+  imports: [CardModule, ButtonModule, AsyncPipe, ReportModalComponent, DateFrPipe],
   templateUrl: './association-card.component.html',
   styleUrl: './association-card.component.scss',
 })
@@ -26,42 +26,19 @@ export class AssociationCardComponent implements OnInit {
   public apiUrl: string = environment.apiUrl;
   public isShowReportModal: boolean = false;
 
-  isVoluntary$: Observable<boolean> = this._authService
-    .getRolesUser()
-    .pipe(map((roles: UserRole[]) => roles.some(role => role === UserRole.VOLUNTARY)));
+  isVoluntary$: Observable<boolean> = this._authService.isVoluntaryUser();
 
   ngOnInit(): void {
     this.isFollowAssociation$ = this._associationFacadeService.getIsFollowAssociation(this.association.id);
   }
 
   toggleFollow(): void {
-    this.isFollowAssociation$
-      .pipe(
-        tap((isFollow: boolean) => {
-          this._associationFacadeService.toggleFollow(this.association.id, !isFollow);
-        }),
-        take(TAKE_1)
-      )
-      .subscribe();
+    this.isFollowAssociation$.pipe(take(TAKE_1)).subscribe((isFollow: boolean) => {
+      this._associationFacadeService.toggleFollow(this.association.id, !isFollow);
+    });
   }
 
   showReportModal(): void {
     this.isShowReportModal = !this.isShowReportModal;
-  }
-
-  toLocalDateString(date: string | Date | null | undefined): string {
-    if (!date) return '';
-    if (typeof date === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(date)) {
-      const [year, month, day] = date.split('-');
-      return `${day}/${month}/${year}`;
-    }
-    if (date instanceof Date) {
-      return date.toLocaleDateString('fr-FR');
-    }
-    try {
-      return new Date(date).toLocaleDateString('fr-FR');
-    } catch {
-      return '';
-    }
   }
 }

@@ -6,7 +6,8 @@ import { Observable, take } from 'rxjs';
 import { TAKE_1 } from 'src/app/common/constants/observables.constants';
 import { Statistic } from 'src/app/features/association/models/association.model';
 import { AuthFacade } from 'src/app/features/authentication/services/auth-facade.service';
-import { ProfileFacadeService } from '../../services/profile-facade.service';
+import { AssociationProfileFacadeService } from '../../services/association-profile-facade.service';
+import { showSuccessToast } from 'src/app/common/utils/toast.utils';
 
 @Component({
   selector: 'app-association-stats',
@@ -17,7 +18,7 @@ import { ProfileFacadeService } from '../../services/profile-facade.service';
 })
 export class AssociationStatsComponent implements OnInit {
   private _authFacade = inject(AuthFacade);
-  private _profileFacade = inject(ProfileFacadeService);
+  private _profileFacade = inject(AssociationProfileFacadeService);
   private _toast: MessageService = inject(MessageService);
 
   @Output() cardsCountChanged = new EventEmitter<number>();
@@ -27,9 +28,7 @@ export class AssociationStatsComponent implements OnInit {
   newCard: Partial<Statistic> = {};
 
   ngOnInit(): void {
-    this.stats$.pipe(take(TAKE_1)).subscribe(cards => {
-      this.cardsCountChanged.emit(cards.length);
-    });
+    this._initAssociationStats();
   }
 
   addCard(currentCards: Statistic[]): void {
@@ -45,41 +44,26 @@ export class AssociationStatsComponent implements OnInit {
       },
     ];
 
-    this._profileFacade.updateStats(updatedCards).subscribe({
-      next: () => {
-        this.cardsCountChanged.emit(updatedCards.length);
-        this.newCard = {};
-        this._toast.add({
-          severity: 'success',
-          summary: 'Les informations ont été mises à jour !',
-        });
-      },
-      error: () => {
-        this._toast.add({
-          severity: 'error',
-          summary: 'Erreur lors de la mise à jour !',
-        });
-      },
-    });
+    this._updateStats(updatedCards);
   }
 
   removeCard(currentCards: Statistic[], index: number): void {
-    const updatedCards = [...currentCards];
-    updatedCards.splice(index, 1);
+    const updatedCards = currentCards.filter((_, i) => i !== index);
+    this._updateStats(updatedCards);
+  }
 
-    this._profileFacade.updateStats(updatedCards).subscribe({
+  private _initAssociationStats(): void {
+    this.stats$.pipe(take(TAKE_1)).subscribe(cards => {
+      this.cardsCountChanged.emit(cards.length);
+    });
+  }
+
+  private _updateStats(updatedCards: Statistic[]): void {
+    this._profileFacade.updateCurrentAssociationStats(updatedCards).subscribe({
       next: () => {
         this.cardsCountChanged.emit(updatedCards.length);
-        this._toast.add({
-          severity: 'success',
-          summary: 'Les informations ont été mises à jour !',
-        });
-      },
-      error: () => {
-        this._toast.add({
-          severity: 'error',
-          summary: 'Erreur lors de la mise à jour !',
-        });
+        this.newCard = {};
+        showSuccessToast(this._toast);
       },
     });
   }

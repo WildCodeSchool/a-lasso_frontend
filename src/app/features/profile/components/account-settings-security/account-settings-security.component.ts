@@ -4,19 +4,20 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ToastModule } from 'primeng/toast';
 import { Observable } from 'rxjs';
-import { SingleButtonComponent } from 'src/app/common/components/single-button/single-button.component';
-import { ButtonStyleClass } from 'src/app/common/models/button';
-import { AssociationLogin, VoluntaryLogin } from 'src/app/features/authentication/models/user.model';
-import { AuthFacade } from 'src/app/features/authentication/services/auth-facade.service';
+import { SingleButtonComponent } from '../../../../common/components/single-button/single-button.component';
+import { ButtonStyleClass } from '../../../../common/models/button';
+import { AssociationLogin, VoluntaryLogin } from '../../../authentication/models/user.model';
+import { AuthFacade } from '../../../authentication/services/auth-facade.service';
 import { PasswordChangeDialogComponent } from '../password-change-dialog/password-change-dialog.component';
+import { showSuccessToast } from 'src/app/common/utils/toast.utils';
 
 @Component({
-  selector: 'app-security',
+  selector: 'app-account-settings-security',
   imports: [DatePipe, CommonModule, AsyncPipe, SingleButtonComponent, PasswordChangeDialogComponent, ConfirmDialogModule, ToastModule],
-  templateUrl: './security.component.html',
-  styleUrl: './security.component.scss',
+  templateUrl: './account-settings-security.component.html',
+  styleUrl: './account-settings-security.component.scss',
 })
-export class SecurityComponent {
+export class AccountSettingsSecurityComponent {
   private _authFacade = inject(AuthFacade);
   private _confirmation = inject(ConfirmationService);
   private _toast = inject(MessageService);
@@ -42,11 +43,8 @@ export class SecurityComponent {
       accept: () => {
         this._authFacade.deleteAccount().subscribe({
           next: () => {
-            this._toast.add({ severity: 'success', summary: 'Compte supprimé' });
+            showSuccessToast(this._toast);
             this._authFacade.logout();
-          },
-          error: () => {
-            this._toast.add({ severity: 'error', summary: 'Erreur', detail: 'Échec de la suppression du compte' });
           },
         });
       },
