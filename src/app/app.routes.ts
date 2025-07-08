@@ -54,7 +54,10 @@ export const routes: Routes = [
       },
       {
         path: 'security',
-        loadComponent: () => import('./features/profile/components/security/security.component').then(m => m.SecurityComponent),
+        loadComponent: () =>
+          import('./features/profile/components/account-settings-security/account-settings-security.component').then(
+            m => m.AccountSettingsSecurityComponent
+          ),
       },
       {
         path: 'settings',

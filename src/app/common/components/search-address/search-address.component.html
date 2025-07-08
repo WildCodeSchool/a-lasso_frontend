@@ -4,7 +4,7 @@
       <div class="field-group">
         <p-autoComplete
           [formControlName]="fieldConfig.name"
-          [suggestions]="searchAdressResults"
+          [suggestions]="searchAddressResults$ | async"
           field="display_name"
           placeholder="Entrez une adresse"
           [minLength]="3"

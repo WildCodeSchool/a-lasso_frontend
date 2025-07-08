@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, of, switchMap } from 'rxjs';
+import { BehaviorSubject, map, Observable, of, switchMap } from 'rxjs';
 import { environment } from 'src/environments/environment.development';
 import { AssociationRegister, UserLogin, VoluntaryRegister } from '../models/user.model';
 import { jwtDecode } from 'jwt-decode';
@@ -95,6 +95,12 @@ export class AuthService {
     return this._authState$.value;
   }
 
+  public resetUser(): void {
+    this.clearToken();
+    this.clearUserState();
+    this.updateAuthState();
+  }
+
   public getRolesUser(): Observable<UserRole[]> {
     return this._authState$.pipe(
       switchMap((bo: boolean) => {
@@ -108,6 +114,18 @@ export class AuthService {
         return of(roles);
       })
     );
+  }
+
+  public isAdminUser(): Observable<boolean> {
+    return this.getRolesUser().pipe(map((roles: UserRole[]) => roles.some(role => role === UserRole.ADMIN)));
+  }
+
+  public isAssociationUser(): Observable<boolean> {
+    return this.getRolesUser().pipe(map((roles: UserRole[]) => roles.some(role => role === UserRole.ASSOCIATION)));
+  }
+
+  public isVoluntaryUser(): Observable<boolean> {
+    return this.getRolesUser().pipe(map((roles: UserRole[]) => roles.some(role => role === UserRole.VOLUNTARY)));
   }
 
   private _checkTokenValidOnInit(): boolean {

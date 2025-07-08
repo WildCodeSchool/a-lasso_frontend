@@ -26,7 +26,7 @@
     <h2 id="association-name">{{ association.name }}</h2>
   </ng-template>
   <ng-template #subtitle>
-    <h3>Fondée le {{ toLocalDateString(association.foundationDate) }} par {{ association.founder }}</h3>
+    <h3>Fondée le {{ association.foundationDate | dateFr }} par {{ association.founder }}</h3>
   </ng-template>
   <p>
     {{ association.description }}

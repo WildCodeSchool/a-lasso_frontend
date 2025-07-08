@@ -29,9 +29,7 @@ export class AssociationDetailsComponent implements OnInit {
   screenWidth: number = window.innerWidth;
 
   ngOnInit(): void {
-    const associationId = this._route.snapshot.paramMap.get('id');
-    this.association = this._route.snapshot.data['association'];
-    this.activities$ = this.activities$.pipe(map(activities => activities.filter(activity => activity.association.id === associationId)));
+    this._initializeAssociationData();
   }
 
   @HostListener('window:resize', ['$event'])
@@ -39,6 +37,10 @@ export class AssociationDetailsComponent implements OnInit {
     const target = event.target as Window;
     this._updateNavigationItems(target.innerWidth);
     this.screenWidth = target.innerWidth;
+  }
+
+  handleNavigation(title: string): void {
+    this.chosenNavigation = title;
   }
 
   private _updateNavigationItems(width: number): void {
@@ -50,7 +52,9 @@ export class AssociationDetailsComponent implements OnInit {
     }
   }
 
-  handleNavigation(title: string): void {
-    this.chosenNavigation = title;
+  private _initializeAssociationData(): void {
+    const associationId = this._route.snapshot.paramMap.get('id');
+    this.association = this._route.snapshot.data['association'];
+    this.activities$ = this.activities$.pipe(map(activities => activities.filter(activity => activity.association.id === associationId)));
   }
 }

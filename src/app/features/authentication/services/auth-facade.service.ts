@@ -1,16 +1,16 @@
 import { Injectable, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { Observable, take } from 'rxjs';
+import { combineLatest, map, Observable, take } from 'rxjs';
 import { TAKE_1 } from 'src/app/common/constants/observables.constants';
 import { UUIDTypes } from 'uuid';
 import { ActivityFacadeService } from '../../activity/services/activity-facade.service';
 import * as ActivitiesActions from '../../activity/store/activities.actions';
 import { selectActivities } from '../../activity/store/activities.selector';
 import { Statistic } from '../../association/models/association.model';
-import { ACTIVITY_LENGTH } from '../constants/auth.constants';
+import { ACTIVITY_LENGTH, UserRole } from '../constants/auth.constants';
 import { ApiResponseLogin } from '../models/api-response.model';
-import { AssociationLogin, UserLogin, UserType, VoluntaryLogin } from '../models/user.model';
+import { AssociationLogin, UserHeaderInfo, UserLogin, UserType, VoluntaryLogin } from '../models/user.model';
 import * as UserActions from '../store/user.actions';
 import * as UserSelectors from '../store/user.selectors';
 import { AuthService } from './auth.service';
@@ -28,6 +28,13 @@ export class AuthFacade {
   readonly isAuthenticated$: Observable<boolean> = this._store.select(UserSelectors.selectIsAuthenticated);
   readonly error$: Observable<string> = this._store.select(UserSelectors.selectLoginError);
   readonly associationStats$: Observable<Statistic[]> = this._store.select(UserSelectors.selectAssociationStats);
+  readonly userAvatar$: Observable<string | null> = this.user$.pipe(
+    map(user => {
+      if (!user) return null;
+      return user.type === UserType.Voluntary ? user.avatar.image : user.associationLogoImage.image;
+    })
+  );
+
   associationId$: Observable<UUIDTypes> = this._store.select(UserSelectors.selectConnectedAssociationId);
 
   login(credentials: UserLogin): void {
@@ -53,6 +60,27 @@ export class AuthFacade {
 
   deleteAccount(): Observable<void> {
     return this._authService.deleteAccount();
+  }
+
+  getUserHeaderInfo(): Observable<UserHeaderInfo> {
+    return combineLatest([this._authService.getRolesUser(), this.user$]).pipe(
+      map(([roles, user]) => {
+        const isConnected: boolean = roles.length > 0;
+        const isAssociation: boolean = roles.includes(UserRole.ASSOCIATION);
+        const canPublishActivity: boolean = isAssociation && this._router.url !== '/activity/creation';
+
+        let userDisplayName: string = '';
+        if (user) {
+          userDisplayName = user.type === UserType.Voluntary ? `${user.first_name} ${user.last_name}` : user.name;
+        }
+
+        return {
+          isConnected,
+          canPublishActivity,
+          userDisplayName,
+        };
+      })
+    );
   }
 
   private _resetSession(): void {

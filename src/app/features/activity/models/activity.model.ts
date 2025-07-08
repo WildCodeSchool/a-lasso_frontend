@@ -1,4 +1,5 @@
 import { UUIDTypes } from 'uuid';
+import { NavigationItems } from '../../../common/models/toggle-menu';
 
 export enum ThemeName {
   Social = 'Social',
@@ -54,4 +55,10 @@ export type ActivitySearchFilters = {
   search: string;
   date: string;
   location: string;
+};
+
+export type ActivityDetailsNavigation = {
+  tabs: NavigationItems[];
+  chosen: string;
+  activeTabIndex: number;
 };

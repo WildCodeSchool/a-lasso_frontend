@@ -17,9 +17,10 @@ import { TextareaFieldComponent } from '../../../../common/components/textarea-f
 import { AssociationProfileService } from '../../services/association-profil.service';
 import { AssociationStatsComponent } from '../association-stats/association-stats.component';
 import { customDateValidator } from '../utils/custom-validator.utils';
-import { ProfileFacadeService } from '../../services/profile-facade.service';
+import { AssociationProfileFacadeService } from '../../services/association-profile-facade.service';
 import { UserType } from 'src/app/features/authentication/models/user.model';
 import { toApiLocalDateString } from '../utils/date.utils';
+import { showSuccessToast } from 'src/app/common/utils/toast.utils';
 
 @Component({
   selector: 'app-association-about',
@@ -29,14 +30,14 @@ import { toApiLocalDateString } from '../utils/date.utils';
   styleUrl: './association-about.component.scss',
 })
 export class AssociationAboutComponent implements OnInit {
-  private _fb = inject(FormBuilder);
-  private _associationFacade = inject(AssociationFacadeService);
-  private _profileFacade = inject(ProfileFacadeService);
-  private _profileService = inject(AssociationProfileService);
-  private _toast = inject(MessageService);
-  private _cdr = inject(ChangeDetectorRef);
+  private _fb: FormBuilder = inject(FormBuilder);
+  private _associationFacade: AssociationFacadeService = inject(AssociationFacadeService);
+  private _profileFacade: AssociationProfileFacadeService = inject(AssociationProfileFacadeService);
+  private _profileService: AssociationProfileService = inject(AssociationProfileService);
+  private _toast: MessageService = inject(MessageService);
+  private _cdr: ChangeDetectorRef = inject(ChangeDetectorRef);
 
-  cardsCount = INITIAL_CARDS_COUNT;
+  cardsCount: number = INITIAL_CARDS_COUNT;
   associationId: UUIDTypes | null = null;
 
   customFieldConfigs = [
@@ -64,22 +65,8 @@ export class AssociationAboutComponent implements OnInit {
   });
 
   ngOnInit(): void {
-    this._associationFacade.associationId$.pipe(take(TAKE_1)).subscribe(id => {
-      this.associationId = id;
-    });
-
-    this._profileFacade.userInfos$.pipe(take(TAKE_1)).subscribe(user => {
-      if (user?.type === UserType.Association) {
-        this.generalInfoForm.patchValue({
-          foundationDate: this._formatDateForCalendar(user.foundationDate),
-          founder: user.founder ?? '',
-        });
-
-        this.descriptionForm.patchValue({
-          description: user.description ?? '',
-        });
-      }
-    });
+    this._loadAssociationId();
+    this._populateFormsFromUserInfos();
   }
 
   onGeneralInfoSave(): void {
@@ -97,11 +84,8 @@ export class AssociationAboutComponent implements OnInit {
 
       this._profileService.updateGeneralInfo(this.associationId, payload).subscribe({
         next: () => {
-          this._toast.add({ severity: 'success', summary: 'Mise à jour des informations effectuée' });
+          showSuccessToast(this._toast);
           this._profileFacade.updateGeneralInfo(payload.foundationDate, payload.founder);
-        },
-        error: () => {
-          this._toast.add({ severity: 'error', summary: 'Erreur', detail: 'Échec de la mise à jour des informations' });
         },
       });
     }
@@ -111,11 +95,8 @@ export class AssociationAboutComponent implements OnInit {
     if (this.descriptionForm.valid && this.associationId) {
       this._profileService.updateDescription(this.associationId, this.descriptionForm.value.description).subscribe({
         next: () => {
-          this._toast.add({ severity: 'success', summary: 'Description mise à jour' });
+          showSuccessToast(this._toast);
           this._profileFacade.updateDescription(this.descriptionForm.value.description);
-        },
-        error: () => {
-          this._toast.add({ severity: 'error', summary: 'Erreur', detail: 'Échec de la mise à jour de la description' });
         },
       });
     }
@@ -124,6 +105,27 @@ export class AssociationAboutComponent implements OnInit {
   onCardsCountChanged(count: number): void {
     this.cardsCount = count;
     this._cdr.detectChanges();
+  }
+
+  private _loadAssociationId(): void {
+    this._associationFacade.associationId$.pipe(take(TAKE_1)).subscribe(id => {
+      this.associationId = id;
+    });
+  }
+
+  private _populateFormsFromUserInfos(): void {
+    this._profileFacade.userInfos$.pipe(take(TAKE_1)).subscribe(user => {
+      if (user?.type === UserType.Association) {
+        this.generalInfoForm.patchValue({
+          foundationDate: this._formatDateForCalendar(user.foundationDate),
+          founder: user.founder ?? '',
+        });
+
+        this.descriptionForm.patchValue({
+          description: user.description ?? '',
+        });
+      }
+    });
   }
 
   private _formatDateForCalendar(date: string | Date | null | undefined): Date | null {

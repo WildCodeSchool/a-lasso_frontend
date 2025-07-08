@@ -60,3 +60,16 @@ export type ReporterCountByYear = {
   year: number;
   uniqueReporters: number;
 };
+
+export type ReportStatsAnalysis = {
+  yearsOfStats: number[];
+  yearOptions: { label: number; value: number }[];
+  selectedYear: number;
+  countReportsUserByYear: ReportCountByYear[];
+  countReporterUserByYear: ReporterCountByYear[];
+};
+
+export type ReportsByUsers = {
+  assocReports: Report[];
+  volReports: Report[];
+};

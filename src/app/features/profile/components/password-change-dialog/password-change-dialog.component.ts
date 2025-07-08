@@ -5,12 +5,11 @@ import { MessageService as Toast } from 'primeng/api';
 import { AvatarModule } from 'primeng/avatar';
 import { ButtonModule } from 'primeng/button';
 import { Dialog } from 'primeng/dialog';
-import { map, Observable } from 'rxjs';
 import { InputFieldErrorComponent } from 'src/app/common/components/input-field-error/input-field-error.component';
 import { InputFieldComponent } from 'src/app/common/components/input-field/input-field.component';
+import { showSuccessToast } from 'src/app/common/utils/toast.utils';
 import { PASSWORD_REGEX } from 'src/app/features/authentication/constants/form.constants';
 import { FormField } from 'src/app/features/authentication/models/form.model';
-import { UserType } from 'src/app/features/authentication/models/user.model';
 import { AuthFacade } from 'src/app/features/authentication/services/auth-facade.service';
 import { passwordsMatchValidator } from 'src/app/features/authentication/utils/form.validators';
 import { environment } from 'src/environments/environment';
@@ -31,15 +30,7 @@ export class PasswordChangeDialogComponent {
   @Input() visible = false;
 
   user$ = this._auth.user$;
-  userAvatar$: Observable<string | null> = this.user$.pipe(
-    map(user => {
-      if (!user) return null;
-      if (user.type === UserType.Voluntary) {
-        return user.avatar.image;
-      }
-      return user.associationLogoImage.image;
-    })
-  );
+  userAvatar$ = this._auth.userAvatar$;
 
   apiUrl: string = environment.apiUrl;
   passwordForm: FormGroup = this._fb.group(
@@ -70,19 +61,8 @@ export class PasswordChangeDialogComponent {
 
       this._auth.changePassword(oldPassword, password).subscribe({
         next: () => {
-          this._toast.add({
-            severity: 'success',
-            summary: 'Succès',
-            detail: 'Votre mot de passe a été modifié avec succès.',
-          });
+          showSuccessToast(this._toast);
           this.hide();
-        },
-        error: () => {
-          this._toast.add({
-            severity: 'error',
-            summary: 'Erreur',
-            detail: 'Une erreur est survenue lors de la modification de votre mot de passe. Veuillez réessayer.',
-          });
         },
       });
     }

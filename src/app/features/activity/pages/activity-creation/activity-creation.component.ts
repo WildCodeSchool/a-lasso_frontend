@@ -106,9 +106,19 @@ export class ActivityCreationComponent implements OnInit {
       return;
     }
 
+    const data: NewActivityCreation = this._mapFormToActivityData();
+
+    this._activityFacadeService.publishNewActivity(data).subscribe({
+      next: () => {
+        this._router.navigate(['/profile/association/activities']);
+      },
+    });
+  }
+
+  private _mapFormToActivityData(): NewActivityCreation {
     const formValue = this.activityForm.value;
 
-    const data: NewActivityCreation = {
+    return {
       images: [formValue.photo_1, formValue.photo_2, formValue.photo_3]
         .filter(img => img.id || img.image)
         .map(img => ({
@@ -122,11 +132,5 @@ export class ActivityCreationComponent implements OnInit {
       themes: formValue.selectedThemesName,
       description: formValue.description,
     };
-
-    this._activityFacadeService.publishNewActivity(data).subscribe({
-      next: () => {
-        this._router.navigate(['/profile/association/activities']);
-      },
-    });
   }
 }

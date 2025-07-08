@@ -1,14 +1,13 @@
 import { animate, style, transition, trigger } from '@angular/animations';
 import { CommonModule } from '@angular/common';
 import { Component, ElementRef, HostListener, inject } from '@angular/core';
+import { Router } from '@angular/router';
 import { map, Observable } from 'rxjs';
 import { AuthFacade } from 'src/app/features/authentication/services/auth-facade.service';
 import { environment } from 'src/environments/environment.development';
-import { UserType } from 'src/app/features/authentication/models/user.model';
 import { BadgeComponent } from '../badge/badge.component';
 import { HeaderMenuMessagesComponent } from '../header-menu-messages/header-menu-messages.component';
 import { HeaderMenuReportsComponent } from '../header-menu-reports/header-menu-reports.component';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-header-menu',
@@ -35,16 +34,7 @@ export class HeaderMenuComponent {
   apiUrl: string = environment.apiUrl;
 
   user$ = this._authFacade.user$;
-
-  userAvatar$: Observable<string | null> = this.user$.pipe(
-    map(user => {
-      if (!user) return null;
-      if (user.type === UserType.Voluntary) {
-        return user.avatar.image;
-      }
-      return user.associationLogoImage.image;
-    })
-  );
+  userAvatar$ = this._authFacade.userAvatar$;
 
   countGlobalNotifications$: Observable<number | null> = this.user$.pipe(
     map(user => {

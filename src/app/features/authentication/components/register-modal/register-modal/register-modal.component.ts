@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, DestroyRef, EventEmitter, inject, Input, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, inject, Input, Output, ViewChild } from '@angular/core';
 import { FormGroup, FormsModule } from '@angular/forms';
 import { DialogModule } from 'primeng/dialog';
 import { Select } from 'primeng/select';
@@ -8,8 +8,8 @@ import { AuthService } from '../../../services/auth.service';
 import { RegisterAssociationFormComponent } from '../register-association-form/register-association-form.component';
 import { RegisterVoluntaryFormComponent } from '../register-voluntary-form/register-voluntary-form.component';
 import { DATE_PAD_LENGTH, MONTH_OFFSET } from '../../../constants/form.constants';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { getFormattedAddress } from 'src/app/common/utils/address.utils';
+import { DestroyableComponent } from '../../../../../common/utils/DestroyableComponent';
 
 @Component({
   selector: 'app-register-modal',
@@ -18,9 +18,8 @@ import { getFormattedAddress } from 'src/app/common/utils/address.utils';
   templateUrl: './register-modal.component.html',
   styleUrls: ['./register-modal.component.scss'],
 })
-export class RegisterModalComponent {
+export class RegisterModalComponent extends DestroyableComponent {
   private _authService = inject(AuthService);
-  private _destroyRef = inject(DestroyRef);
   @Output() visibleChange = new EventEmitter<boolean>();
   @Input() visible = false;
   @ViewChild(RegisterVoluntaryFormComponent) voluntaryFormComponent!: RegisterVoluntaryFormComponent;
@@ -58,7 +57,7 @@ export class RegisterModalComponent {
 
     this._authService
       .registerVoluntary(data)
-      .pipe(takeUntilDestroyed(this._destroyRef))
+      .pipe(this.untilDestroyed())
       .subscribe((success: boolean) => {
         if (success) this.hideModal();
       });
@@ -77,7 +76,7 @@ export class RegisterModalComponent {
 
     this._authService
       .registerAssociation(data)
-      .pipe(takeUntilDestroyed(this._destroyRef))
+      .pipe(this.untilDestroyed())
       .subscribe((success: boolean) => {
         if (success) this.hideModal();
       });
