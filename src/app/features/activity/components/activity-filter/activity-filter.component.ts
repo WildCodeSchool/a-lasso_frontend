@@ -1,11 +1,13 @@
-import { Component, EventEmitter, inject, OnInit, Output } from '@angular/core';
-import { ActivityFacadeService } from '../../services/activity-facade.service';
-import { Observable } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
+import { Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
+import { FormGroup } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
-import { Theme, ThemeName } from '../../models/activity.model';
+import { Observable } from 'rxjs';
+import { ButtonClicked } from 'src/app/common/models/button';
 import { SingleButtonComponent } from '../../../../common/components/single-button/single-button.component';
-import { ButtonClicked } from 'src/app/common/models/buttonClicked';
+import { Theme, ThemeName } from '../../models/activity.model';
+import { ActivityFacadeService } from '../../services/activity-facade.service';
+import { ButtonStyleClass } from 'src/app/common/models/button';
 
 @Component({
   selector: 'app-activity-filter',
@@ -15,10 +17,12 @@ import { ButtonClicked } from 'src/app/common/models/buttonClicked';
 })
 export class ActivityFilterComponent implements OnInit {
   private _activityFacadeService: ActivityFacadeService = inject(ActivityFacadeService);
-
   @Output() selectedThemes: EventEmitter<ThemeName[]> = new EventEmitter<ThemeName[]>();
+  @Input() formGroup?: FormGroup;
+  @Input() formThemeField?: string;
   themes$!: Observable<Theme[]>;
   selected: ThemeName[] = [];
+  ButtonStyleClass = ButtonStyleClass;
 
   ngOnInit(): void {
     this.themes$ = this._activityFacadeService.getActivityThemesFromApi();
@@ -26,11 +30,18 @@ export class ActivityFilterComponent implements OnInit {
 
   updateSelectedThemes(theme: ButtonClicked): void {
     const index: number = this.selected.findIndex(t => t === theme.label);
+
     if (index > -1) {
       this.selected.splice(index, 1);
     } else {
       this.selected.push(theme.label as ThemeName);
     }
+
     this.selectedThemes.emit([...this.selected]);
+    if (this.formGroup && this.formThemeField) {
+      const selectedThemesForm = this.formGroup.get(this.formThemeField);
+      selectedThemesForm.setValue(this.selected);
+      selectedThemesForm.markAsTouched();
+    }
   }
 }

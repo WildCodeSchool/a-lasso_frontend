@@ -1,0 +1,26 @@
+<div class="stats-wrapper">
+  <div class="stats-cards">
+    @if (stats$ | async; as cards) {
+      @if (cards.length < 3) {
+        <div class="stat-card add-card">
+          <div class="input">
+            <label for="valueInput">Valeur</label>
+            <input id="valueInput" type="number" [(ngModel)]="newCard.value" placeholder="Ex: 103" />
+          </div>
+          <div class="input">
+            <label for="labelInput">Thématique</label>
+            <input id="labelInput" type="text" [(ngModel)]="newCard.description" placeholder="Ex: bénévolat" />
+          </div>
+          <button class="add-btn" (click)="addCard(cards)" type="button">+</button>
+        </div>
+      }
+      @for (card of cards; track card.description; let i = $index) {
+        <div class="stat-card">
+          <button class="close-btn" (click)="removeCard(cards, i)" type="button">×</button>
+          <div class="value">{{ card.value | number }}</div>
+          <div class="label">{{ card.description }}</div>
+        </div>
+      }
+    }
+  </div>
+</div>

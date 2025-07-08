@@ -1,0 +1,45 @@
+.report-modal {
+  ::ng-deep .p-dialog {
+    width: 40rem;
+
+    h2 {
+      color: var(--secondary-error-color);
+    }
+
+    h3 {
+      color: var(--primary-light-color);
+    }
+
+    .report-container {
+      display: flex;
+      flex-direction: column;
+      padding: 0 5% 5% 5%;
+      gap: 2rem;
+
+      .report-type {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+
+        ::ng-deep .p-select {
+          width: 20rem;
+        }
+      }
+
+      .commentary-report {
+        display: flex;
+        flex-direction: column;
+
+        p {
+          align-self: end;
+        }
+      }
+    }
+
+    .actions-footer {
+      display: flex;
+      justify-content: end;
+      gap: 1rem;
+    }
+  }
+}

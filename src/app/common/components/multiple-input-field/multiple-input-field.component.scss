@@ -1,0 +1,190 @@
+.input-wrapper {
+  display: flex;
+  position: relative;
+  z-index: 1100;
+  margin-bottom: 15px;
+  .search-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: var(--background-color-white);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    padding: 5px;
+    width: 100%;
+
+    &.with-search {
+      border-radius: 8px 0 0 8px;
+    }
+
+    &.without-search {
+      border-radius: 8px;
+    }
+
+    .input-container {
+      width: 100%;
+      position: relative;
+
+      .input-error-message {
+        position: absolute;
+        bottom: -40px;
+        left: 50%;
+        transform: translateX(-50%);
+        color: var(--error-color);
+        font-size: 12px;
+        white-space: nowrap;
+        text-align: center;
+        width: max-content;
+        pointer-events: none;
+      }
+
+      .field-group {
+        background: var(--background-color-white);
+        z-index: 1;
+      }
+
+      .custom-iftalabel {
+        width: 100%;
+
+        input {
+          width: 100%;
+          border: none;
+          font-size: 14px;
+          padding: 25px 10px 5px 10px;
+          box-shadow: none;
+
+          &:focus {
+            outline: none;
+            box-shadow: none;
+            z-index: 0;
+          }
+
+          &::placeholder {
+            color: var(--font-color-grey);
+            font-size: 14px;
+          }
+        }
+
+        label {
+          position: absolute;
+          top: 6px;
+          left: 10px;
+          font-size: 14px;
+          color: var(--font-color);
+          pointer-events: none;
+          transition: color 0.2s ease;
+        }
+
+        input:focus + label {
+          color: var(--primary-light-color);
+          transition: color 0.2s ease;
+        }
+
+        .clear-btn {
+          position: absolute;
+          top: 72.5%;
+          right: 15px;
+          transform: translateY(-50%);
+          background: transparent;
+          border: none;
+          color: var(--font-color);
+          cursor: pointer;
+          padding: 0;
+          font-size: 16px;
+
+          &:hover {
+            color: var(--primary-light-color);
+          }
+        }
+
+        ::ng-deep .custom-calendar-input {
+          border: none !important;
+          box-shadow: none !important;
+          background: transparent;
+
+          &:focus {
+            outline: none !important;
+            box-shadow: none !important;
+          }
+
+          &::placeholder {
+            color: var(--font-color-grey);
+            font-size: 14px;
+          }
+        }
+      }
+    }
+
+    .separator {
+      position: absolute;
+      right: 0;
+      top: 8px;
+      height: 30px;
+      width: 1px;
+      background-color: var(--background-color-grey);
+    }
+
+    .calendar-wrapper {
+      width: 100%;
+      position: relative;
+
+      ::ng-deep .p-inputwrapper {
+        width: 100%;
+        position: relative;
+        padding-right: 30px;
+      }
+      ::ng-deep .p-inputtext {
+        width: 100%;
+        font-size: 14px;
+        padding: 25px 10px 5px 10px;
+        box-shadow: none;
+      }
+    }
+
+    label {
+      position: absolute;
+      top: 6px;
+      left: 10px;
+      font-size: 14px;
+      color: var(--font-color);
+      pointer-events: none;
+      transition: color 0.2s ease;
+    }
+
+    &.focused label {
+      color: var(--primary-light-color);
+    }
+
+    ::ng-deep .p-datepicker-dropdown {
+      display: none;
+    }
+
+    ::ng-deep .p-datepicker-panel {
+      z-index: 1000;
+    }
+  }
+}
+
+.search-button,
+.save-button {
+  background-color: var(--primary-light-color);
+  color: var(--font-color-light);
+  padding: 19.1px 25px;
+  border: none;
+  cursor: pointer;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+  box-shadow: var(--box-shadow);
+
+  i {
+    font-size: 18px;
+  }
+
+  &:hover {
+    background-color: var(--primary-dark-color);
+  }
+}
+
+.save-button {
+  position: absolute;
+  right: 0;
+}

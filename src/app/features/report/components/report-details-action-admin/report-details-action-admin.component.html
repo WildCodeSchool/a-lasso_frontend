@@ -1,0 +1,46 @@
+<div class="action-admin">
+  <div class="actions-reporter-reported">
+    <div class="actions-reporter">
+      <p>Plaignant</p>
+      <div class="buttons">
+        <p-button>
+          <i class="fa-regular fa-paper-plane"></i>
+          Contacter
+        </p-button>
+        <p-button severity="warn">
+          <i class="fa-solid fa-user-xmark"></i>
+          Bannir
+        </p-button>
+      </div>
+    </div>
+    <div class="actions-reported">
+      <p>Mis en cause</p>
+      <div class="buttons">
+        <p-button>
+          <i class="fa-regular fa-paper-plane"></i>
+          Contacter
+        </p-button>
+        <p-button severity="warn">
+          <i class="fa-solid fa-user-xmark"></i>
+          Bannir
+        </p-button>
+      </div>
+    </div>
+  </div>
+</div>
+@if (reportSelected.status === StatusReportEnum.InProgress) {
+  <div class="save-admin">
+    <p-button class="close-report" severity="success" type="submit" (click)="saveReport()">
+      <i class="fa-regular fa-floppy-disk"></i>
+      Sauvegarder
+    </p-button>
+    <p-button class="close-report" severity="success" type="submit" (click)="closeReport()">
+      <i class="fa-solid fa-check"></i>
+      Clôturer
+    </p-button>
+  </div>
+} @else {
+  <div class="save-admin">
+    <h2>Signalement Clos</h2>
+  </div>
+}

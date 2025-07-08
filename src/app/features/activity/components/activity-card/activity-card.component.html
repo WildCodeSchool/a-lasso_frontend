@@ -1,7 +1,18 @@
 <div class="card-wrapper">
   <p-card class="card p-slideinup" [routerLink]="['/activity', activity.id]">
+    @if (showDeleteButton) {
+      <button
+        class="delete-btn"
+        type="button"
+        (click)="onDeleteClick($event)"
+        pButton
+        [class.p-button-danger]="true"
+        aria-label="Supprimer l'activité">
+        <i class="pi pi-trash"></i>
+      </button>
+    }
     <ng-template #header>
-      <img class="w-full activity-image" [src]="apiUrl + activity.images[0]" [alt]="activity.title" />
+      <img class="w-full activity-image" [src]="activity.images[0].image" [alt]="activity.title" />
     </ng-template>
     <ng-template #title>
       <div class="header-description">
@@ -9,7 +20,7 @@
           {{ activity.title }}
         </h3>
         @if (activity) {
-          <app-inscription-badge [participants]="activity.participants"></app-inscription-badge>
+          <app-inscription-badge [participants]="voluntariesRegistered$ | async"></app-inscription-badge>
         }
       </div>
     </ng-template>
@@ -35,7 +46,9 @@
           </div>
         </div>
 
-        <app-favorite-heart [activityId]="activity.id" [isSaved]="activity.isSaved"></app-favorite-heart>
+        @if (isVoluntary$ | async) {
+          <app-favorite-heart [activityId]="activity.id" [isSaved]="isSavedActivity$ | async"></app-favorite-heart>
+        }
       </div>
     </ng-template>
   </p-card>

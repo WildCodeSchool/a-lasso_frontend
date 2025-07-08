@@ -1,27 +1,46 @@
-import { Component, inject, Input } from '@angular/core';
-import { Activity } from '../../models/activity.model';
-import { ActivityFacadeService } from '../../services/activity-facade.service';
-import { DatePipe } from '@angular/common';
-import { environment } from 'src/environments/environment.development';
-import { InscriptionBadgeComponent } from '../inscription-badge/inscription-badge.component';
-import { FavoriteHeartComponent } from '../favorite-heart/favorite-heart.component';
+import { AsyncPipe, DatePipe } from '@angular/common';
+import { Component, inject, Input, OnInit } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
+import { Observable, take } from 'rxjs';
+import { TAKE_1 } from 'src/app/common/constants/observables.constants';
+import { ButtonStyleClass } from 'src/app/common/models/button';
+import { AuthService } from 'src/app/features/authentication/services/auth.service';
+import { environment } from 'src/environments/environment.development';
 import { SingleButtonComponent } from '../../../../common/components/single-button/single-button.component';
+import { Activity, Participant } from '../../models/activity.model';
+import { ActivityFacadeService } from '../../services/activity-facade.service';
+import { FavoriteHeartComponent } from '../favorite-heart/favorite-heart.component';
+import { InscriptionBadgeComponent } from '../inscription-badge/inscription-badge.component';
 
 @Component({
   selector: 'app-activity-description',
-  imports: [InscriptionBadgeComponent, FavoriteHeartComponent, DatePipe, ButtonModule, SingleButtonComponent],
+  imports: [InscriptionBadgeComponent, FavoriteHeartComponent, DatePipe, ButtonModule, SingleButtonComponent, AsyncPipe],
   templateUrl: './activity-description.component.html',
   styleUrl: './activity-description.component.scss',
 })
-export class ActivityDescriptionComponent {
+export class ActivityDescriptionComponent implements OnInit {
   @Input() activity!: Activity;
 
   private _activityFacadeService: ActivityFacadeService = inject(ActivityFacadeService);
+  private _authService: AuthService = inject(AuthService);
 
-  public apiUrl = environment.apiUrl;
+  ButtonStyleClass = ButtonStyleClass;
+  public apiUrl: string = environment.apiUrl;
+  public isRegisteredActivity$: Observable<boolean>;
+  public isSavedActivity$: Observable<boolean>;
+  public voluntariesRegistered$: Observable<Participant>;
+
+  isVoluntary$: Observable<boolean> = this._authService.isVoluntaryUser();
+
+  ngOnInit(): void {
+    this.isRegisteredActivity$ = this._activityFacadeService.getIsRegisteredActivity(this.activity.id);
+    this.isSavedActivity$ = this._activityFacadeService.getIsSavedActivity(this.activity.id);
+    this.voluntariesRegistered$ = this._activityFacadeService.getVoluntariesRegisteredToAnActivity(this.activity.id);
+  }
 
   toggleRegister(activity: Activity): void {
-    this._activityFacadeService.toggleRegister(activity.id, activity.isRegistered);
+    this.isRegisteredActivity$.pipe(take(TAKE_1)).subscribe(isRegistered => {
+      this._activityFacadeService.toggleRegister(activity.id, !isRegistered);
+    });
   }
 }

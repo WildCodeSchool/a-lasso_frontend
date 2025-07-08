@@ -4,15 +4,18 @@ import { throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { MessageService as Toast } from 'primeng/api';
 import { AuthService } from '../../features/authentication/services/auth.service';
+import { Router } from '@angular/router';
 
 export const errorInterceptor: HttpInterceptorFn = (req, next) => {
   const authService: AuthService = inject(AuthService);
   const toast: Toast = inject(Toast);
+  const router: Router = inject(Router);
 
   return next(req).pipe(
     catchError((error: HttpErrorResponse) => {
-      const summary = 'Erreur';
+      let summary = 'Erreur';
       let detail = 'Une erreur est survenue. Veuillez réessayer.';
+      let severity = 'error';
 
       if (error.status >= HttpStatusCode.InternalServerError) {
         detail = 'Erreur interne du serveur. Veuillez réessayer plus tard.';
@@ -21,12 +24,25 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
       } else if (error.status === HttpStatusCode.BadRequest) {
         detail = 'Requête invalide.';
       } else if (error.status === HttpStatusCode.Unauthorized) {
-        detail = '🚨 Merci de vous connecter pour accéder à ce service';
-        authService.clearToken();
+        const message = error?.error?.message;
+        const isTokenExpired = message === 'Token expired';
+
+        if (isTokenExpired) {
+          summary = 'Session expirée';
+          detail = 'Merci de vous reconnecter.';
+          severity = 'warn';
+
+          authService.resetUser();
+          router.navigate(['/']);
+        } else {
+          summary = 'Authentification';
+          detail = message || 'Accès non autorisé.';
+          severity = 'error';
+        }
       }
 
       toast.add({
-        severity: 'error',
+        severity,
         summary,
         detail,
       });

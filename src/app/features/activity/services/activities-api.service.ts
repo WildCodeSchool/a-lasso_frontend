@@ -7,6 +7,8 @@ import { UUIDTypes } from 'uuid';
 import { Message } from '../models/message.model';
 import { MessageCreation } from '../models/messageCreation';
 import { APIResponseToggleRegister } from '../models/api-reponse.model';
+import { NewActivityCreation } from '../models/activity-creation.model';
+import { AddressApiResult } from '../../authentication/models/user.model';
 
 @Injectable({
   providedIn: 'root',
@@ -42,5 +44,27 @@ export class ActivitiesApiService {
 
   postActivityMessage(message: MessageCreation): Observable<Message> {
     return this._http.post<Message>(`${this._apiUrl}/messages`, message);
+  }
+
+  getAddressFromApi(query: string): Observable<AddressApiResult[]> {
+    const lang = navigator.language || 'fr';
+
+    return this._http.get<AddressApiResult[]>(`https://nominatim.openstreetmap.org/search`, {
+      params: {
+        q: query,
+        format: 'json',
+        addressdetails: '1',
+        limit: '10',
+        'accept-language': lang,
+      },
+    });
+  }
+
+  publishNewActivity(newActivity: NewActivityCreation): Observable<Activity> {
+    return this._http.post<Activity>(`${this._apiUrl}/activities/publish`, newActivity);
+  }
+
+  deleteActivity(activityId: UUIDTypes): Observable<void> {
+    return this._http.delete<void>(`${this._apiUrl}/activities/delete/${activityId}`);
   }
 }

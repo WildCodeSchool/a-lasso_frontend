@@ -1,3 +1,6 @@
+import { UUIDTypes } from 'uuid';
+import { NavigationItems } from '../../../common/models/toggle-menu';
+
 export enum ThemeName {
   Social = 'Social',
   Sport = 'Sport',
@@ -22,7 +25,6 @@ export type Localisation = {
 export type AssociationActivity = {
   id: string;
   name: string;
-  isFollow: boolean;
   logo: string;
   localisation: Localisation;
 };
@@ -32,16 +34,31 @@ export type Participant = {
   max: number;
 };
 
+export type Image = {
+  id?: UUIDTypes;
+  image: string;
+};
+
 export type Activity = {
   id: string;
   title: string;
   description: string;
-  images: string[];
+  images: Image[];
   association: AssociationActivity;
   location: Localisation;
   date: Date;
   participants: Participant;
   themesName: ThemeName[];
-  isSaved: boolean;
-  isRegistered: boolean;
+};
+
+export type ActivitySearchFilters = {
+  search: string;
+  date: string;
+  location: string;
+};
+
+export type ActivityDetailsNavigation = {
+  tabs: NavigationItems[];
+  chosen: string;
+  activeTabIndex: number;
 };

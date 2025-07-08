@@ -1,4 +1,5 @@
 import { AssociationLogin, VoluntaryLogin } from './user.model';
+import { TokenRole } from '../constants/auth.constants';
 
 export type ApiResponseLogin = {
   token: string;
@@ -9,5 +10,5 @@ export type JwtDecodedToken = {
   exp: number;
   iat?: number;
   sub?: string;
-  roles?: string[];
+  roles?: TokenRole[];
 };

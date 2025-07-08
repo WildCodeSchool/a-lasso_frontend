@@ -4,17 +4,34 @@
     <h1>a l'asso !</h1>
   </div>
 
-  @if (isAuthenticated$ | async) {
-    <div class="user-info">
-      <p class="user-name" @fadeInOut>Bonjour, {{ userDisplayName$ | async }} !</p>
-      <app-header-menu></app-header-menu>
-    </div>
-  } @else {
-    <div class="auth-buttons">
-      <button class="inscription-btn" type="button" (click)="openRegisterModal()">S'inscrire</button>
-      <button class="connexion-btn" type="button" (click)="openLoginModal()">Se connecter</button>
-    </div>
-  }
+  <div class="right-side-container">
+    @if (userInfos$ | async; as userInfo) {
+      @if (userInfo.isConnected) {
+        @if (userInfo.canPublishActivity && !isOnActivityCreationPage()) {
+          <app-single-button
+            class="underline-animate"
+            [type]="'button'"
+            [id]="1"
+            [routerLink]="['/activity', 'creation']"
+            routerLinkActive="active"
+            [styleClass]="ButtonStyleClass.addActivityButton"
+            [label]="'Publier une activitée 🚀'"
+            [ariaLabel]="'button de navigation vers la page de creation des activitées'">
+          </app-single-button>
+        }
+
+        <div class="user-info">
+          <p class="user-name" @fadeInOut>Bonjour, {{ userInfo.userDisplayName }} !</p>
+          <app-header-menu></app-header-menu>
+        </div>
+      } @else {
+        <div class="auth-buttons">
+          <button class="inscription-btn" type="button" (click)="openRegisterModal()">S'inscrire</button>
+          <button class="connexion-btn" type="button" (click)="openLoginModal()">Se connecter</button>
+        </div>
+      }
+    }
+  </div>
 </header>
 
 <app-register-modal [(visible)]="showRegisterModal"></app-register-modal>

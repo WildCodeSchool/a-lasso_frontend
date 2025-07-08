@@ -1,82 +1,107 @@
-import { Component, DestroyRef, HostListener, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { AssociationCardComponent } from '../../../association/components/association-card/association-card.component';
 import { ActivatedRoute } from '@angular/router';
 import { ToggleMenuComponent } from '../../../../common/components/toggle-menu/toggle-menu.component';
-import { NgClass } from '@angular/common';
+import { AsyncPipe, NgClass } from '@angular/common';
 import { ActivityMessagesCardComponent } from '../../components/activity-messages-card/activity-messages-card.component';
 import { ActivityDescriptionComponent } from '../../components/activity-description/activity-description.component';
 import { MOBILE_SIZE } from '../../../../common/models/scss-variables';
-import { Observable } from 'rxjs';
-import { AuthService } from '../../../authentication/services/auth.service';
 import { Store } from '@ngrx/store';
-import { selectActivitiesUserInfos } from '../../../authentication/store/user.selectors';
-import { ActivitiesUserInfos } from '../../../authentication/models/user.model';
-import { Activity } from '../../models/activity.model';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { selectActivitiesUserInfos, selectUser } from '../../../authentication/store/user.selectors';
+import { ActivitiesUserInfos, UserType } from '../../../authentication/models/user.model';
+import { Activity, ActivityDetailsNavigation } from '../../models/activity.model';
 import { Association } from 'src/app/features/association/models/association.model';
+import { UUIDTypes } from 'uuid';
+import { setNotificationMessages } from '../../../authentication/store/user.actions';
+import { NavigationItems } from '../../../../common/models/toggle-menu';
+import { BehaviorSubject, combineLatest, distinctUntilChanged, fromEvent, map, Observable, startWith } from 'rxjs';
+import { DestroyableComponent } from '../../../../common/utils/DestroyableComponent';
 
 @Component({
   selector: 'app-activity-details',
-  imports: [AssociationCardComponent, ActivityDescriptionComponent, ToggleMenuComponent, NgClass, ActivityMessagesCardComponent],
+  imports: [AssociationCardComponent, ActivityDescriptionComponent, ToggleMenuComponent, NgClass, ActivityMessagesCardComponent, AsyncPipe],
   templateUrl: './activity-details.component.html',
   styleUrl: './activity-details.component.scss',
 })
-export class ActivityDetailsComponent implements OnInit {
-  private _authService: AuthService = inject(AuthService);
+export class ActivityDetailsComponent extends DestroyableComponent implements OnInit {
   private _route: ActivatedRoute = inject(ActivatedRoute);
   private _store: Store = inject(Store);
-  private _destroyRef = inject(DestroyRef);
-  activityId!: string;
+  private _chosenNavigation$ = new BehaviorSubject<string>('Activité');
+
+  screenWidth$ = fromEvent(window, 'resize').pipe(
+    map(() => window.innerWidth),
+    startWith(window.innerWidth),
+    distinctUntilChanged(),
+    this.untilDestroyed()
+  );
+
+  navigationState$: Observable<ActivityDetailsNavigation> = this._buildNavigationState();
+
   activity!: Activity;
   association!: Association;
 
-  activeTab: number = 0;
-  navigationItems: string[] = ['Activité', 'Association'];
-  chosenNavigation: string = 'Activité';
-  screenWidth: number = window.innerWidth;
-
   ngOnInit(): void {
-    this._updateNavigationItems(window.innerWidth);
+    this._initializeActivityAndAssociation();
+  }
+
+  handleNavigation(chosen: string): void {
+    this._chosenNavigation$.next(chosen);
+
+    if (chosen === 'Messages') {
+      this.updateNotificationMessages(this.activity.id);
+    }
+  }
+
+  updateNotificationMessages(activityId: UUIDTypes): void {
+    this._store.dispatch(setNotificationMessages({ activityId }));
+  }
+
+  private _initializeActivityAndAssociation(): void {
     this.activity = this._route.snapshot.data['activityDetails']['activity'];
     this.association = this._route.snapshot.data['activityDetails']['association'];
   }
 
-  @HostListener('window:resize', ['$event'])
-  onResize(event: Event): void {
-    const target = event.target as Window;
-    this._updateNavigationItems(target.innerWidth);
-    this.screenWidth = target.innerWidth;
+  private _isUserRegistered(activitiesUserInfos: ActivitiesUserInfos[]): boolean {
+    return activitiesUserInfos.find(activity => activity.activityId === this.activity.id)?.isRegistered ?? false;
   }
 
-  handleNavigation(chosenNavigation: string): void {
-    this.chosenNavigation = chosenNavigation;
-  }
+  private _buildNavigationState(): Observable<ActivityDetailsNavigation> {
+    return combineLatest([
+      this._store.select(selectActivitiesUserInfos),
+      this._store.select(selectUser),
+      this.screenWidth$,
+      this._chosenNavigation$,
+    ]).pipe(
+      this.untilDestroyed(),
+      map(([userInfos, user, width, chosen]) => {
+        const isMobile = width < MOBILE_SIZE;
+        const isRegistered = this._isUserRegistered(userInfos);
+        const isOwner = user?.type === UserType.Association && user.name === this.activity.association.name;
+        const hasMessages = isRegistered || isOwner;
 
-  private _updateNavigationItems(width: number): void {
-    const userIsLoggedIn: boolean = this._authService.isLoggedIn();
+        let tabs: NavigationItems[] = [];
+        if (hasMessages) {
+          tabs = isMobile ? [{ name: 'Activité' }, { name: 'Messages' }, { name: 'Association' }] : [{ name: 'Messages' }, { name: 'Association' }];
+        } else {
+          tabs = isMobile ? [{ name: 'Activité' }, { name: 'Association' }] : [];
+        }
 
-    const setNavigation = (hasAccessToMessagesActivity: boolean): void => {
-      const isMobile: boolean = width < MOBILE_SIZE;
+        let validChosen = tabs.find(tab => tab.name === chosen)?.name;
+        if (!validChosen) {
+          validChosen = tabs.find(tab => tab.name === 'Association')?.name ?? tabs[0]?.name ?? '';
+          if (validChosen && validChosen !== chosen) {
+            this._chosenNavigation$.next(validChosen);
+          }
+        }
 
-      if (hasAccessToMessagesActivity) {
-        this.navigationItems = isMobile ? ['Activité', 'Messages', 'Association'] : ['Messages', 'Association'];
-        this.chosenNavigation = isMobile ? 'Activité' : 'Association';
-        this.activeTab = isMobile ? 0 : 1;
-      } else {
-        this.navigationItems = isMobile ? ['Activité', 'Association'] : [];
-        this.chosenNavigation = isMobile ? 'Activité' : 'Association';
-      }
-    };
+        const activeTabIndex = tabs.findIndex(tab => tab.name === validChosen);
 
-    if (userIsLoggedIn) {
-      const activitiesUserInfos$: Observable<ActivitiesUserInfos[]> = this._store.select(selectActivitiesUserInfos);
-
-      activitiesUserInfos$.pipe(takeUntilDestroyed(this._destroyRef)).subscribe((userInfos): void => {
-        const isRegistered: boolean = userInfos.find((activity): boolean => activity.activityId === this.activityId)?.isRegistered;
-        setNavigation(!!isRegistered);
-      });
-    } else {
-      setNavigation(false);
-    }
+        return {
+          tabs,
+          chosen: validChosen,
+          activeTabIndex,
+        };
+      })
+    );
   }
 }

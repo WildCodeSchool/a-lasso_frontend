@@ -1,10 +1,12 @@
 <div class="single-button-container">
   <p-button
+    [type]="type"
     [id]="id"
     (click)="onClick($event)"
     [styleClass]="styleClass"
     [size]="size"
     [icon]="icon"
+    [disabled]="disabled"
     [label]="label"
     [attr.aria-label]="ariaLabel"></p-button>
 </div>

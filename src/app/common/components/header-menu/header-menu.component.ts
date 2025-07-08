@@ -1,15 +1,18 @@
 import { animate, style, transition, trigger } from '@angular/animations';
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
-import { Observable, map } from 'rxjs';
+import { Component, ElementRef, HostListener, inject } from '@angular/core';
+import { Router } from '@angular/router';
+import { map, Observable } from 'rxjs';
 import { AuthFacade } from 'src/app/features/authentication/services/auth-facade.service';
 import { environment } from 'src/environments/environment.development';
-import { UserType } from 'src/app/features/authentication/models/user.model';
+import { BadgeComponent } from '../badge/badge.component';
+import { HeaderMenuMessagesComponent } from '../header-menu-messages/header-menu-messages.component';
+import { HeaderMenuReportsComponent } from '../header-menu-reports/header-menu-reports.component';
 
 @Component({
   selector: 'app-header-menu',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, BadgeComponent, HeaderMenuMessagesComponent, HeaderMenuReportsComponent],
   templateUrl: './header-menu.component.html',
   styleUrl: './header-menu.component.scss',
   animations: [
@@ -23,29 +26,45 @@ import { UserType } from 'src/app/features/authentication/models/user.model';
   ],
 })
 export class HeaderMenuComponent {
-  private _auth = inject(AuthFacade);
+  private _authFacade: AuthFacade = inject(AuthFacade);
+  private _router = inject(Router);
+  private _elementRef = inject(ElementRef);
 
   isOpen: boolean = false;
   apiUrl: string = environment.apiUrl;
 
-  user$ = this._auth.user$;
+  user$ = this._authFacade.user$;
+  userAvatar$ = this._authFacade.userAvatar$;
 
-  userAvatar$: Observable<string | null> = this.user$.pipe(
+  countGlobalNotifications$: Observable<number | null> = this.user$.pipe(
     map(user => {
-      if (!user) return null;
-      if (user.type === UserType.Voluntary) {
-        return user.avatar.url;
-      }
-      return user.associationLogoImage;
+      if (!user || !user.notification) return null;
+      const messagesCount = user.notification.messages.reduce((total, notification) => total + notification.countMessagesNotRead, 0);
+
+      const reportsCount = user.notification.reports ?? 0;
+
+      return messagesCount + reportsCount;
     })
   );
+
+  @HostListener('document:click', ['$event'])
+  onClickOutside(event: MouseEvent): void {
+    if (!this._elementRef.nativeElement.contains(event.target)) {
+      this.isOpen = false;
+    }
+  }
 
   toggleMenu(): void {
     this.isOpen = !this.isOpen;
   }
 
+  goToProfile(): void {
+    this.isOpen = false;
+    this._router.navigate(['/profile/association/activities']);
+  }
+
   logout(): void {
-    this._auth.logout();
+    this._authFacade.logout();
     this.isOpen = false;
   }
 }

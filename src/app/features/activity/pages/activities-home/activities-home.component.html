@@ -1,5 +1,8 @@
 <div class="activities-home">
   <div class="search-activities">
+    <div class="input-container">
+      <app-activity-filter-search (searchFiltersChanged)="onSearchFiltersChanged($event)"></app-activity-filter-search>
+    </div>
     <app-activity-filter (selectedThemes)="onSelectedThemeChanges($event)"></app-activity-filter>
   </div>
 
@@ -9,11 +12,16 @@
       @if (!(activities$ | async)?.length) {
         <app-activity-skeleton></app-activity-skeleton>
         <app-activity-skeleton></app-activity-skeleton>
+        <app-activity-skeleton></app-activity-skeleton>
+        <app-activity-skeleton></app-activity-skeleton>
       } @else {
         @for (activity of filteredActivities$ | async; track activity.id) {
           <app-activity-card [activity]="activity"></app-activity-card>
         } @empty {
-          <p>Aucuns résultats ne correspond à vos filtres</p>
+          <p class="empty">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            Aucun résultat ne correspond à votre recherche
+          </p>
         }
       }
     </div>

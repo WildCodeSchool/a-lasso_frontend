@@ -1,24 +1,28 @@
-import { Component, Input, OnInit, OnChanges, SimpleChanges, inject, DestroyRef } from '@angular/core';
-import maplibregl from 'maplibre-gl';
+import { Component, Input, inject, OnChanges, SimpleChanges, ViewChild, AfterViewInit } from '@angular/core';
+import maplibregl, { Marker, Popup } from 'maplibre-gl';
 import { Activity } from 'src/app/features/activity/models/activity.model';
 import { Observable, Subscription } from 'rxjs';
 import { CheckboxModule } from 'primeng/checkbox';
 import { FormsModule } from '@angular/forms';
 import { MapDisplayType } from '../../models/map';
-import { environmentSecret } from 'src/environments/environment.secret';
+
 import { FRANCE_LATITUDE, FRANCE_LONGITUDE } from '../../constants/map.constants';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { PopupMapComponent } from '../popup-map/popup-map.component';
+import { environmentSecret } from 'src/environments/environment.secret';
+import { ActivityFacadeService } from '../../../activity/services/activity-facade.service';
+import { DestroyableComponent } from '../../../../common/utils/DestroyableComponent';
 
 @Component({
   selector: 'app-map',
   templateUrl: './map.component.html',
-  imports: [FormsModule, CheckboxModule],
+  imports: [FormsModule, CheckboxModule, PopupMapComponent],
   styleUrl: './map.component.scss',
 })
-export class MapComponent implements OnInit, OnChanges {
-  private _destroyRef = inject(DestroyRef);
+export class MapComponent extends DestroyableComponent implements AfterViewInit, OnChanges {
+  private _activityFacadeService: ActivityFacadeService = inject(ActivityFacadeService);
 
   @Input() filteredActivities$!: Observable<Activity[]>;
+  @ViewChild('popupRef') popupComponent!: PopupMapComponent;
 
   private _mapKey = environmentSecret.apiMapKey;
   private _map!: maplibregl.Map;
@@ -26,9 +30,15 @@ export class MapComponent implements OnInit, OnChanges {
   private _associationMarkers: maplibregl.Marker[] = [];
   private _activitySub: Subscription | null = null;
 
+  popup: Popup = new maplibregl.Popup({
+    closeButton: true,
+    closeOnClick: false,
+    closeOnMove: false,
+    maxWidth: '500px',
+  });
   mapDisplay: MapDisplayType = { activities: true, associations: true };
 
-  ngOnInit(): void {
+  ngAfterViewInit(): void {
     this._map = new maplibregl.Map({
       container: 'map',
       style: `https://api.maptiler.com/maps/streets/style.json?key=${this._mapKey}`,
@@ -45,7 +55,7 @@ export class MapComponent implements OnInit, OnChanges {
   }
 
   addMarkers(): void {
-    this._activitySub = this.filteredActivities$.pipe(takeUntilDestroyed(this._destroyRef)).subscribe(activities => {
+    this._activitySub = this.filteredActivities$.pipe(this.untilDestroyed()).subscribe(activities => {
       this._clearMarkers();
       activities.forEach(activity => {
         this.addActivityMarkers(activity);
@@ -68,22 +78,45 @@ export class MapComponent implements OnInit, OnChanges {
   }
 
   addActivityMarkers(activity: Activity): void {
-    if (activity.location?.longitude && activity.location?.latitude && this.mapDisplay.activities) {
-      const activityMarker = new maplibregl.Marker({ color: 'red' })
-        .setLngLat([activity.location.longitude, activity.location.latitude])
-        .setPopup(new maplibregl.Popup().setText(activity.title))
-        .addTo(this._map);
-      this._activityMarkers.push(activityMarker);
+    const { longitude, latitude } = activity.location ?? {};
+    if (longitude && latitude && this.mapDisplay.activities) {
+      const marker = this._createMarker(longitude, latitude, 'red', () => {
+        this.popupComponent.activity = activity;
+        this.popupComponent.isSavedActivity$ = this._activityFacadeService.getIsSavedActivity(activity.id);
+        this.popupComponent.association = null;
+        this._openPopup(longitude, latitude);
+      });
+
+      this._activityMarkers.push(marker);
     }
   }
 
   addAssociationMarkers(activity: Activity): void {
-    if (activity.association?.localisation?.longitude && activity.association?.localisation?.latitude && this.mapDisplay.associations) {
-      const assocMarker = new maplibregl.Marker({ color: 'green' })
-        .setLngLat([activity.association.localisation.longitude, activity.association.localisation.latitude])
-        .setPopup(new maplibregl.Popup().setText(activity.association.name))
-        .addTo(this._map);
-      this._associationMarkers.push(assocMarker);
+    const localisation = activity.association?.localisation;
+    if (localisation?.longitude && localisation?.latitude && this.mapDisplay.associations) {
+      const marker = this._createMarker(localisation.longitude, localisation.latitude, 'green', () => {
+        this.popupComponent.association = activity.association;
+        this.popupComponent.setCountActivityOfAssociation(activity.association);
+        this.popupComponent.activity = null;
+        this._openPopup(localisation.longitude, localisation.latitude);
+      });
+
+      this._associationMarkers.push(marker);
     }
+  }
+
+  private _createMarker(lng: number, lat: number, color: string, onClick: () => void): maplibregl.Marker {
+    const marker: Marker = new maplibregl.Marker({ color });
+
+    marker.setLngLat([lng, lat]).addTo(this._map);
+    marker.getElement().addEventListener('click', onClick);
+
+    return marker;
+  }
+
+  private _openPopup(lng: number, lat: number): void {
+    this.popup.setDOMContent(this.popupComponent.element);
+    this.popup.setLngLat([lng, lat]);
+    this.popup.addTo(this._map);
   }
 }

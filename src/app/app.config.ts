@@ -5,7 +5,7 @@ import { provideRouter } from '@angular/router';
 import { provideStore } from '@ngrx/store';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
 import { providePrimeNG } from 'primeng/config';
-import { MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { messagesReducer } from './features/activity/store/messages/messages.reducers';
 import { routes } from './app.routes';
 import { PRIME_NG_FR } from './common/prime-ng.translate';
@@ -17,6 +17,7 @@ import { jwtAddTokenInterceptor } from './common/interceptors/jwt-add-token.inte
 import { errorInterceptor } from './common/interceptors/error-server.interceptor';
 import { userReducer } from './features/authentication/store/user.reducer';
 import { metaReducers } from './features/authentication/store/meta-reducers';
+import { reportsReducer } from './features/report/store/reports.reducers';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -25,7 +26,13 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(withInterceptors([jwtAddTokenInterceptor, errorInterceptor])),
     provideAnimationsAsync(),
     provideStore(
-      { activities: activitiesReducer, associations: associationsReducer, messages: messagesReducer, user: userReducer },
+      {
+        activities: activitiesReducer,
+        associations: associationsReducer,
+        messages: messagesReducer,
+        reports: reportsReducer,
+        user: userReducer,
+      },
       { metaReducers }
     ),
     provideStoreDevtools({ maxAge: 25, trace: true }),
@@ -37,5 +44,6 @@ export const appConfig: ApplicationConfig = {
     }),
     MessageService,
     DialogService,
+    ConfirmationService,
   ],
 };

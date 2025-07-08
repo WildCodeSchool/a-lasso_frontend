@@ -1,4 +1,5 @@
 import { UUIDTypes } from 'uuid';
+import { Image } from '../../activity/models/activity.model';
 
 export type Statistic = {
   value: number;
@@ -11,9 +12,8 @@ export type Association = {
   founder: string;
   foundationDate: Date;
   name: string;
-  associationProfileImageURL: string;
-  associationLogoImage: string;
+  associationProfileImage: Image;
+  associationLogoImage: Image;
   siteURL: string;
   statistics: Statistic[];
-  isFollow: boolean;
 };

@@ -1,6 +1,6 @@
 import { createReducer, on } from '@ngrx/store';
 import * as AuthActions from './user.actions';
-import { FollowedAssociation, UserState, VoluntaryLogin } from '../models/user.model';
+import { AssociationLogin, FollowedAssociation, MessageNotification, UserState, UserType, VoluntaryLogin } from '../models/user.model';
 import { getInitialUserState } from './meta-reducers';
 
 export const initialState: UserState = getInitialUserState();
@@ -84,6 +84,80 @@ export const userReducer = createReducer(
         ...state.userInfos,
         activitiesUserInfos: updated,
       } as VoluntaryLogin,
+    };
+  }),
+
+  on(AuthActions.setNotificationMessages, (state, { activityId }) => {
+    const userInfos: VoluntaryLogin | AssociationLogin = state.userInfos;
+
+    if (!userInfos || !('notification' in userInfos)) {
+      return state;
+    }
+
+    const updatedMessages: MessageNotification[] = userInfos.notification.messages.map((m: MessageNotification) =>
+      m.activityId === activityId ? { ...m, countMessagesNotRead: 0 } : m
+    );
+
+    return {
+      ...state,
+      userInfos: {
+        ...userInfos,
+        notification: {
+          ...userInfos.notification,
+          messages: updatedMessages,
+        },
+      },
+    };
+  }),
+
+  on(AuthActions.updateNotificationReports, (state, { updateCount }) => {
+    if (!state.userInfos || !('notification' in state.userInfos)) {
+      return state;
+    }
+
+    return {
+      ...state,
+      userInfos: {
+        ...state.userInfos,
+        notification: {
+          ...state.userInfos.notification,
+          reports: state.userInfos.notification.reports !== null ? state.userInfos.notification.reports + updateCount : 0,
+        },
+      },
+    };
+  }),
+
+  on(AuthActions.updateAssociationStats, (state, { statistics }) => {
+    if (!state.userInfos || state.userInfos.type !== UserType.Association) return state;
+    return {
+      ...state,
+      userInfos: {
+        ...state.userInfos,
+        statistics,
+      },
+    };
+  }),
+
+  on(AuthActions.updateAssociationDescription, (state, { description }) => {
+    if (!state.userInfos || state.userInfos.type !== UserType.Association) return state;
+    return {
+      ...state,
+      userInfos: {
+        ...state.userInfos,
+        description,
+      },
+    };
+  }),
+
+  on(AuthActions.updateAssociationGeneralInfo, (state, { foundationDate, founder }) => {
+    if (!state.userInfos || state.userInfos.type !== UserType.Association) return state;
+    return {
+      ...state,
+      userInfos: {
+        ...state.userInfos,
+        foundationDate,
+        founder,
+      },
     };
   })
 );

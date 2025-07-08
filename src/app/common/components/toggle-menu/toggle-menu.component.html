@@ -1,7 +1,16 @@
 <p-tabs [(value)]="activeTabValue">
-  <p-tablist>
+  <p-tablist class="tabs_wrapper">
     @for (tab of tabs; track $index) {
-      <p-tab [value]="$index" (click)="updateNavigation($index)">{{ tab }}</p-tab>
+      <div class="tab-container">
+        <p-tab [value]="$index" (click)="updateNavigation($index)">
+          {{ tab.name }}
+        </p-tab>
+        @if (tab.badgeValue) {
+          <div class="badge-toggle-menu">
+            <app-badge [badgeValue]="tab.badgeValue" [isWhite]="$index === activeTabValue"></app-badge>
+          </div>
+        }
+      </div>
     }
   </p-tablist>
 </p-tabs>

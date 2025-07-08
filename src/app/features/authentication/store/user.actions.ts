@@ -1,10 +1,16 @@
 import { createAction, props } from '@ngrx/store';
 import { AssociationLogin, UserLogin, VoluntaryLogin } from '../models/user.model';
 import { UUIDTypes } from 'uuid';
+import { Statistic } from '../../association/models/association.model';
 
 export const login = createAction('[User] Login', props<{ credentials: UserLogin }>());
 
-export const loginSuccess = createAction('[User] Login Success', props<{ userInfos: VoluntaryLogin | AssociationLogin }>());
+export const loginSuccess = createAction(
+  '[User] Login Success',
+  props<{
+    userInfos: VoluntaryLogin | AssociationLogin;
+  }>()
+);
 
 export const loginFailure = createAction('[User] Login Failure', props<{ error: string }>());
 
@@ -27,3 +33,26 @@ export const updateActivitiesUserInfos = createAction(
     isRegistered?: boolean;
   }>()
 );
+
+export const setNotificationMessages = createAction(
+  '[User] Update Notification Messages',
+  props<{
+    activityId: UUIDTypes;
+  }>()
+);
+
+export const updateNotificationReports = createAction(
+  '[User] Update Notification Reports',
+  props<{
+    updateCount: number;
+  }>()
+);
+
+export const updateAssociationGeneralInfo = createAction(
+  '[User] Update Association General Info',
+  props<{ foundationDate: string; founder: string }>()
+);
+
+export const updateAssociationDescription = createAction('[User] Update Association Description', props<{ description: string }>());
+
+export const updateAssociationStats = createAction('[User] Update Association Stats', props<{ statistics: Statistic[] }>());

@@ -1,0 +1,15 @@
+.activity-menu-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+
+  .activity-menu-header {
+    width: fit-content;
+    padding: 16px;
+    .activity-menu-title {
+      color: var(--primary-dark-color);
+      margin: 0 0 16px;
+    }
+  }
+}

@@ -1,4 +1,6 @@
 import { UUIDTypes } from 'uuid';
+import { Image } from '../../activity/models/activity.model';
+import { Statistic } from '../../association/models/association.model';
 
 export enum UserType {
   Association = 'association',
@@ -17,6 +19,7 @@ export type VoluntaryRegister = {
 };
 
 export type VoluntaryLogin = {
+  id: UUIDTypes;
   type: UserType.Voluntary;
   first_name: string;
   last_name: string;
@@ -26,15 +29,26 @@ export type VoluntaryLogin = {
   city: string;
   country: string;
   birth_date: string;
-  avatar?: {
-    url: string;
-  };
+  avatar?: Image;
   followedAssociations: FollowedAssociation[];
   activitiesUserInfos: ActivitiesUserInfos[];
-  geolocalisation: {
+  notification: Notification;
+  geolocation: {
     latitude: number;
     longitude: number;
   };
+  createdAt: Date;
+};
+
+export type Notification = {
+  messages: MessageNotification[];
+  reports: number | null;
+};
+
+export type MessageNotification = {
+  activityId: UUIDTypes;
+  activityTitle: string;
+  countMessagesNotRead: number;
 };
 
 export type FollowedAssociation = {
@@ -49,13 +63,34 @@ export type ActivitiesUserInfos = {
   isRegistered: boolean;
 };
 
-type Address = {
-  house_number: string;
-  street_name: string;
-  adress_suffix: string | null;
+export type AddressApiResult = {
+  display_name: string;
+  lat: string;
+  lon: string;
+  address: {
+    house_number?: string;
+    road?: string;
+    suburb?: string;
+    neighbourhood?: string;
+    postcode?: string;
+    city?: string;
+    town?: string;
+    village?: string;
+    county?: string;
+    state?: string;
+    country?: string;
+    country_code?: string;
+  };
+};
+
+export type Address = {
+  houseNumber: string;
+  streetName: string;
   zipCode: string;
   city: string;
   country: string;
+  lat: number;
+  lon: number;
 };
 
 export type AssociationRegister = {
@@ -68,6 +103,7 @@ export type AssociationRegister = {
 };
 
 export type AssociationLogin = {
+  id: UUIDTypes;
   type: UserType.Association;
   siret: string;
   name: string;
@@ -75,12 +111,18 @@ export type AssociationLogin = {
   password: string;
   mobile_phone: string;
   address: Address;
-  associationLogoImage?: string;
-  associationProfileImageURL?: string;
+  associationLogoImage?: Image;
+  associationProfileImage?: Image;
+  notification: Notification;
   geolocation: {
     latitude: number;
     longitude: number;
   };
+  createdAt: Date;
+  foundationDate: string;
+  founder: string;
+  description: string;
+  statistics?: Statistic[];
 };
 
 export type UserLogin = {
@@ -92,4 +134,10 @@ export type UserState = {
   userInfos: VoluntaryLogin | AssociationLogin | null;
   isAuthenticated: boolean;
   error: string | null;
+};
+
+export type UserHeaderInfo = {
+  isConnected: boolean;
+  canPublishActivity: boolean;
+  userDisplayName: string;
 };

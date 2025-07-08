@@ -10,20 +10,10 @@ export const associationsReducer = createReducer(
   on(AssociationActions.setAssociations, (state, { association }) => {
     const exists = state.some(item => item.id === association.id);
     if (exists) {
-      return state.map(item => (item.id === association.id ? { ...item, ...association } : item)); // Merge if association exist
+      return state.map(item => (item.id === association.id ? { ...item, ...association } : item));
     }
     return [...state, association];
   }),
-  on(AssociationActions.updateFollowStatus, (state, { id, isFollow }) =>
-    state.map(assocation =>
-      assocation.id === id
-        ? {
-            ...assocation,
-            isFollow,
-          }
-        : assocation
-    )
-  ),
   on(ActivityActions.clearUserActivityInfos, state =>
     state.map(association => ({
       ...association,

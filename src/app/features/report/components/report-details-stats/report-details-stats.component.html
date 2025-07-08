@@ -1,0 +1,19 @@
+<div class="statistics">
+  <h3>Statistiques</h3>
+  <div class="stats-details">
+    <div class="select-year">
+      <p>Année :</p>
+      <p-select [options]="yearOptions" [(ngModel)]="selectedYear" placeholder="Sélectionnez une année"></p-select>
+    </div>
+    <div class="details-reports-stats">
+      <div>
+        <p>Total signalements</p>
+        <p>{{ getStatsByYear(selectedYear).totalReports }}</p>
+      </div>
+      <div>
+        <p>Utilisateurs uniques</p>
+        <p>{{ getStatsByYear(selectedYear).uniqueReporters }}</p>
+      </div>
+    </div>
+  </div>
+</div>
