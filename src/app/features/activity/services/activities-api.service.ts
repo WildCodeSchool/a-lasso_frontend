@@ -8,6 +8,7 @@ import { Message } from '../models/message.model';
 import { MessageCreation } from '../models/messageCreation';
 import { APIResponseToggleRegister } from '../models/api-reponse.model';
 import { NewActivityCreation } from '../models/activity-creation.model';
+import { AddressApiResult } from '../../authentication/models/user.model';
 
 @Injectable({
   providedIn: 'root',
@@ -45,10 +46,10 @@ export class ActivitiesApiService {
     return this._http.post<Message>(`${this._apiUrl}/messages`, message);
   }
 
-  getAdressFromApi(query: string): Observable<any> {
+  getAddressFromApi(query: string): Observable<AddressApiResult[]> {
     const lang = navigator.language || 'fr';
 
-    return this._http.get<any[]>(`https://nominatim.openstreetmap.org/search`, {
+    return this._http.get<AddressApiResult[]>(`https://nominatim.openstreetmap.org/search`, {
       params: {
         q: query,
         format: 'json',

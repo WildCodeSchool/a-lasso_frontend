@@ -7,15 +7,15 @@
         (click)="openSelectionModal($index)"
         (keydown.enter)="openSelectionModal($index)"
         (keydown.space)="openSelectionModal($index)">
-        @if (picture) {
+        @if (!picture) {
+          <i class="fa-solid fa-plus"></i>
+          <i class="fa-solid fa-camera"></i>
+          <p class="add-photo">Ajouter une photo</p>
+        } @else {
           <img [src]="picture" alt="Preview" />
           <button type="button" class="remove-photo-btn" (click)="removePicture($index); $event.stopPropagation()" aria-label="Supprimer la photo">
             &times;
           </button>
-        } @else {
-          <i class="fa-solid fa-plus"></i>
-          <i class="fa-solid fa-camera"></i>
-          <p class="add-photo">Ajouter une photo</p>
         }
       </button>
 
@@ -34,7 +34,7 @@
       contentStyleClass="custom-dialog-content">
       <div class="modal-options">
         <div class="existing-photos">
-          @if (existingImages) {
+          @if (existingImages$ | async; as existingImages) {
             @for (pic of existingImages; track pic.id) {
               <img
                 [src]="pic.image"

@@ -5,9 +5,9 @@
   </div>
 
   <div class="right-side-container">
-    @if (userRoles$ | async; as userRoles) {
-      @if (userRoles.length > 0) {
-        @if (userRoles.includes(UserRoleType.ASSOCIATION) && !isOnActivityCreationPage()) {
+    @if (userInfos$ | async; as userInfo) {
+      @if (userInfo.isConnected) {
+        @if (userInfo.canPublishActivity && !isOnActivityCreationPage()) {
           <app-single-button
             class="underline-animate"
             [type]="'button'"
@@ -21,7 +21,7 @@
         }
 
         <div class="user-info">
-          <p class="user-name" @fadeInOut>Bonjour, {{ userDisplayName$ | async }} !</p>
+          <p class="user-name" @fadeInOut>Bonjour, {{ userInfo.userDisplayName }} !</p>
           <app-header-menu></app-header-menu>
         </div>
       } @else {

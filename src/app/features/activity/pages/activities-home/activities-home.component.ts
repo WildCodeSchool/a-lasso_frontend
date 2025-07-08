@@ -61,24 +61,36 @@ export class ActivitiesHomeComponent implements OnInit {
   private _applyFilters(): void {
     this.filteredActivities$ = this.activities$.pipe(
       map(activities =>
-        activities.filter(activity => {
-          const selectedThemesCount = 0;
-          const matchesTheme =
-            this.selectedThemesName.length === selectedThemesCount || activity.themesName.some(theme => this.selectedThemesName.includes(theme));
-
-          const matchesSearch =
-            !this.searchFilters.search ||
-            activity.title.toLowerCase().includes(this.searchFilters.search.toLowerCase()) ||
-            activity.description.toLowerCase().includes(this.searchFilters.search.toLowerCase());
-
-          const matchesDate = !this.searchFilters.date || new Date(activity.date).toDateString() === new Date(this.searchFilters.date).toDateString();
-
-          const matchesLocation =
-            !this.searchFilters.location || activity.location.city.toLowerCase().includes(this.searchFilters.location.toLowerCase());
-
-          return matchesTheme && matchesSearch && matchesDate && matchesLocation;
-        })
+        activities.filter(
+          activity => this._matchesTheme(activity) && this._matchesSearch(activity) && this._matchesDate(activity) && this._matchesLocation(activity)
+        )
       )
     );
+  }
+
+  private _matchesTheme(activity: Activity): boolean {
+    if (this.selectedThemesName.length === 0) return true;
+    return activity.themesName.some(theme => this.selectedThemesName.includes(theme));
+  }
+
+  private _matchesSearch(activity: Activity): boolean {
+    if (!this.searchFilters.search) return true;
+
+    const query = this.searchFilters.search.toLowerCase();
+    return activity.title.toLowerCase().includes(query) || activity.description.toLowerCase().includes(query);
+  }
+
+  private _matchesDate(activity: Activity): boolean {
+    if (!this.searchFilters.date) return true;
+
+    const activityDate = new Date(activity.date).toDateString();
+    const selectedDate = new Date(this.searchFilters.date).toDateString();
+    return activityDate === selectedDate;
+  }
+
+  private _matchesLocation(activity: Activity): boolean {
+    if (!this.searchFilters.location) return true;
+
+    return activity.location.city.toLowerCase().includes(this.searchFilters.location.toLowerCase());
   }
 }

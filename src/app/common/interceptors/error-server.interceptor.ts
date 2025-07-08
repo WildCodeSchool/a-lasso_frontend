@@ -32,9 +32,7 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
           detail = 'Merci de vous reconnecter.';
           severity = 'warn';
 
-          authService.clearToken();
-          authService.clearUserState();
-          authService.updateAuthState();
+          authService.resetUser();
           router.navigate(['/']);
         } else {
           summary = 'Authentification';

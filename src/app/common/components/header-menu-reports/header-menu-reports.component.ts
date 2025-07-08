@@ -1,11 +1,10 @@
 import { Component, inject, Input } from '@angular/core';
 import { AsyncPipe } from '@angular/common';
 import { Router } from '@angular/router';
-import { map, Observable } from 'rxjs';
-import { UserRole } from '../../../features/authentication/constants/auth.constants';
+import { Observable } from 'rxjs';
 import { AuthService } from '../../../features/authentication/services/auth.service';
 import { BadgeComponent } from '../badge/badge.component';
-import { AuthFacade } from '../../../features/authentication/services/auth-facade.service';
+import { ReportFacadeService } from '../../../features/report/services/report-facade.service';
 
 @Component({
   selector: 'app-header-menu-reports',
@@ -15,17 +14,11 @@ import { AuthFacade } from '../../../features/authentication/services/auth-facad
 })
 export class HeaderMenuReportsComponent {
   private _authService: AuthService = inject(AuthService);
-  private _authFacade: AuthFacade = inject(AuthFacade);
-  private _user$ = this._authFacade.user$;
+  private _reportFacade: ReportFacadeService = inject(ReportFacadeService);
   router: Router = inject(Router);
 
   @Input() isOpenMenu!: boolean;
-  isAdmin$ = this._authService.getRolesUser().pipe(map((roles: UserRole[]) => roles.some(role => role === UserRole.ADMIN)));
+  isAdmin$: Observable<boolean> = this._authService.isAdminUser();
 
-  countGlobalReportsNotifications$: Observable<number> = this._user$.pipe(
-    map(user => {
-      if (!user || !user.notification.reports) return 0;
-      return user.notification.reports;
-    })
-  );
+  countGlobalReportsNotifications$: Observable<number> = this._reportFacade.getCountGlobalReportsNotifications();
 }

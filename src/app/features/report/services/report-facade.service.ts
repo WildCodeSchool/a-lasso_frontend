@@ -1,12 +1,15 @@
 import { inject, Injectable } from '@angular/core';
 import { ReportApiService } from './report-api.service';
-import { Report, StatusReportEnum } from '../models/report.model';
-import { Observable, of, switchMap, tap } from 'rxjs';
+import { Report, ReportStatsAnalysis, StatusReportEnum } from '../models/report.model';
+import { map, Observable, of, switchMap, tap } from 'rxjs';
 import { MessageService as Toast } from 'primeng/api';
 import { Store } from '@ngrx/store';
 import { selectReports, selectReportsById } from '../store/reports.selector';
 import { setReports, updateReport } from '../store/reports.actions';
 import { updateNotificationReports } from '../../authentication/store/user.actions';
+import { AuthFacade } from '../../authentication/services/auth-facade.service';
+import { UUIDTypes } from 'uuid';
+import { showSuccessToast } from 'src/app/common/utils/toast.utils';
 
 @Injectable({
   providedIn: 'root',
@@ -14,6 +17,7 @@ import { updateNotificationReports } from '../../authentication/store/user.actio
 export class ReportFacadeService {
   private _toast: Toast = inject(Toast);
   private _store: Store = inject(Store);
+  private readonly _authStore: AuthFacade = inject(AuthFacade);
   private readonly _reportApiService: ReportApiService = inject(ReportApiService);
 
   getReportsFromApi(): Observable<Report[]> {
@@ -56,10 +60,7 @@ export class ReportFacadeService {
       .sendReport(report)
       .pipe(
         tap(() => {
-          this._toast.add({
-            severity: 'success',
-            summary: 'Signalement envoyé !',
-          });
+          showSuccessToast(this._toast);
           this._store.dispatch(updateNotificationReports({ updateCount: +1 }));
         })
       )
@@ -71,15 +72,67 @@ export class ReportFacadeService {
       .updateReport(report)
       .pipe(
         tap(() => {
-          this._toast.add({
-            severity: 'success',
-            summary: `${report.status === StatusReportEnum.Closed ? 'Signalement clôturé' : 'Signalement mis à jour !'}`,
-          });
+          showSuccessToast(this._toast);
           this._store.dispatch(updateReport({ reportUpdated: report }));
 
           if (report.status === StatusReportEnum.Closed) {
             this._store.dispatch(updateNotificationReports({ updateCount: -1 }));
           }
+        })
+      )
+      .subscribe();
+  }
+
+  getCountGlobalReportsNotifications(): Observable<number> {
+    return this._authStore.user$.pipe(
+      map(user => {
+        if (!user || !user.notification.reports) return 0;
+        return user.notification.reports;
+      })
+    );
+  }
+
+  getAnalyseStatsByYear(reports: Report[]): ReportStatsAnalysis {
+    const yearMap = new Map<number, { reports: number; reporters: Set<UUIDTypes> }>();
+
+    for (const report of reports) {
+      const date = new Date(report.createdAt);
+      const year = date.getFullYear();
+      const reporterId = report.reporterUser?.id;
+
+      if (!yearMap.has(year)) {
+        yearMap.set(year, { reports: 0, reporters: new Set() });
+      }
+
+      const stats = yearMap.get(year)!;
+      stats.reports++;
+      if (reporterId) stats.reporters.add(reporterId);
+    }
+
+    const sorted = Array.from(yearMap.entries()).sort((a, b) => b[0] - a[0]);
+
+    const yearsOfStats = sorted.map(([year]) => year);
+    const yearOptions = yearsOfStats.map(year => ({ label: year, value: year }));
+    const selectedYear = yearOptions.length > 0 ? yearOptions[0].value : new Date().getFullYear();
+
+    const countReportsUserByYear = sorted.map(([year, { reports }]) => ({ year, reports }));
+    const countReporterUserByYear = sorted.map(([year, { reporters }]) => ({ year, uniqueReporters: reporters.size }));
+
+    return {
+      yearsOfStats,
+      yearOptions,
+      selectedYear,
+      countReportsUserByYear,
+      countReporterUserByYear,
+    };
+  }
+
+  banUser(userId: UUIDTypes, userType: string): void {
+    this._reportApiService
+      .banUser(userId, userType)
+      .pipe(
+        tap((): void => {
+          this._store.dispatch(updateNotificationReports({ updateCount: -1 }));
         })
       )
       .subscribe();

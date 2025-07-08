@@ -21,53 +21,10 @@
             </form>
           </div>
         </div>
-
-        <div class="action-admin">
-          <div class="actions-reporter-reported">
-            <div class="actions-reporter">
-              <p>Plaignant</p>
-              <div class="buttons">
-                <p-button>
-                  <i class="fa-regular fa-paper-plane"></i>
-                  Contacter
-                </p-button>
-                <p-button severity="warn">
-                  <i class="fa-solid fa-user-xmark"></i>
-                  Bannir
-                </p-button>
-              </div>
-            </div>
-            <div class="actions-reported">
-              <p>Mis en cause</p>
-              <div class="buttons">
-                <p-button>
-                  <i class="fa-regular fa-paper-plane"></i>
-                  Contacter
-                </p-button>
-                <p-button severity="warn">
-                  <i class="fa-solid fa-user-xmark"></i>
-                  Bannir
-                </p-button>
-              </div>
-            </div>
-          </div>
-        </div>
-        @if (reportSelected.status === StatusReportEnum.InProgress) {
-          <div class="save-admin">
-            <p-button class="close-report" severity="success" type="submit" (click)="saveReport()">
-              <i class="fa-regular fa-floppy-disk"></i>
-              Sauvegarder
-            </p-button>
-            <p-button class="close-report" severity="success" type="submit" (click)="closeReport()">
-              <i class="fa-solid fa-check"></i>
-              Clôturer
-            </p-button>
-          </div>
-        } @else {
-          <div class="save-admin">
-            <h2>Signalement Clos</h2>
-          </div>
-        }
+        <app-report-details-action-admin
+          [reportForm]="reportForm"
+          [visible]="visible"
+          [reportSelected]="reportSelected"></app-report-details-action-admin>
       </div>
       <div class="card previous-report">
         <div class="previous-report-content">
@@ -78,25 +35,9 @@
               [cols]="otherReportsTableColumns"
               [data]="otherReportsTableData"></app-table-data>
           </div>
-          <div class="statistics">
-            <h3>Statistiques</h3>
-            <div class="stats-details">
-              <div class="select-year">
-                <p>Année :</p>
-                <p-select [options]="yearOptions" [(ngModel)]="selectedYear" placeholder="Sélectionnez une année"></p-select>
-              </div>
-              <div class="details-reports-stats">
-                <div>
-                  <p>Total signalements</p>
-                  <p>{{ getStatsByYear(selectedYear).totalReports }}</p>
-                </div>
-                <div>
-                  <p>Utilisateurs uniques</p>
-                  <p>{{ getStatsByYear(selectedYear).uniqueReporters }}</p>
-                </div>
-              </div>
-            </div>
-          </div>
+          @if (allReportedUserReports | async; as reports) {
+            <app-report-details-stats [reports]="reports"></app-report-details-stats>
+          }
         </div>
       </div>
     </div>

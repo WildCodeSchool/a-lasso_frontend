@@ -27,4 +27,8 @@ export class ReportApiService {
   updateReport(report: Report): Observable<boolean> {
     return this._http.put<boolean>(`${this._apiUrl}/report`, report);
   }
+
+  banUser(userId: UUIDTypes, userType: string): Observable<boolean> {
+    return this._http.get<boolean>(`${this._apiUrl}/report/ban/${userId}/${userType}`);
+  }
 }
