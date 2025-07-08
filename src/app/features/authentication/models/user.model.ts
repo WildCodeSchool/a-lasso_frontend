@@ -1,5 +1,5 @@
 import { UUIDTypes } from 'uuid';
-import { Image } from '../../activity/models/activity.model';
+import { Image, Localisation } from '../../activity/models/activity.model';
 import { Statistic } from '../../association/models/association.model';
 
 export enum UserType {
@@ -89,8 +89,7 @@ export type Address = {
   zipCode: string;
   city: string;
   country: string;
-  lat: number;
-  lon: number;
+  displayName: string;
 };
 
 export type AssociationRegister = {
@@ -100,6 +99,7 @@ export type AssociationRegister = {
   password: string;
   mobile_phone: string;
   address: Address;
+  location: Localisation;
 };
 
 export type AssociationLogin = {

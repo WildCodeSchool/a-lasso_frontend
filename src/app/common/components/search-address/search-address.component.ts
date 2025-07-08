@@ -32,6 +32,7 @@ export class SearchAddressComponent extends DestroyableComponent implements OnIn
   private _activityFacadeService: ActivityFacadeService = inject(ActivityFacadeService);
   @Input() formGroup?: FormGroup;
   @Input({ required: true }) fieldConfig: FormField;
+  @Input() submitted!: boolean;
 
   searchAddressResults$!: Observable<AddressApiResult[] | null>;
 

@@ -7,8 +7,8 @@ import { UUIDTypes } from 'uuid';
 import { Message } from '../models/message.model';
 import { MessageCreation } from '../models/messageCreation';
 import { APIResponseToggleRegister } from '../models/api-reponse.model';
-import { NewActivityCreation } from '../models/activity-creation.model';
 import { AddressApiResult } from '../../authentication/models/user.model';
+import { ActivityFormData } from '../models/activity-creation.model';
 
 @Injectable({
   providedIn: 'root',
@@ -60,8 +60,8 @@ export class ActivitiesApiService {
     });
   }
 
-  publishNewActivity(newActivity: NewActivityCreation): Observable<Activity> {
-    return this._http.post<Activity>(`${this._apiUrl}/activities/publish`, newActivity);
+  saveActivity(activity: ActivityFormData): Observable<Activity> {
+    return this._http.post<Activity>(`${this._apiUrl}/activities`, activity);
   }
 
   deleteActivity(activityId: UUIDTypes): Observable<void> {

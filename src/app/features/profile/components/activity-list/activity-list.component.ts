@@ -8,6 +8,8 @@ import { ActivityCardComponent } from 'src/app/features/activity/components/acti
 import { Activity } from 'src/app/features/activity/models/activity.model';
 import { ActivityFacadeService } from 'src/app/features/activity/services/activity-facade.service';
 import { AssociationProfileFacadeService } from '../../services/association-profile-facade.service';
+import { ActivityStatusEnum } from 'src/app/features/activity/models/activity-creation.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-activity-list',
@@ -19,6 +21,9 @@ import { AssociationProfileFacadeService } from '../../services/association-prof
 export class ActivityListComponent {
   @Input() activities: Activity[] = [];
 
+  public ActivityStatusEnum = ActivityStatusEnum;
+
+  private _router = inject(Router);
   private _confirmation = inject(ConfirmationService);
   private _toast = inject(MessageService);
   private _profileFacade = inject(AssociationProfileFacadeService);
@@ -42,5 +47,9 @@ export class ActivityListComponent {
         showSuccessToast(this._toast);
       },
     });
+  }
+
+  onEditActivity(activityId: string): void {
+    this._router.navigate([`/activity/creation/${activityId}`]);
   }
 }

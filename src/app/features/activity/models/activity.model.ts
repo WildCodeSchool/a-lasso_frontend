@@ -1,5 +1,7 @@
 import { UUIDTypes } from 'uuid';
 import { NavigationItems } from '../../../common/models/toggle-menu';
+import { ActivityStatusEnum } from './activity-creation.model';
+import { Address } from '../../authentication/models/user.model';
 
 export enum ThemeName {
   Social = 'Social',
@@ -17,7 +19,6 @@ export type Theme = {
 };
 
 export type Localisation = {
-  city: string;
   longitude: number;
   latitude: number;
 };
@@ -41,8 +42,10 @@ export type Image = {
 
 export type Activity = {
   id: string;
+  status: ActivityStatusEnum;
   title: string;
   description: string;
+  address: Address;
   images: Image[];
   association: AssociationActivity;
   location: Localisation;

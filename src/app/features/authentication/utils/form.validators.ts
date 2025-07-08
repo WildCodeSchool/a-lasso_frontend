@@ -8,8 +8,9 @@ export function passwordsMatchValidator(group: AbstractControl): ValidationError
 
 export function photoRequiredValidator(): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {
-    const isPhotoUploaded = control.value;
-    return isPhotoUploaded ? null : { photoRequired: true };
+    const value = control.value;
+    const hasImage = value?.image;
+    return hasImage ? null : { photoRequired: true };
   };
 }
 

@@ -1,28 +1,28 @@
 <div class="add-photo-area">
   @for (picture of picturesChosen; track $index) {
-    <div class="add-photo-container">
-      <button
-        type="button"
-        class="photo-box"
-        (click)="openSelectionModal($index)"
-        (keydown.enter)="openSelectionModal($index)"
-        (keydown.space)="openSelectionModal($index)">
-        @if (!picture) {
-          <i class="fa-solid fa-plus"></i>
-          <i class="fa-solid fa-camera"></i>
-          <p class="add-photo">Ajouter une photo</p>
-        } @else {
-          <img [src]="picture" alt="Preview" />
-          <button type="button" class="remove-photo-btn" (click)="removePicture($index); $event.stopPropagation()" aria-label="Supprimer la photo">
-            &times;
-          </button>
-        }
+  <div class="add-photo-container">
+    <button
+      type="button"
+      class="photo-box"
+      (click)="openSelectionModal($index)"
+      (keydown.enter)="openSelectionModal($index)"
+      (keydown.space)="openSelectionModal($index)">
+      @if (!picture) {
+      <i class="fa-solid fa-plus"></i>
+      <i class="fa-solid fa-camera"></i>
+      <p class="add-photo">Ajouter une photo</p>
+      } @else {
+      <img [src]="picture" alt="Preview" />
+      <button type="button" class="remove-photo-btn" (click)="removePicture($index); $event.stopPropagation()" aria-label="Supprimer la photo">
+        &times;
       </button>
+      }
+    </button>
 
-      <input type="file" accept="image/*" [id]="'fileInput' + $index" class="input-import-image" (change)="handleFileInput($event, $index)" />
+    <input type="file" accept="image/*" [id]="'fileInput' + $index" class="input-import-image" (change)="handleFileInput($event, $index)" />
 
-      <app-input-field-error [control]="formGroup.get('photo_' + ($index + 1))" [fieldName]="'photo_' + ($index + 1)" />
-    </div>
+    <app-input-field-error [submitted]="submitted" [control]="formGroup.get('photo_' + ($index + 1))" [fieldName]="'photo_' + ($index + 1)" />
+  </div>
   }
 
   <div class="modal-container">
@@ -34,24 +34,23 @@
       contentStyleClass="custom-dialog-content">
       <div class="modal-options">
         <div class="existing-photos">
-          @if (existingImages$ | async; as existingImages) {
-            @for (pic of existingImages; track pic.id) {
-              <img
-                [src]="pic.image"
-                class="selectable-photo"
-                (click)="selectExistingPicture(pic.image, modalTargetIndex, pic.id)"
-                (keydown.enter)="selectExistingPicture(pic.image, modalTargetIndex, pic.id)"
-                (keydown.space)="selectExistingPicture(pic.image, modalTargetIndex, pic.id)"
-                tabindex="0"
-                alt="photos d'une ancienne activité" />
-            }
-          }
+          @if (existingImages$ | async; as existingImages) { @for (pic of existingImages; track pic.id) {
+          <img
+            [src]="pic.image"
+            class="selectable-photo"
+            (click)="selectExistingPicture(pic.image, modalTargetIndex, pic.id)"
+            (keydown.enter)="selectExistingPicture(pic.image, modalTargetIndex, pic.id)"
+            (keydown.space)="selectExistingPicture(pic.image, modalTargetIndex, pic.id)"
+            tabindex="0"
+            alt="photos d'une ancienne activité" />
+          } }
         </div>
       </div>
 
       <div class="footer-buttons">
         <app-single-button
           [id]="1"
+          [disabled]="disabledLoadMoreButton"
           [type]="'button'"
           (buttonClicked)="loadMorePictures()"
           [styleClass]="ButtonStyleClass.defaultWhite"

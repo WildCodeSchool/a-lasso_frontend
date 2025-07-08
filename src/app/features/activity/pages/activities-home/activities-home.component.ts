@@ -11,6 +11,7 @@ import { Activity, ActivitySearchFilters, ThemeName } from '../../models/activit
 import { ActivityFacadeService } from '../../services/activity-facade.service';
 import { ActivityFilterSearchComponent } from '../../components/activity-filter-search/activity-filter-search.component';
 import { NavigationItems } from '../../../../common/models/toggle-menu';
+import { ActivityStatusEnum } from '../../models/activity-creation.model';
 
 @Component({
   selector: 'app-activities-home',
@@ -42,6 +43,7 @@ export class ActivitiesHomeComponent implements OnInit {
   ngOnInit(): void {
     this._activityFacadeService.getActivityThemesFromApi();
     this._activityFacadeService.getAllActivitiesFromApi();
+    this._applyFilters();
   }
 
   handleNavigation(title: string): void {
@@ -62,10 +64,19 @@ export class ActivitiesHomeComponent implements OnInit {
     this.filteredActivities$ = this.activities$.pipe(
       map(activities =>
         activities.filter(
-          activity => this._matchesTheme(activity) && this._matchesSearch(activity) && this._matchesDate(activity) && this._matchesLocation(activity)
+          activity =>
+            this._matchesTheme(activity) &&
+            this._matchesSearch(activity) &&
+            this._matchesDate(activity) &&
+            this._matchesLocation(activity) &&
+            this._isNotADraft(activity)
         )
       )
     );
+  }
+
+  private _isNotADraft(activity: Activity): boolean {
+    return activity.status !== ActivityStatusEnum.DRAFT;
   }
 
   private _matchesTheme(activity: Activity): boolean {
@@ -91,6 +102,6 @@ export class ActivitiesHomeComponent implements OnInit {
   private _matchesLocation(activity: Activity): boolean {
     if (!this.searchFilters.location) return true;
 
-    return activity.location.city.toLowerCase().includes(this.searchFilters.location.toLowerCase());
+    return activity.address.city.toLowerCase().includes(this.searchFilters.location.toLowerCase());
   }
 }

@@ -20,12 +20,16 @@ import {
   addressRequiredValidator,
   dateRequiredValidator,
 } from 'src/app/features/authentication/utils/form.validators';
-import { NewActivityCreation } from '../../models/activity-creation.model';
+import { ActivityStatusEnum, ActivityFormData } from '../../models/activity-creation.model';
 import { SearchAddressComponent } from '../../../../common/components/search-address/search-address.component';
 import { ActivityFacadeService } from '../../services/activity-facade.service';
 import { InputFieldErrorComponent } from 'src/app/common/components/input-field-error/input-field-error.component';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ButtonStyleClass } from 'src/app/common/models/button';
 import { getFormattedAddress } from 'src/app/common/utils/address.utils';
-import { Router } from '@angular/router';
+import { BehaviorSubject } from 'rxjs';
+import { AsyncPipe } from '@angular/common';
+import { Activity } from '../../models/activity.model';
 
 @Component({
   selector: 'app-activity-creation',
@@ -39,6 +43,7 @@ import { Router } from '@angular/router';
     InputFieldErrorComponent,
     TextareaFieldComponent,
     SearchAddressComponent,
+    AsyncPipe,
   ],
 
   templateUrl: './activity-creation.component.html',
@@ -48,9 +53,16 @@ export class ActivityCreationComponent implements OnInit {
   private _activityFacadeService: ActivityFacadeService = inject(ActivityFacadeService);
   private _fb: FormBuilder = new FormBuilder();
   private _router: Router = inject(Router);
+  private _route: ActivatedRoute = inject(ActivatedRoute);
+  private _editedActivityId = this._route.snapshot.paramMap.get('id');
+  private _loadedActivityFromDraft: Activity;
 
+  hasLoadedDraft$ = new BehaviorSubject<boolean>(false);
+
+  submitted = false;
   formThemeField = 'selectedThemesName';
   descriptionMaxLength = ACTIVITY_DESCRIPTION_MAX_LENGTH;
+  ButtonStyleClass = ButtonStyleClass;
 
   activityForm: FormGroup = this._fb.group({
     title: ['', [Validators.required, Validators.maxLength(MAX_LENGTH), Validators.minLength(MIN_LENGTH)]],
@@ -87,50 +99,100 @@ export class ActivityCreationComponent implements OnInit {
 
   ngOnInit(): void {
     this._activityFacadeService.getActivityThemesFromApi();
+
+    this._loadDraftData();
   }
 
   onSubmit(): void {
+    this.submitted = true;
     this._triggerValidatorsCheck();
-    this._publishActivity();
+    this._submitActivity(ActivityStatusEnum.PUBLISHED);
   }
 
+  saveNewActivityAsDraft(): void {
+    this.submitted = false;
+    this._submitActivity(ActivityStatusEnum.DRAFT);
+  }
   private _triggerValidatorsCheck(): void {
     if (this.activityForm.invalid) {
       this.activityForm.markAllAsTouched();
-      return;
     }
   }
 
-  private _publishActivity(): void {
-    if (this.activityForm.invalid) {
+  private _submitActivity(status: ActivityStatusEnum): void {
+    if (status === ActivityStatusEnum.PUBLISHED && this.activityForm.invalid) {
+      this.activityForm.markAllAsTouched();
       return;
     }
 
-    const data: NewActivityCreation = this._mapFormToActivityData();
+    const data: ActivityFormData = this._mapFormToActivityData(status);
 
-    this._activityFacadeService.publishNewActivity(data).subscribe({
+    this._activityFacadeService.saveActivity(data).subscribe({
       next: () => {
         this._router.navigate(['/profile/association/activities']);
       },
     });
   }
 
-  private _mapFormToActivityData(): NewActivityCreation {
+  private _mapFormToActivityData(status: ActivityStatusEnum): ActivityFormData {
     const formValue = this.activityForm.value;
 
     return {
+      id: this._editedActivityId,
       images: [formValue.photo_1, formValue.photo_2, formValue.photo_3]
-        .filter(img => img.id || img.image)
+        .filter(img => img?.id || img?.image)
         .map(img => ({
           id: img.id,
           base64: img.image,
         })),
-      title: formValue.title,
-      requestedVolunteers: formValue.requestedVolunteers,
-      dateTime: format(new Date(formValue.date), 'yyyy-MM-dd') + 'T' + formValue.hour + ':00',
-      address: getFormattedAddress(formValue.matchedAddress),
+      title: formValue.title || '',
+      requestedVolunteers: Number(formValue.requestedVolunteers) || 0,
+      dateTime: formValue.date && formValue.hour ? format(new Date(formValue.date), 'yyyy-MM-dd') + 'T' + formValue.hour + ':00' : '',
+      address:
+        status === ActivityStatusEnum.DRAFT && this._editedActivityId
+          ? this._loadedActivityFromDraft.address // TODO : FIX THIS SHIT
+          : getFormattedAddress(formValue.matchedAddress),
+      location:
+        status === ActivityStatusEnum.DRAFT && this._editedActivityId
+          ? this._loadedActivityFromDraft.location // TODO : FIX THIS SHIT
+          : {
+              longitude: formValue.matchedAddress?.lon ? parseFloat(formValue.matchedAddress.lon) : 0,
+              latitude: formValue.matchedAddress?.lat ? parseFloat(formValue.matchedAddress.lat) : 0,
+            },
+
       themes: formValue.selectedThemesName,
       description: formValue.description,
+      status,
     };
+  }
+
+  navigateToHomePage(): void {
+    this._router.navigate(['/']);
+  }
+
+  private _loadDraftData(): void {
+    if (this._editedActivityId) {
+      this._activityFacadeService.getActivityFromStore$(this._editedActivityId).subscribe({
+        next: activity => {
+          this.activityForm.patchValue({
+            title: activity.title,
+            requestedVolunteers: activity.participants.max,
+            date: activity.date ? new Date(activity.date) : '',
+            hour: activity.date ? format(new Date(activity.date), 'HH:mm') : '',
+            matchedAddress: activity.address.displayName || null,
+            selectedThemesName: activity.themesName || [],
+            description: activity.description,
+            photo_1: activity.images[0] || { id: null, image: null },
+            photo_2: activity.images[1] || { id: null, image: null },
+            photo_3: activity.images[2] || { id: null, image: null },
+          });
+          this.hasLoadedDraft$.next(true);
+          this._loadedActivityFromDraft = activity;
+        },
+        error: err => {
+          console.error('Failed to load activity', err);
+        },
+      });
+    }
   }
 }

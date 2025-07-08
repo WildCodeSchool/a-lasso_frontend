@@ -10,9 +10,7 @@
   .card {
     width: 95%;
     max-width: 380px;
-    transition:
-      transform 0.3s ease,
-      box-shadow 0.3s ease;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
     display: flex;
     flex-direction: column;
     position: relative;
@@ -133,6 +131,38 @@
         background: var(--secondary-error-color) !important;
         color: var(--background-color-white) !important;
         border: 1.5px solid var(--secondary-error-color) !important;
+      }
+    }
+
+    .edit-btn {
+      position: absolute;
+      bottom: 15px;
+      right: 65px;
+      z-index: 1000;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 1.5px solid var(--primary-dark-color);
+      background: var(--background-color-white);
+      color: var(--primary-dark-color);
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      i.pi-pencil {
+        color: var(--primary-dark-color);
+        font-size: 1.2rem;
+      }
+
+      &:hover {
+        background: var(--primary-dark-color);
+        transform: scale(1.05);
+        cursor: pointer;
+
+        i.pi-pencil {
+          color: var(--font-color-white);
+        }
       }
     }
   }

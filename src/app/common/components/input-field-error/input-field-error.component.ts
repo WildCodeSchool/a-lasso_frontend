@@ -27,4 +27,5 @@ export class InputFieldErrorComponent {
   @Input() fieldName = '';
   @Input() showPasswordMismatchError = false;
   @Input() globalError: string | null = null;
+  @Input() submitted = true;
 }

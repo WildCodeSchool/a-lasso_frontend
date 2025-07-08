@@ -10,7 +10,7 @@ import { ButtonClicked, ButtonStyleClass } from '../../models/button';
 })
 export class SingleButtonComponent {
   @Output() buttonClicked: EventEmitter<ButtonClicked> = new EventEmitter<ButtonClicked>();
-  @Input({ required: true }) id!: number;
+  @Input({ required: true }) id!: number | string;
   @Input() label!: string;
   @Input() icon?: string;
   @Input() ariaLabel?: string;
