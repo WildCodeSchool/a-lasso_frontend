@@ -67,16 +67,11 @@ export type AddressApiResult = {
   display_name: string;
   lat: string;
   lon: string;
-  address: {
+  address?: {
     house_number?: string;
     road?: string;
-    suburb?: string;
-    neighbourhood?: string;
     postcode?: string;
     city?: string;
-    town?: string;
-    village?: string;
-    county?: string;
     state?: string;
     country?: string;
     country_code?: string;

@@ -5,7 +5,7 @@ export function getFormattedAddress(matchedApiAddress: AddressApiResult): Addres
     houseNumber: matchedApiAddress?.address?.house_number || '',
     streetName: matchedApiAddress?.address?.road || '',
     zipCode: matchedApiAddress?.address?.postcode || '',
-    city: matchedApiAddress?.address?.town || '',
+    city: matchedApiAddress?.address?.city || '',
     country: matchedApiAddress?.address?.country || '',
     displayName: matchedApiAddress?.display_name || '',
   };

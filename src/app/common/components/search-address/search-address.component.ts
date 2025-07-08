@@ -1,5 +1,5 @@
 import { Component, Input, OnInit, inject } from '@angular/core';
-import { debounceTime, Observable, of, startWith, switchMap } from 'rxjs';
+import { debounceTime, Observable, of, switchMap, startWith } from 'rxjs';
 import { ActivityFacadeService } from '../../../features/activity/services/activity-facade.service';
 import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SelectModule } from 'primeng/select';

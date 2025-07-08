@@ -50,6 +50,7 @@ export class RegisterAssociationFormComponent {
   ];
 
   onSubmit(): void {
+    event?.preventDefault();
     if (this.form.invalid) {
       this.form.markAllAsTouched();
       return;

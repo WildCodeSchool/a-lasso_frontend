@@ -15,8 +15,8 @@
   <p class="max-length" [class.max-length--error]="fieldContentLength > maxlength">{{ fieldContentLength }} / {{ maxlength }} caractères maximum</p>
 
   @if (showSaveButton) {
-  <button pButton type="button" class="save-button" (click)="save.emit()">
-    <i class="fa-solid fa-floppy-disk"></i>
-  </button>
+    <button pButton type="button" class="save-button" (click)="save.emit()">
+      <i class="fa-solid fa-floppy-disk"></i>
+    </button>
   }
 </form>
