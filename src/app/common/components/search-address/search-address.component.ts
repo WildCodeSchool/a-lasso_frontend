@@ -1,5 +1,5 @@
 import { Component, Input, OnInit, inject, DestroyRef } from '@angular/core';
-import { debounceTime, Observable, of, switchMap } from 'rxjs';
+import { catchError, debounceTime, Observable, of, switchMap } from 'rxjs';
 import { ActivityFacadeService } from '../../../features/activity/services/activity-facade.service';
 import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SelectModule } from 'primeng/select';
@@ -30,21 +30,29 @@ export class SearchAddressComponent implements OnInit {
   ngOnInit(): void {
     if (!this.formGroup || !this.fieldConfig) return;
 
-    const control = this.formGroup!.get(this.fieldConfig.name);
+    const control = this.formGroup.get(this.fieldConfig.name);
     if (control) {
+      const debounceTimeDuration = 600;
+      const minimumQueryLength = 3;
+
       control.valueChanges
         .pipe(
-          debounceTime(600),
+          debounceTime(debounceTimeDuration),
           switchMap((query: string): Observable<AddressApiResult[] | null> => {
-            if (query && query.length >= 3) {
-              return this._activityFacadeService.searchAdress(query);
+            if (query && query.length >= minimumQueryLength) {
+              return this._activityFacadeService.searchAdress(query).pipe(
+                catchError(error => {
+                  console.error('Erreur lors de la recherche d’adresse :', error);
+                  return of([]);
+                })
+              );
             }
             return of(null);
           }),
           takeUntilDestroyed(this._destroyRef)
         )
-        .subscribe((results: AddressApiResult[]) => {
-          this.searchAdressResults = results;
+        .subscribe((results: AddressApiResult[] | null) => {
+          this.searchAdressResults = results || [];
         });
     }
   }
