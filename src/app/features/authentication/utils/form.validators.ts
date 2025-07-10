@@ -9,9 +9,7 @@ export function passwordsMatchValidator(group: AbstractControl): ValidationError
 export function photoRequiredValidator(): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {
     const value = control.value;
-    console.log('value', value);
     const hasImage = value?.image || value?.id;
-    console.log('hasImage', hasImage);
     return hasImage ? null : { photoRequired: true };
   };
 }
@@ -36,13 +34,7 @@ export function addressRequiredValidator(): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {
     const value = control.value;
 
-    if (
-      typeof value === 'object' &&
-      value !== null &&
-      typeof value.display_name === 'string' &&
-      typeof value.lat === 'string' &&
-      typeof value.lon === 'string'
-    ) {
+    if (typeof value === 'object' && value !== null) {
       return null;
     }
 

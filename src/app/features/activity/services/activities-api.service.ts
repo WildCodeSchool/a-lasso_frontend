@@ -47,7 +47,7 @@ export class ActivitiesApiService {
     return this._http.post<Message>(`${this._apiUrl}/messages`, message);
   }
 
-  getAdressFromApi(query: string): Observable<AddressApiResult[]> {
+  getAddressFromApi(query: string): Observable<AddressApiResult[]> {
     const url = `https://api-adresse.data.gouv.fr/search/?q=${encodeURIComponent(query)}&limit=10`;
     return this._http
       .get<any>(url)
@@ -69,17 +69,17 @@ export class ActivitiesApiService {
     const { houseNumber, road } = this._parseHouseNumberAndRoad(name);
 
     return {
-      display_name: label,
-      lat: String(lat),
-      lon: String(lon),
+      displayName: label,
+      latitude: String(lat),
+      longitude: String(lon),
       address: {
-        house_number: houseNumber,
+        houseNumber: houseNumber,
         road: road,
-        postcode: postcode,
+        postCode: postcode,
         city: city,
         state: context,
         country: 'France',
-        country_code: 'fr',
+        countryCode: 'fr',
       },
     };
   }

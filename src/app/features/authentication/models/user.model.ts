@@ -64,17 +64,17 @@ export type ActivitiesUserInfos = {
 };
 
 export type AddressApiResult = {
-  display_name: string;
-  lat: string;
-  lon: string;
+  displayName: string;
+  latitude: string;
+  longitude: string;
   address?: {
-    house_number?: string;
+    houseNumber?: string;
     road?: string;
-    postcode?: string;
+    postCode?: string;
     city?: string;
     state?: string;
     country?: string;
-    country_code?: string;
+    countryCode?: string;
   };
 };
 

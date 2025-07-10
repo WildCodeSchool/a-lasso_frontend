@@ -66,7 +66,6 @@ export class RegisterModalComponent extends DestroyableComponent {
   onRegisterAssociation(form: FormGroup): void {
     const value = form.value;
 
-    console.log('Association form value:', value);
     const data: AssociationRegister = {
       siret: value.siret,
       name: value.name,
@@ -79,8 +78,6 @@ export class RegisterModalComponent extends DestroyableComponent {
         longitude: value.address?.lon ? parseFloat(value.address.lon) : 0,
       },
     };
-
-    console.log('Association data:', data);
 
     this._authService
       .registerAssociation(data)

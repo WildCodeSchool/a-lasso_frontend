@@ -39,13 +39,12 @@ export class ActivityFilterComponent implements OnInit, OnChanges {
 
   loadDraftThemes(): void {
     if (this.formGroup?.value?.selectedThemesName) {
-      this.selected = this.formGroup.value.selectedThemesName;
+      this.selected = [...this.formGroup.value.selectedThemesName];
     }
   }
 
   updateSelectedThemes(theme: ButtonClicked): void {
     const index: number = this.selected.findIndex(t => t === theme.label);
-
     if (index > -1) {
       this.selected.splice(index, 1);
     } else {

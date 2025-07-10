@@ -29,7 +29,10 @@ import { ButtonStyleClass } from 'src/app/common/models/button';
 import { getFormattedAddress } from 'src/app/common/utils/address.utils';
 import { BehaviorSubject } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
-import { Activity } from '../../models/activity.model';
+import { Activity, Localisation } from '../../models/activity.model';
+import { Address, AddressApiResult } from 'src/app/features/authentication/models/user.model';
+
+export type AddressWithLocation = Address & Localisation;
 
 @Component({
   selector: 'app-activity-creation',
@@ -99,7 +102,6 @@ export class ActivityCreationComponent implements OnInit {
 
   ngOnInit(): void {
     this._activityFacadeService.getActivityThemesFromApi();
-
     this._loadDraftData();
   }
 
@@ -137,6 +139,8 @@ export class ActivityCreationComponent implements OnInit {
   private _mapFormToActivityData(status: ActivityStatusEnum): ActivityFormData {
     const formValue = this.activityForm.value;
 
+    const { address, location } = this._getAddressAndLocation(formValue.matchedAddress);
+
     return {
       id: this._editedActivityId,
       images: [formValue.photo_1, formValue.photo_2, formValue.photo_3]
@@ -148,22 +152,41 @@ export class ActivityCreationComponent implements OnInit {
       title: formValue.title || '',
       requestedVolunteers: Number(formValue.requestedVolunteers) || 0,
       dateTime: formValue.date && formValue.hour ? format(new Date(formValue.date), 'yyyy-MM-dd') + 'T' + formValue.hour + ':00' : '',
-      address:
-        status === ActivityStatusEnum.DRAFT && this._editedActivityId
-          ? this._loadedActivityFromDraft.address // TODO : FIX THIS SHIT
-          : getFormattedAddress(formValue.matchedAddress),
-      location:
-        status === ActivityStatusEnum.DRAFT && this._editedActivityId
-          ? this._loadedActivityFromDraft.location // TODO : FIX THIS SHIT
-          : {
-              longitude: formValue.matchedAddress?.lon ? parseFloat(formValue.matchedAddress.lon) : 0,
-              latitude: formValue.matchedAddress?.lat ? parseFloat(formValue.matchedAddress.lat) : 0,
-            },
-
+      address: address,
+      location: location,
       themes: formValue.selectedThemesName,
       description: formValue.description,
       status,
     };
+  }
+
+  private _getAddressAndLocation(address: AddressWithLocation | AddressApiResult): { address: Address; location: Localisation } {
+    const formattedAddress: Address = this._isAddress(address) ? address : getFormattedAddress(address);
+
+    const isFormattedAddressComplete = Object.values(formattedAddress).every(val => val && val !== '');
+
+    const shouldFallbackToDraftAddress = !isFormattedAddressComplete && status === ActivityStatusEnum.DRAFT && this._editedActivityId;
+
+    return {
+      address: shouldFallbackToDraftAddress ? this._loadedActivityFromDraft.address : formattedAddress,
+      location: shouldFallbackToDraftAddress
+        ? this._loadedActivityFromDraft.location
+        : {
+            longitude: address?.longitude ? parseFloat(address.longitude as string) : 0,
+            latitude: address?.latitude ? parseFloat(address.latitude as string) : 0,
+          },
+    };
+  }
+
+  private _isAddress(address: Address | AddressApiResult | null | undefined): address is Address {
+    return (
+      !!address &&
+      typeof (address as Address).streetName === 'string' &&
+      typeof (address as Address).zipCode === 'string' &&
+      typeof (address as Address).city === 'string' &&
+      typeof (address as Address).country === 'string' &&
+      typeof (address as Address).displayName === 'string'
+    );
   }
 
   navigateToHomePage(): void {
@@ -173,13 +196,15 @@ export class ActivityCreationComponent implements OnInit {
   private _loadDraftData(): void {
     if (this._editedActivityId) {
       this._activityFacadeService.getActivityFromStore$(this._editedActivityId).subscribe({
-        next: activity => {
+        next: (activity: Activity) => {
+          const addressAndLocalisation = { ...activity.address, ...activity.location };
+
           this.activityForm.patchValue({
             title: activity.title,
             requestedVolunteers: activity.participants.max,
             date: activity.date ? new Date(activity.date) : '',
             hour: activity.date ? format(new Date(activity.date), 'HH:mm') : '',
-            matchedAddress: activity.address.displayName || null,
+            matchedAddress: addressAndLocalisation || null,
             selectedThemesName: activity.themesName || [],
             description: activity.description,
             photo_1: activity.images[0] || { id: null, image: null },

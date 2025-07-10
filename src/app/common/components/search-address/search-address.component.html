@@ -5,11 +5,12 @@
         <p-autoComplete
           [formControlName]="fieldConfig.name"
           [suggestions]="searchAddressResults$ | async"
-          field="display_name"
+          field="displayName"
           placeholder="Entrez une adresse"
           [minLength]="3"
           [dropdown]="true"
           [virtualScroll]="true"
+          [forceSelection]="false"
           [emptyMessage]="'Aucune adresse trouvée'">
         </p-autoComplete>
         @if (formGroup?.get(fieldConfig.name)?.invalid && formGroup?.get(fieldConfig.name)?.touched) {

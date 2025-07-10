@@ -44,6 +44,7 @@ export class ActivityListComponent {
       acceptButtonStyleClass: 'p-button-danger',
       rejectButtonStyleClass: 'p-button-secondary',
       accept: () => {
+        this._activitiesFacade.deleteActivityAndUpdateStore(activityId).subscribe();
         showSuccessToast(this._toast);
       },
     });
