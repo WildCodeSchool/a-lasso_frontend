@@ -1,0 +1,15 @@
+#ETAPE 1: build de l'app A l'asso
+FROM node:alpine AS build
+WORKDIR /app
+# installation des dépendances vers le conteneur
+COPY package.json ./
+RUN npm install
+COPY . ./
+RUN npm run build:production
+
+#ETAPE 2: création de l'image nginx qui va servir les fichiers statiques du conteneur
+FROM nginx:alpine
+COPY ./nginx/nginx.conf /etc/nginx/conf.d/default.conf
+WORKDIR /usr/share/nginx/html
+COPY --from=build /app/dist/frontend/browser ./
+EXPOSE 80
