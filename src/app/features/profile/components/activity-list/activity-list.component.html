@@ -4,7 +4,12 @@
   } @else {
     <div class="card-grid">
       @for (activity of activities; track activity.id) {
-        <app-activity-card [activity]="activity" [showDeleteButton]="true" (delete)="onDeleteActivity($event)" />
+        <app-activity-card
+          [activity]="activity"
+          [showDeleteButton]="true"
+          [showEditButton]="activity.status === ActivityStatusEnum.DRAFT"
+          (delete)="onDeleteActivity($event)"
+          (edit)="onEditActivity($event)" />
       }
     </div>
   }

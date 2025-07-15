@@ -1,5 +1,5 @@
 import { UUIDTypes } from 'uuid';
-import { Image } from '../../activity/models/activity.model';
+import { Image, Localisation } from '../../activity/models/activity.model';
 import { Statistic } from '../../association/models/association.model';
 
 export enum UserType {
@@ -64,22 +64,17 @@ export type ActivitiesUserInfos = {
 };
 
 export type AddressApiResult = {
-  display_name: string;
-  lat: string;
-  lon: string;
-  address: {
-    house_number?: string;
+  displayName: string;
+  latitude: string;
+  longitude: string;
+  address?: {
+    houseNumber?: string;
     road?: string;
-    suburb?: string;
-    neighbourhood?: string;
-    postcode?: string;
+    postCode?: string;
     city?: string;
-    town?: string;
-    village?: string;
-    county?: string;
     state?: string;
     country?: string;
-    country_code?: string;
+    countryCode?: string;
   };
 };
 
@@ -89,8 +84,7 @@ export type Address = {
   zipCode: string;
   city: string;
   country: string;
-  lat: number;
-  lon: number;
+  displayName: string;
 };
 
 export type AssociationRegister = {
@@ -100,6 +94,7 @@ export type AssociationRegister = {
   password: string;
   mobile_phone: string;
   address: Address;
+  location: Localisation;
 };
 
 export type AssociationLogin = {

@@ -1,4 +1,4 @@
-import { Component, inject, Input, OnInit } from '@angular/core';
+import { Component, inject, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { ImageCroppedEvent, ImageCropperComponent } from 'ngx-image-cropper';
 import { MessageService } from 'primeng/api';
 import { FormGroup } from '@angular/forms';
@@ -18,11 +18,13 @@ import { AsyncPipe } from '@angular/common';
   styleUrls: ['./activity-add-photo.component.scss'],
   imports: [InputFieldErrorComponent, DialogModule, SingleButtonComponent, ImageCropperComponent, AsyncPipe],
 })
-export class ActivityAddPhotoComponent implements OnInit {
+export class ActivityAddPhotoComponent implements OnInit, OnChanges {
   private _associationFacadeService: AssociationFacadeService = inject(AssociationFacadeService);
   private _toast: MessageService = inject(MessageService);
 
+  @Input() hasLoadedDraft: boolean;
   @Input() formGroup?: FormGroup;
+  @Input() submitted!: boolean;
 
   existingImages$: Observable<Image[]> = of([]);
   picturesChosen: string[] = ['', '', ''];
@@ -34,12 +36,29 @@ export class ActivityAddPhotoComponent implements OnInit {
   imageChangedEvent: Event | null = null;
   isCropperVisible = false;
   currentPictureIndex = 0;
+  disabledLoadMoreButton = false;
 
   private _currentOffset = 0;
   private readonly _pageSize = 2;
 
   ngOnInit(): void {
     this.loadMorePictures();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['hasLoadedDraft'] && this.formGroup) {
+      this.loadDraftPictures();
+    }
+  }
+
+  loadDraftPictures(): void {
+    if (this.formGroup?.value?.photo_1.id || this.formGroup?.value?.photo_2.id || this.formGroup?.value?.photo_3.id) {
+      this.picturesChosen = [
+        this.formGroup?.value?.photo_1.image || '',
+        this.formGroup?.value?.photo_2.image || '',
+        this.formGroup?.value?.photo_3.image || '',
+      ];
+    }
   }
 
   openSelectionModal(index: number): void {
@@ -71,7 +90,11 @@ export class ActivityAddPhotoComponent implements OnInit {
       switchMap((currentImages: Image[]) =>
         nextPageImage$.pipe(
           map((newImages: Image[]) => {
+            const checkDefaultImage = newImages.some(image => image.image.includes('defaultActivityImage.jpg'));
             this._currentOffset += this._pageSize;
+            if (checkDefaultImage) {
+              this.disabledLoadMoreButton = true;
+            }
             return [...currentImages, ...newImages];
           })
         )

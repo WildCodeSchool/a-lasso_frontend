@@ -1,5 +1,5 @@
 export type ButtonClicked = {
-  id: number;
+  id: number | string;
   label: string;
   event: MouseEvent;
 };

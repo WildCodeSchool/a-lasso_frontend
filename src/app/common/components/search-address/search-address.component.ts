@@ -1,5 +1,5 @@
 import { Component, Input, OnInit, inject } from '@angular/core';
-import { debounceTime, Observable, of, startWith, switchMap } from 'rxjs';
+import { debounceTime, Observable, of, switchMap, startWith } from 'rxjs';
 import { ActivityFacadeService } from '../../../features/activity/services/activity-facade.service';
 import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SelectModule } from 'primeng/select';
@@ -32,6 +32,7 @@ export class SearchAddressComponent extends DestroyableComponent implements OnIn
   private _activityFacadeService: ActivityFacadeService = inject(ActivityFacadeService);
   @Input() formGroup?: FormGroup;
   @Input({ required: true }) fieldConfig: FormField;
+  @Input() submitted!: boolean;
 
   searchAddressResults$!: Observable<AddressApiResult[] | null>;
 

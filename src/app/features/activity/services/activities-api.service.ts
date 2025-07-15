@@ -1,14 +1,15 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { Activity, Theme } from '../models/activity.model';
 import { environment } from 'src/environments/environment.development';
 import { UUIDTypes } from 'uuid';
 import { Message } from '../models/message.model';
 import { MessageCreation } from '../models/messageCreation';
 import { APIResponseToggleRegister } from '../models/api-reponse.model';
-import { NewActivityCreation } from '../models/activity-creation.model';
+import { ActivityFormData } from '../models/activity-creation.model';
 import { AddressApiResult } from '../../authentication/models/user.model';
+import { HOUSE_NUMBER_REGEX } from '../../authentication/constants/form.constants';
 
 @Injectable({
   providedIn: 'root',
@@ -47,24 +48,52 @@ export class ActivitiesApiService {
   }
 
   getAddressFromApi(query: string): Observable<AddressApiResult[]> {
-    const lang = navigator.language || 'fr';
-
-    return this._http.get<AddressApiResult[]>(`https://nominatim.openstreetmap.org/search`, {
-      params: {
-        q: query,
-        format: 'json',
-        addressdetails: '1',
-        limit: '10',
-        'accept-language': lang,
-      },
-    });
+    const url = `https://api-adresse.data.gouv.fr/search/?q=${encodeURIComponent(query)}&limit=10`;
+    return this._http
+      .get<any>(url)
+      .pipe(map(response => response.features.map((feature: AddressApiResult) => this._mapFeatureToAddressApiResult(feature))));
   }
 
-  publishNewActivity(newActivity: NewActivityCreation): Observable<Activity> {
-    return this._http.post<Activity>(`${this._apiUrl}/activities/publish`, newActivity);
+  saveActivity(activity: ActivityFormData): Observable<Activity> {
+    return this._http.post<Activity>(`${this._apiUrl}/activities`, activity);
   }
 
   deleteActivity(activityId: UUIDTypes): Observable<void> {
     return this._http.delete<void>(`${this._apiUrl}/activities/delete/${activityId}`);
+  }
+
+  private _mapFeatureToAddressApiResult(feature: any): AddressApiResult {
+    const { label, name, postcode, city, context } = feature.properties;
+    const [lat, lon] = [feature.geometry.coordinates[1], feature.geometry.coordinates[0]];
+
+    const { houseNumber, road } = this._parseHouseNumberAndRoad(name);
+
+    return {
+      displayName: label,
+      latitude: String(lat),
+      longitude: String(lon),
+      address: {
+        houseNumber: houseNumber,
+        road: road,
+        postCode: postcode,
+        city: city,
+        state: context,
+        country: 'France',
+        countryCode: 'fr',
+      },
+    };
+  }
+
+  private _parseHouseNumberAndRoad(name: string): { houseNumber?: string; road?: string } {
+    const match = name.match(HOUSE_NUMBER_REGEX);
+    if (match) {
+      return {
+        houseNumber: match[1],
+        road: match[2],
+      };
+    }
+    return {
+      road: name,
+    };
   }
 }

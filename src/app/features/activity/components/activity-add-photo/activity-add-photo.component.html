@@ -21,7 +21,7 @@
 
       <input type="file" accept="image/*" [id]="'fileInput' + $index" class="input-import-image" (change)="handleFileInput($event, $index)" />
 
-      <app-input-field-error [control]="formGroup.get('photo_' + ($index + 1))" [fieldName]="'photo_' + ($index + 1)" />
+      <app-input-field-error [submitted]="submitted" [control]="formGroup.get('photo_' + ($index + 1))" [fieldName]="'photo_' + ($index + 1)" />
     </div>
   }
 
@@ -52,6 +52,7 @@
       <div class="footer-buttons">
         <app-single-button
           [id]="1"
+          [disabled]="disabledLoadMoreButton"
           [type]="'button'"
           (buttonClicked)="loadMorePictures()"
           [styleClass]="ButtonStyleClass.defaultWhite"

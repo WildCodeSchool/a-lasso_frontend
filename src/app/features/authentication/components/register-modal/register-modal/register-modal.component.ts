@@ -65,6 +65,7 @@ export class RegisterModalComponent extends DestroyableComponent {
 
   onRegisterAssociation(form: FormGroup): void {
     const value = form.value;
+
     const data: AssociationRegister = {
       siret: value.siret,
       name: value.name,
@@ -72,6 +73,10 @@ export class RegisterModalComponent extends DestroyableComponent {
       password: value.password,
       mobile_phone: value.phone,
       address: getFormattedAddress(value.address),
+      location: {
+        latitude: value.address?.lat ? parseFloat(value.address.lat) : 0,
+        longitude: value.address?.lon ? parseFloat(value.address.lon) : 0,
+      },
     };
 
     this._authService

@@ -11,6 +11,11 @@
         <i class="pi pi-trash"></i>
       </button>
     }
+    @if (showEditButton) {
+      <button class="edit-btn" type="button" (click)="onEditClick($event)" aria-label="Modifier l'activité">
+        <i class="pi pi-pencil"></i>
+      </button>
+    }
     <ng-template #header>
       <img class="w-full activity-image" [src]="activity.images[0].image" [alt]="activity.title" />
     </ng-template>
@@ -38,7 +43,7 @@
         <div class="footer-details">
           <div class="location">
             <i class="fa-solid fa-location-dot"></i>
-            <p class="mini-p">{{ activity.location.city }}</p>
+            <p class="mini-p">{{ activity.address.city }}</p>
           </div>
           <div class="date">
             <i class="fa-solid fa-calendar-days"></i>
