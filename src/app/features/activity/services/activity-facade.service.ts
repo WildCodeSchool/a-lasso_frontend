@@ -16,7 +16,7 @@ import { updateActivitiesUserInfos } from '../../authentication/store/user.actio
 import { TAKE_1 } from 'src/app/common/constants/observables.constants';
 import { selectActivitiesUserInfos } from '../../authentication/store/user.selectors';
 import { ActivitiesUserInfos, AddressApiResult } from '../../authentication/models/user.model';
-import { NewActivityCreation } from '../models/activity-creation.model';
+import { ActivityFormData } from '../models/activity-creation.model';
 import { selectConnectedAssociationId } from '../../authentication/store/user.selectors';
 import * as ActivityActions from '../store/activities.actions';
 import { showSuccessToast } from 'src/app/common/utils/toast.utils';
@@ -181,11 +181,14 @@ export class ActivityFacadeService {
     return this._activitiesApi.getAddressFromApi(query);
   }
 
-  publishNewActivity(newActivity: NewActivityCreation): Observable<Activity> {
-    return this._activitiesApi.publishNewActivity(newActivity).pipe(
+  saveActivity(activity: ActivityFormData): Observable<Activity> {
+    return this._activitiesApi.saveActivity(activity).pipe(
       tap((activity: Activity): void => {
         this._store.dispatch(setActivity({ activity: activity }));
         showSuccessToast(this._toast);
+        // TODO, compléter avec le message personnalisé de succès quand nouvelle version de TOAST mergé avec cette branch.
+        //const isDraft = activity.status === ActivityStatusEnum.DRAFT;
+        // summary: isDraft ? 'Brouillon enregistré !' : 'Activité publiée !',
       })
     );
   }

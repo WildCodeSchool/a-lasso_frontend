@@ -6,11 +6,5 @@
     </span>
   </div>
 
-  @if (chosenNavigation$ | async; as currentTab) {
-    @if (currentTab === 'Brouillons') {
-      <app-draft-list />
-    } @else {
-      <app-activity-list [activities]="filteredActivities$ | async" />
-    }
-  }
+  <app-activity-list [activities]="filteredActivities$ | async" />
 </div>

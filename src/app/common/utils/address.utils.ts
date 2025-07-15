@@ -2,12 +2,11 @@ import { Address, AddressApiResult } from 'src/app/features/authentication/model
 
 export function getFormattedAddress(matchedApiAddress: AddressApiResult): Address {
   return {
-    houseNumber: matchedApiAddress.address.house_number,
-    streetName: matchedApiAddress.address.road,
-    zipCode: matchedApiAddress.address.postcode,
-    city: matchedApiAddress.address.town,
-    country: matchedApiAddress.address.country,
-    lat: parseFloat(matchedApiAddress.lat),
-    lon: parseFloat(matchedApiAddress.lon),
+    houseNumber: matchedApiAddress?.address?.houseNumber || '',
+    streetName: matchedApiAddress?.address?.road || '',
+    zipCode: matchedApiAddress?.address?.postCode || '',
+    city: matchedApiAddress?.address?.city || '',
+    country: matchedApiAddress?.address?.country || '',
+    displayName: matchedApiAddress?.displayName || '',
   };
 }
