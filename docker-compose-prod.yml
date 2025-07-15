@@ -1,0 +1,14 @@
+services:
+  nginx:
+    image: alasso:prod
+    build:
+      context: ./
+      dockerfile: Dockerfile.prod
+    ports:
+      - "80:80"
+    networks:
+      - dev-networks
+
+networks:
+  dev-networks:
+    driver: bridge
