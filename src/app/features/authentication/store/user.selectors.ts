@@ -26,4 +26,4 @@ export const selectAssociationFounder = createSelector(selectUser, user => (user
 
 export const selectAssociationDescription = createSelector(selectUser, user => (user?.type === UserType.Association ? user.description : ''));
 
-export const selectAssociationStats = createSelector(selectUser, user => (user?.type === UserType.Association ? (user.statistics ?? []) : []));
+export const selectAssociationStats = createSelector(selectUser, user => (user?.type === UserType.Association ? user.statistics ?? [] : []));
