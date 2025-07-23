@@ -1,10 +1,13 @@
 import { AsyncPipe, DatePipe } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { MessageService } from 'primeng/api';
 import { map, Observable, take } from 'rxjs';
 import { SingleButtonComponent } from 'src/app/common/components/single-button/single-button.component';
 import { TAKE_1 } from 'src/app/common/constants/observables.constants';
 import { ButtonStyleClass } from 'src/app/common/models/button';
+import { showSuccessToast } from 'src/app/common/utils/toast.utils';
+import { MAX_LENGTH, MIN_LENGTH, PHONE_REGEX, ZIP_CODE } from 'src/app/features/authentication/constants/form.constants';
 import { UserType, VoluntaryLogin } from 'src/app/features/authentication/models/user.model';
 import { AuthFacade } from 'src/app/features/authentication/services/auth-facade.service';
 import { AuthService } from 'src/app/features/authentication/services/auth.service';
@@ -13,8 +16,6 @@ import { VoluntaryUpdateRequestDTO } from '../../../models/update-request-dto.mo
 import { VoluntaryProfileService } from '../../../services/voluntary-profil.service';
 import { EditableFieldComponent } from '../../editable-field/editable-field.component';
 import { UploadAvatarComponent } from '../../upload-avatar/upload-avatar.component';
-import { showSuccessToast } from 'src/app/common/utils/toast.utils';
-import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-voluntary-about',
@@ -42,11 +43,12 @@ export class VoluntaryAboutComponent {
   editMode = false;
   submitted = false;
   profileForm = this._fb.group({
-    first_name: ['', Validators.required],
-    last_name: ['', Validators.required],
-    birth_date: ['', Validators.required],
-    city: ['', Validators.required],
-    mobile_phone: [''],
+    first_name: ['', [Validators.required, Validators.minLength(MIN_LENGTH), Validators.maxLength(MAX_LENGTH)]],
+    last_name: ['', [Validators.required, Validators.minLength(MIN_LENGTH), Validators.maxLength(MAX_LENGTH)]],
+    birth_date: ['', [Validators.required]],
+    city: ['', [Validators.required, Validators.minLength(MIN_LENGTH), Validators.maxLength(MAX_LENGTH)]],
+    zip_code: ['', [Validators.required, Validators.pattern(ZIP_CODE)]],
+    mobile_phone: ['', [Validators.pattern(PHONE_REGEX)]],
   });
   fields = [
     { name: 'first_name', label: 'Prénom', type: 'text', required: true },
@@ -54,6 +56,7 @@ export class VoluntaryAboutComponent {
     { name: 'birth_date', label: 'Date de naissance', type: 'date', required: true },
     { name: 'mobile_phone', label: 'Téléphone', type: 'text', required: false },
     { name: 'city', label: 'Ville', type: 'text', required: true },
+    { name: 'zip_code', label: 'Code postal', type: 'text', required: true },
   ];
 
   setFieldValue(fieldName: string, value: string): void {
@@ -68,6 +71,7 @@ export class VoluntaryAboutComponent {
         last_name: user.last_name,
         birth_date: user.birth_date,
         city: user.city,
+        zip_code: user.zip_code,
         mobile_phone: user.mobile_phone,
       });
     }
@@ -81,6 +85,8 @@ export class VoluntaryAboutComponent {
       ...this.profileForm.value,
       country: 'France',
     } as VoluntaryUpdateRequestDTO;
+
+    console.log(this.profileForm.value);
 
     this._voluntaryProfileService
       .updateVoluntaryProfile(payload)

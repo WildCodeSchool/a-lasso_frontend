@@ -3,6 +3,7 @@ export type VoluntaryUpdateRequestDTO = {
   last_name: string;
   birth_date: string;
   city: string;
+  zip_code?: string;
   country: string;
   mobile_phone: string;
 };

@@ -18,3 +18,4 @@ export const DATE_REGEX = /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/(19|20)\d
 
 export const NUMBER_REGEX = /^\d+$/;
 export const HOUSE_NUMBER_REGEX = /^(\d+)\s+(.*)$/;
+export const ZIP_CODE = /^\d{5}$/;

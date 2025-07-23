@@ -42,6 +42,13 @@
             (valueChange)="setFieldValue('city', $event)"
             placeholder="Ville"
             [editMode]="editMode"></app-editable-field>
+
+          <app-editable-field
+            label="Code postal"
+            [value]="user.zip_code"
+            (valueChange)="setFieldValue('zip_code', $event)"
+            placeholder="Code postal"
+            [editMode]="editMode"></app-editable-field>
         </div>
 
         <div class="edit-button-wrapper">

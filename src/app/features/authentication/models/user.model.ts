@@ -27,6 +27,7 @@ export type VoluntaryLogin = {
   password: string;
   mobile_phone: string;
   city: string;
+  zip_code: string;
   country: string;
   birth_date: string;
   avatar?: Image;
