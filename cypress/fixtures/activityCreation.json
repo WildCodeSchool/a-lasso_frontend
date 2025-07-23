@@ -1,0 +1,14 @@
+{
+  "images": {
+    "id": "6f47f7b3-8f9a-4dc4-9b3c-b7d113ef2c7b",
+    "base64": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD..." 
+  },
+  "title": "Collecte alimentaire pour les sans-abris",
+  "requestedVolunteers": 15,
+  "date": "01.12.2032",
+  "time": "14:00",
+  "address": "14 rue de la massonnière 44120 VERTOU",
+  "adressFromApi" : "14, Rue de la Massonnière, Vertou, Nantes, Loire-Atlantique, Pays de la Loire, France métropolitaine, 44120, France",
+  "themes": ["Social", "Santé"],
+  "description": "Nous organisons une collecte de nourriture pour aider les personnes en situation de précarité. Venez nombreux pour trier, distribuer, et partager un moment solidaire."
+}

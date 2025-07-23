@@ -20,7 +20,9 @@
       }
 
       <div class="submit-button">
-        <button pButton type="submit" class="register-btn" [disabled]="loginForm.invalid" (click)="onSubmit()">Se connecter</button>
+        <button id="connexion-submit-button" type="submit" class="register-btn" [disabled]="loginForm.invalid" (click)="onSubmit()">
+          Se connecter
+        </button>
       </div>
 
       <app-input-field-error [globalError]="error" />
