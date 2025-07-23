@@ -15,9 +15,9 @@
           [emptyMessage]="'Aucune adresse trouvée'">
         </p-autoComplete>
         @if (formGroup?.get(fieldConfig.name)?.invalid && formGroup?.get(fieldConfig.name)?.touched) {
-        <div class="error-message">
-          <app-input-field-error [submitted]="submitted" [control]="formGroup.get(fieldConfig.name)" [fieldName]="fieldConfig.name" />
-        </div>
+          <div class="error-message">
+            <app-input-field-error [submitted]="submitted" [control]="formGroup.get(fieldConfig.name)" [fieldName]="fieldConfig.name" />
+          </div>
         }
       </div>
     </div>

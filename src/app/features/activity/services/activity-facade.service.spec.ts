@@ -8,6 +8,7 @@ import { Store } from '@ngrx/store';
 import * as ActivityActions from '../store/activities.actions';
 import { provideMockStore } from '@ngrx/store/testing';
 import { MessageService as Toast } from 'primeng/api';
+import { ActivityStatusEnum } from '../models/activity-creation.model';
 
 describe('ActivityFacadeService', () => {
   let service: ActivityFacadeService;
@@ -35,11 +36,20 @@ describe('ActivityFacadeService', () => {
 
     // ARRANGE
     const mockActivity: Activity = {
+      status : ActivityStatusEnum.PUBLISHED,
       id: '1',
       title: 'Sample Activity',
       description: 'A sample activity description',
       images: [],
       association: {} as AssociationActivity,
+      address: {
+        houseNumber: '123',
+        streetName: 'Sample St',
+        zipCode: '12345',
+        city: 'Sample City',
+        country: 'Sample Country',
+        displayName: '123 Sample St, Sample City, 12345, Sample Country',
+      },
       location: {} as Localisation,
       date: new Date(),
       participants: {} as Participant,
