@@ -13,7 +13,7 @@
       [ngClass]="{
         hidden: nav.chosen === 'Activité' && (screenWidth$ | async) < 900,
         'show-association': nav.chosen === 'Association' || nav.chosen === 'Activité',
-        'show-messages': nav.chosen === 'Messages'
+        'show-messages': nav.chosen === 'Messages',
       }">
       <div class="association" [ngClass]="nav.chosen !== 'Association' ? 'hidden' : ''">
         <app-association-card [association]="association"></app-association-card>
