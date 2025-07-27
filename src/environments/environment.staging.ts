@@ -1,5 +1,5 @@
 export const environment = {
   production: false,
   name: 'staging',
-  apiUrl: '',
+  apiUrl: 'https://staging-api.a-l-asso.fr',
 };
