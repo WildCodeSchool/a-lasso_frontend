@@ -27,6 +27,10 @@ jobs:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
 
+      - name: Recreate environment.secret.ts
+        run: |
+          echo "${{ secrets.MAP_API_KEY }}" > src/environments/environment.secret.ts
+
       - name: Set Docker image tag and dockerfile
         id: set_tag
         run: |
