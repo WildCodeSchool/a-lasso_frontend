@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Statistic } from '../../association/models/association.model';
-import { environment } from 'src/environments/environment.development';
+import { environment } from 'src/environments/environment';
 import { UUIDTypes } from 'uuid';
 
 @Injectable({ providedIn: 'root' })

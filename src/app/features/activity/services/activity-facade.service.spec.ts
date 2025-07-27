@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { ActivityFacadeService } from './activity-facade.service';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { ActivitiesApiService } from './activities-api.service';
-import { environment } from '../../../../environments/environment.development';
+import { environment } from '../../../../environments/environment';
 import { Activity, AssociationActivity, Localisation, Participant } from '../models/activity.model';
 import { Store } from '@ngrx/store';
 import * as ActivityActions from '../store/activities.actions';

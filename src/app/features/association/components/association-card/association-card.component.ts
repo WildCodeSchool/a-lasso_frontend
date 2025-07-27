@@ -5,7 +5,7 @@ import { CardModule } from 'primeng/card';
 import { Observable, take } from 'rxjs';
 import { TAKE_1 } from 'src/app/common/constants/observables.constants';
 import { AuthService } from 'src/app/features/authentication/services/auth.service';
-import { environment } from 'src/environments/environment.development';
+import { environment } from 'src/environments/environment';
 import { ReportModalComponent } from '../../../report/components/report-modal/report-modal.component';
 import { Association } from '../../models/association.model';
 import { AssociationFacadeService } from '../../services/association-facade.service';

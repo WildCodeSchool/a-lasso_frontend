@@ -4,7 +4,7 @@ import { Component, ElementRef, HostListener, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { map, Observable } from 'rxjs';
 import { AuthFacade } from 'src/app/features/authentication/services/auth-facade.service';
-import { environment } from 'src/environments/environment.development';
+import { environment } from 'src/environments/environment';
 import { BadgeComponent } from '../badge/badge.component';
 import { HeaderMenuMessagesComponent } from '../header-menu-messages/header-menu-messages.component';
 import { HeaderMenuReportsComponent } from '../header-menu-reports/header-menu-reports.component';
