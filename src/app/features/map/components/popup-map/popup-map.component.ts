@@ -1,6 +1,6 @@
 import { Component, ElementRef, inject, Input, ViewChild } from '@angular/core';
 import { Activity, AssociationActivity } from '../../../activity/models/activity.model';
-import { environment } from '../../../../../environments/environment.development';
+import { environment } from '../../../../../environments/environment';
 import { TruncatePipe } from '../../../../common/pipes/TruncateString.pipe';
 import { AsyncPipe, DatePipe } from '@angular/common';
 import { InscriptionBadgeComponent } from '../../../activity/components/inscription-badge/inscription-badge.component';

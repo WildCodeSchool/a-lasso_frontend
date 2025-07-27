@@ -3,7 +3,7 @@ import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { UUIDTypes } from 'uuid';
 import { Association } from '../models/association.model';
-import { environment } from 'src/environments/environment.development';
+import { environment } from 'src/environments/environment';
 import { Image } from '../../activity/models/activity.model';
 
 @Injectable({
