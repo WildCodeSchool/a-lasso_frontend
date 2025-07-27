@@ -11,7 +11,7 @@
     </textarea>
     <label [for]="id">{{ fieldConfig.label }}</label>
   </p-iftalabel>
-  <app-input-field-error [control]="formGroup.get(fieldConfig.name)" [fieldName]="fieldConfig.name"></app-input-field-error>
+  <app-input-field-error [submitted]="submitted" [control]="formGroup.get(fieldConfig.name)" [fieldName]="fieldConfig.name"></app-input-field-error>
   <p class="max-length" [class.max-length--error]="fieldContentLength > maxlength">{{ fieldContentLength }} / {{ maxlength }} caractères maximum</p>
 
   @if (showSaveButton) {

@@ -2,6 +2,7 @@
   @for (picture of picturesChosen; track $index) {
     <div class="add-photo-container">
       <button
+        [id]="'photo-box-' + $index"
         type="button"
         class="photo-box"
         (click)="openSelectionModal($index)"
@@ -19,12 +20,11 @@
         }
       </button>
 
-      <input type="file" accept="image/*" [id]="'fileInput' + $index" class="input-import-image" (change)="handleFileInput($event, $index)" />
+      <input type="file" accept="image/*" [id]="'file-input-' + $index" class="input-import-image" (change)="handleFileInput($event, $index)" />
 
-      <app-input-field-error [control]="formGroup.get('photo_' + ($index + 1))" [fieldName]="'photo_' + ($index + 1)" />
+      <app-input-field-error [submitted]="submitted" [control]="formGroup.get('photo_' + ($index + 1))" [fieldName]="'photo_' + ($index + 1)" />
     </div>
   }
-
   <div class="modal-container">
     <p-dialog
       header="Sélectionner une photo"
@@ -37,6 +37,7 @@
           @if (existingImages$ | async; as existingImages) {
             @for (pic of existingImages; track pic.id) {
               <img
+                [id]="'existing-photo-' + $index"
                 [src]="pic.image"
                 class="selectable-photo"
                 (click)="selectExistingPicture(pic.image, modalTargetIndex, pic.id)"
@@ -51,7 +52,8 @@
 
       <div class="footer-buttons">
         <app-single-button
-          [id]="1"
+          [id]="'load-more-pictures-button'"
+          [disabled]="disabledLoadMoreButton"
           [type]="'button'"
           (buttonClicked)="loadMorePictures()"
           [styleClass]="ButtonStyleClass.defaultWhite"
@@ -61,7 +63,7 @@
         </app-single-button>
 
         <app-single-button
-          [id]="2"
+          [id]="'add-new-photo-button'"
           [type]="'button'"
           (buttonClicked)="triggerFileInput(modalTargetIndex)"
           [styleClass]="ButtonStyleClass.defaultBlue"

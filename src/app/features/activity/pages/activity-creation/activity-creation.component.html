@@ -6,24 +6,34 @@
   <form class="form" (ngSubmit)="onSubmit()">
     <div class="informations-container">
       <section class="add-photo-container">
-        <app-activity-add-photo [formGroup]="activityForm"></app-activity-add-photo>
+        <app-activity-add-photo
+          [submitted]="submitted"
+          [formGroup]="activityForm"
+          [hasLoadedDraft]="hasLoadedDraft$ | async"></app-activity-add-photo>
       </section>
 
       <div class="details-inputs-areas">
         <section class="add-informations-container">
           @for (activityField of activityFields; track $index) {
             <div class="field-group">
-              <app-input-field class="information-field" [useIftaLabel]="true" [fieldConfig]="activityField" [formGroup]="activityForm">
+              <app-input-field
+                class="information-field"
+                [useIftaLabel]="true"
+                [fieldConfig]="activityField"
+                [formGroup]="activityForm"
+                [submitted]="submitted">
               </app-input-field>
-              <app-input-field-error [control]="activityForm.get(activityField.name)" [fieldName]="activityField.name"> </app-input-field-error>
+              <app-input-field-error [control]="activityForm.get(activityField.name)" [fieldName]="activityField.name" [submitted]="submitted">
+              </app-input-field-error>
             </div>
           }
         </section>
         <section class="search-adress-container">
-          <app-search-address [fieldConfig]="adressFieldConfig" [formGroup]="activityForm"></app-search-address>
+          <app-search-address [submitted]="submitted" [fieldConfig]="adressFieldConfig" [formGroup]="activityForm"></app-search-address>
         </section>
         <section class="description-container">
           <app-textarea-field
+            [submitted]="submitted"
             [fieldConfig]="descriptionFieldConfigs"
             [maxlength]="descriptionMaxLength"
             [cols]="250"
@@ -33,14 +43,37 @@
         <section class="theme-selection-container">
           <h3>Thème(s) de l'activité</h3>
           <div>
-            <app-activity-filter [formThemeField]="formThemeField" [formGroup]="activityForm"></app-activity-filter>
-            <app-input-field-error [control]="activityForm.get(formThemeField)" [fieldName]="formThemeField"></app-input-field-error>
+            <app-activity-filter
+              [formThemeField]="formThemeField"
+              [formGroup]="activityForm"
+              [hasLoadedDraft]="hasLoadedDraft$ | async"></app-activity-filter>
+            <app-input-field-error
+              [submitted]="submitted"
+              [control]="activityForm.get(formThemeField)"
+              [fieldName]="formThemeField"></app-input-field-error>
           </div>
         </section>
       </div>
 
       <section class="action-buttons-container">
-        <app-single-button [id]="1" type="submit" label="Publier" ariaLabel="publier"> </app-single-button>
+        <app-single-button
+          id="'save-as-draft-button'"
+          type="button"
+          label="Annuler"
+          ariaLabel="annuler la création de l'activité"
+          (buttonClicked)="navigateToHomePage()"
+          [styleClass]="ButtonStyleClass.defaultWhite">
+        </app-single-button>
+        <app-single-button
+          id="'save-as-draft-button'"
+          type="button"
+          label="Sauvegarder le brouillion"
+          ariaLabel="sauvegarder le brouillion"
+          (buttonClicked)="saveNewActivityAsDraft()"
+          [styleClass]="ButtonStyleClass.defaultWhite">
+        </app-single-button>
+        <app-single-button [id]="1" type="submit" label="Publier" ariaLabel="publier" [styleClass]="ButtonStyleClass.defaultWhiteSelected">
+        </app-single-button>
       </section>
     </div>
   </form>

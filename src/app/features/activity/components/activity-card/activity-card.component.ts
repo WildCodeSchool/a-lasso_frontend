@@ -20,9 +20,11 @@ import { InscriptionBadgeComponent } from '../inscription-badge/inscription-badg
 })
 export class ActivityCardComponent implements OnInit {
   @Output() delete = new EventEmitter<string>();
+  @Output() edit = new EventEmitter<string>();
 
   @Input() activity!: Activity;
   @Input() showDeleteButton: boolean = false;
+  @Input() showEditButton: boolean = false;
 
   private _activityFacadeService: ActivityFacadeService = inject(ActivityFacadeService);
   private _authService = inject(AuthService);
@@ -41,5 +43,10 @@ export class ActivityCardComponent implements OnInit {
   onDeleteClick(event: MouseEvent): void {
     event.stopPropagation();
     this.delete.emit(this.activity.id);
+  }
+
+  onEditClick(event: MouseEvent): void {
+    event.stopPropagation();
+    this.edit.emit(this.activity.id);
   }
 }

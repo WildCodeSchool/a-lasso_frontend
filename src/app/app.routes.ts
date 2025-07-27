@@ -21,6 +21,11 @@ export const routes: Routes = [
     component: ActivityCreationComponent,
   },
   {
+    path: 'activity/creation/:id',
+    canActivate: [isLoggedInGuard, isAssociationGuard],
+    component: ActivityCreationComponent,
+  },
+  {
     path: 'reports',
     component: ReportHomePageComponent,
   },

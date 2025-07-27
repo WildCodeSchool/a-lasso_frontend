@@ -1,6 +1,6 @@
 <div class="animation-wrapper">
   <div class="field-error">
-    @if (control?.invalid && (control.touched || control.dirty)) {
+    @if (control?.invalid && (control.touched || control.dirty) && submitted) {
       <div @fadeInOut>
         @if (control.errors?.['required']) {
           <p>Ce champ est requis</p>

@@ -6,14 +6,14 @@ import { ActivityFacadeService } from 'src/app/features/activity/services/activi
 import { BehaviorSubject, Observable, combineLatest, map } from 'rxjs';
 import { Activity } from 'src/app/features/activity/models/activity.model';
 import { UUIDTypes } from 'uuid';
-import { DraftListComponent } from '../draft-list/draft-list.component';
 import { NavigationItems } from 'src/app/common/models/toggle-menu';
+import { ActivityStatusEnum } from 'src/app/features/activity/models/activity-creation.model';
 
 const ACTIVE_TAB = 0;
 
 @Component({
   selector: 'app-activity-menu',
-  imports: [CommonModule, ToggleMenuComponent, ActivityListComponent, DraftListComponent],
+  imports: [CommonModule, ToggleMenuComponent, ActivityListComponent],
   templateUrl: './activity-menu.component.html',
   styleUrl: './activity-menu.component.scss',
   standalone: true,
@@ -39,8 +39,9 @@ export class ActivityMenuComponent implements OnInit {
           if (activity.association.id !== associationId) return false;
 
           const activityDate = new Date(activity.date);
-          if (chosenNavigation === 'Futur') return activityDate >= today;
-          if (chosenNavigation === 'Passé') return activityDate < today;
+          if (chosenNavigation === 'Futur') return activityDate >= today && activity.status === ActivityStatusEnum.PUBLISHED;
+          if (chosenNavigation === 'Passé') return activityDate < today && activity.status === ActivityStatusEnum.PUBLISHED;
+          if (chosenNavigation === 'Brouillons') return activity.status === ActivityStatusEnum.DRAFT;
 
           return true;
         });

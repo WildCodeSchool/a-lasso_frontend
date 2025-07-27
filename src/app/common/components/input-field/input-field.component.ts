@@ -27,6 +27,7 @@ import { FormField } from 'src/app/features/authentication/models/form.model';
   styleUrls: ['./input-field.component.scss'],
 })
 export class InputFieldComponent {
+  @Input() submitted: boolean = true;
   @Input() disabled: boolean = false;
   @Input() variant: 'in' | 'on' = 'in';
   @Input() useIftaLabel: boolean = false;

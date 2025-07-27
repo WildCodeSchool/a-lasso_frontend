@@ -19,6 +19,7 @@ const DEFAULT_COLS: number = 30;
 export class TextareaFieldComponent {
   @Output() save = new EventEmitter<void>();
 
+  @Input() submitted!: boolean;
   @Input() showSaveButton = false;
   @Input() disabled: boolean = false;
   @Input() rows: number = DEFAULT_ROWS;
