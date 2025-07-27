@@ -4,7 +4,7 @@ import { RouterLink } from '@angular/router';
 import { Card } from 'primeng/card';
 import { Observable } from 'rxjs';
 import { AuthService } from 'src/app/features/authentication/services/auth.service';
-import { environment } from 'src/environments/environment.development';
+import { environment } from 'src/environments/environment';
 import { TruncatePipe } from '../../../../common/pipes/TruncateString.pipe';
 import { Activity, Participant } from '../../models/activity.model';
 import { ActivityFacadeService } from '../../services/activity-facade.service';
