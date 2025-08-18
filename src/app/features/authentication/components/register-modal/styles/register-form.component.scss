@@ -14,11 +14,27 @@
   .submit-button {
     display: flex;
     justify-content: center;
-    margin: 8px 0;
+    margin: 0 auto 16px;
 
     .register-btn {
       padding: 8px 16px;
       font-weight: bold;
+      color: var(--font-color-light);
+      border: none;
+      border-radius: 4px;
+      background-color: var(--primary-dark-color);
+
+      &:hover:not(:disabled) {
+        background-color: var(--primary-light-color);
+        cursor: pointer;
+      }
+
+      &:disabled {
+        background-color: var(--primary-dark-color);
+        color: var(--font-color-light);
+        cursor: not-allowed;
+        opacity: 0.7;
+      }
     }
   }
 

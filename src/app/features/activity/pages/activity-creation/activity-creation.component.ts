@@ -31,6 +31,7 @@ import { BehaviorSubject } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
 import { Activity, Localisation } from '../../models/activity.model';
 import { Address, AddressApiResult } from 'src/app/features/authentication/models/user.model';
+import { allowBodyScroll } from 'src/app/common/utils/style.utils';
 
 export type AddressWithLocation = Address & Localisation;
 
@@ -103,6 +104,7 @@ export class ActivityCreationComponent implements OnInit {
   ngOnInit(): void {
     this._activityFacadeService.getActivityThemesFromApi();
     this._loadDraftData();
+    allowBodyScroll();
   }
 
   onSubmit(): void {
@@ -138,7 +140,6 @@ export class ActivityCreationComponent implements OnInit {
 
   private _mapFormToActivityData(status: ActivityStatusEnum): ActivityFormData {
     const formValue = this.activityForm.value;
-
     const { address, location } = this._getAddressAndLocation(formValue.matchedAddress);
 
     return {
@@ -162,9 +163,7 @@ export class ActivityCreationComponent implements OnInit {
 
   private _getAddressAndLocation(address: AddressWithLocation | AddressApiResult): { address: Address; location: Localisation } {
     const formattedAddress: Address = this._isAddress(address) ? address : getFormattedAddress(address);
-
     const isFormattedAddressComplete = Object.values(formattedAddress).every(val => val && val !== '');
-
     const shouldFallbackToDraftAddress = !isFormattedAddressComplete && status === ActivityStatusEnum.DRAFT && this._editedActivityId;
 
     return {

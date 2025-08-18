@@ -83,42 +83,20 @@
       font-weight: 400 !important;
     }
 
-    .modal-options {
-      .existing-photos {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        flex-wrap: wrap;
-        gap: 10px;
-        height: 40vh;
-        width: 40vw;
-        overflow-y: auto;
-        padding: 10px;
-
-        .selectable-photo {
-          width: 29%;
-          height: 260px;
-          object-fit: cover;
-          margin: 10px;
-          cursor: pointer;
-          border-radius: 6px;
-          transition: transform 0.2s ease;
-          &:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
-          }
-        }
-      }
+    .existing-photos {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      height: 40vh;
+      width: 40vw;
+      overflow-y: auto;
+      padding: 10px;
     }
 
     ::ng-deep .p-dialog {
       border-radius: 12px;
-    }
-
-    .footer-buttons {
-      display: flex;
-      justify-content: space-between;
-      margin-top: 20px;
     }
 
     ::ng-deep .cropper-modal {
