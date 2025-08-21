@@ -6,19 +6,18 @@ import { TAKE_1 } from 'src/app/common/constants/observables.constants';
 import { showInfoToast, showSuccessToast } from 'src/app/common/utils/toast.utils';
 import { UUIDTypes } from 'uuid';
 import { ActivitiesUserInfos, AddressApiResult } from '../../authentication/models/user.model';
-import { updateActivitiesUserInfos } from '../../authentication/store/user.actions';
-import { selectActivitiesUserInfos, selectConnectedAssociationId, selectConnectedVoluntaryId } from '../../authentication/store/user.selectors';
 import { ActivityFormData } from '../models/activity-creation.model';
 import { Activity, Participant, Theme } from '../models/activity.model';
 import { APIResponseToggleRegister } from '../models/api-reponse.model';
 import { Message } from '../models/message.model';
 import { MessageCreation } from '../models/messageCreation';
-import * as ActivityActions from '../store/activities.actions';
-import { setActivities, setActivity, updateActivityParticipants } from '../store/activities.actions';
-import { selectActivities, selectActivityById } from '../store/activities.selector';
-import { addMessage, setMessages } from '../store/messages/messages.actions';
-import { selectMessagesByActivityId } from '../store/messages/messages.selector';
 import { ActivitiesApiService } from './activities-api.service';
+import { UserSelectors } from '../../authentication/store/user.selectors';
+import { ActivitiesSelectors } from '../store/activities.selectors';
+import { ActivitiesActions } from '../store/activities.actions';
+import { UserActions } from '../../authentication/store/user.actions';
+import { MessagesSelectors } from '../store/messages/messages.selectors';
+import { MessagesActions } from '../store/messages/messages.actions';
 
 @Injectable({
   providedIn: 'root',
@@ -28,12 +27,12 @@ export class ActivityFacadeService {
   private _toast: Toast = inject(Toast);
   private _activitiesApi: ActivitiesApiService = inject(ActivitiesApiService);
 
-  activities$: Observable<Activity[]> = this._store.select(selectActivities);
-  associationId$: Observable<UUIDTypes | null> = this._store.select(selectConnectedAssociationId);
-  voluntaryId$: Observable<UUIDTypes | null> = this._store.select(selectConnectedVoluntaryId);
+  activities$: Observable<Activity[]> = this._store.select(ActivitiesSelectors.selectActivities);
+  associationId$: Observable<UUIDTypes | null> = this._store.select(UserSelectors.selectConnectedAssociationId);
+  voluntaryId$: Observable<UUIDTypes | null> = this._store.select(UserSelectors.selectConnectedVoluntaryId);
 
   registeredActivityIds$: Observable<UUIDTypes[]> = this._store
-    .select(selectActivitiesUserInfos)
+    .select(UserSelectors.selectActivitiesUserInfos)
     .pipe(map(infos => infos.filter(info => info.isRegistered).map(info => info.activityId)));
 
   getActivityThemesFromApi(): Observable<Theme[]> {
@@ -46,7 +45,7 @@ export class ActivityFacadeService {
       .pipe(
         map((activities: Activity[]) => activities.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())),
         tap((sortedActivities: Activity[]) => {
-          this._store.dispatch(setActivities({ activities: sortedActivities }));
+          this._store.dispatch(ActivitiesActions.setActivities({ activities: sortedActivities }));
         }),
         take(TAKE_1)
       )
@@ -54,7 +53,7 @@ export class ActivityFacadeService {
   }
 
   getActivityFromStore$(activityId: UUIDTypes): Observable<Activity> {
-    return this._store.select(selectActivityById(activityId)).pipe(
+    return this._store.select(ActivitiesSelectors.selectActivityById(activityId)).pipe(
       take(TAKE_1),
       switchMap(activity => {
         if (activity.description) {
@@ -68,13 +67,13 @@ export class ActivityFacadeService {
   getActivityByIdFromApiAndDispatchStore(activityId: UUIDTypes): Observable<Activity> {
     return this._activitiesApi.getActivityById(activityId).pipe(
       tap((activity: Activity): void => {
-        this._store.dispatch(setActivity({ activity: activity }));
+        this._store.dispatch(ActivitiesActions.setActivity({ activity: activity }));
       })
     );
   }
 
   getIsSavedActivity(activityId: UUIDTypes): Observable<boolean> {
-    return this._store.select(selectActivitiesUserInfos).pipe(
+    return this._store.select(UserSelectors.selectActivitiesUserInfos).pipe(
       switchMap((userActivityInfos: ActivitiesUserInfos[]): Observable<boolean> => {
         const activityInfos = userActivityInfos.find(activity => activity.activityId === activityId);
         if (!activityInfos) {
@@ -87,7 +86,7 @@ export class ActivityFacadeService {
 
   refreshActivitiesByAssociation(associationId: UUIDTypes): void {
     this._activitiesApi.getActivitiesByAssociationId(associationId).subscribe(activities => {
-      this._store.dispatch(setActivities({ activities }));
+      this._store.dispatch(ActivitiesActions.setActivities({ activities }));
     });
   }
 
@@ -99,7 +98,7 @@ export class ActivityFacadeService {
         tap({
           next: (apiResponse: boolean) => {
             this._store.dispatch(
-              updateActivitiesUserInfos({
+              UserActions.updateActivitiesUserInfos({
                 activityId: activityId,
                 isSaved: apiResponse,
               })
@@ -121,7 +120,7 @@ export class ActivityFacadeService {
   }
 
   getIsRegisteredActivity(activityId: UUIDTypes): Observable<boolean> {
-    return this._store.select(selectActivitiesUserInfos).pipe(
+    return this._store.select(UserSelectors.selectActivitiesUserInfos).pipe(
       switchMap((userActivityInfos: ActivitiesUserInfos[]): Observable<boolean> => {
         const activityInfos = userActivityInfos.find(activity => activity.activityId === activityId);
         if (!activityInfos) {
@@ -138,13 +137,13 @@ export class ActivityFacadeService {
       .pipe(
         tap((apiResponse: APIResponseToggleRegister) => {
           this._store.dispatch(
-            updateActivityParticipants({
+            ActivitiesActions.updateActivityParticipants({
               id: activityId,
               participants: apiResponse.activityVoluntaryDTO,
             })
           );
           this._store.dispatch(
-            updateActivitiesUserInfos({
+            UserActions.updateActivitiesUserInfos({
               activityId: activityId,
               isRegistered: apiResponse.isRegistered,
             })
@@ -162,7 +161,7 @@ export class ActivityFacadeService {
   }
 
   getVoluntariesRegisteredToAnActivity(activityId: UUIDTypes): Observable<Participant> {
-    return this._store.select(selectActivityById(activityId)).pipe(
+    return this._store.select(ActivitiesSelectors.selectActivityById(activityId)).pipe(
       switchMap((activity: Activity): Observable<Participant> => {
         if (!activity) {
           return of({ current: 0, max: 0 });
@@ -174,7 +173,7 @@ export class ActivityFacadeService {
 
   getActivityMessages(activityId: string): void {
     this._store
-      .select(selectMessagesByActivityId(activityId))
+      .select(MessagesSelectors.selectMessagesByActivityId(activityId))
       .pipe(
         take(TAKE_1),
         switchMap(messages => {
@@ -185,7 +184,7 @@ export class ActivityFacadeService {
           return this._activitiesApi.getActivityMessages(activityId).pipe(
             map((fetchedMessages: Message[]) => [...fetchedMessages].sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())),
             tap((sortedMessages: Message[]) => {
-              this._store.dispatch(setMessages({ messages: sortedMessages }));
+              this._store.dispatch(MessagesActions.setMessages({ messages: sortedMessages }));
             })
           );
         })
@@ -198,7 +197,7 @@ export class ActivityFacadeService {
       .postActivityMessage(message)
       .pipe(
         tap((postedMessage: Message) => {
-          this._store.dispatch(addMessage({ message: postedMessage }));
+          this._store.dispatch(MessagesActions.addMessage({ message: postedMessage }));
           showSuccessToast(this._toast);
         })
       )
@@ -212,7 +211,7 @@ export class ActivityFacadeService {
   saveActivity(activity: ActivityFormData): Observable<Activity> {
     return this._activitiesApi.saveActivity(activity).pipe(
       tap((activity: Activity): void => {
-        this._store.dispatch(setActivity({ activity: activity }));
+        this._store.dispatch(ActivitiesActions.setActivity({ activity: activity }));
         showSuccessToast(this._toast);
         // TODO, compléter avec le message personnalisé de succès quand nouvelle version de TOAST mergé avec cette branch.
         //const isDraft = activity.status === ActivityStatusEnum.DRAFT;
@@ -231,7 +230,7 @@ export class ActivityFacadeService {
   deleteActivityAndUpdateStore(activityId: UUIDTypes): Observable<void> {
     return this.deleteActivity(activityId).pipe(
       tap(() => {
-        this._store.dispatch(ActivityActions.deleteActivity({ activityId: activityId }));
+        this._store.dispatch(ActivitiesActions.deleteActivity({ activityId: activityId }));
       })
     );
   }

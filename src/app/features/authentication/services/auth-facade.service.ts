@@ -5,20 +5,20 @@ import { combineLatest, map, Observable, of, switchMap, take } from 'rxjs';
 import { TAKE_1 } from 'src/app/common/constants/observables.constants';
 import { UUIDTypes } from 'uuid';
 import { ActivityFacadeService } from '../../activity/services/activity-facade.service';
-import * as ActivitiesActions from '../../activity/store/activities.actions';
-import { selectActivities } from '../../activity/store/activities.selector';
 import { Statistic } from '../../association/models/association.model';
 import { ACTIVITY_LENGTH, UserRole } from '../constants/auth.constants';
 import { ApiResponseLogin } from '../models/api-response.model';
 import { AssociationLogin, UserHeaderInfo, UserLogin, UserType, VoluntaryLogin } from '../models/user.model';
-import * as UserActions from '../store/user.actions';
-import * as UserSelectors from '../store/user.selectors';
 import { AuthService } from './auth.service';
 import { getInitialUserState } from '../store/meta-reducers';
 import { VoluntaryProfileService } from '../../profile/services/voluntary-profil.service';
 import { MessageService } from 'primeng/api';
 import { showSuccessToast } from 'src/app/common/utils/toast.utils';
 import { AssociationProfileService } from '../../profile/services/association-profil.service';
+import { UserSelectors } from '../store/user.selectors';
+import { UserActions } from '../store/user.actions';
+import { ActivitiesActions } from '../../activity/store/activities.actions';
+import { ActivitiesSelectors } from '../../activity/store/activities.selectors';
 
 @Injectable({
   providedIn: 'root',
@@ -152,7 +152,7 @@ export class AuthFacade {
     this._store.dispatch(UserActions.loginSuccess({ userInfos: user }));
 
     this._store
-      .select(selectActivities)
+      .select(ActivitiesSelectors.selectActivities)
       .pipe(take(TAKE_1))
       .subscribe(activities => {
         if (activities.length === ACTIVITY_LENGTH) {

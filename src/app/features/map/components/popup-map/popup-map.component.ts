@@ -8,7 +8,7 @@ import { environment } from '../../../../../environments/environment';
 import { TruncatePipe } from '../../../../common/pipes/TruncateString.pipe';
 import { InscriptionBadgeComponent } from '../../../activity/components/inscription-badge/inscription-badge.component';
 import { Activity, AssociationActivity } from '../../../activity/models/activity.model';
-import { selectActivities } from '../../../activity/store/activities.selector';
+import { selectActivities } from '../../../activity/store/activities.selectors';
 
 @Component({
   selector: 'app-popup-map',

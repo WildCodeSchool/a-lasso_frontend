@@ -1,7 +1,7 @@
 import { createReducer, on } from '@ngrx/store';
 import { Association } from '../models/association.model';
-import * as AssociationActions from './association.actions';
-import * as ActivityActions from '../../activity/store/activities.actions';
+import { AssociationActions } from './association.actions';
+import { ActivitiesActions } from '../../activity/store/activities.actions';
 
 export const initialAssociationsState: Association[] = [];
 
@@ -21,7 +21,7 @@ export const associationsReducer = createReducer(
     });
     return Array.from(updatedMap.values());
   }),
-  on(ActivityActions.clearUserActivityInfos, state =>
+  on(ActivitiesActions.clearUserActivityInfos, state =>
     state.map(association => ({
       ...association,
       isFollow: false,

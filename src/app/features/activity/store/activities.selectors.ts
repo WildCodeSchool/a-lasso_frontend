@@ -2,6 +2,8 @@ import { createFeatureSelector, createSelector, MemoizedSelector } from '@ngrx/s
 import { Activity } from '../models/activity.model';
 import { UUIDTypes } from 'uuid';
 
+export * as ActivitiesSelectors from './activities.selectors';
+
 export const selectActivitiesState = createFeatureSelector<Activity[]>('activities');
 export const selectActivities = createSelector(selectActivitiesState, activities => activities);
 

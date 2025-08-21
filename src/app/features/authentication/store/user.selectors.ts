@@ -2,6 +2,8 @@ import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { UUIDTypes } from 'uuid';
 import { UserState, UserType } from '../models/user.model';
 
+export * as UserSelectors from './user.selectors';
+
 export const selectUserState = createFeatureSelector<UserState>('user');
 
 export const selectUser = createSelector(selectUserState, state => state.userInfos);

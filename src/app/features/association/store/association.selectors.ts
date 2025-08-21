@@ -2,6 +2,8 @@ import { createFeatureSelector, createSelector, MemoizedSelector } from '@ngrx/s
 import { Association } from '../models/association.model';
 import { UUIDTypes } from 'uuid';
 
+export * as AssociationSelectors from './association.selectors';
+
 export const selectAssociationsState = createFeatureSelector<Association[]>('associations');
 
 export const selectAssociations = createSelector(selectAssociationsState, associations => associations);

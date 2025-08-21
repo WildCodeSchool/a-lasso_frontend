@@ -2,10 +2,10 @@ import { inject, Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { combineLatest, map, Observable } from 'rxjs';
 import { Activity } from 'src/app/features/activity/models/activity.model';
-import { selectActivities } from 'src/app/features/activity/store/activities.selector';
+import { selectActivities } from 'src/app/features/activity/store/activities.selectors';
 import { selectActivitiesUserInfos, selectFollowedAssociations } from 'src/app/features/authentication/store/user.selectors';
 import { Association } from '../../association/models/association.model';
-import { selectAssociations } from '../../association/store/association.selector';
+import { selectAssociations } from '../../association/store/association.selectors';
 
 @Injectable({ providedIn: 'root' })
 export class VoluntaryProfileFacadeService {

@@ -2,6 +2,8 @@ import { createFeatureSelector, createSelector, MemoizedSelector } from '@ngrx/s
 import { Report } from '../models/report.model';
 import { UUIDTypes } from 'uuid';
 
+export * as ReportsSelectors from './reports.selectors';
+
 export const selectReportsState = createFeatureSelector<Report[]>('reports');
 
 export const selectReports = createSelector(selectReportsState, reports => reports);
