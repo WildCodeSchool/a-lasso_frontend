@@ -14,6 +14,10 @@ body {
   padding: 0;
   background-color: var(--background-color-light);
   overflow-y: hidden;
+
+  &.allow-scroll {
+    overflow-y: auto !important;
+  }
 }
 
 :root {
@@ -171,6 +175,33 @@ body {
 
   .mini-p {
     font-size: var(--font-size-p-mini);
+  }
+
+  .custom-dialog {
+    .selectable-photo {
+      max-width: 300px;
+      max-height: 300px;
+
+      object-fit: cover;
+      margin: 10px;
+      cursor: pointer;
+      border-radius: 6px;
+      transition: transform 0.2s ease;
+
+      &:hover {
+        transform: scale(1.05);
+        box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+      }
+    }
+
+    .footer-buttons {
+      display: flex;
+      flex-direction: row;
+      width: fit-content;
+      width: 100%;
+      justify-content: space-between;
+      margin-top: 20px;
+    }
   }
 }
 

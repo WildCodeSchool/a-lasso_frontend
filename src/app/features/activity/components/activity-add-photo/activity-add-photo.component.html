@@ -30,24 +30,23 @@
       header="Sélectionner une photo"
       [(visible)]="isModalVisible"
       [modal]="true"
+      [appendTo]="'body'"
       styleClass="custom-dialog"
       contentStyleClass="custom-dialog-content">
-      <div class="modal-options">
-        <div class="existing-photos">
-          @if (existingImages$ | async; as existingImages) {
-            @for (pic of existingImages; track pic.id) {
-              <img
-                [id]="'existing-photo-' + $index"
-                [src]="pic.image"
-                class="selectable-photo"
-                (click)="selectExistingPicture(pic.image, modalTargetIndex, pic.id)"
-                (keydown.enter)="selectExistingPicture(pic.image, modalTargetIndex, pic.id)"
-                (keydown.space)="selectExistingPicture(pic.image, modalTargetIndex, pic.id)"
-                tabindex="0"
-                alt="photos d'une ancienne activité" />
-            }
+      <div class="existing-photos">
+        @if (existingImages$ | async; as existingImages) {
+          @for (pic of existingImages; track pic.id) {
+            <img
+              [id]="'existing-photo-' + $index"
+              [src]="pic.image"
+              class="selectable-photo"
+              (click)="selectExistingPicture(pic.image, modalTargetIndex, pic.id)"
+              (keydown.enter)="selectExistingPicture(pic.image, modalTargetIndex, pic.id)"
+              (keydown.space)="selectExistingPicture(pic.image, modalTargetIndex, pic.id)"
+              tabindex="0"
+              alt="photos d'une ancienne activité" />
           }
-        </div>
+        }
       </div>
 
       <div class="footer-buttons">
@@ -57,7 +56,7 @@
           [type]="'button'"
           (buttonClicked)="loadMorePictures()"
           [styleClass]="ButtonStyleClass.defaultWhite"
-          label="Charger plus d'images"
+          label="Plus d'images"
           ariaLabel="button pour charger plus de photos"
           size="small">
         </app-single-button>
@@ -67,13 +66,13 @@
           [type]="'button'"
           (buttonClicked)="triggerFileInput(modalTargetIndex)"
           [styleClass]="ButtonStyleClass.defaultBlue"
-          label="Ajouter une nouvelle photo"
-          ariaLabel="button pour ajouter une nouvelle photo"
+          label="Ajouter une nouvelle image"
+          ariaLabel="button pour ajouter une nouvelle image"
           size="small">
         </app-single-button>
       </div>
     </p-dialog>
-    <p-dialog styleClass="cropper-modal" header="Recadrer la photo" [(visible)]="isCropperVisible" [modal]="true">
+    <p-dialog styleClass="cropper-modal" header="Recadrer la photo" [(visible)]="isCropperVisible" [appendTo]="'body'" [modal]="true">
       <image-cropper
         output="base64"
         [imageChangedEvent]="imageChangedEvent"
