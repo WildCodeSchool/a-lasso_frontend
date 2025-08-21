@@ -5,7 +5,7 @@ import { Store } from '@ngrx/store';
 import { Observable, take } from 'rxjs';
 import { UUIDTypes } from 'uuid';
 import { environment } from '../../../../../environments/environment';
-import { TruncatePipe } from '../../../../common/pipes/TruncateString.pipe';
+import { TruncatePipe } from '../../../../common/pipes/truncate-string.pipe';
 import { InscriptionBadgeComponent } from '../../../activity/components/inscription-badge/inscription-badge.component';
 import { Activity, AssociationActivity } from '../../../activity/models/activity.model';
 import { selectActivities } from '../../../activity/store/activities.selectors';

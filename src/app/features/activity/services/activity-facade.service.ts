@@ -96,15 +96,15 @@ export class ActivityFacadeService {
       .pipe(
         take(TAKE_1),
         tap({
-          next: (apiResponse: boolean) => {
+          next: (isFollowApiResponse: boolean) => {
             this._store.dispatch(
               UserActions.updateActivitiesUserInfos({
                 activityId: activityId,
-                isSaved: apiResponse,
+                isSaved: isFollowApiResponse,
               })
             );
 
-            if (apiResponse) {
+            if (isFollowApiResponse) {
               showSuccessToast(this._toast);
             } else {
               showInfoToast(this._toast, 'Activité retirée de vos favoris.');
