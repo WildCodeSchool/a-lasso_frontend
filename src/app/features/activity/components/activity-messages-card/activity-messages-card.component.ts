@@ -10,7 +10,7 @@ import { MenuItem } from 'primeng/api';
 import { MessageCreation } from '../../models/messageCreation';
 import { FormField } from '../../../authentication/models/form.model';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { selectMessagesByActivityId } from '../../store/messages/messages.selector';
+import { selectMessagesByActivityId } from '../../store/messages/messages.selectors';
 import { Store } from '@ngrx/store';
 
 @Component({

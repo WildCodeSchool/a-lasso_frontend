@@ -6,10 +6,10 @@ import { Observable, take } from 'rxjs';
 import { TAKE_1 } from 'src/app/common/constants/observables.constants';
 import { AuthService } from 'src/app/features/authentication/services/auth.service';
 import { environment } from 'src/environments/environment';
+import { DateFrPipe } from '../../../../common/pipes/DateFr.pipe';
 import { ReportModalComponent } from '../../../report/components/report-modal/report-modal.component';
 import { Association } from '../../models/association.model';
 import { AssociationFacadeService } from '../../services/association-facade.service';
-import { DateFrPipe } from '../../../../common/pipes/DateFr.pipe';
 
 @Component({
   selector: 'app-association-card',
@@ -22,6 +22,7 @@ export class AssociationCardComponent implements OnInit {
 
   private _authService = inject(AuthService);
   private _associationFacadeService: AssociationFacadeService = inject(AssociationFacadeService);
+
   public isFollowAssociation$: Observable<boolean>;
   public apiUrl: string = environment.apiUrl;
   public isShowReportModal: boolean = false;

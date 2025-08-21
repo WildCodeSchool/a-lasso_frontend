@@ -1,30 +1,30 @@
 import { createReducer, on } from '@ngrx/store';
-import * as AuthActions from './user.actions';
 import { AssociationLogin, FollowedAssociation, MessageNotification, UserState, UserType, VoluntaryLogin } from '../models/user.model';
 import { getInitialUserState } from './meta-reducers';
+import { UserActions } from './user.actions';
 
 export const initialState: UserState = getInitialUserState();
 
 export const userReducer = createReducer(
   initialState,
-  on(AuthActions.login, state => ({
+  on(UserActions.login, state => ({
     ...state,
     error: null,
   })),
-  on(AuthActions.loginSuccess, (state, { userInfos }) => ({
+  on(UserActions.loginSuccess, (state, { userInfos }) => ({
     ...state,
     userInfos,
     isAuthenticated: true,
     error: null,
   })),
-  on(AuthActions.loginFailure, (state, { error }) => ({
+  on(UserActions.loginFailure, (state, { error }) => ({
     ...state,
     userInfos: null,
     isAuthenticated: false,
     error,
   })),
-  on(AuthActions.logout, () => initialState),
-  on(AuthActions.updateFollowedAssociations, (state, { associationId, isFollow }) => {
+  on(UserActions.logout, () => initialState),
+  on(UserActions.updateFollowedAssociations, (state, { associationId, isFollow }) => {
     if (!state.userInfos || !('followedAssociations' in state.userInfos)) {
       return state;
     }
@@ -50,7 +50,7 @@ export const userReducer = createReducer(
       } as VoluntaryLogin,
     };
   }),
-  on(AuthActions.updateActivitiesUserInfos, (state, { activityId, isSaved, isRegistered }) => {
+  on(UserActions.updateActivitiesUserInfos, (state, { activityId, isSaved, isRegistered }) => {
     if (!state.userInfos || !('activitiesUserInfos' in state.userInfos)) {
       return state;
     }
@@ -87,7 +87,7 @@ export const userReducer = createReducer(
     };
   }),
 
-  on(AuthActions.setNotificationMessages, (state, { activityId }) => {
+  on(UserActions.setNotificationMessages, (state, { activityId }) => {
     const userInfos: VoluntaryLogin | AssociationLogin = state.userInfos;
 
     if (!userInfos || !('notification' in userInfos)) {
@@ -110,7 +110,7 @@ export const userReducer = createReducer(
     };
   }),
 
-  on(AuthActions.updateNotificationReports, (state, { updateCount }) => {
+  on(UserActions.updateNotificationReports, (state, { updateCount }) => {
     if (!state.userInfos || !('notification' in state.userInfos)) {
       return state;
     }
@@ -127,7 +127,7 @@ export const userReducer = createReducer(
     };
   }),
 
-  on(AuthActions.updateAssociationStats, (state, { statistics }) => {
+  on(UserActions.updateAssociationStats, (state, { statistics }) => {
     if (!state.userInfos || state.userInfos.type !== UserType.Association) return state;
     return {
       ...state,
@@ -138,7 +138,7 @@ export const userReducer = createReducer(
     };
   }),
 
-  on(AuthActions.updateAssociationDescription, (state, { description }) => {
+  on(UserActions.updateAssociationDescription, (state, { description }) => {
     if (!state.userInfos || state.userInfos.type !== UserType.Association) return state;
     return {
       ...state,
@@ -149,7 +149,7 @@ export const userReducer = createReducer(
     };
   }),
 
-  on(AuthActions.updateAssociationGeneralInfo, (state, { foundationDate, founder }) => {
+  on(UserActions.updateAssociationGeneralInfo, (state, { foundationDate, founder }) => {
     if (!state.userInfos || state.userInfos.type !== UserType.Association) return state;
     return {
       ...state,

@@ -1,0 +1,10 @@
+<div class="image-wrapper hover-upload">
+  <img class="profile-image" [src]="imageUrl" alt="Profile Image" />
+
+  <div class="overlay">
+    <label class="upload-label">
+      <span>Changer ma photo</span>
+      <input type="file" accept="image/*" (change)="onFileSelected($event)" hidden />
+    </label>
+  </div>
+</div>

@@ -9,6 +9,7 @@ import { ActivityFacadeService } from '../../services/activity-facade.service';
 })
 export class FavoriteHeartComponent {
   private _activityFacadeService: ActivityFacadeService = inject(ActivityFacadeService);
+
   @Input() activityId!: string;
   @Input() isSaved!: boolean;
 

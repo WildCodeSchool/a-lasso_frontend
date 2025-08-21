@@ -1,0 +1,9 @@
+<p class="content">
+  <span class="label">{{ label }} : </span>
+
+  @if (!editMode) {
+    <span class="value">{{ value | emptyValue }}</span>
+  } @else {
+    <input [type]="type" [value]="value" (input)="onInputChange($event)" [placeholder]="placeholder" />
+  }
+</p>

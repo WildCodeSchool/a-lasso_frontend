@@ -2,6 +2,8 @@ import { createFeatureSelector, createSelector, MemoizedSelector } from '@ngrx/s
 import { UUIDTypes } from 'uuid';
 import { Message } from '../../models/message.model';
 
+export * as MessagesSelectors from './messages.selectors';
+
 export const selectMessagesState = createFeatureSelector<Message[]>('messages');
 
 export const selectMessages = createSelector(selectMessagesState, messages => messages);

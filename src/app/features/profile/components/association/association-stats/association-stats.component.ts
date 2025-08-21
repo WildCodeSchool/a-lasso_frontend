@@ -4,10 +4,10 @@ import { FormsModule } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { Observable, take } from 'rxjs';
 import { TAKE_1 } from 'src/app/common/constants/observables.constants';
+import { showSuccessToast } from 'src/app/common/utils/toast.utils';
 import { Statistic } from 'src/app/features/association/models/association.model';
 import { AuthFacade } from 'src/app/features/authentication/services/auth-facade.service';
-import { AssociationProfileFacadeService } from '../../services/association-profile-facade.service';
-import { showSuccessToast } from 'src/app/common/utils/toast.utils';
+import { AssociationProfileFacadeService } from '../../../services/association-profile-facade.service';
 
 @Component({
   selector: 'app-association-stats',
