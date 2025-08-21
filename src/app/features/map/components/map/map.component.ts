@@ -1,10 +1,10 @@
-import { Component, Input, inject, OnChanges, SimpleChanges, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, Input, inject, OnChanges, SimpleChanges, ViewChild, AfterViewInit, EventEmitter, Output } from '@angular/core';
 import maplibregl, { Marker, Popup } from 'maplibre-gl';
 import { Activity } from 'src/app/features/activity/models/activity.model';
-import { Observable, of, Subscription, switchMap } from 'rxjs';
+import { map, Observable, of, Subscription, switchMap } from 'rxjs';
 import { CheckboxModule } from 'primeng/checkbox';
 import { FormsModule } from '@angular/forms';
-import { MapDisplayType } from '../../models/map';
+import { MapDisplayType, MyCityClickedEvent } from '../../models/map';
 
 import { FRANCE_LATITUDE, FRANCE_LONGITUDE } from '../../constants/map.constants';
 import { PopupMapComponent } from '../popup-map/popup-map.component';
@@ -13,19 +13,26 @@ import { ActivityFacadeService } from '../../../activity/services/activity-facad
 import { DestroyableComponent } from '../../../../common/utils/DestroyableComponent';
 import { AuthService } from 'src/app/features/authentication/services/auth.service';
 import { VoluntaryProfileService } from 'src/app/features/profile/services/voluntary-profil.service';
+import { AuthFacade } from 'src/app/features/authentication/services/auth-facade.service';
+import { UserType } from 'src/app/features/authentication/models/user.model';
+import { MapService } from '../../services/map.service';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'app-map',
   templateUrl: './map.component.html',
-  imports: [FormsModule, CheckboxModule, PopupMapComponent],
+  imports: [FormsModule, CheckboxModule, PopupMapComponent, AsyncPipe],
   styleUrl: './map.component.scss',
 })
 export class MapComponent extends DestroyableComponent implements AfterViewInit, OnChanges {
   private _activityFacadeService: ActivityFacadeService = inject(ActivityFacadeService);
   private _voluntaryProfileService: VoluntaryProfileService = inject(VoluntaryProfileService);
   private _authService: AuthService = inject(AuthService);
+  private _authFacade: AuthFacade = inject(AuthFacade);
+  private _mapService: MapService = inject(MapService);
 
   @Input() filteredActivities$!: Observable<Activity[]>;
+  @Output() myCityClicked = new EventEmitter<MyCityClickedEvent>();
   @ViewChild('popupRef') popupComponent!: PopupMapComponent;
 
   private _mapKey = environmentSecret.apiMapKey;
@@ -33,6 +40,9 @@ export class MapComponent extends DestroyableComponent implements AfterViewInit,
   private _activityMarkers: maplibregl.Marker[] = [];
   private _associationMarkers: maplibregl.Marker[] = [];
   private _activitySub: Subscription | null = null;
+
+  isVoluntaryUser$: Observable<boolean> = this._authService.isVoluntaryUser();
+  userCity$: Observable<string | null> = this._authFacade.user$.pipe(map(user => (user?.type === UserType.Voluntary ? user.city : null)));
 
   popup: Popup = new maplibregl.Popup({
     closeButton: true,
@@ -96,6 +106,26 @@ export class MapComponent extends DestroyableComponent implements AfterViewInit,
         essential: true,
       });
     }
+  }
+
+  async flyToMyCity(): Promise<void> {
+    this.userCity$.pipe(this.untilDestroyed()).subscribe(async city => {
+      if (!city) return;
+
+      try {
+        const coords = await this._mapService.geocodeCity(city);
+        if (coords) {
+          this.flyTo(coords.lon, coords.lat, 10);
+
+          this.myCityClicked.emit({
+            city,
+            coords: { lat: coords.lat, lon: coords.lon },
+          });
+        }
+      } catch (error) {
+        console.error('Erreur lors du zoom sur ma ville:', error);
+      }
+    });
   }
 
   private _updateMarkersOnFiltersChange(changes: SimpleChanges): void {
