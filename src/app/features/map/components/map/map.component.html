@@ -9,6 +9,14 @@
       <p-checkbox [(ngModel)]="mapDisplay.associations" [binary]="true" (onChange)="addMarkers()" />
     </div>
   </div>
+
+  @if (isVoluntaryUser$ | async) {
+    <div class="my-city-control">
+      <button type="button" class="my-city-button" (click)="flyToMyCity()" title="Voir ma ville">
+        <i class="fa-solid fa-location-crosshairs"></i>
+      </button>
+    </div>
+  }
 </div>
 
 <app-popup-map #popupRef (popupClosed)="popup.remove()"></app-popup-map>

@@ -14,6 +14,7 @@ import { ActivitySkeletonComponent } from '../../components/activity-skeleton/ac
 import { Activity, ActivitySearchFilters, ThemeName } from '../../models/activity.model';
 import { ActivityFacadeService } from '../../services/activity-facade.service';
 import { ActivityFilterService } from '../../services/activity-filter.service';
+import { MyCityClickedEvent } from 'src/app/features/map/models/map';
 
 @Component({
   selector: 'app-activities-home',
@@ -79,6 +80,16 @@ export class ActivitiesHomeComponent implements OnInit {
       this.mapComponent.flyTo(FRANCE_LONGITUDE, FRANCE_LATITUDE, 5);
     }
 
+    this._applyFilters();
+  }
+
+  onMyCityClicked(event: MyCityClickedEvent): void {
+    this.searchFilters = {
+      ...this.searchFilters,
+      location: event.city,
+    };
+
+    this._activityFilterService.setSearchedLocation(event.coords.lat, event.coords.lon);
     this._applyFilters();
   }
 

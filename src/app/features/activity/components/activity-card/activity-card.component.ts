@@ -5,7 +5,7 @@ import { Card } from 'primeng/card';
 import { Observable } from 'rxjs';
 import { AuthService } from 'src/app/features/authentication/services/auth.service';
 import { environment } from 'src/environments/environment';
-import { TruncatePipe } from '../../../../common/pipes/TruncateString.pipe';
+import { TruncatePipe } from '../../../../common/pipes/truncate-string.pipe';
 import { Activity, Participant } from '../../models/activity.model';
 import { ActivityFacadeService } from '../../services/activity-facade.service';
 import { FavoriteHeartComponent } from '../favorite-heart/favorite-heart.component';
