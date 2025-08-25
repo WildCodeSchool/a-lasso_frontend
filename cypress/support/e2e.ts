@@ -1,17 +1,22 @@
-// ***********************************************************
-// This example support/e2e.ts is processed and
-// loaded automatically before your test files.
-//
-// This is a great place to put global configuration and
-// behavior that modifies Cypress.
-//
-// You can change the location of this file or turn off
-// automatically serving support files with the
-// 'supportFile' configuration option.
-//
-// You can read more here:
-// https://on.cypress.io/configuration
-// ***********************************************************
+beforeEach(() => {
+  // Mock login endpoint
+  cy.intercept('POST', '/api/auth/login', { fixture: 'userAssociation.json' });
 
-// When a command from ./commands is ready to use, import with `import './commands'` syntax
-// import './commands';
+  // Mock activities fetch
+  cy.intercept('GET', '/api/activities*', { fixture: 'activities.json' });
+
+  // Mock address autocomplete
+  cy.intercept('GET', '/api/addresses*', [
+    { label: '123 Mocked Street', value: '123 Mocked Street' }
+  ]);
+
+  // Mock activity creation
+  cy.intercept('POST', '/api/activities', {
+    statusCode: 201,
+    body: { success: true, id: 123 }
+  });
+
+  // Mock reports
+//   cy.intercept('GET', '/api/reports*', { fixture: 'reports.json' });
+  cy.intercept('POST', '/api/reports', { success: true });
+});
