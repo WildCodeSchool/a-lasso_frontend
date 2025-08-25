@@ -3,6 +3,7 @@
     <div class="input-container">
       <div class="field-group">
         <p-autoComplete
+          id="search-address-input"
           [formControlName]="fieldConfig.name"
           [suggestions]="searchAddressResults$ | async"
           field="displayName"

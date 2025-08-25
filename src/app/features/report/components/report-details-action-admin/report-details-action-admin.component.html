@@ -3,11 +3,11 @@
     <div class="actions-reporter">
       <p>Plaignant</p>
       <div class="buttons">
-        <p-button>
+        <a [href]="'mailto:' + reportSelected.reporterUser.email" class="p-button contact-button" target="_blank">
           <i class="fa-regular fa-paper-plane"></i>
           Contacter
-        </p-button>
-        <p-button severity="warn">
+        </a>
+        <p-button severity="warn" (click)="banUser('reporter')">
           <i class="fa-solid fa-user-xmark"></i>
           Bannir
         </p-button>
@@ -16,11 +16,11 @@
     <div class="actions-reported">
       <p>Mis en cause</p>
       <div class="buttons">
-        <p-button>
+        <a [href]="'mailto:' + reportSelected.reportedUser.email" class="p-button contact-button" target="_blank">
           <i class="fa-regular fa-paper-plane"></i>
           Contacter
-        </p-button>
-        <p-button severity="warn">
+        </a>
+        <p-button severity="warn" (click)="banUser('reported')">
           <i class="fa-solid fa-user-xmark"></i>
           Bannir
         </p-button>

@@ -1,8 +1,10 @@
 FROM node:alpine AS build
 WORKDIR /app
+ARG MAP_API_KEY
 COPY package.json ./
 RUN npm install
 COPY . ./
+RUN printf "%s" "$MAP_API_KEY" > src/environments/environment.secret.ts
 RUN npm run build:staging
 
 FROM nginx:alpine

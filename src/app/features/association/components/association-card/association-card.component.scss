@@ -81,7 +81,10 @@ p-card {
     }
 
     .activity-logo {
-      width: 1vw;
+      width: 25px;
+      height: 25px;
+      object-fit: cover;
+      border-radius: 50%;
     }
   }
 

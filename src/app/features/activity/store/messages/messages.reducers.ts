@@ -1,11 +1,11 @@
 import { createReducer, on } from '@ngrx/store';
-import { addMessage, setMessages } from './messages.actions';
 import { Message } from '../../models/message.model';
+import { MessagesActions } from './messages.actions';
 
 export const initialMessagesState: Message[] = [];
 
 export const messagesReducer = createReducer(
   initialMessagesState,
-  on(setMessages, (_, { messages }) => [...messages]),
-  on(addMessage, (state, { message }) => [...state, message])
+  on(MessagesActions.setMessages, (_, { messages }) => [...messages]),
+  on(MessagesActions.addMessage, (state, { message }) => [...state, message])
 );

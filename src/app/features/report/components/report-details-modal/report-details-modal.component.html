@@ -16,7 +16,13 @@
           <div class="admin-section">
             <h3 class="title-report">Commentaire de l'administrateur</h3>
             <form [formGroup]="reportForm">
-              <app-textarea-field [fieldConfig]="fieldCommentary" [formGroup]="reportForm" [maxlength]="maxLengthCommentary" [rows]="7" [cols]="1">
+              <app-textarea-field
+                [fieldConfig]="fieldCommentary"
+                [formGroup]="reportForm"
+                [maxlength]="maxLengthCommentary"
+                [rows]="7"
+                [cols]="1"
+                [submitted]="closeReport">
               </app-textarea-field>
             </form>
           </div>
@@ -25,7 +31,7 @@
           [reportForm]="reportForm"
           [visible]="visible"
           [reportSelected]="reportSelected"
-          (visibleChange)="visibleChange.emit($event)"></app-report-details-action-admin>
+          (submitReportEvent)="onSubmitReport()"></app-report-details-action-admin>
       </div>
       <div class="card previous-report">
         <div class="previous-report-content">
@@ -43,4 +49,5 @@
       </div>
     </div>
   </p-dialog>
+  <p-confirmDialog></p-confirmDialog>
 </div>

@@ -5,34 +5,37 @@ import { MessageService as Toast } from 'primeng/api';
 import { AvatarModule } from 'primeng/avatar';
 import { ButtonModule } from 'primeng/button';
 import { Dialog } from 'primeng/dialog';
+import { InputTextModule } from 'primeng/inputtext';
+import { Observable } from 'rxjs';
 import { InputFieldErrorComponent } from 'src/app/common/components/input-field-error/input-field-error.component';
 import { InputFieldComponent } from 'src/app/common/components/input-field/input-field.component';
 import { showSuccessToast } from 'src/app/common/utils/toast.utils';
 import { PASSWORD_REGEX } from 'src/app/features/authentication/constants/form.constants';
 import { FormField } from 'src/app/features/authentication/models/form.model';
 import { AuthFacade } from 'src/app/features/authentication/services/auth-facade.service';
+import { AuthService } from 'src/app/features/authentication/services/auth.service';
 import { passwordsMatchValidator } from 'src/app/features/authentication/utils/form.validators';
-import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-password-change-dialog',
   standalone: true,
-  imports: [Dialog, ButtonModule, AvatarModule, InputFieldComponent, InputFieldErrorComponent, ReactiveFormsModule, AsyncPipe],
+  imports: [Dialog, ButtonModule, InputTextModule, AvatarModule, InputFieldComponent, InputFieldErrorComponent, ReactiveFormsModule, AsyncPipe],
   templateUrl: './password-change-dialog.component.html',
   styleUrl: './password-change-dialog.component.scss',
 })
 export class PasswordChangeDialogComponent {
-  private _auth = inject(AuthFacade);
+  private _authFacade = inject(AuthFacade);
+  private _authService = inject(AuthService);
   private _toast = inject(Toast);
   private _fb: FormBuilder = inject(FormBuilder);
 
   @Output() visibleChange = new EventEmitter<boolean>();
   @Input() visible = false;
 
-  user$ = this._auth.user$;
-  userAvatar$ = this._auth.userAvatar$;
+  isVoluntary$: Observable<boolean> = this._authService.isVoluntaryUser();
+  user$ = this._authFacade.user$;
+  userAvatar$ = this._authFacade.userAvatar$;
 
-  apiUrl: string = environment.apiUrl;
   passwordForm: FormGroup = this._fb.group(
     {
       oldPassword: ['', Validators.required],
@@ -59,7 +62,7 @@ export class PasswordChangeDialogComponent {
     if (this.passwordForm.valid) {
       const { oldPassword, password } = this.passwordForm.value;
 
-      this._auth.changePassword(oldPassword, password).subscribe({
+      this._authFacade.changePassword(oldPassword, password).subscribe({
         next: () => {
           showSuccessToast(this._toast);
           this.hide();
