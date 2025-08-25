@@ -1,14 +1,75 @@
 services:
+  alasso-mysql-staging-ci:
+    image: mysql:8.0
+    container_name: mysql-staging
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: 'mysql'
+      MYSQL_DATABASE: 'stagingdb'
+      MYSQL_USER: 'user_staging'
+      MYSQL_PASSWORD: 'password_staging'
+    #      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    #      MYSQL_DATABASE: ${DB_NAME_STAGING}
+    #      MYSQL_USER: ${DB_USER_STAGING}
+    #      MYSQL_PASSWORD: ${DB_PASSWORD_STAGING}
+    volumes:
+      - mysql_data_staging:/var/lib/mysql
+    #    env_file:
+    #      - ./src/environnement/environnement.staging.ts
+    networks:
+      - ci-network
+
+  alasso-spring-app-staging-ci:
+    image: alasso/spring-app:staging
+    container_name: alasso-spring-staging
+    restart: unless-stopped
+    depends_on:
+      - alasso-mysql-staging-ci
+    #    env_file:
+    #      - ./src/environnement/environnement.staging.ts
+    #    environment:
+    #      SPRING_PROFILES_ACTIVE: staging # Active application-staging.yml
+    environment:
+      SPRING_PROFILES_ACTIVE: staging
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_NAME: stagingdb
+      DB_USER: user_staging
+      DB_PASSWORD: password_staging
+    networks:
+      - ci-network
+    ports:
+      - "8080:8080"
+  #    labels:
+  #      - "traefik.enable=true"
+  #      - "traefik.http.routers.spring-app-staging.rule=Host(`staging-api.a-l-asso.fr`)"
+  #      - "traefik.http.routers.spring-app-staging.entrypoints=websecure"
+  #      - "traefik.http.routers.spring-app-staging.tls.certresolver=letsencrypt"
+  #      - "traefik.http.services.spring-app-staging.loadbalancer.server.port=8080"
+
   nginx:
-    image: alasso:staging
+    #    image: alasso:staging
+    container_name: alasso:staging
+    depends_on:
+      - alasso-spring-app-staging-ci
+    restart: unless-stopped
     build:
       context: ./
       dockerfile: Dockerfile.staging
+      args:
+        MAP_API_KEY: ${MAP_API_KEY}
     ports:
-      - "81:80"
+      #      - "81:80"
+      - "4200:80"
     networks:
-      - dev-networks
+      - ci-network
 
+volumes:
+  mysql_data_staging:
+
+#networks:
+#  traefik:
+#    external: true
 networks:
-  dev-networks:
+  ci-network:
     driver: bridge
