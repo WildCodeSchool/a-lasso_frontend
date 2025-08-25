@@ -16,4 +16,5 @@ export type Association = {
   associationLogoImage: Image;
   siteURL: string;
   statistics: Statistic[];
+  isFollow?: boolean;
 };

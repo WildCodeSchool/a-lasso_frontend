@@ -1,7 +1,7 @@
 import { MetaReducer, ActionReducer } from '@ngrx/store';
 import { UserState } from '../models/user.model';
 import { GlobalState } from 'src/app/common/store/global-state.state';
-import * as UserActions from './user.actions';
+import { UserActions } from './user.actions';
 
 export const metaReducers: MetaReducer<GlobalState>[] = [userStorageMetaReducer];
 

@@ -1,8 +1,10 @@
 FROM node:alpine AS build
 WORKDIR /app
+ARG MAP_API_KEY
 COPY package.json ./
 RUN npm install
 COPY . ./
+RUN echo "export const environment = { production: false, name: 'staging', mapKey: '$MAP_API_KEY', apiUrl: 'http://alasso-spring-app-staging-ci:8080' };" > src/environments/environment.secret.ts
 RUN npm run build:staging
 
 FROM nginx:alpine

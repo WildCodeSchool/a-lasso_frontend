@@ -1,0 +1,3 @@
+<app-activity-menu [title]="'Nos activités'" [navigationItems]="navigationItems" [activeTab]="activeTab" (tabChange)="handleTabChange($event)">
+  <app-activity-list [activities]="filteredActivities$ | async" />
+</app-activity-menu>

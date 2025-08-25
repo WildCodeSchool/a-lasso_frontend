@@ -5,7 +5,7 @@ import { Observable, take } from 'rxjs';
 import { TAKE_1 } from 'src/app/common/constants/observables.constants';
 import { ButtonStyleClass } from 'src/app/common/models/button';
 import { AuthService } from 'src/app/features/authentication/services/auth.service';
-import { environment } from 'src/environments/environment.development';
+import { environment } from 'src/environments/environment';
 import { SingleButtonComponent } from '../../../../common/components/single-button/single-button.component';
 import { Activity, Participant } from '../../models/activity.model';
 import { ActivityFacadeService } from '../../services/activity-facade.service';

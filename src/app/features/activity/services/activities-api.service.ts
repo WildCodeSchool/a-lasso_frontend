@@ -2,7 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
 import { Activity, Theme } from '../models/activity.model';
-import { environment } from 'src/environments/environment.development';
+import { environment } from 'src/environments/environment';
 import { UUIDTypes } from 'uuid';
 import { Message } from '../models/message.model';
 import { MessageCreation } from '../models/messageCreation';
@@ -25,6 +25,10 @@ export class ActivitiesApiService {
 
   getAllActivities(): Observable<Activity[]> {
     return this._http.get<Activity[]>(`${this._apiUrl}/activities`);
+  }
+
+  getActivitiesByAssociationId(associationId: UUIDTypes): Observable<Activity[]> {
+    return this._http.get<Activity[]>(`${this._apiUrl}/activities/association/${associationId}`);
   }
 
   getActivityById(activityId: UUIDTypes): Observable<Activity> {
