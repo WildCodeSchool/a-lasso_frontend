@@ -4,7 +4,7 @@ on:
   push:
     branches-ignore:
       - development
-      - staging  
+      - staging
       - production
 
   pull_request:
@@ -121,6 +121,7 @@ jobs:
 
       - name: Build Angular app for E2E
         run: |
+          echo "base_ref = ${{ github.base_ref }}"
           if [ "${{ github.base_ref }}" == "production" ]; then
             npx ng build --configuration=production
           else
@@ -140,6 +141,8 @@ jobs:
               echo "✅ Server is ready!"
               break
             fi
+            curl -i https://staging-api.a-l-asso.fr/health || true
+            echo curl https://staging-api.a-l-asso.fr 
             echo "Waiting for server... ($i/30)"
             sleep 2
           done
