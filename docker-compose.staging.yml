@@ -1,18 +1,4 @@
 services:
-<<<<<<< HEAD
-  nginx:
-    image: alasso:staging
-    build:
-      context: ./
-      dockerfile: Dockerfile.staging
-    ports:
-      - "81:80"
-    networks:
-      - dev-networks
-
-networks:
-  dev-networks:
-=======
   alasso-mysql-staging-ci:
     image: mysql:8.0
     container_name: mysql-staging
@@ -63,7 +49,7 @@ networks:
 
   nginx:
     #    image: alasso:staging
-    container_name: alasso:staging
+    container_name: alasso-staging
     depends_on:
       - alasso-spring-app-staging-ci
     restart: unless-stopped
@@ -71,7 +57,7 @@ networks:
       context: ./
       dockerfile: Dockerfile.staging
       args:
-        MAP_API_KEY: ${MAP_API_KEY}
+        MAP_API_KEY: "export const environmentSecret = {  apiMapKey: 'uNVlI5eA31298h3i61yu'};"
     ports:
       #      - "81:80"
       - "4200:80"
@@ -86,5 +72,4 @@ volumes:
 #    external: true
 networks:
   ci-network:
->>>>>>> 20ceb790939d93acf192c19ad37a2a9bdd69c094
     driver: bridge
