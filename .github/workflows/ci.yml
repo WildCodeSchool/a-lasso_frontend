@@ -110,6 +110,8 @@ jobs:
           password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
 
       - name: Build & start Docker Compose stack
+        env:
+          MAP_API_KEY: ${{ secrets.MAP_API_KEY }}
         run: |
           docker compose -f docker-compose.staging.yml up --build -d
 

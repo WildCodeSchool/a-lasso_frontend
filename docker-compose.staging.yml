@@ -57,7 +57,7 @@ services:
       context: ./
       dockerfile: Dockerfile.staging
       args:
-        MAP_API_KEY: ${{ secrets.MAP_API_KEY }}
+        MAP_API_KEY: ${MAP_API_KEY}
     ports:
       #      - "81:80"
       - "4200:80"
