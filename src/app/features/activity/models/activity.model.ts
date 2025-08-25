@@ -24,7 +24,7 @@ export type Localisation = {
 };
 
 export type AssociationActivity = {
-  id: string;
+  id: UUIDTypes;
   name: string;
   logo: string;
   localisation: Localisation;

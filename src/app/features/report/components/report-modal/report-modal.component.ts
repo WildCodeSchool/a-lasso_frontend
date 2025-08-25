@@ -30,6 +30,7 @@ export class ReportModalComponent {
     { label: 'Autre...', value: ReportTypeEnum.Other },
   ];
 
+  public submitReport: boolean = false;
   public messageMaxLength: number = 700;
   public reportForm = this._fb.group({
     selectedType: [ReportTypeEnum.InappropriateActivity],
@@ -44,6 +45,7 @@ export class ReportModalComponent {
   };
 
   sendReport(): void {
+    this.submitReport = true;
     if (this.reportForm.invalid) {
       this.reportForm.markAllAsTouched();
       return;

@@ -22,5 +22,9 @@ export const activitiesReducer = createReducer(
     }))
   ),
 
-  on(ActivitiesActions.deleteActivity, (state, { activityId }) => state.filter(activity => activity.id !== activityId))
+  on(ActivitiesActions.deleteActivity, (state, { activityId }) => state.filter(activity => activity.id !== activityId)),
+
+  on(ActivitiesActions.removeActivitiesByAssociation, (state, { associationId }) =>
+    state.filter(activity => activity.association.id !== associationId)
+  )
 );

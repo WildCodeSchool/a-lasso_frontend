@@ -9,7 +9,9 @@ import { UUIDTypes } from 'uuid';
 import { showSuccessToast } from 'src/app/common/utils/toast.utils';
 import { ReportsActions } from '../store/reports.actions';
 import { ReportsSelectors } from '../store/reports.selectors';
-import { UserActions } from '../../authentication/store/user.actions';
+import { updateNotificationReports, UserActions } from '../../authentication/store/user.actions';
+import { removeActivitiesByAssociation } from '../../activity/store/activities.actions';
+import { UserType } from '../../authentication/models/user.model';
 
 @Injectable({
   providedIn: 'root',
@@ -19,6 +21,7 @@ export class ReportFacadeService {
   private _store: Store = inject(Store);
   private readonly _authStore: AuthFacade = inject(AuthFacade);
   private readonly _reportApiService: ReportApiService = inject(ReportApiService);
+  private _reportsLoaded: boolean = false;
 
   getReportsFromApi(): Observable<Report[]> {
     return this._reportApiService.getReportsFromApi().pipe(
@@ -31,10 +34,11 @@ export class ReportFacadeService {
   getReportsFromStore$(): Observable<Report[]> {
     return this._store.select(ReportsSelectors.selectReports).pipe(
       switchMap(reports => {
-        if (reports.length > 0) {
-          return of(reports);
+        if (!this._reportsLoaded) {
+          this._reportsLoaded = true;
+          return this.getReportsFromApi();
         }
-        return this.getReportsFromApi();
+        return of(reports);
       })
     );
   }
@@ -125,5 +129,20 @@ export class ReportFacadeService {
       countReportsUserByYear,
       countReporterUserByYear,
     };
+  }
+
+  banUser(userId: UUIDTypes, userType: string): void {
+    this._reportApiService
+      .banUser(userId, userType)
+      .pipe(
+        tap((): void => {
+          this._store.dispatch(updateNotificationReports({ updateCount: -1 }));
+
+          if (userType === UserType.Association) {
+            this._store.dispatch(removeActivitiesByAssociation({ associationId: userId }));
+          }
+        })
+      )
+      .subscribe();
   }
 }

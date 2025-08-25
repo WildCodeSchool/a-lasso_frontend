@@ -8,7 +8,13 @@
       </div>
       <div class="commentary-report">
         <h3>Commentaire libre</h3>
-        <app-textarea-field [fieldConfig]="fieldConfig" [formGroup]="reportForm" [rows]="5" [cols]="1" [maxlength]="messageMaxLength">
+        <app-textarea-field
+          [fieldConfig]="fieldConfig"
+          [formGroup]="reportForm"
+          [rows]="5"
+          [cols]="1"
+          [maxlength]="messageMaxLength"
+          [submitted]="submitReport">
         </app-textarea-field>
       </div>
 

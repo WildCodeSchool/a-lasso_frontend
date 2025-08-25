@@ -55,7 +55,7 @@ export class ActivityCardComponent implements OnInit {
 
   private _setAssociationLogoUrl(): void {
     const logo = this.activity.association.logo;
-    if (logo.startsWith('data:image')) {
+    if (logo && logo.startsWith('data:image')) {
       this.associationLogoUrl = logo;
     } else {
       this.associationLogoUrl = this.apiUrl + logo;

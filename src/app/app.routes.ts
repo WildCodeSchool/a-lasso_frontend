@@ -11,6 +11,7 @@ import { ReportHomePageComponent } from './features/report/pages/report-home-pag
 import { AssociationProfilePageComponent } from './features/profile/pages/association-profile-page/association-profile-page.component';
 import { VoluntaryProfilePageComponent } from './features/profile/pages/voluntary-profile-page/voluntary-profile-page.component';
 import { isVoluntaryGuard } from './common/guards/is-voluntary.guard';
+import { isAdminGuard } from './common/guards/is-admin.guard';
 
 export const routes: Routes = [
   {
@@ -30,6 +31,7 @@ export const routes: Routes = [
   },
   {
     path: 'reports',
+    canActivate: [isLoggedInGuard, isAdminGuard],
     component: ReportHomePageComponent,
   },
   {

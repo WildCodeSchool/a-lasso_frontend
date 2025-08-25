@@ -36,6 +36,7 @@ export class PopupMapComponent implements OnInit {
     this._activity = value;
     this._setAssociationLogoUrl();
   }
+
   get activity(): Activity | null {
     return this._activity;
   }
@@ -45,6 +46,7 @@ export class PopupMapComponent implements OnInit {
     this._association = value;
     this._setAssociationLogoUrl();
   }
+
   get association(): AssociationActivity | null {
     return this._association;
   }
@@ -82,7 +84,7 @@ export class PopupMapComponent implements OnInit {
   private _setAssociationLogoUrl(): void {
     const logo = this._association?.logo ?? this._activity?.association?.logo;
 
-    if (logo.startsWith('data:image')) {
+    if (logo && logo.startsWith('data:image')) {
       this.associationLogoUrl = logo;
     } else {
       this.associationLogoUrl = this.apiUrl + logo;
