@@ -75,7 +75,11 @@ jobs:
 
       - name: Recreate environment.secret.ts
         run: |
-          echo "${{ secrets.MAP_API_KEY }}" > src/environments/environment.secret.ts
+          cat <<EOF > src/environments/environment.secret.ts
+          export const environmentSecret = {
+            apiMapKey: '${{ secrets.MAP_API_KEY }}'
+          };
+          EOF
 
       - name: Build Angular app
         run: |

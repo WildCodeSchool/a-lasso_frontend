@@ -1,4 +1,18 @@
 services:
+<<<<<<< HEAD
+  nginx:
+    image: alasso:staging
+    build:
+      context: ./
+      dockerfile: Dockerfile.staging
+    ports:
+      - "81:80"
+    networks:
+      - dev-networks
+
+networks:
+  dev-networks:
+=======
   alasso-mysql-staging-ci:
     image: mysql:8.0
     container_name: mysql-staging
@@ -72,4 +86,5 @@ volumes:
 #    external: true
 networks:
   ci-network:
+>>>>>>> 20ceb790939d93acf192c19ad37a2a9bdd69c094
     driver: bridge
