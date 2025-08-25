@@ -37,6 +37,7 @@ export type ReportUser = {
   id: UUIDTypes;
   userName: string;
   type?: 'association' | 'voluntary';
+  email?: string;
 };
 
 export type Report = {

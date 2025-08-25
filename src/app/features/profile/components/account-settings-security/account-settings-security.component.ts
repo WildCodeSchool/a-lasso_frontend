@@ -4,16 +4,26 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ToastModule } from 'primeng/toast';
 import { Observable } from 'rxjs';
-import { SingleButtonComponent } from '../../../../common/components/single-button/single-button.component';
-import { ButtonStyleClass } from '../../../../common/models/button';
-import { AssociationLogin, VoluntaryLogin } from '../../../authentication/models/user.model';
-import { AuthFacade } from '../../../authentication/services/auth-facade.service';
+import { SingleButtonComponent } from 'src/app/common/components/single-button/single-button.component';
+import { ButtonStyleClass } from 'src/app/common/models/button';
+import { AssociationLogin, VoluntaryLogin } from 'src/app/features/authentication/models/user.model';
+import { AuthFacade } from 'src/app/features/authentication/services/auth-facade.service';
+import { EmailChangeDialogComponent } from '../email-change-dialog/email-change-dialog.component';
 import { PasswordChangeDialogComponent } from '../password-change-dialog/password-change-dialog.component';
 import { showSuccessToast } from 'src/app/common/utils/toast.utils';
 
 @Component({
   selector: 'app-account-settings-security',
-  imports: [DatePipe, CommonModule, AsyncPipe, SingleButtonComponent, PasswordChangeDialogComponent, ConfirmDialogModule, ToastModule],
+  imports: [
+    DatePipe,
+    CommonModule,
+    AsyncPipe,
+    SingleButtonComponent,
+    PasswordChangeDialogComponent,
+    EmailChangeDialogComponent,
+    ConfirmDialogModule,
+    ToastModule,
+  ],
   templateUrl: './account-settings-security.component.html',
   styleUrl: './account-settings-security.component.scss',
 })
@@ -25,10 +35,15 @@ export class AccountSettingsSecurityComponent {
   user$: Observable<VoluntaryLogin | AssociationLogin | null> = this._authFacade.user$;
 
   isPasswordDialogVisible = false;
+  isEmailDialogVisible = false;
   ButtonStyleClass = ButtonStyleClass;
 
   onPasswordEdit(): void {
     this.isPasswordDialogVisible = true;
+  }
+
+  onEmailEdit(): void {
+    this.isEmailDialogVisible = true;
   }
 
   onDeleteAccount(): void {

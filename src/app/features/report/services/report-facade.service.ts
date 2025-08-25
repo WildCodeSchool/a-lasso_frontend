@@ -4,12 +4,14 @@ import { Report, ReportStatsAnalysis, StatusReportEnum } from '../models/report.
 import { map, Observable, of, switchMap, tap } from 'rxjs';
 import { MessageService as Toast } from 'primeng/api';
 import { Store } from '@ngrx/store';
-import { selectReports, selectReportsById } from '../store/reports.selector';
-import { setReports, updateReport } from '../store/reports.actions';
-import { updateNotificationReports } from '../../authentication/store/user.actions';
 import { AuthFacade } from '../../authentication/services/auth-facade.service';
 import { UUIDTypes } from 'uuid';
 import { showSuccessToast } from 'src/app/common/utils/toast.utils';
+import { ReportsActions } from '../store/reports.actions';
+import { ReportsSelectors } from '../store/reports.selectors';
+import { updateNotificationReports, UserActions } from '../../authentication/store/user.actions';
+import { removeActivitiesByAssociation } from '../../activity/store/activities.actions';
+import { UserType } from '../../authentication/models/user.model';
 
 @Injectable({
   providedIn: 'root',
@@ -19,29 +21,31 @@ export class ReportFacadeService {
   private _store: Store = inject(Store);
   private readonly _authStore: AuthFacade = inject(AuthFacade);
   private readonly _reportApiService: ReportApiService = inject(ReportApiService);
+  private _reportsLoaded: boolean = false;
 
   getReportsFromApi(): Observable<Report[]> {
     return this._reportApiService.getReportsFromApi().pipe(
       tap((reports: Report[]) => {
-        this._store.dispatch(setReports({ reports: reports }));
+        this._store.dispatch(ReportsActions.setReports({ reports: reports }));
       })
     );
   }
 
   getReportsFromStore$(): Observable<Report[]> {
-    return this._store.select(selectReports).pipe(
+    return this._store.select(ReportsSelectors.selectReports).pipe(
       switchMap(reports => {
-        if (reports.length > 0) {
-          return of(reports);
+        if (!this._reportsLoaded) {
+          this._reportsLoaded = true;
+          return this.getReportsFromApi();
         }
-        return this.getReportsFromApi();
+        return of(reports);
       })
     );
   }
 
   getReportsFromStoreById$(report: Report): Observable<Report[]> {
     if (report.hasLoadedAllReports) {
-      return this._store.select(selectReportsById(report.reportId));
+      return this._store.select(ReportsSelectors.selectReportsById(report.reportId));
     }
 
     return this._reportApiService.getReportsByReportedIdFromApi(report.reportedUser.id).pipe(
@@ -50,7 +54,7 @@ export class ReportFacadeService {
           ...report,
           hasLoadedAllReports: true,
         }));
-        this._store.dispatch(setReports({ reports: updatedReports }));
+        this._store.dispatch(ReportsActions.setReports({ reports: updatedReports }));
       })
     );
   }
@@ -61,7 +65,7 @@ export class ReportFacadeService {
       .pipe(
         tap(() => {
           showSuccessToast(this._toast);
-          this._store.dispatch(updateNotificationReports({ updateCount: +1 }));
+          this._store.dispatch(UserActions.updateNotificationReports({ updateCount: +1 }));
         })
       )
       .subscribe();
@@ -73,10 +77,10 @@ export class ReportFacadeService {
       .pipe(
         tap(() => {
           showSuccessToast(this._toast);
-          this._store.dispatch(updateReport({ reportUpdated: report }));
+          this._store.dispatch(ReportsActions.updateReport({ reportUpdated: report }));
 
           if (report.status === StatusReportEnum.Closed) {
-            this._store.dispatch(updateNotificationReports({ updateCount: -1 }));
+            this._store.dispatch(UserActions.updateNotificationReports({ updateCount: -1 }));
           }
         })
       )
@@ -125,5 +129,20 @@ export class ReportFacadeService {
       countReportsUserByYear,
       countReporterUserByYear,
     };
+  }
+
+  banUser(userId: UUIDTypes, userType: string): void {
+    this._reportApiService
+      .banUser(userId, userType)
+      .pipe(
+        tap((): void => {
+          this._store.dispatch(updateNotificationReports({ updateCount: -1 }));
+
+          if (userType === UserType.Association) {
+            this._store.dispatch(removeActivitiesByAssociation({ associationId: userId }));
+          }
+        })
+      )
+      .subscribe();
   }
 }

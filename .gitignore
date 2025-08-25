@@ -46,3 +46,8 @@ Thumbs.db
 
 ## Env
 environment.secret.ts
+
+# Act ignore
+/.github/workflows/test-event-production.json
+/.github/workflows/test-event-staging.json
+.secrets

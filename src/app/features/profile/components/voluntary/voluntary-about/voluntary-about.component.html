@@ -1,0 +1,75 @@
+<section class="about-container">
+  <h1 class="about-title">Mes informations personnelles</h1>
+  <div class="about-content">
+    <app-upload-avatar [imageUrl]="userAvatar$ | async"></app-upload-avatar>
+
+    @if (voluntaryUser$ | async; as user) {
+      <form [formGroup]="profileForm" class="about-info" (ngSubmit)="submitProfile()">
+        <div class="group">
+          <app-editable-field
+            label="Prénom"
+            [value]="user.first_name"
+            (valueChange)="setFieldValue('first_name', $event)"
+            placeholder="Prénom"
+            [editMode]="editMode"></app-editable-field>
+
+          <app-editable-field
+            label="Nom"
+            [value]="user.last_name"
+            (valueChange)="setFieldValue('last_name', $event)"
+            placeholder="Nom"
+            [editMode]="editMode"></app-editable-field>
+
+          <app-editable-field
+            label="Date de naissance"
+            [value]="user.birth_date | date: 'dd/MM/yyyy'"
+            (valueChange)="setFieldValue('birth_date', $event)"
+            [type]="'date'"
+            [editMode]="editMode"></app-editable-field>
+        </div>
+
+        <div class="group">
+          <app-editable-field
+            label="Téléphone"
+            [value]="user.mobile_phone"
+            (valueChange)="setFieldValue('mobile_phone', $event)"
+            placeholder="Téléphone"
+            [editMode]="editMode"></app-editable-field>
+
+          <app-editable-field
+            label="Ville"
+            [value]="user.city"
+            (valueChange)="setFieldValue('city', $event)"
+            placeholder="Ville"
+            [editMode]="editMode"></app-editable-field>
+        </div>
+
+        <div class="edit-button-wrapper">
+          @if (!editMode) {
+            <app-single-button
+              [id]="1"
+              [type]="'button'"
+              (buttonClicked)="toggleEdit(user)"
+              [label]="'Modifier mon profil'"
+              [styleClass]="ButtonStyleClass.defaultBlue"></app-single-button>
+          } @else {
+            <div class="form-actions">
+              <app-single-button
+                [id]="2"
+                [type]="'submit'"
+                [label]="'Enregistrer'"
+                [styleClass]="ButtonStyleClass.defaultBlue"
+                [disabled]="profileForm.invalid"></app-single-button>
+              <app-single-button
+                [id]="3"
+                [type]="'button'"
+                [label]="'Annuler'"
+                [styleClass]="ButtonStyleClass.defaultWhite"
+                (buttonClicked)="closeEditMode()"></app-single-button>
+            </div>
+          }
+        </div>
+      </form>
+    }
+  </div>
+</section>

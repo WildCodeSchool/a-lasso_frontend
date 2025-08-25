@@ -2,6 +2,8 @@ import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { UUIDTypes } from 'uuid';
 import { UserState, UserType } from '../models/user.model';
 
+export * as UserSelectors from './user.selectors';
+
 export const selectUserState = createFeatureSelector<UserState>('user');
 
 export const selectUser = createSelector(selectUserState, state => state.userInfos);
@@ -20,10 +22,12 @@ export const selectConnectedAssociationId = createSelector(selectUser, (user): U
   return user.id;
 });
 
+export const selectConnectedVoluntaryId = createSelector(selectUser, user => (user?.type === UserType.Voluntary ? user.id : null));
+
 export const selectAssociationFoundationDate = createSelector(selectUser, user => (user?.type === UserType.Association ? user.foundationDate : null));
 
 export const selectAssociationFounder = createSelector(selectUser, user => (user?.type === UserType.Association ? user.founder : ''));
 
 export const selectAssociationDescription = createSelector(selectUser, user => (user?.type === UserType.Association ? user.description : ''));
 
-export const selectAssociationStats = createSelector(selectUser, user => (user?.type === UserType.Association ? user.statistics ?? [] : []));
+export const selectAssociationStats = createSelector(selectUser, user => (user?.type === UserType.Association ? (user.statistics ?? []) : []));

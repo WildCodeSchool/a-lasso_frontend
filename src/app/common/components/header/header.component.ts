@@ -4,13 +4,13 @@ import { Component, inject } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { Observable } from 'rxjs';
+import { ButtonStyleClass } from 'src/app/common/models/button';
 import { LoginModalComponent } from 'src/app/features/authentication/components/login-modal/login-modal.component';
 import { RegisterModalComponent } from 'src/app/features/authentication/components/register-modal/register-modal/register-modal.component';
 import { UserHeaderInfo } from 'src/app/features/authentication/models/user.model';
 import { AuthFacade } from 'src/app/features/authentication/services/auth-facade.service';
 import { HeaderMenuComponent } from '../header-menu/header-menu.component';
 import { SingleButtonComponent } from '../single-button/single-button.component';
-import { ButtonStyleClass } from 'src/app/common/models/button';
 
 @Component({
   selector: 'app-header',
