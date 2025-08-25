@@ -27,7 +27,7 @@
     </div>
 
     <div class="map-activities" [ngClass]="chosenNavigation !== 'Carte' ? 'hidden' : ''">
-      <app-map [filteredActivities$]="filteredActivities$"></app-map>
+      <app-map [filteredActivities$]="filteredActivities$" (myCityClicked)="onMyCityClicked($event)"></app-map>
     </div>
   </div>
 

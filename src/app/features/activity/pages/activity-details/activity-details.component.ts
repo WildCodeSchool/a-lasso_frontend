@@ -7,15 +7,15 @@ import { ActivityMessagesCardComponent } from '../../components/activity-message
 import { ActivityDescriptionComponent } from '../../components/activity-description/activity-description.component';
 import { MOBILE_SIZE } from '../../../../common/models/scss-variables';
 import { Store } from '@ngrx/store';
-import { selectActivitiesUserInfos, selectUser } from '../../../authentication/store/user.selectors';
 import { ActivitiesUserInfos, UserType } from '../../../authentication/models/user.model';
 import { Activity, ActivityDetailsNavigation } from '../../models/activity.model';
 import { Association } from 'src/app/features/association/models/association.model';
 import { UUIDTypes } from 'uuid';
-import { setNotificationMessages } from '../../../authentication/store/user.actions';
 import { NavigationItems } from '../../../../common/models/toggle-menu';
 import { BehaviorSubject, combineLatest, distinctUntilChanged, fromEvent, map, Observable, startWith } from 'rxjs';
 import { DestroyableComponent } from '../../../../common/utils/DestroyableComponent';
+import { UserActions } from 'src/app/features/authentication/store/user.actions';
+import { UserSelectors } from 'src/app/features/authentication/store/user.selectors';
 
 @Component({
   selector: 'app-activity-details',
@@ -53,7 +53,7 @@ export class ActivityDetailsComponent extends DestroyableComponent implements On
   }
 
   updateNotificationMessages(activityId: UUIDTypes): void {
-    this._store.dispatch(setNotificationMessages({ activityId }));
+    this._store.dispatch(UserActions.setNotificationMessages({ activityId }));
   }
 
   private _initializeActivityAndAssociation(): void {
@@ -67,8 +67,8 @@ export class ActivityDetailsComponent extends DestroyableComponent implements On
 
   private _buildNavigationState(): Observable<ActivityDetailsNavigation> {
     return combineLatest([
-      this._store.select(selectActivitiesUserInfos),
-      this._store.select(selectUser),
+      this._store.select(UserSelectors.selectActivitiesUserInfos),
+      this._store.select(UserSelectors.selectUser),
       this.screenWidth$,
       this._chosenNavigation$,
     ]).pipe(

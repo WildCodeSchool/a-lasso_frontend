@@ -2,9 +2,10 @@ import { animate, style, transition, trigger } from '@angular/animations';
 import { CommonModule } from '@angular/common';
 import { Component, ElementRef, HostListener, inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { map, Observable } from 'rxjs';
+import { firstValueFrom, map, Observable } from 'rxjs';
 import { AuthFacade } from 'src/app/features/authentication/services/auth-facade.service';
-import { environment } from 'src/environments/environment.development';
+import { environment } from 'src/environments/environment';
+import { AuthService } from 'src/app/features/authentication/services/auth.service';
 import { BadgeComponent } from '../badge/badge.component';
 import { HeaderMenuMessagesComponent } from '../header-menu-messages/header-menu-messages.component';
 import { HeaderMenuReportsComponent } from '../header-menu-reports/header-menu-reports.component';
@@ -29,10 +30,13 @@ export class HeaderMenuComponent {
   private _authFacade: AuthFacade = inject(AuthFacade);
   private _router = inject(Router);
   private _elementRef = inject(ElementRef);
+  private _authService = inject(AuthService);
 
   isOpen: boolean = false;
   apiUrl: string = environment.apiUrl;
 
+  isAssociation$: Observable<boolean> = this._authService.isAssociationUser();
+  isVoluntary$: Observable<boolean> = this._authService.isVoluntaryUser();
   user$ = this._authFacade.user$;
   userAvatar$ = this._authFacade.userAvatar$;
 
@@ -58,9 +62,16 @@ export class HeaderMenuComponent {
     this.isOpen = !this.isOpen;
   }
 
-  goToProfile(): void {
+  async goToProfile(): Promise<void> {
     this.isOpen = false;
-    this._router.navigate(['/profile/association/activities']);
+
+    const [isAssociation, isVoluntary] = await Promise.all([firstValueFrom(this.isAssociation$), firstValueFrom(this.isVoluntary$)]);
+
+    if (isAssociation) {
+      this._router.navigate(['/profile/association/activities']);
+    } else if (isVoluntary) {
+      this._router.navigate(['/profile/voluntary/activities']);
+    }
   }
 
   logout(): void {

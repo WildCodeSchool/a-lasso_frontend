@@ -23,6 +23,8 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
         detail = 'La ressource demandée est introuvable.';
       } else if (error.status === HttpStatusCode.BadRequest) {
         detail = 'Requête invalide.';
+      } else if (error.status === HttpStatusCode.Forbidden) {
+        detail = "Vous n'avez pas la permission d'accéder à cette ressource.";
       } else if (error.status === HttpStatusCode.Unauthorized) {
         const message = error?.error?.message;
         const isTokenExpired = message === 'Token expired';
