@@ -4,7 +4,7 @@ on:
   push:
     branches-ignore:
       - development
-      - staging  
+      - staging
       - production
 
   pull_request:
