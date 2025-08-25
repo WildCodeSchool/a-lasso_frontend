@@ -141,9 +141,8 @@ jobs:
               echo "✅ Server is ready!"
               break
             fi
-              curl -i https://staging-api.a-l-asso.fr/health || true
-              echo curl https://staging-api.a-l-asso.fr 
-            fi
+            curl -i https://staging-api.a-l-asso.fr/health || true
+            echo curl https://staging-api.a-l-asso.fr 
             echo "Waiting for server... ($i/30)"
             sleep 2
           done
