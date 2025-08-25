@@ -1,0 +1,9 @@
+[
+  {
+    "id": 123,
+    "title": "Mock Activity",
+    "description": "A mocked activity",
+    "themes": ["Sport", "Solidarity"],
+    "date": "2025-08-25"
+  }
+]
