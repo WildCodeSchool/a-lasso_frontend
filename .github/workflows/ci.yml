@@ -111,7 +111,7 @@ jobs:
 
       - name: Build & start Docker Compose stack
         run: |
-          docker-compose -f docker-compose.ci.yml up --build -d
+          docker compose -f docker-compose.staging.yml up --build -d
 
       - name: Wait for backend to be ready
         run: |
@@ -127,11 +127,10 @@ jobs:
       - name: Run Cypress E2E tests
         run: |
           npx cypress install
-
           npx cypress run --config baseUrl=http://localhost:4200
 
       - name: Tear down Docker Compose
-        run: docker-compose -f docker-compose.ci.yml down -v
+        run: docker compose -f docker-compose.staging.yml down -v
 
 #      - name: Use Node.js 18
 #        uses: actions/setup-node@v4
