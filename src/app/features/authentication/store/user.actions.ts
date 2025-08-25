@@ -3,21 +3,25 @@ import { AssociationLogin, UserLogin, VoluntaryLogin } from '../models/user.mode
 import { UUIDTypes } from 'uuid';
 import { Statistic } from '../../association/models/association.model';
 
-export const login = createAction('[User] Login', props<{ credentials: UserLogin }>());
+export * as UserActions from './user.actions';
+
+const ACTION_PREFIX = '[User]';
+
+export const login = createAction(`${ACTION_PREFIX} Login`, props<{ credentials: UserLogin }>());
 
 export const loginSuccess = createAction(
-  '[User] Login Success',
+  `${ACTION_PREFIX} Login Success`,
   props<{
     userInfos: VoluntaryLogin | AssociationLogin;
   }>()
 );
 
-export const loginFailure = createAction('[User] Login Failure', props<{ error: string }>());
+export const loginFailure = createAction(`${ACTION_PREFIX} Login Failure`, props<{ error: string }>());
 
-export const logout = createAction('[User] Logout');
+export const logout = createAction(`${ACTION_PREFIX} Logout`);
 
 export const updateFollowedAssociations = createAction(
-  '[User] Update Followed Associations',
+  `${ACTION_PREFIX} Update Followed Associations`,
   props<{
     associationId: UUIDTypes;
     isFollow: boolean;
@@ -26,7 +30,7 @@ export const updateFollowedAssociations = createAction(
 );
 
 export const updateActivitiesUserInfos = createAction(
-  '[User] Update Activities User Infos',
+  `${ACTION_PREFIX} Update Activities User Infos`,
   props<{
     activityId: UUIDTypes;
     isSaved?: boolean;
@@ -35,24 +39,24 @@ export const updateActivitiesUserInfos = createAction(
 );
 
 export const setNotificationMessages = createAction(
-  '[User] Update Notification Messages',
+  `${ACTION_PREFIX} Update Notification Messages`,
   props<{
     activityId: UUIDTypes;
   }>()
 );
 
 export const updateNotificationReports = createAction(
-  '[User] Update Notification Reports',
+  `${ACTION_PREFIX} Update Notification Reports`,
   props<{
     updateCount: number;
   }>()
 );
 
 export const updateAssociationGeneralInfo = createAction(
-  '[User] Update Association General Info',
+  `${ACTION_PREFIX} Update Association General Info`,
   props<{ foundationDate: string; founder: string }>()
 );
 
-export const updateAssociationDescription = createAction('[User] Update Association Description', props<{ description: string }>());
+export const updateAssociationDescription = createAction(`${ACTION_PREFIX} Update Association Description`, props<{ description: string }>());
 
-export const updateAssociationStats = createAction('[User] Update Association Stats', props<{ statistics: Statistic[] }>());
+export const updateAssociationStats = createAction(`${ACTION_PREFIX} Update Association Stats`, props<{ statistics: Statistic[] }>());

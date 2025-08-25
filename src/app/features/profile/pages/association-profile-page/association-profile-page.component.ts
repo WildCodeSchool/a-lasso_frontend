@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { ProfileMenuComponent } from '../../components/profile-menu/profile-menu.component';
+import { AssociationProfileMenuComponent } from '../../components/association/association-profile-menu/association-profile-menu.component';
 
 @Component({
   selector: 'app-association-profile-page',
   standalone: true,
-  imports: [RouterOutlet, ProfileMenuComponent],
+  imports: [RouterOutlet, AssociationProfileMenuComponent],
   templateUrl: './association-profile-page.component.html',
-  styleUrl: './association-profile-page.component.scss',
+  styleUrls: ['./association-profile-page.component.scss'],
 })
 export class AssociationProfilePageComponent {}

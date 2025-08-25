@@ -1,7 +1,7 @@
 import { createReducer, on } from '@ngrx/store';
 import { Association } from '../models/association.model';
-import * as AssociationActions from './association.actions';
-import * as ActivityActions from '../../activity/store/activities.actions';
+import { AssociationActions } from './association.actions';
+import { ActivitiesActions } from '../../activity/store/activities.actions';
 
 export const initialAssociationsState: Association[] = [];
 
@@ -14,7 +14,14 @@ export const associationsReducer = createReducer(
     }
     return [...state, association];
   }),
-  on(ActivityActions.clearUserActivityInfos, state =>
+  on(AssociationActions.setManyAssociations, (state, { associations }) => {
+    const updatedMap = new Map(state.map(a => [a.id.toString(), a]));
+    associations.forEach(assoc => {
+      updatedMap.set(assoc.id.toString(), { ...updatedMap.get(assoc.id.toString()), ...assoc });
+    });
+    return Array.from(updatedMap.values());
+  }),
+  on(ActivitiesActions.clearUserActivityInfos, state =>
     state.map(association => ({
       ...association,
       isFollow: false,

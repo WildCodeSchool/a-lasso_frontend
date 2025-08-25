@@ -1,0 +1,25 @@
+<div class="container">
+  <p-dialog [(visible)]="visible" [modal]="true" (onHide)="hide()">
+    <ng-template #header>
+      <div class="header">
+        @if (userAvatar$ | async; as userAvatar) {
+          <p-avatar [image]="userAvatar" shape="circle" />
+        }
+        <h3 class="header-title">Modifier mon adresse email</h3>
+      </div>
+    </ng-template>
+
+    <form [formGroup]="emailForm" (ngSubmit)="onSubmit()" class="space-y-4">
+      @for (field of emailFields; track field.name) {
+        <app-input-field [formGroup]="emailForm" [fieldConfig]="field" [variant]="'in'" [useIftaLabel]="true"></app-input-field>
+
+        <app-input-field-error [control]="emailForm.get(field.name)" [fieldName]="field.name"></app-input-field-error>
+      }
+    </form>
+
+    <ng-template #footer>
+      <p-button label="Annuler" [text]="true" severity="secondary" (click)="hide()" />
+      <button pButton type="submit" class="register-btn" [disabled]="emailForm.invalid" (click)="onSubmit()">Envoyer</button>
+    </ng-template>
+  </p-dialog>
+</div>

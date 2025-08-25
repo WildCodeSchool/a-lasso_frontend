@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { environment } from '../../../../environments/environment.development';
+import { environment } from '../../../../environments/environment';
 import { Observable } from 'rxjs';
 import { Report } from '../models/report.model';
 import { UUIDTypes } from 'uuid';
@@ -26,5 +26,9 @@ export class ReportApiService {
 
   updateReport(report: Report): Observable<boolean> {
     return this._http.put<boolean>(`${this._apiUrl}/report`, report);
+  }
+
+  banUser(userId: UUIDTypes, userType: string): Observable<boolean> {
+    return this._http.get<boolean>(`${this._apiUrl}/report/ban/${userId}/${userType}`);
   }
 }

@@ -1,0 +1,73 @@
+.followed-associations-list {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 32px;
+  padding: 16px;
+  margin: 0;
+  list-style: none;
+}
+
+.followed-association {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 16px;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+  transition: box-shadow 0.2s;
+
+  &:hover {
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  }
+
+  .association-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+
+    .association-logo {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-right: 16px;
+    }
+
+    .association-name {
+      font-size: 18px;
+      font-weight: 600;
+    }
+  }
+
+  .association-description {
+    font-size: 15px;
+    margin: 8px 0;
+    flex-grow: 1;
+  }
+
+  .association-founder {
+    font-size: 14px;
+    color: var(--font-color-grey);
+    font-style: italic;
+  }
+
+  .view-association-link {
+    align-self: flex-start;
+    margin: 16px auto 0;
+    color: var(--primary-color);
+    font-weight: 600;
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+.empty-message {
+  text-align: center;
+  margin-top: 32px;
+  color: var(--font-color-grey);
+  font-style: italic;
+}

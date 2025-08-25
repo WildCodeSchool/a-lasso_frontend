@@ -1,5 +1,5 @@
 <div class="logo-wrapper" (click)="toggleMenu()" (keydown.enter)="toggleMenu()" tabindex="0">
-  <img [src]="userAvatar$ | async" alt="User Avatar" class="user-avatar" />
+  <img id="avatar-connected-user" [src]="userAvatar$ | async" alt="User Avatar" class="user-avatar" />
   @if (countGlobalNotifications$ | async; as countGlobalNotifications) {
     @if (countGlobalNotifications > 0) {
       <div class="global-badge-menu">
@@ -15,7 +15,7 @@
         <i class="fa-solid fa-user"></i>
         Mon profil
       </li>
-      <li class="menu-item" (click)="logout()" (keydown.enter)="logout()" tabindex="1">
+      <li id="logout" class="menu-item" (click)="logout()" (keydown.enter)="logout()" tabindex="1">
         <i class="fa-solid fa-arrow-right-from-bracket"></i>
         Se déconnecter
       </li>
