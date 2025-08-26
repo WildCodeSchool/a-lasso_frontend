@@ -1,5 +1,5 @@
 export const environment = {
   production: false,
   name: 'staging',
-  apiUrl: 'http://alasso-spring-app-staging:8080',
+  apiUrl: 'https://staging-api.a-l-asso.fr',
 };
