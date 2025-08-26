@@ -7,7 +7,7 @@
         <app-activity-card
           [activity]="activity"
           [showDeleteButton]="true"
-          [showEditButton]="activity.status === ActivityStatusEnum.DRAFT"
+          [showEditButton]="showEditButton(activity.date)"
           (delete)="onDeleteActivity($event)"
           (edit)="onEditActivity($event)" />
       }
