@@ -1,20 +1,19 @@
 <form class="form-association" [formGroup]="form" (ngSubmit)="onSubmit($event)">
   @for (field of fields; track $index) {
-    <div class="form-field">
-      <app-input-field [fieldConfig]="field" [formGroup]="form" />
-      <app-input-field-error [control]="form.get(field.name)" [fieldName]="field.name" />
-    </div>
-  }
-  @for (field of authFields; track $index) {
-    <div class="form-field">
-      <app-input-field [fieldConfig]="field" [formGroup]="form" [showPasswordRules]="field.showPasswordRules || false" />
-      <app-input-field-error
-        [control]="form.get(field.name)"
-        [fieldName]="field.name"
-        [showPasswordMismatchError]="
+  <div class="form-field">
+    <app-input-field [fieldConfig]="field" [formGroup]="form" />
+    <app-input-field-error [control]="form.get(field.name)" [fieldName]="field.name" />
+  </div>
+  } @for (field of authFields; track $index) {
+  <div class="form-field">
+    <app-input-field [fieldConfig]="field" [formGroup]="form" [showPasswordRules]="field.showPasswordRules || false" />
+    <app-input-field-error
+      [control]="form.get(field.name)"
+      [fieldName]="field.name"
+      [showPasswordMismatchError]="
           field.name === 'confirmPassword' && form.errors?.['passwordsMismatch'] && form.get('confirmPassword')?.touched
         " />
-    </div>
+  </div>
   }
 
   <div class="address-fields">
