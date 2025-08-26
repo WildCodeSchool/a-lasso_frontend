@@ -64,4 +64,28 @@
       min-width: 200px;
     }
   }
+
+  /* ✅ Style pour CGU + RGPD */
+  .legal-section {
+    font-size: 0.85rem;
+    color: #555;
+    margin-top: 12px;
+
+    a {
+      color: var(--primary-color);
+      text-decoration: underline;
+    }
+
+    .checkbox-container {
+      margin-top: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+
+      input[type='checkbox'] {
+        width: 18px;
+        height: 18px;
+      }
+    }
+  }
 }

@@ -15,7 +15,7 @@
       <p>{{ activity.address.city }}</p>
     </div>
 
-    <p>{{ activity.description }}</p>
+    <p class="activity-description">{{ activity.description }}</p>
     <div class="activity-images">
       @for (image of activity.images; track $index) {
         <div class="image-container">

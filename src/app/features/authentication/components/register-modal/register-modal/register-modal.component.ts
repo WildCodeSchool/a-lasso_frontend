@@ -10,21 +10,26 @@ import { RegisterVoluntaryFormComponent } from '../register-voluntary-form/regis
 import { DATE_PAD_LENGTH, MONTH_OFFSET } from '../../../constants/form.constants';
 import { getFormattedAddress } from 'src/app/common/utils/address.utils';
 import { DestroyableComponent } from '../../../../../common/utils/DestroyableComponent';
+import { LoginModalComponent } from '../login-modal/login-modal.component';
+import { MessageService as Toast } from 'primeng/api';
 
 @Component({
   selector: 'app-register-modal',
   standalone: true,
-  imports: [CommonModule, DialogModule, Select, RegisterVoluntaryFormComponent, RegisterAssociationFormComponent, FormsModule],
+  imports: [CommonModule, DialogModule, Select, RegisterVoluntaryFormComponent, RegisterAssociationFormComponent, FormsModule, LoginModalComponent],
   templateUrl: './register-modal.component.html',
   styleUrls: ['./register-modal.component.scss'],
 })
 export class RegisterModalComponent extends DestroyableComponent {
   private _authService = inject(AuthService);
+  private _toast: Toast = inject(Toast);
+
   @Output() visibleChange = new EventEmitter<boolean>();
   @Input() visible = false;
   @ViewChild(RegisterVoluntaryFormComponent) voluntaryFormComponent!: RegisterVoluntaryFormComponent;
   @ViewChild(RegisterAssociationFormComponent) associationFormComponent!: RegisterAssociationFormComponent;
 
+  showLoginModal = false;
   userType: UserType = UserType.Voluntary;
   userTypeOptions = [
     { label: 'Bénévole', value: UserType.Voluntary },
@@ -59,7 +64,10 @@ export class RegisterModalComponent extends DestroyableComponent {
       .registerVoluntary(data)
       .pipe(this.untilDestroyed())
       .subscribe((success: boolean) => {
-        if (success) this.hideModal();
+        if (success) {
+          this.hideModal();
+          this.openLoginModal();
+        }
       });
   }
 
@@ -83,8 +91,15 @@ export class RegisterModalComponent extends DestroyableComponent {
       .registerAssociation(data)
       .pipe(this.untilDestroyed())
       .subscribe((success: boolean) => {
-        if (success) this.hideModal();
+        if (success) {
+          this.hideModal();
+          this.openLoginModal();
+        }
       });
+  }
+
+  openLoginModal(): void {
+    this.showLoginModal = true;
   }
 
   private _formatDate(date: Date): string {

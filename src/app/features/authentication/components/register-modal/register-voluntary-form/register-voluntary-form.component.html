@@ -1,4 +1,4 @@
-<form class="form-benevole">
+<form class="form-benevole" [formGroup]="form" (ngSubmit)="onSubmit()">
   @for (field of fields; track $index) {
     @if (field.type === 'group' && field.children?.length) {
       <div class="coordinates-fields">
@@ -12,18 +12,35 @@
     } @else {
       <div class="form-field">
         <app-input-field [fieldConfig]="field" [showPasswordRules]="field.showPasswordRules || false" [formGroup]="form" />
-
         <app-input-field-error
           [control]="form.get(field.name)"
           [fieldName]="field.name"
           [showPasswordMismatchError]="
-            field.name === 'confirmationMotDePasse' && form.errors?.['passwordsMismatch'] && form.get('confirmationMotDePasse')?.touched
+            field.name === 'confirmPassword' && form.errors?.['passwordsMismatch'] && form.get('confirmPassword')?.touched
           " />
       </div>
     }
   }
 
+  <div class="legal-section">
+    <div class="checkbox-container">
+      <input type="checkbox" id="cguConsent" formControlName="cguConsent" />
+      <label for="cguConsent">
+        J’accepte les
+        <a href="/cgu" target="_blank">Conditions Générales d’Utilisation</a>.
+      </label>
+    </div>
+
+    <div class="checkbox-container">
+      <input type="checkbox" id="rgpdConsent" formControlName="rgpdConsent" />
+      <label for="rgpdConsent">
+        J’accepte le traitement de mes données personnelles conformément à la
+        <a href="/politique-confidentialite" target="_blank">Politique de Confidentialité</a>.
+      </label>
+    </div>
+  </div>
+
   <div class="submit-button">
-    <button pButton type="submit" class="register-btn" [disabled]="form.invalid" (click)="onSubmit()">S'enregistrer</button>
+    <button pButton type="submit" class="register-btn" [disabled]="form.invalid">S'enregistrer</button>
   </div>
 </form>
