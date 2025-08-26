@@ -8,7 +8,6 @@ import { RadioButtonModule } from 'primeng/radiobutton';
 import { filter, take } from 'rxjs';
 import { InputFieldComponent } from 'src/app/common/components/input-field/input-field.component';
 import { TAKE_1 } from 'src/app/common/constants/observables.constants';
-
 import { InputFieldErrorComponent } from 'src/app/common/components/input-field-error/input-field-error.component';
 import { AuthFacade } from '../../services/auth-facade.service';
 import { FormField } from '../../models/form.model';
@@ -17,16 +16,7 @@ import { UserLogin } from '../../models/user.model';
 @Component({
   selector: 'app-login-modal',
   standalone: true,
-  imports: [
-    CommonModule,
-    FormsModule,
-    ReactiveFormsModule,
-    InputFieldComponent,
-    ButtonModule,
-    DialogModule,
-    RadioButtonModule,
-    InputFieldErrorComponent,
-  ],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, InputFieldErrorComponent, InputFieldComponent, ButtonModule, DialogModule, RadioButtonModule],
   templateUrl: './login-modal.component.html',
   styleUrl: './login-modal.component.scss',
   animations: [
