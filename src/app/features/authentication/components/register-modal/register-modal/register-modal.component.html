@@ -17,9 +17,10 @@
     </div>
 
     @if (userType === 'voluntary') {
-    <app-register-voluntary-form #voluntaryForm (submitted)="onRegisterVoluntary($event)" />
-    } @if (userType === 'association') {
-    <app-register-association-form #associationForm (submitted)="onRegisterAssociation($event)" />
+      <app-register-voluntary-form #voluntaryForm (submitted)="onRegisterVoluntary($event)" />
+    }
+    @if (userType === 'association') {
+      <app-register-association-form #associationForm (submitted)="onRegisterAssociation($event)" />
     }
   </div>
 </p-dialog>
