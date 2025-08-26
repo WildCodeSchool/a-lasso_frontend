@@ -46,7 +46,6 @@ export class LoginModalComponent {
   @Input() visible: boolean = false;
   private _auth = inject(AuthFacade);
   private _fb: FormBuilder = new FormBuilder();
-  isAuthenticated$ = this._auth.isAuthenticated$;
 
   loginForm = this._fb.group({
     email: ['', [Validators.required, Validators.email]],

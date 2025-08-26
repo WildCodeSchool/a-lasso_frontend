@@ -66,7 +66,7 @@ export class RegisterModalComponent extends DestroyableComponent {
       .subscribe((success: boolean) => {
         if (success) {
           this.hideModal();
-          this.openLoginModal();
+          this._authService.triggerLoginModal();
         }
       });
   }
@@ -93,7 +93,7 @@ export class RegisterModalComponent extends DestroyableComponent {
       .subscribe((success: boolean) => {
         if (success) {
           this.hideModal();
-          this.openLoginModal();
+          this._authService.triggerLoginModal();
         }
       });
   }

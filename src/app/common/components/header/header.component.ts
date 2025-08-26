@@ -1,16 +1,18 @@
 import { animate, style, transition, trigger } from '@angular/animations';
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { Observable } from 'rxjs';
 import { ButtonStyleClass } from 'src/app/common/models/button';
-import { LoginModalComponent } from 'src/app/features/authentication/components/register-modal/login-modal/login-modal.component';
 import { RegisterModalComponent } from 'src/app/features/authentication/components/register-modal/register-modal/register-modal.component';
 import { UserHeaderInfo } from 'src/app/features/authentication/models/user.model';
 import { AuthFacade } from 'src/app/features/authentication/services/auth-facade.service';
 import { HeaderMenuComponent } from '../header-menu/header-menu.component';
 import { SingleButtonComponent } from '../single-button/single-button.component';
+import { AuthService } from 'src/app/features/authentication/services/auth.service';
+import { DestroyableComponent } from 'src/app/common/utils/DestroyableComponent';
+import { LoginModalComponent } from '../../../features/authentication/components/register-modal/login-modal/login-modal.component';
 
 @Component({
   selector: 'app-header',
@@ -26,15 +28,22 @@ import { SingleButtonComponent } from '../single-button/single-button.component'
     ]),
   ],
 })
-export class HeaderComponent {
+export class HeaderComponent extends DestroyableComponent implements OnInit {
   private _authFacade = inject(AuthFacade);
   private _router = inject(Router);
+  private _authService = inject(AuthService);
 
   showRegisterModal = false;
   showLoginModal = false;
   ButtonStyleClass = ButtonStyleClass;
 
   userInfos$: Observable<UserHeaderInfo> = this._authFacade.getUserHeaderInfo();
+
+  ngOnInit(): void {
+    this._authService.openLoginModal$.pipe(this.untilDestroyed()).subscribe(() => {
+      this.openLoginModal();
+    });
+  }
 
   openRegisterModal(): void {
     this.showRegisterModal = true;

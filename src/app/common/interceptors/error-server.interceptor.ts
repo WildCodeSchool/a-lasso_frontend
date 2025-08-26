@@ -35,6 +35,7 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
           severity = 'warn';
 
           authService.resetUser();
+          authService.triggerLoginModal();
           router.navigate(['/']);
         } else {
           summary = 'Authentification';
