@@ -1,13 +1,12 @@
 :host ::ng-deep {
-  .login-modal {
+  .login-modal,
+  .forgot-password-modal {
     max-width: 500px;
     width: 100%;
     max-height: 90vh;
-
     border-radius: 12px;
 
     .p-dialog-header {
-      position: relative;
       padding: 16px;
       font-weight: 600;
       color: var(--primary-dark-color);
@@ -18,9 +17,8 @@
       }
 
       .p-dialog-close-button {
-        position: absolute;
-        top: 5%;
-        right: 1%;
+        top: 12px;
+        right: 12px;
       }
     }
 
