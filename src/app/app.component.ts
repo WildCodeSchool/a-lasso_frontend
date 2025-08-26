@@ -6,6 +6,7 @@ import { FooterComponent } from './common/components/footer/footer.component';
 import { HeaderComponent } from './common/components/header/header.component';
 import { ProgressBar } from 'primeng/progressbar';
 import { AuthFacade } from './features/authentication/services/auth-facade.service';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
@@ -21,30 +22,45 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     this._authFacade.initUserFromStorage();
-    this._router.events.subscribe(event => {
-      switch (true) {
-        case event instanceof NavigationStart: {
-          this.loading = true;
-          break;
-        }
-        case event instanceof NavigationEnd:
-        case event instanceof NavigationCancel:
-        case event instanceof NavigationError: {
-          this.loading = false;
-          break;
-        }
-        default: {
-          break;
-        }
-      }
-    });
+    this._handleRouterEvents();
+    this._applySavedTheme();
+  }
 
+  private _applySavedTheme(): void {
     const savedTheme = localStorage.getItem('theme');
     if (savedTheme === 'dark') {
       document.body.classList.add('dark-mode');
     } else {
       document.body.classList.remove('dark-mode');
     }
+  }
+
+  private _handleRouterEvents(): void {
+    this._router.events
+      .pipe(
+        filter(
+          event =>
+            event instanceof NavigationStart ||
+            event instanceof NavigationEnd ||
+            event instanceof NavigationCancel ||
+            event instanceof NavigationError
+        )
+      )
+      .subscribe(event => {
+        if (event instanceof NavigationStart) {
+          this.loading = true;
+        } else {
+          this.loading = false;
+        }
+
+        if (event instanceof NavigationEnd) {
+          if (event.urlAfterRedirects.startsWith('/activity/create') || event.urlAfterRedirects.startsWith('/activity/edit')) {
+            document.body.classList.add('allow-scroll');
+          } else {
+            document.body.classList.remove('allow-scroll');
+          }
+        }
+      });
   }
 
   toggleDarkMode(): void {
