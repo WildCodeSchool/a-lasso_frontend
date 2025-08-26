@@ -10,7 +10,7 @@ import { RegisterVoluntaryFormComponent } from '../register-voluntary-form/regis
 import { DATE_PAD_LENGTH, MONTH_OFFSET } from '../../../constants/form.constants';
 import { getFormattedAddress } from 'src/app/common/utils/address.utils';
 import { DestroyableComponent } from '../../../../../common/utils/DestroyableComponent';
-import { LoginModalComponent } from '../login-modal/login-modal.component';
+import { LoginModalComponent } from '../../login-modal/login-modal.component';
 import { MessageService as Toast } from 'primeng/api';
 
 @Component({
