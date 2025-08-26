@@ -1,25 +1,58 @@
 footer {
   display: flex;
   justify-content: space-around;
+  align-items: center;
   background-color: var(--primary-light-color);
-  position: absolute;
+  position: fixed;
   bottom: 0;
   left: 0;
   width: 100%;
+  padding: 12px 0;
+  z-index: 11;
 
   .links-asso {
     display: flex;
-    width: 50%;
-    gap: 2%;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
 
     p {
       color: white;
+      margin: 0;
+    }
+
+    .footer-link {
+      color: white;
+      text-decoration: none;
+      font-weight: 500;
+      position: relative;
+      padding: 2px 4px;
+
+      &::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        bottom: -2px;
+        width: 0%;
+        height: 2px;
+        background: white;
+        transition: width 0.3s ease;
+      }
+
+      &:hover {
+        color: #f1f1f1;
+        text-decoration: none;
+
+        &::after {
+          width: 100%;
+        }
+      }
     }
   }
 
   .social-networks {
     display: flex;
-    gap: 20%;
+    gap: 16px;
 
     button {
       background: none;

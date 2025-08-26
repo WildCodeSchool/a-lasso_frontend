@@ -53,4 +53,8 @@ export class ActivityListComponent {
   onEditActivity(activityId: string): void {
     this._router.navigate([`/activity/creation/${activityId}`]);
   }
+
+  showEditButton(activityDate: string | Date): boolean {
+    return new Date(activityDate) > new Date();
+  }
 }

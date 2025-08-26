@@ -1,0 +1,32 @@
+.legal-container {
+  max-width: 900px;
+  overflow-y: auto;
+  height: 85vh;
+  margin: auto;
+  padding: 24px;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #333;
+
+  h1 {
+    font-size: 2rem;
+    margin-bottom: 16px;
+    color: var(--primary-color);
+  }
+
+  h2 {
+    margin-top: 24px;
+    font-size: 1.3rem;
+    color: var(--primary-dark-color);
+  }
+
+  p,
+  li {
+    margin: 8px 0;
+  }
+
+  a {
+    color: var(--primary-color);
+    text-decoration: underline;
+  }
+}

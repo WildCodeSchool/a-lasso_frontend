@@ -33,6 +33,25 @@
     }
   }
 
+  .activity-description {
+    max-height: 300px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-right: 8px;
+    line-height: 1.5;
+
+    &::-webkit-scrollbar {
+      width: 6px;
+    }
+    &::-webkit-scrollbar-thumb {
+      background: var(--primary-light-color);
+      border-radius: 6px;
+    }
+    &::-webkit-scrollbar-track {
+      background: var(--background-color-grey);
+    }
+  }
+
   .activity-images {
     display: flex;
     justify-content: space-between;

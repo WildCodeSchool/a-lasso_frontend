@@ -1,10 +1,10 @@
 import { MessageService } from 'primeng/api';
 
-export function showSuccessToast(toast: MessageService): void {
+export function showSuccessToast(toast: MessageService, detail?: string): void {
   toast.add({
     severity: 'success',
     summary: 'Succès',
-    detail: 'Opération effectuée avec succès.',
+    detail: detail || 'Opération effectuée avec succès.',
   });
 }
 
