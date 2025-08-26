@@ -29,6 +29,8 @@ export class RegisterAssociationFormComponent {
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.pattern(PASSWORD_REGEX)]],
       confirmPassword: ['', [Validators.required]],
+      cguConsent: [false, Validators.requiredTrue], // ✅ obligatoire
+      rgpdConsent: [false, Validators.requiredTrue], // ✅ obligatoire
     },
     {
       validators: [passwordsMatchValidator],
@@ -49,7 +51,7 @@ export class RegisterAssociationFormComponent {
     { name: 'confirmPassword', label: 'Confirmation', type: 'password', required: true },
   ];
 
-  onSubmit(): void {
+  onSubmit(event?: Event): void {
     event?.preventDefault();
     if (this.form.invalid) {
       this.form.markAllAsTouched();

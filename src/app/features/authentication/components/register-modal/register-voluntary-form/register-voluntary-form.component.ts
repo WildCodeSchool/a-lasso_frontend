@@ -31,6 +31,8 @@ export class RegisterVoluntaryFormComponent {
       city: ['', [Validators.required, Validators.minLength(MIN_LENGTH), Validators.maxLength(MAX_LENGTH)]],
       country: ['', [Validators.required, Validators.minLength(MIN_LENGTH), Validators.maxLength(MAX_LENGTH)]],
       birthdate: ['', Validators.required],
+      cguConsent: [false, Validators.requiredTrue], // ✅ obligatoire
+      rgpdConsent: [false, Validators.requiredTrue], // ✅ obligatoire
     },
     {
       validators: [passwordsMatchValidator],
