@@ -1,0 +1,48 @@
+{
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3ODgyMTEyMDAsInJvbGVzIjpbeyJhdXRob3JpdHkiOiJST0xFX1ZPTFVOVEFSWSJ9XX0.dummy-signature",
+  "user": {
+    "id": "vol-1",
+    "type": "voluntary",
+    "first_name": "Alice",
+    "last_name": "Martin",
+    "email": "alice.martin@example.com",
+    "password": "Password123",
+    "mobile_phone": "0601020304",
+    "city": "Nantes",
+    "country": "France",
+    "birth_date": "1990-05-15",
+    "avatar": {
+      "id": "avatar1",
+      "image": "/images/volunteers/alice.png"
+    },
+    "followedAssociations": [
+      {
+        "associationId": "asso-1",
+        "isFollow": true,
+        "isNotificationActive": false
+      }
+    ],
+    "activitiesUserInfos": [
+      {
+        "activityId": "act-1",
+        "isSaved": true,
+        "isRegistered": false
+      }
+    ],
+    "notification": {
+      "messages": [
+        {
+          "activityId": "act-1",
+          "activityTitle": "top activity",
+          "countMessagesNotRead": 2
+        }
+      ],
+      "reports": null
+    },
+    "geolocation": {
+      "latitude": 47.218371,
+      "longitude": -1.553621
+    },
+    "createdAt": "2025-01-01T10:00:00"
+  }
+}

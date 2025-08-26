@@ -1,8 +1,16 @@
 import { loginAsAdmin, loginAsVoluntary, logout } from '../helpers/login';
 import { accessToReportModal } from '../helpers/report.helpers';
-import reportMessages from '../fixtures/reportMessages.json';
+import reportMessages from '../fixtures/report/reportMessages.json';
 
 describe('Feature Report', () => {
+
+  beforeEach(() => {
+    cy.intercept('GET', '/association/asso2', { fixture: '/common/association.json' }).as('getAssociationCard');
+    cy.intercept('POST', '/report', { statusCode: 201, body: true }).as('postReport');
+    cy.intercept('GET', '/report', { fixture: '/report/reports.json' }).as('getReports');
+    cy.intercept('PUT', '/report', { statusCode: 200, body: true }).as('putReport');
+  });
+
   describe('Only connected user can report an association', () => {
     it('should not be able to report an association', () => {
       cy.visit('/');
@@ -97,6 +105,11 @@ describe('Feature Report', () => {
           .click();
 
         cy.contains('.p-confirmdialog-accept-button', 'Oui, clôturer').click();
+
+        cy.wait('@putReport');
+
+        cy.get('.report-details-modal .p-dialog-close-button')
+          .click({ force: true });
 
         cy.get('.p-toast-message')
           .contains('Opération effectuée avec succès')

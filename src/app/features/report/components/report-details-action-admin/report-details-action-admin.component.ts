@@ -55,7 +55,6 @@ export class ReportDetailsActionAdminComponent {
           status: StatusReportEnum.Closed,
         };
         this._reportFacadeService.updateReport(updatedReport);
-        showSuccessToast(this._toast);
       },
     });
   }

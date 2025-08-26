@@ -47,7 +47,7 @@ jobs:
         run: npm run test
 
   build:
-    name: 🏗️ Build
+    name: 🏗 Build
     runs-on: ubuntu-latest
     needs: lint-test
 
@@ -75,11 +75,7 @@ jobs:
 
       - name: Recreate environment.secret.ts
         run: |
-          cat <<EOF > src/environments/environment.secret.ts
-          export const environmentSecret = {
-            apiMapKey: '${{ secrets.MAP_API_KEY }}'
-          };
-          EOF
+          echo "export const environmentSecret = { apiMapKey: '${{ secrets.MAP_API_KEY }}', };" > src/environments/environment.secret.ts
 
       - name: Build Angular app
         run: |
@@ -96,105 +92,67 @@ jobs:
     runs-on: ubuntu-latest
     needs: lint-test
     if: github.event_name == 'pull_request' && (github.base_ref == 'staging' || github.base_ref == 'production')
-    services:
-      docker:
-        image: docker:20.10.16
-        options: --privileged
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
-
-      - name: Login to DockerHub
-        uses: docker/login-action@v2
+      - name: Use Node.js 18
+        uses: actions/setup-node@v4
         with:
-          username: ${{ secrets.DOCKER_HUB_USERNAME }}
-          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+          node-version: '18'
 
-      - name: Build & start Docker Compose stack
-        env:
-          MAP_API_KEY: ${{ secrets.MAP_API_KEY }}
-        run: |
-          docker compose -f docker-compose.staging.yml up --build -d
+      - name: Cache node_modules
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.npm
+            ./node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node
 
-      - name: Wait for backend to be ready
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Recreate environment.secret.ts
         run: |
+          echo "export const environmentSecret = { apiMapKey: '${{ secrets.MAP_API_KEY }}', };" > src/environments/environment.secret.ts
+
+      - name: Build Angular app for E2E
+        run: |
+          if [ "${{ github.base_ref }}" == "production" ]; then
+            npx ng build --configuration=production
+          else
+            npx ng build --configuration=staging
+          fi
+
+      - name: Install Cypress dependencies
+        run: npx cypress install
+
+      - name: Run E2E tests
+        run: |
+          npx http-server dist/frontend/browser -p 4200 -s &
+          SERVER_PID=$!
+          
           for i in {1..30}; do
-                if curl -s http://localhost:8080/actuator/health > /dev/null 2>&1; then
-                  echo "✅ Backend is ready!"
-                  break
-                fi
-                echo "Waiting for backend..."
-                sleep 2
-              done  
-
-      - name: Run Cypress E2E tests
-        run: |
-          npx cypress install
+            if curl -s http://localhost:4200 > /dev/null 2>&1; then
+              echo "✅ Server is ready!"
+              break
+            fi
+            echo "Waiting for server... ($i/30)"
+            sleep 2
+          done
+          
+          if ! curl -s http://localhost:4200 > /dev/null 2>&1; then
+            echo "❌ Server failed to start"
+            kill $SERVER_PID 2>/dev/null || true
+            exit 1
+          fi
+          
           npx cypress run --config baseUrl=http://localhost:4200
-
-      - name: Tear down Docker Compose
-        run: docker compose -f docker-compose.staging.yml down -v
-
-#      - name: Use Node.js 18
-#        uses: actions/setup-node@v4
-#        with:
-#          node-version: '18'
-#
-#      - name: Cache node_modules
-#        uses: actions/cache@v4
-#        with:
-#          path: |
-#            ~/.npm
-#            ./node_modules
-#          key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
-#          restore-keys: |
-#            ${{ runner.os }}-node
-#
-#      - name: Install dependencies
-#        run: npm ci
-#
-#      - name: Recreate environment.secret.ts
-#        run: |
-#          echo "${{ secrets.MAP_API_KEY }}" > src/environments/environment.secret.ts
-#
-#      - name: Build Angular app for E2E
-#        run: |
-#          echo "base_ref = ${{ github.base_ref }}"
-#          if [ "${{ github.base_ref }}" == "production" ]; then
-#            npx ng build --configuration=production
-#          else
-#            npx ng build --configuration=staging
-#          fi
-#
-#      - name: Install Cypress dependencies
-#        run: npx cypress install
-#
-#      - name: Run E2E tests
-#        run: |
-#          npx http-server dist/frontend/browser -p 4200 -s &
-#          SERVER_PID=$!
-#
-#          for i in {1..30}; do
-#            if curl -s http://localhost:4200 > /dev/null 2>&1; then
-#              echo "✅ Server is ready!"
-#              break
-#            fi
-#            echo "Waiting for server... ($i/30)"
-#            sleep 2
-#          done
-#
-#          if ! curl -s http://localhost:4200 > /dev/null 2>&1; then
-#            echo "❌ Server failed to start"
-#            kill $SERVER_PID 2>/dev/null || true
-#            exit 1
-#          fi
-#
-#          npx cypress run --config baseUrl=http://localhost:4200
-#          TEST_EXIT_CODE=$?
-#
-#          kill $SERVER_PID 2>/dev/null || true
-#
-#          exit $TEST_EXIT_CODE
+          TEST_EXIT_CODE=$?
+          
+          kill $SERVER_PID 2>/dev/null || true
+          
+          exit $TEST_EXIT_CODE
