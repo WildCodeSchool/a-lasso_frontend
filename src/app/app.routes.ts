@@ -12,6 +12,8 @@ import { AssociationProfilePageComponent } from './features/profile/pages/associ
 import { VoluntaryProfilePageComponent } from './features/profile/pages/voluntary-profile-page/voluntary-profile-page.component';
 import { isVoluntaryGuard } from './common/guards/is-voluntary.guard';
 import { isAdminGuard } from './common/guards/is-admin.guard';
+import { CguComponent } from './features/authentication/components/legals/cgu/cgu.component';
+import { PolitiqueConfidentialiteComponent } from './features/authentication/components/legals/politique-confidentialite/politique-confidentialite.component';
 
 export const routes: Routes = [
   {
@@ -48,6 +50,8 @@ export const routes: Routes = [
       association: associationResolver,
     },
   },
+  { path: 'cgu', component: CguComponent },
+  { path: 'politique-confidentialite', component: PolitiqueConfidentialiteComponent },
   {
     path: 'profile/association',
     component: AssociationProfilePageComponent,
