@@ -132,7 +132,7 @@ jobs:
 
       - name: Run E2E tests
         run: |
-          npx http-server dist/frontend/browser -p 4200 -s &
+          npx serve -s dist/frontend/browser -l 4200 &
           SERVER_PID=$!
           
           for i in {1..30}; do
