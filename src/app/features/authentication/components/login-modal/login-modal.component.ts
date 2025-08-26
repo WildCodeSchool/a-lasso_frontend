@@ -17,16 +17,7 @@ import { UserLogin } from '../../models/user.model';
 @Component({
   selector: 'app-login-modal',
   standalone: true,
-  imports: [
-    CommonModule,
-    FormsModule,
-    ReactiveFormsModule,
-    InputFieldComponent,
-    ButtonModule,
-    DialogModule,
-    RadioButtonModule,
-    InputFieldErrorComponent,
-  ],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, InputFieldErrorComponent, InputFieldComponent, ButtonModule, DialogModule, RadioButtonModule],
   templateUrl: './login-modal.component.html',
   styleUrl: './login-modal.component.scss',
   animations: [
