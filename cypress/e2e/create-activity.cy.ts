@@ -22,7 +22,7 @@ describe('As an association, create a new activity (mocked)', () => {
     // Valider le recadrage
     cy.contains('button', 'Valider').click();
 
-    cy.wait(200);
+    cy.wait(500);
 
     // Vérifier que la photo est bien visible dans la box
     cy.get('#photo-box-0 img').should('be.visible');
