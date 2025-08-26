@@ -11,12 +11,11 @@ import { DATE_PAD_LENGTH, MONTH_OFFSET } from '../../../constants/form.constants
 import { getFormattedAddress } from 'src/app/common/utils/address.utils';
 import { DestroyableComponent } from '../../../../../common/utils/DestroyableComponent';
 import { MessageService as Toast } from 'primeng/api';
-import { LoginModalComponent } from '../../login-modal/login-modal.component';
 
 @Component({
   selector: 'app-register-modal',
   standalone: true,
-  imports: [CommonModule, DialogModule, Select, RegisterVoluntaryFormComponent, RegisterAssociationFormComponent, FormsModule, LoginModalComponent],
+  imports: [CommonModule, DialogModule, Select, RegisterVoluntaryFormComponent, RegisterAssociationFormComponent, FormsModule],
   templateUrl: './register-modal.component.html',
   styleUrls: ['./register-modal.component.scss'],
 })
