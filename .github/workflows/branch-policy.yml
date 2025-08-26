@@ -27,4 +27,5 @@ jobs:
           if [ "${{ github.head_ref }}" != "staging" ]; then
             echo "Only the 'staging' branch is allowed to make pull requests to 'production'."
             exit 1
+
           fi
