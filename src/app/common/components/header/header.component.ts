@@ -12,7 +12,7 @@ import { HeaderMenuComponent } from '../header-menu/header-menu.component';
 import { SingleButtonComponent } from '../single-button/single-button.component';
 import { AuthService } from 'src/app/features/authentication/services/auth.service';
 import { DestroyableComponent } from 'src/app/common/utils/DestroyableComponent';
-import { LoginModalComponent } from 'src/app/features/authentication/components/login-modal/login-modal.component';
+import { LoginModalComponent } from '../../../features/authentication/components/register-modal/login-modal/login-modal.component';
 
 @Component({
   selector: 'app-header',
