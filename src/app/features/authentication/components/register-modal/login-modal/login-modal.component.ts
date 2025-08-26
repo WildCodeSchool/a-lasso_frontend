@@ -8,10 +8,10 @@ import { RadioButtonModule } from 'primeng/radiobutton';
 import { filter, take } from 'rxjs';
 import { InputFieldComponent } from 'src/app/common/components/input-field/input-field.component';
 import { TAKE_1 } from 'src/app/common/constants/observables.constants';
-import { InputFieldErrorComponent } from 'src/app/common/components/input-field-error/input-field-error.component';
-import { AuthFacade } from '../../../services/auth-facade.service';
 import { FormField } from '../../../models/form.model';
 import { UserLogin } from '../../../models/user.model';
+import { AuthFacade } from '../../../services/auth-facade.service';
+import { InputFieldErrorComponent } from 'src/app/common/components/input-field-error/input-field-error.component';
 
 @Component({
   selector: 'app-login-modal',
