@@ -11,6 +11,7 @@ import { UUIDTypes } from 'uuid';
 import { SingleButtonComponent } from '../../../../common/components/single-button/single-button.component';
 import { ButtonStyleClass } from 'src/app/common/models/button';
 import { AsyncPipe } from '@angular/common';
+import { showErrorToast } from 'src/app/common/utils/toast.utils';
 
 @Component({
   selector: 'app-activity-add-photo',
@@ -112,13 +113,13 @@ export class ActivityAddPhotoComponent implements OnInit, OnChanges {
     const file = input.files?.[0];
 
     if (!file) {
-      this._toast.add({ severity: 'error', summary: 'Pas de fichier sélectionné' });
+      showErrorToast(this._toast, 'Aucun fichier sélectionné.');
       return;
     }
 
-    const maxFileSize = 5 * 1024 * 1024;
+    const maxFileSize = 2 * 1024 * 1024;
     if (file.size > maxFileSize) {
-      this._toast.add({ severity: 'error', summary: 'Le fichier est trop volumineux (max 5MB).' });
+      showErrorToast(this._toast, 'Le fichier est trop volumineux (max 2MB).');
       return;
     }
 

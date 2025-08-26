@@ -27,6 +27,10 @@ export class ActivitiesApiService {
     return this._http.get<Activity[]>(`${this._apiUrl}/activities`);
   }
 
+  getActivitiesByAssociationId(associationId: UUIDTypes): Observable<Activity[]> {
+    return this._http.get<Activity[]>(`${this._apiUrl}/activities/association/${associationId}`);
+  }
+
   getActivityById(activityId: UUIDTypes): Observable<Activity> {
     return this._http.get<Activity>(`${this._apiUrl}/activities/${activityId}`);
   }

@@ -1,6 +1,10 @@
 import { createAction, props } from '@ngrx/store';
 import { Report } from '../models/report.model';
 
-export const setReports = createAction('[reports] setReports', props<{ reports: Report[] }>());
+export * as ReportsActions from './reports.actions';
 
-export const updateReport = createAction('[reports] updateReport', props<{ reportUpdated: Report }>());
+const ACTION_PREFIX = '[Reports]';
+
+export const setReports = createAction(`${ACTION_PREFIX} Set Reports`, props<{ reports: Report[] }>());
+
+export const updateReport = createAction(`${ACTION_PREFIX} Update Report`, props<{ reportUpdated: Report }>());

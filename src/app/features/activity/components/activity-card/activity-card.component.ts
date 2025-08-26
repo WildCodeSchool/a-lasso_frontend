@@ -5,7 +5,7 @@ import { Card } from 'primeng/card';
 import { Observable } from 'rxjs';
 import { AuthService } from 'src/app/features/authentication/services/auth.service';
 import { environment } from 'src/environments/environment';
-import { TruncatePipe } from '../../../../common/pipes/TruncateString.pipe';
+import { TruncatePipe } from '../../../../common/pipes/truncate-string.pipe';
 import { Activity, Participant } from '../../models/activity.model';
 import { ActivityFacadeService } from '../../services/activity-facade.service';
 import { FavoriteHeartComponent } from '../favorite-heart/favorite-heart.component';
@@ -31,13 +31,16 @@ export class ActivityCardComponent implements OnInit {
 
   public isSavedActivity$: Observable<boolean>;
   public voluntariesRegistered$: Observable<Participant>;
-  public apiUrl = environment.apiUrl;
+  public apiUrl: string = environment.apiUrl;
+  public associationLogoUrl!: string;
 
   isVoluntary$: Observable<boolean> = this._authService.isVoluntaryUser();
+  isAssociation$: Observable<boolean> = this._authService.isAssociationUser();
 
   ngOnInit(): void {
     this.isSavedActivity$ = this._activityFacadeService.getIsSavedActivity(this.activity.id);
     this.voluntariesRegistered$ = this._activityFacadeService.getVoluntariesRegisteredToAnActivity(this.activity.id);
+    this._setAssociationLogoUrl();
   }
 
   onDeleteClick(event: MouseEvent): void {
@@ -48,5 +51,14 @@ export class ActivityCardComponent implements OnInit {
   onEditClick(event: MouseEvent): void {
     event.stopPropagation();
     this.edit.emit(this.activity.id);
+  }
+
+  private _setAssociationLogoUrl(): void {
+    const logo = this.activity.association.logo;
+    if (logo && logo.startsWith('data:image')) {
+      this.associationLogoUrl = logo;
+    } else {
+      this.associationLogoUrl = this.apiUrl + logo;
+    }
   }
 }

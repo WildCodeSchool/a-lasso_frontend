@@ -1,0 +1,42 @@
+{
+  "id": "fake id",
+  "status": "published",
+  "title": "Collecte alimentaire pour les sans-abris",
+  "description": "Nous organisons une collecte de nourriture pour aider les personnes en situation de précarité. Venez nombreux pour trier, distribuer, et partager un moment solidaire.",
+  "address": {
+    "houseNumber": "14",
+    "streetName": "Rue de la Massonnière",
+    "postalCode": "44120",
+    "city": "Vertou",
+    "country": "France",
+    "complement": ""
+  },
+  "images": [
+    {
+      "id": "fake id images",
+      "image": "/images/activities/collecte.jpg"
+    }
+  ],
+  "association": {
+    "id": "fake id association",
+    "name": "Association des sans-abris",
+    "logo": "/images/associations/sans-abris.png",
+    "localisation": {
+      "latitude": 47.168709,
+      "longitude": -1.463833
+    }
+  },
+  "location": {
+    "latitude": 47.168709,
+    "longitude": -1.463833
+  },
+  "date": "2032-12-01T14:00:00",
+  "participants": {
+    "current": 0,
+    "max": 15
+  },
+  "themesName": [
+    "Social",
+    "Santé"
+  ]
+}

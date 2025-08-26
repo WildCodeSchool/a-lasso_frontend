@@ -29,7 +29,7 @@ jobs:
 
       - name: Recreate environment.secret.ts
         run: |
-          echo "${{ secrets.MAP_API_KEY }}" > src/environments/environment.secret.ts
+          echo "export const environmentSecret = { apiMapKey: '${{ secrets.MAP_API_KEY }}', };" > src/environments/environment.secret.ts
 
       - name: Set Docker image tag and dockerfile
         id: set_tag

@@ -1,17 +1,6 @@
-// ***********************************************************
-// This example support/e2e.ts is processed and
-// loaded automatically before your test files.
-//
-// This is a great place to put global configuration and
-// behavior that modifies Cypress.
-//
-// You can change the location of this file or turn off
-// automatically serving support files with the
-// 'supportFile' configuration option.
-//
-// You can read more here:
-// https://on.cypress.io/configuration
-// ***********************************************************
-
-// When a command from ./commands is ready to use, import with `import './commands'` syntax
-// import './commands';
+beforeEach(() => {
+  // the home page's necessary mocks
+  cy.intercept('GET', '/activities', { fixture: '/common/activities.json' }).as('getActivities');
+  cy.intercept('GET', '/themes', { fixture: '/common/themes.json' }).as('getThemes');
+  cy.intercept('GET', 'https://api.maptiler.com/maps/**', { statusCode: 200, body: {} }).as('mapTiler');
+});

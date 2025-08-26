@@ -18,6 +18,8 @@ import { errorInterceptor } from './common/interceptors/error-server.interceptor
 import { userReducer } from './features/authentication/store/user.reducer';
 import { metaReducers } from './features/authentication/store/meta-reducers';
 import { reportsReducer } from './features/report/store/reports.reducers';
+import { provideEffects } from '@ngrx/effects';
+import { AssociationEffects } from './features/association/store/effects/association.effects';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -25,6 +27,7 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideHttpClient(withInterceptors([jwtAddTokenInterceptor, errorInterceptor])),
     provideAnimationsAsync(),
+    provideEffects([AssociationEffects]),
     provideStore(
       {
         activities: activitiesReducer,

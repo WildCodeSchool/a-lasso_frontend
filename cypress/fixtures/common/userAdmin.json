@@ -1,0 +1,48 @@
+{
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE4MjQwMDAwMDAsInJvbGVzIjpbeyJhdXRob3JpdHkiOiJST0xFX1ZPTFVOVEFSWSJ9LHsiYXV0aG9yaXR5IjoiUk9MRV9BRE1JTiJ9XX0.MGfH2uNdbZK9WnXyWjUu2ZlV6aXJWx9F5OV0qZcQ2uE",
+  "user": {
+    "id": "vol-2",
+    "type": "voluntary",
+    "first_name": "Jacques",
+    "last_name": "Admin",
+    "email": "jacques.admin@example.com",
+    "password": "Password123",
+    "mobile_phone": "0601020304",
+    "city": "Nantes",
+    "country": "France",
+    "birth_date": "1990-05-15",
+    "avatar": {
+      "id": "avatar1",
+      "image": "/images/volunteers/jacques.png"
+    },
+    "followedAssociations": [
+      {
+        "associationId": "asso-1",
+        "isFollow": true,
+        "isNotificationActive": false
+      }
+    ],
+    "activitiesUserInfos": [
+      {
+        "activityId": "act-1",
+        "isSaved": true,
+        "isRegistered": false
+      }
+    ],
+    "notification": {
+      "messages": [
+        {
+          "activityId": "act-1",
+          "activityTitle": "top activity",
+          "countMessagesNotRead": 2
+        }
+      ],
+      "reports": 1
+    },
+    "geolocation": {
+      "latitude": 47.218371,
+      "longitude": -1.553621
+    },
+    "createdAt": "2025-01-01T10:00:00"
+  }
+}

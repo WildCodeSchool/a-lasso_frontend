@@ -1,0 +1,9 @@
+<app-activity-menu [title]="'Mes activités'" [navigationItems]="navigationItems" [activeTab]="activeTab" (tabChange)="handleNavigation($event)">
+  @if ((chosenNavigation$ | async) === 'Enregistrées') {
+    <app-voluntary-saved-activities />
+  } @else if ((chosenNavigation$ | async) === 'Associations') {
+    <app-voluntary-followed-associations />
+  } @else {
+    <app-activity-list [activities]="filteredActivities$ | async" />
+  }
+</app-activity-menu>

@@ -1,0 +1,90 @@
+[
+  {
+    "id": "1",
+    "status": "published",
+    "title": "La maraude",
+    "description": "« La maraude » est une action de solidarité humaine essentielle qui consiste à aller à la rencontre des personnes sans-abri dans les rues de Nantes. En participant à cette maraude, vous jouerez un rôle actif dans la création de lien social, en offrant un moment d’écoute bienveillante, un sourire, des boissons chaudes et parfois des kits d’hygiène ou des couvertures. L’objectif n’est pas seulement d’apporter une aide matérielle, mais aussi de redonner un peu de dignité et de chaleur humaine à ceux qui sont trop souvent invisibilisés. Cette activité est organisée par des bénévoles expérimentés, dans le respect et la discrétion.",
+    "address": {
+      "houseNumber": "10",
+      "streetName": "rue du bonheur",
+      "postalCode": "44300",
+      "city": "NANTES",
+      "complement": "",
+      "country": "France"
+    },
+    "images": [
+      {
+        "id": "img1",
+        "image": "/images/maraude1.png"
+      },
+      {
+        "id": "img2",
+        "image": "/images/Activity/maraude2.jpg"
+      }
+    ],
+    "association": {
+      "id": "asso1",
+      "name": "La Croix Rouge",
+      "logo": "/images/Association/defaultAvatar.png",
+      "localisation": {
+        "longitude": -1.5043288,
+        "latitude": 47.2492735
+      }
+    },
+    "location": {
+      "longitude": -1.5534,
+      "latitude": 47.2173
+    },
+    "date": "2025-12-22T04:00:00",
+    "participants": {
+      "current": 0,
+      "max": 10
+    },
+    "themesName": [
+      "Social",
+      "Santé"
+    ]
+  },
+  {
+    "id": "2",
+    "status": "published",
+    "title": "Réhabilitation refuge",
+    "description": "Rejoignez une équipe de bénévoles passionnés pour redonner vie à un refuge pour animaux abandonnés à Carquefou. L’objectif de cette activité est de remettre en état les infrastructures du refuge : repeindre les murs, réparer les enclos, installer des abris confortables, nettoyer les espaces communs, et créer un environnement sûr et accueillant pour chiens, chats et autres compagnons à quatre pattes. Ce chantier solidaire contribue non seulement au bien-être animal, mais renforce aussi la capacité d’accueil du refuge. Une belle manière de lier engagement écologique et cause animale.",
+    "address": {
+      "streetNumber": "61",
+      "street": "chemin de Gralan",
+      "postalCode": "44470",
+      "city": "CARQUEFOU",
+      "complement": "",
+      "country": "France"
+    },
+    "images": [
+      {
+        "id": "img3",
+        "image": "/images/Association/logoSPA.png"
+      }
+    ],
+    "association": {
+      "id": "asso2",
+      "name": "S.P.A.",
+      "logo": "/images/Association/logoSPA.png",
+      "localisation": {
+        "longitude": -1.418277,
+        "latitude": 47.3162423
+      }
+    },
+    "location": {
+      "longitude": -1.418277,
+      "latitude": 47.3162423
+    },
+    "date": "2025-12-10T15:00:00",
+    "participants": {
+      "current": 0,
+      "max": 20
+    },
+    "themesName": [
+      "Nature",
+      "Social"
+    ]
+  }
+]

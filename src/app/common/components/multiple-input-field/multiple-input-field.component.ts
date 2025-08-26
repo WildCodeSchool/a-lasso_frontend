@@ -39,6 +39,13 @@ export class MultipleInputFieldComponent implements OnChanges {
   focusedIndex: number | null = null;
   inputConfigs: { name: string; label: string; placeholder: string; type: string; value: string }[] = [];
 
+  get inputClass(): Record<string, boolean> {
+    return {
+      'with-search': this.showSearchButton,
+      'without-search': !this.showSearchButton,
+    };
+  }
+
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['fieldConfigs']) {
       this.inputConfigs = this.fieldConfigs.map(config => ({
