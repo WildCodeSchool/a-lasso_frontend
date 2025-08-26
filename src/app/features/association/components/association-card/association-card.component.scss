@@ -1,7 +1,5 @@
 p-card {
-  width: 35rem;
-
-  max-height: 100%;
+  width: 37.5rem;
   display: block;
   margin: 0 auto;
   overflow: hidden;
@@ -15,7 +13,7 @@ p-card {
     .activity-image {
       display: block;
       width: 100%;
-      height: 40vh;
+      height: 30vh;
       object-fit: cover;
 
       filter: brightness(80%);
@@ -37,23 +35,27 @@ p-card {
         }
       }
 
-      ::ng-deep .p-button {
+      .follow-report-section {
         display: flex;
-        flex-direction: column;
-        gap: 0;
-        height: 100%;
-        background: none;
-        border: none;
-        color: var(--primary-light-color);
 
-        i:hover {
-          transform: scale(1.1);
-          cursor: pointer;
-        }
+        ::ng-deep .p-button {
+          display: flex;
+          flex-direction: column;
+          gap: 0;
+          height: 100%;
+          background: none;
+          border: none;
+          color: var(--primary-light-color);
 
-        p {
-          margin: 0;
-          padding: 4px;
+          i:hover {
+            transform: scale(1.1);
+            cursor: pointer;
+          }
+
+          p {
+            margin: 0;
+            padding: 4px;
+          }
         }
       }
     }
@@ -79,7 +81,16 @@ p-card {
     }
 
     .activity-logo {
-      width: 1vw;
+      width: 25px;
+      height: 25px;
+      object-fit: cover;
+      border-radius: 50%;
+    }
+  }
+
+  ::ng-deep .p-card-content {
+    p {
+      height: 48px;
     }
   }
 
@@ -88,7 +99,9 @@ p-card {
       width: 100%;
       text-align: center;
       font-weight: 500;
+      margin-bottom: 16px;
     }
+
     .statistics-container {
       /* Correct class */
       display: flex;
@@ -97,9 +110,17 @@ p-card {
       flex-wrap: wrap;
       width: 100%;
 
+      p {
+        margin: 0;
+      }
+
       .statistic {
         width: 33%;
         text-align: center;
+
+        .description {
+          height: 48px;
+        }
 
         .value {
           color: var(--primary-dark-color);

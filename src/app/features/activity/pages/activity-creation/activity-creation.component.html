@@ -1,0 +1,108 @@
+<div class="activity-creation-container">
+  <header class="page-header">
+    <h2 class="page-title">
+      <i class="fa-solid fa-plus-circle"></i>
+      Créer une nouvelle activité
+    </h2>
+    <p class="page-subtitle">Partagez votre engagement avec la communauté</p>
+  </header>
+
+  <form class="form" (ngSubmit)="onSubmit()">
+    <div class="informations-container">
+      <section class="add-photo-container section-card">
+        <div class="section-header">
+          <h3><i class="fa-solid fa-camera"></i> Photos de l'activité</h3>
+          <span class="required-badge">Obligatoire</span>
+        </div>
+        <div class="section-content">
+          <app-activity-add-photo [submitted]="submitted" [formGroup]="activityForm" [hasLoadedDraft]="hasLoadedDraft$ | async">
+          </app-activity-add-photo>
+        </div>
+      </section>
+
+      <div class="details-inputs-areas">
+        <section class="add-informations-container section-card">
+          <div class="section-header">
+            <h3><i class="fa-solid fa-info-circle"></i> Informations générales</h3>
+            <span class="required-badge">Obligatoire</span>
+          </div>
+          <div class="section-content">
+            @for (activityField of activityFields; track $index) {
+              <div class="field-group">
+                <app-input-field
+                  class="information-field"
+                  [useIftaLabel]="true"
+                  [fieldConfig]="activityField"
+                  [formGroup]="activityForm"
+                  [submitted]="submitted">
+                </app-input-field>
+                <app-input-field-error [control]="activityForm.get(activityField.name)" [fieldName]="activityField.name" [submitted]="submitted">
+                </app-input-field-error>
+              </div>
+            }
+          </div>
+        </section>
+
+        <section class="search-adress-container section-card">
+          <div class="section-header">
+            <h3><i class="fa-solid fa-map-marker-alt"></i> Lieu de l'activité</h3>
+            <span class="required-badge">Obligatoire</span>
+          </div>
+          <div class="section-content">
+            <app-search-address [submitted]="submitted" [fieldConfig]="adressFieldConfig" [formGroup]="activityForm"> </app-search-address>
+          </div>
+        </section>
+
+        <section class="description-container section-card">
+          <div class="section-header">
+            <h3><i class="fa-solid fa-align-left"></i> Description</h3>
+            <span class="required-badge">Obligatoire</span>
+          </div>
+          <div class="section-content">
+            <app-textarea-field
+              [submitted]="submitted"
+              [fieldConfig]="descriptionFieldConfigs"
+              [maxlength]="descriptionMaxLength"
+              [cols]="250"
+              [formGroup]="activityForm">
+            </app-textarea-field>
+          </div>
+        </section>
+
+        <section class="theme-selection-container section-card">
+          <div class="section-header">
+            <h3><i class="fa-solid fa-tags"></i> Thème(s) de l'activité</h3>
+            <span class="required-badge">Obligatoire</span>
+          </div>
+          <div class="section-content">
+            <app-activity-filter [formThemeField]="formThemeField" [formGroup]="activityForm" [hasLoadedDraft]="hasLoadedDraft$ | async">
+            </app-activity-filter>
+            <app-input-field-error [submitted]="submitted" [control]="activityForm.get(formThemeField)" [fieldName]="formThemeField">
+            </app-input-field-error>
+          </div>
+        </section>
+      </div>
+
+      <section class="action-buttons-container">
+        <app-single-button
+          id="'cancel-button'"
+          type="button"
+          label="Annuler"
+          ariaLabel="annuler la création de l'activité"
+          (buttonClicked)="navigateToHomePage()"
+          [styleClass]="ButtonStyleClass.defaultWhite">
+        </app-single-button>
+        <app-single-button
+          id="'save-as-draft-button'"
+          type="button"
+          label="Sauvegarder le brouillon"
+          ariaLabel="sauvegarder le brouillon"
+          (buttonClicked)="saveNewActivityAsDraft()"
+          [styleClass]="ButtonStyleClass.defaultWhite">
+        </app-single-button>
+        <app-single-button [id]="1" type="submit" label="Publier" ariaLabel="publier" [styleClass]="ButtonStyleClass.defaultBlue">
+        </app-single-button>
+      </section>
+    </div>
+  </form>
+</div>

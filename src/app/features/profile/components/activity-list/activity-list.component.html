@@ -1,0 +1,18 @@
+<div class="activity-list">
+  @if (activities.length === 0) {
+    <p class="empty-message">Aucune activité à afficher pour le moment.</p>
+  } @else {
+    <div class="card-grid">
+      @for (activity of activities; track activity.id) {
+        <app-activity-card
+          [activity]="activity"
+          [showDeleteButton]="true"
+          [showEditButton]="activity.status === ActivityStatusEnum.DRAFT"
+          (delete)="onDeleteActivity($event)"
+          (edit)="onEditActivity($event)" />
+      }
+    </div>
+  }
+</div>
+
+<p-confirmDialog></p-confirmDialog>

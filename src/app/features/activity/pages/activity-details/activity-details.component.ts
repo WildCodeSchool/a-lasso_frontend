@@ -1,52 +1,107 @@
-import { Component, HostListener, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { AssociationCardComponent } from '../../../association/components/association-card/association-card.component';
-import { ActivatedRoute, ParamMap } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { ToggleMenuComponent } from '../../../../common/components/toggle-menu/toggle-menu.component';
-import { NgClass } from '@angular/common';
+import { AsyncPipe, NgClass } from '@angular/common';
 import { ActivityMessagesCardComponent } from '../../components/activity-messages-card/activity-messages-card.component';
 import { ActivityDescriptionComponent } from '../../components/activity-description/activity-description.component';
-
-const MOBILE_SIZE: number = 900;
+import { MOBILE_SIZE } from '../../../../common/models/scss-variables';
+import { Store } from '@ngrx/store';
+import { ActivitiesUserInfos, UserType } from '../../../authentication/models/user.model';
+import { Activity, ActivityDetailsNavigation } from '../../models/activity.model';
+import { Association } from 'src/app/features/association/models/association.model';
+import { UUIDTypes } from 'uuid';
+import { NavigationItems } from '../../../../common/models/toggle-menu';
+import { BehaviorSubject, combineLatest, distinctUntilChanged, fromEvent, map, Observable, startWith } from 'rxjs';
+import { DestroyableComponent } from '../../../../common/utils/DestroyableComponent';
+import { UserActions } from 'src/app/features/authentication/store/user.actions';
+import { UserSelectors } from 'src/app/features/authentication/store/user.selectors';
 
 @Component({
   selector: 'app-activity-details',
-  imports: [AssociationCardComponent, ActivityDescriptionComponent, ToggleMenuComponent, NgClass, ActivityMessagesCardComponent],
+  imports: [AssociationCardComponent, ActivityDescriptionComponent, ToggleMenuComponent, NgClass, ActivityMessagesCardComponent, AsyncPipe],
   templateUrl: './activity-details.component.html',
   styleUrl: './activity-details.component.scss',
 })
-export class ActivityDetailsComponent implements OnInit {
-  route: ActivatedRoute = inject(ActivatedRoute);
-  activityId!: string;
+export class ActivityDetailsComponent extends DestroyableComponent implements OnInit {
+  private _route: ActivatedRoute = inject(ActivatedRoute);
+  private _store: Store = inject(Store);
+  private _chosenNavigation$ = new BehaviorSubject<string>('Activité');
 
-  navigationItems: string[] = ['Activité', 'Messages', 'Association'];
-  chosenNavigation: string = 'Activité';
-  screenWidth: number = window.innerWidth;
+  screenWidth$ = fromEvent(window, 'resize').pipe(
+    map(() => window.innerWidth),
+    startWith(window.innerWidth),
+    distinctUntilChanged(),
+    this.untilDestroyed()
+  );
+
+  navigationState$: Observable<ActivityDetailsNavigation> = this._buildNavigationState();
+
+  activity!: Activity;
+  association!: Association;
 
   ngOnInit(): void {
-    this.route.paramMap.subscribe((params: ParamMap) => {
-      this.activityId = String(params.get('id'));
-    });
-    this._updateNavigationItems(window.innerWidth);
+    this._initializeActivityAndAssociation();
   }
 
-  handleNavigation(chosenNavigation: string): void {
-    this.chosenNavigation = chosenNavigation;
-  }
+  handleNavigation(chosen: string): void {
+    this._chosenNavigation$.next(chosen);
 
-  @HostListener('window:resize', ['$event'])
-  onResize(event: Event): void {
-    const target = event.target as Window;
-    this._updateNavigationItems(target.innerWidth);
-    this.screenWidth = target.innerWidth;
-  }
-
-  private _updateNavigationItems(width: number): void {
-    if (width < MOBILE_SIZE) {
-      this.navigationItems = ['Activité', 'Messages', 'Association'];
-      this.chosenNavigation = 'Activité';
-    } else {
-      this.navigationItems = ['Messages', 'Association'];
-      this.chosenNavigation = 'Association';
+    if (chosen === 'Messages') {
+      this.updateNotificationMessages(this.activity.id);
     }
+  }
+
+  updateNotificationMessages(activityId: UUIDTypes): void {
+    this._store.dispatch(UserActions.setNotificationMessages({ activityId }));
+  }
+
+  private _initializeActivityAndAssociation(): void {
+    this.activity = this._route.snapshot.data['activityDetails']['activity'];
+    this.association = this._route.snapshot.data['activityDetails']['association'];
+  }
+
+  private _isUserRegistered(activitiesUserInfos: ActivitiesUserInfos[]): boolean {
+    return activitiesUserInfos.find(activity => activity.activityId === this.activity.id)?.isRegistered ?? false;
+  }
+
+  private _buildNavigationState(): Observable<ActivityDetailsNavigation> {
+    return combineLatest([
+      this._store.select(UserSelectors.selectActivitiesUserInfos),
+      this._store.select(UserSelectors.selectUser),
+      this.screenWidth$,
+      this._chosenNavigation$,
+    ]).pipe(
+      this.untilDestroyed(),
+      map(([userInfos, user, width, chosen]) => {
+        const isMobile = width < MOBILE_SIZE;
+        const isRegistered = this._isUserRegistered(userInfos);
+        const isOwner = user?.type === UserType.Association && user.name === this.activity.association.name;
+        const hasMessages = isRegistered || isOwner;
+
+        let tabs: NavigationItems[] = [];
+        if (hasMessages) {
+          tabs = isMobile ? [{ name: 'Activité' }, { name: 'Messages' }, { name: 'Association' }] : [{ name: 'Messages' }, { name: 'Association' }];
+        } else {
+          tabs = isMobile ? [{ name: 'Activité' }, { name: 'Association' }] : [];
+        }
+
+        let validChosen = tabs.find(tab => tab.name === chosen)?.name;
+        if (!validChosen) {
+          validChosen = tabs.find(tab => tab.name === 'Association')?.name ?? tabs[0]?.name ?? '';
+          if (validChosen && validChosen !== chosen) {
+            this._chosenNavigation$.next(validChosen);
+          }
+        }
+
+        const activeTabIndex = tabs.findIndex(tab => tab.name === validChosen);
+
+        return {
+          tabs,
+          chosen: validChosen,
+          activeTabIndex,
+        };
+      })
+    );
   }
 }

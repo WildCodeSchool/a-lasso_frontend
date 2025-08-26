@@ -1,0 +1,10 @@
+<div class="activity-menu-container">
+  <div class="activity-menu-header">
+    <h1 class="activity-menu-title">{{ title }}</h1>
+    <span class="tabs_wrapper">
+      <app-toggle-menu [tabs]="navigationItems" [activeTabValue]="activeTab" (chosenTab)="onTabChange($event)" />
+    </span>
+  </div>
+
+  <ng-content></ng-content>
+</div>

@@ -1,0 +1,53 @@
+<div class="report-details-modal">
+  <p-dialog [dismissableMask]="true" [modal]="true" [(visible)]="visible" (visibleChange)="visibleChange.emit($event)">
+    <div class="report">
+      <h1>{{ reportSelected.reportedUser.userName }}</h1>
+      <div class="card report-in-progress">
+        <div class="report-in-progress-details">
+          <div class="reporter-section">
+            <div class="title-report">
+              <h3>Le {{ reportSelected.createdAt | date: 'dd/MM/yyyy' }} pour : {{ reportTypeLabels[reportSelected.reportType] }}</h3>
+              <h3>Signalement opéré par : {{ reportSelected.reporterUser.userName }}</h3>
+            </div>
+            <div class="commentary-section">
+              {{ reportSelected.messageReporter }}
+            </div>
+          </div>
+          <div class="admin-section">
+            <h3 class="title-report">Commentaire de l'administrateur</h3>
+            <form [formGroup]="reportForm">
+              <app-textarea-field
+                [fieldConfig]="fieldCommentary"
+                [formGroup]="reportForm"
+                [maxlength]="maxLengthCommentary"
+                [rows]="7"
+                [cols]="1"
+                [submitted]="closeReport">
+              </app-textarea-field>
+            </form>
+          </div>
+        </div>
+        <app-report-details-action-admin
+          [reportForm]="reportForm"
+          [visible]="visible"
+          [reportSelected]="reportSelected"
+          (submitReportEvent)="onSubmitReport()"></app-report-details-action-admin>
+      </div>
+      <div class="card previous-report">
+        <div class="previous-report-content">
+          <div class="table-previous-reports">
+            <h3>Autres Signalements</h3>
+            <app-table-data
+              (rowClickHandler)="onSelectedOtherReport($event)"
+              [cols]="otherReportsTableColumns"
+              [data]="otherReportsTableData"></app-table-data>
+          </div>
+          @if (allReportedUserReports | async; as reports) {
+            <app-report-details-stats [reports]="reports"></app-report-details-stats>
+          }
+        </div>
+      </div>
+    </div>
+  </p-dialog>
+  <p-confirmDialog></p-confirmDialog>
+</div>

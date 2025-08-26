@@ -2,8 +2,9 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { UUIDTypes } from 'uuid';
-import { Association } from '../model/association.model';
-import { environment } from 'src/environments/environment.development';
+import { Association } from '../models/association.model';
+import { environment } from 'src/environments/environment';
+import { Image } from '../../activity/models/activity.model';
 
 @Injectable({
   providedIn: 'root',
@@ -15,6 +16,19 @@ export class AssociationApiService {
 
   getAssociationCard(id: UUIDTypes): Observable<Association> {
     return this._http.get<Association>(`${this._apiUrl}/association/${id}`);
+  }
+
+  getAssociationCards(ids: UUIDTypes[]): Observable<Association[]> {
+    return this._http.post<Association[]>(`${this._apiUrl}/association/cards`, { ids });
+  }
+
+  getExistingActivityPictures(currentOffset: number, pageSize: number): Observable<Image[]> {
+    const params = {
+      offset: currentOffset,
+      limit: pageSize,
+    };
+
+    return this._http.get<Image[]>(`${this._apiUrl}/association/activities-images`, { params });
   }
 
   updateFollowStatus(associationId: UUIDTypes, isFollow: boolean): Observable<boolean> {

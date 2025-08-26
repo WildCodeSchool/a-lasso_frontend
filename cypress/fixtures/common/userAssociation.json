@@ -1,0 +1,41 @@
+{
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3ODgyMTEyMDAsInJvbGVzIjpbeyJhdXRob3JpdHkiOiJST0xFX0FTU09DSUFUSU9OIn1dfQ.dummy-signature",
+  "user": {
+    "id": "asso-1",
+    "type": "association",
+    "siret": "12345678900011",
+    "name": "Association Test",
+    "email": "association@example.com",
+    "password": "Password",
+    "mobile_phone": "0600000000",
+    "address": {
+      "streetNumber": "10",
+      "street": "Rue du Bonheur",
+      "postalCode": "44300",
+      "city": "NANTES",
+      "complement": "",
+      "country": "France"
+    },
+    "associationLogoImage": {
+      "id": "logo1",
+      "image": "/images/Association/defaultAvatar.png"
+    },
+    "associationProfileImage": {
+      "id": "profile1",
+      "image": "/images/Association/defaultProfile.png"
+    },
+    "notification": {
+      "id": "notif1",
+      "enabled": true
+    },
+    "geolocation": {
+      "latitude": 47.2173,
+      "longitude": -1.5534
+    },
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "foundationDate": "2000-01-01",
+    "founder": "Jean Dupont",
+    "description": "Association de test pour Cypress",
+    "statistics": []
+  }
+}

@@ -1,0 +1,14 @@
+services:
+  nginx:
+    image: alasso:staging
+    build:
+      context: ./
+      dockerfile: Dockerfile.staging
+    ports:
+      - "81:80"
+    networks:
+      - dev-networks
+
+networks:
+  dev-networks:
+    driver: bridge

@@ -1,12 +1,38 @@
 p-tablist::ng-deep {
   border-radius: 5px;
+  font-family: var(--font-family-p);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   overflow: hidden;
 }
 
-p-tab:first-child::ng-deep {
+.p-tablist-tab-list:first-child::ng-deep {
   border-radius: 5px 0 0 5px;
 }
 
-p-tab:last-child::ng-deep {
+.p-tablist-tab-list:last-child::ng-deep {
   border-radius: 0 5px 5px 0;
+}
+
+.tabs_wrapper {
+  ::ng-deep {
+    .p-tab {
+      padding: 16px 32px;
+    }
+
+    .p-tablist-tab-list {
+      border: none;
+      box-shadow: var(--box-shadow);
+    }
+  }
+
+  .tab-container {
+    position: relative;
+  }
+
+  .badge-toggle-menu {
+    position: absolute;
+    top: 0;
+    right: 2px;
+    z-index: 10;
+  }
 }

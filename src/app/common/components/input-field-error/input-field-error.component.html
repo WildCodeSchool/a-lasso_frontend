@@ -1,0 +1,73 @@
+<div class="animation-wrapper">
+  <div class="field-error">
+    @if (control?.invalid && (control.touched || control.dirty) && submitted) {
+      <div @fadeInOut>
+        @if (control.errors?.['required']) {
+          <p>Ce champ est requis</p>
+        }
+        @if (control.errors?.['photoRequired']) {
+          <p>Vous devez ajouter une photo</p>
+        }
+        @if (control.errors?.['themeRequired']) {
+          <p>Vous devez sélectionner au moins un thème</p>
+        }
+        @if (control.errors?.['invalidAddress']) {
+          <p>L'adresse sélectionnée est invalide. Veuillez en choisir une depuis la liste</p>
+        }
+        @if (control.errors?.['dateRequired']) {
+          <p>La date saisie doit être dans le futur</p>
+        }
+        @if (control.errors?.['email']) {
+          <p>Adresse e-mail invalide</p>
+        }
+        @if (control.errors?.['maxSize']) {
+          <p>Le fichier est trop volumineux (max 5MB).</p>
+        }
+        @if (control.errors?.['invalidFormat']) {
+          <p>Format non autorisé.</p>
+        }
+        @if (control.errors?.['pattern']) {
+          @switch (fieldName) {
+            @case ('motDePasse') {
+              <p>Le mot de passe doit contenir une minuscule, une majuscule, un chiffre, un caractère spécial et minimum 8 caractères</p>
+            }
+            @case ('telephone') {
+              <p>Numéro de téléphone invalide</p>
+            }
+            @case ('siret') {
+              <p>Numéro SIRET invalide</p>
+            }
+            @case ('adresseCodePostal') {
+              <p>Code postal invalide</p>
+            }
+            @case ('adresseNumero') {
+              <p>Numéro de voie invalide</p>
+            }
+            @case ('requieredVoluntary') {
+              <p>La valeur doit un nombre entier</p>
+            }
+            @default {
+              <p>Format invalide</p>
+            }
+          }
+        }
+        @if (control.errors?.['minlength']) {
+          <p>Minimum {{ control.errors['minlength'].requiredLength }} caractères (actuellement {{ control.errors['minlength'].actualLength }})</p>
+        }
+        @if (control.errors?.['maxlength']) {
+          <p>Maximum {{ control.errors['maxlength'].requiredLength }} caractères (actuellement {{ control.errors['maxlength'].actualLength }})</p>
+        }
+      </div>
+    }
+    @if (showPasswordMismatchError) {
+      <div @fadeInOut>
+        <p>Les mots de passe ne correspondent pas</p>
+      </div>
+    }
+    @if (globalError) {
+      <div @fadeInOut>
+        <p>{{ globalError }}</p>
+      </div>
+    }
+  </div>
+</div>

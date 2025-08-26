@@ -1,0 +1,49 @@
+.menu-item {
+  padding: 10px 20px;
+  cursor: pointer;
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  border-radius: 4px;
+  color: var(--font-color-white);
+
+  &:hover {
+    background: var(--primary-light-color);
+  }
+}
+
+.menu-item-content {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  width: 100%;
+
+  .badge-and-caret {
+    display: flex;
+    flex-grow: 1;
+    justify-content: flex-end;
+    gap: 5px;
+  }
+
+  .caret-icon {
+    font-size: 14px;
+    align-self: end;
+    display: flex;
+    justify-content: end;
+  }
+}
+
+.menu-item.disabled {
+  color: var(--font-color-grey);
+  cursor: default;
+  background: transparent;
+
+  i {
+    color: var(--font-color-grey);
+  }
+}
+
+app-badge {
+  display: flex;
+  align-items: center;
+}

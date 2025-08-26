@@ -1,0 +1,30 @@
+[
+  {
+    "name": "Santé",
+    "iconUrl": "fa-solid fa-suitcase-medical"
+  },
+  {
+    "name": "Nature",
+    "iconUrl": "fa-solid fa-tree"
+  },
+  {
+    "name": "Cours",
+    "iconUrl": "fa-solid fa-graduation-cap"
+  },
+  {
+    "name": "Culture",
+    "iconUrl": "fa-solid fa-masks-theater"
+  },
+  {
+    "name": "Culinaire",
+    "iconUrl": "fa-solid fa-bowl-food"
+  },
+  {
+    "name": "Social",
+    "iconUrl": "fa-solid fa-handshake"
+  },
+  {
+    "name": "Sport",
+    "iconUrl": "fa-solid fa-volleyball"
+  }
+]

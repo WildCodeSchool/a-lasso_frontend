@@ -1,16 +1,10 @@
-<!--<div [ngClass]="darkMode ? 'dark-mode' : ''">-->
-<!--  <div class="page">-->
-<!--    <h1>I love Piloutre</h1>-->
-
-<!--    &lt;!&ndash;   TODO : à supprimer quand le dark mode sera opérationnel   &ndash;&gt;-->
-<!--    <div class="card flex justify-center">-->
-<!--      <p-button label="Check" (click)="changeMode()" />-->
-<!--    </div>-->
-<!--  </div>-->
+<app-header></app-header>
 <div class="page">
-  <app-header></app-header>
+  <p-toast></p-toast>
+  @if (loading) {
+    <p-progressBar mode="indeterminate" [style]="{ height: '6px' }" />
+  }
+
   <router-outlet></router-outlet>
-  <div class="push-footer"></div>
   <app-footer></app-footer>
 </div>
-<!--</div>-->

@@ -1,0 +1,22 @@
+<form [formGroup]="formGroup">
+  <p-iftalabel>
+    <textarea
+      pTextarea
+      [id]="id"
+      [placeholder]="fieldConfig.placeholder"
+      [rows]="rows"
+      [cols]="cols"
+      [formControlName]="fieldConfig.name"
+      [ngClass]="{ 'with-save-button': showSaveButton }">
+    </textarea>
+    <label [for]="id">{{ fieldConfig.label }}</label>
+  </p-iftalabel>
+  <app-input-field-error [submitted]="submitted" [control]="formGroup.get(fieldConfig.name)" [fieldName]="fieldConfig.name"></app-input-field-error>
+  <p class="max-length" [class.max-length--error]="fieldContentLength > maxlength">{{ fieldContentLength }} / {{ maxlength }} caractères maximum</p>
+
+  @if (showSaveButton) {
+    <button pButton type="button" class="save-button" (click)="save.emit()">
+      <i class="fa-solid fa-floppy-disk"></i>
+    </button>
+  }
+</form>

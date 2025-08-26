@@ -1,0 +1,93 @@
+.map-container {
+  width: 100%;
+  height: 100%;
+  position: relative;
+
+  .map-legend {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    bottom: 16px;
+    left: 16px;
+    background: white;
+    border-radius: 8px;
+    padding: 8px 12px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    font-size: 14px;
+    z-index: 10;
+    gap: 8px;
+
+    .legend-item {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      align-items: center;
+
+      .item-color-and-name {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+
+        .legend-color {
+          width: 12px;
+          height: 12px;
+          border-radius: 50%;
+          display: inline-block;
+
+          &.activity {
+            background-color: red;
+          }
+
+          &.association {
+            background-color: green;
+          }
+        }
+      }
+    }
+  }
+
+  .my-city-control {
+    position: absolute;
+    bottom: 50px;
+    right: 10px;
+    z-index: 1000;
+
+    .my-city-button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 44px;
+      height: 44px;
+      padding: 0;
+      background: var(--primary-light-color, #007bff);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+      font-family: inherit;
+
+      &:hover:not(:disabled) {
+        background: var(--primary-dark-color, #0056b3);
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      }
+
+      &:active:not(:disabled) {
+        transform: translateY(0);
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+      }
+
+      &:focus {
+        outline: 2px solid var(--primary-light-color, #007bff);
+        outline-offset: 2px;
+      }
+
+      i {
+        font-size: 20px;
+        margin: 0;
+      }
+    }
+  }
+}

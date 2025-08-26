@@ -1,0 +1,44 @@
+@media (max-width: 900px) {
+  ::ng-deep p-table thead {
+    display: none !important;
+  }
+
+  ::ng-deep p-table {
+    display: block;
+    width: 100%;
+  }
+
+  ::ng-deep p-table tbody {
+    display: block;
+  }
+
+  ::ng-deep p-table tr {
+    display: block;
+    width: 100%;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: white;
+  }
+
+  ::ng-deep p-table td {
+    display: flex;
+    justify-content: space-between;
+    border: none;
+    padding: 8px;
+    text-align: left;
+  }
+
+  ::ng-deep p-table td:before {
+    content: attr(data-header);
+    font-weight: bold;
+    margin-right: 10px;
+    flex: 1;
+  }
+
+  ::ng-deep p-table td:last-child {
+    border-bottom: none;
+    flex: 1;
+  }
+}

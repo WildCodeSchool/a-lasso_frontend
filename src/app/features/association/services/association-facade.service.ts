@@ -1,66 +1,100 @@
 import { inject, Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { AssociationApiService } from './association-api.service';
-import { filter, Observable, of, switchMap, take, tap } from 'rxjs';
-import { setAssociations, updateFollowStatus } from '../store/association.actions';
-import { Association } from '../model/association.model';
-import { selectAssociation } from '../store/association.selector';
-import { selectActivityById } from '../../activity/store/activities.selector';
-import { ActivityFacadeService } from '../../activity/services/activity-facade.service';
+import { Observable, of, switchMap, take, tap } from 'rxjs';
+import { TAKE_1 } from 'src/app/common/constants/observables.constants';
 import { UUIDTypes } from 'uuid';
+import { Association } from '../models/association.model';
+import { ActivitiesUserInfos, FollowedAssociation } from '../../authentication/models/user.model';
+import { Image } from '../../activity/models/activity.model';
+import { AssociationApiService } from './association-api.service';
+import { showInfoToast, showSuccessToast } from 'src/app/common/utils/toast.utils';
+import { MessageService } from 'primeng/api';
+import { UserActions } from '../../authentication/store/user.actions';
+import { AssociationSelectors } from '../store/association.selectors';
+import { UserSelectors } from '../../authentication/store/user.selectors';
+import { AssociationActions } from '../store/association.actions';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AssociationFacadeService {
-  store: Store = inject(Store);
-  activityFacadeService: ActivityFacadeService = inject(ActivityFacadeService);
-  associationApiService: AssociationApiService = inject(AssociationApiService);
+  private _store: Store = inject(Store);
+  private _toast: MessageService = inject(MessageService);
+  private _associationApiService: AssociationApiService = inject(AssociationApiService);
 
-  getAssociationCard(activityId: UUIDTypes): Observable<Association | null> {
-    // get activity selected from store
-    return this.store.select(selectActivityById(activityId)).pipe(
-      switchMap(activity => {
-        if (activity) {
-          // get association selected from store
-          return this._getAssociation(activity.association.id);
+  associations$: Observable<Association[]> = this._store.select(AssociationSelectors.selectAssociations);
+  associationId$: Observable<UUIDTypes> = this._store.select(UserSelectors.selectConnectedAssociationId);
+
+  getAssociationCard(associationId: UUIDTypes): Observable<Association> {
+    return this._getAssociationFromStore(associationId);
+  }
+
+  private _getAssociationFromStore(associationId: UUIDTypes): Observable<Association> {
+    return this._store.select(AssociationSelectors.selectAssociation(associationId)).pipe(
+      switchMap(association => {
+        if (association) {
+          return this._patchFollowStatus(association);
         }
 
-        // if no activity found try to fetch it from API (i.e : page has been refreshed)
-        this.activityFacadeService.getAllActivities();
-
-        // then get activity before getting association
-        return this.store.select(selectActivityById(activityId)).pipe(
-          filter(activity => !!activity), // to prevent initial empty store on init to stop the flow
-          take(1), // stop to listen once store is filled with an activity
-          switchMap(activity => this._getAssociation(activity!.association.id))
+        return this._associationApiService.getAssociationCard(associationId).pipe(
+          tap(apiAssociation => {
+            this._store.dispatch(AssociationActions.setAssociations({ association: apiAssociation }));
+          }),
+          switchMap(apiAssociation => this._patchFollowStatus(apiAssociation))
         );
       })
     );
   }
 
-  private _getAssociation(associationId: string): Observable<Association | null> {
-    return this.store.select(selectAssociation(associationId)).pipe(
-      switchMap(association => {
-        if (association) {
-          return of(association);
+  private _patchFollowStatus(association: Association): Observable<Association> {
+    return this._store.select(UserSelectors.selectFollowedAssociations).pipe(
+      take(TAKE_1),
+      switchMap(() => of(association))
+    );
+  }
+
+  getIsFollowAssociation(associationId: UUIDTypes): Observable<boolean> {
+    return this._store.select(UserSelectors.selectFollowedAssociations).pipe(
+      switchMap((followedAssociations: FollowedAssociation[]): Observable<boolean> => {
+        const followedAsso = followedAssociations.find(asso => asso.associationId === associationId);
+        if (!followedAsso) {
+          return of(false);
         }
-        // If not found in store, fetch from API
-        return this.associationApiService.getAssociationCard(associationId).pipe(
-          tap((fetchedAssociation: Association) => {
-            this.store.dispatch(setAssociations({ association: fetchedAssociation }));
-          })
-        );
+        return of(followedAsso.isFollow);
       })
     );
+  }
+
+  getIsSavedActivity(activityId: UUIDTypes): Observable<boolean> {
+    return this._store.select(UserSelectors.selectActivitiesUserInfos).pipe(
+      switchMap((userActivityInfos: ActivitiesUserInfos[]): Observable<boolean> => {
+        const activityInfos = userActivityInfos.find(activity => activity.activityId === activityId);
+        if (!activityInfos) {
+          return of(false);
+        }
+        return of(activityInfos.isSaved);
+      })
+    );
+  }
+
+  getExistingActivityPictures(currentOffset: number, pageSize: number): Observable<Image[]> {
+    return this._associationApiService.getExistingActivityPictures(currentOffset, pageSize);
   }
 
   toggleFollow(associationId: UUIDTypes, isFollow: boolean): void {
-    this.associationApiService
-      .updateFollowStatus(associationId, !isFollow)
+    this._associationApiService
+      .updateFollowStatus(associationId, isFollow)
       .pipe(
-        tap((apiResponse: boolean) => this.store.dispatch(updateFollowStatus({ id: associationId, isFollow: apiResponse }))),
-        take(1)
+        tap((apiResponse: boolean) => {
+          this._store.dispatch(UserActions.updateFollowedAssociations({ associationId, isFollow: apiResponse }));
+
+          if (apiResponse === true) {
+            showSuccessToast(this._toast);
+          } else {
+            showInfoToast(this._toast, 'Association retirée de vos suivis.');
+          }
+        }),
+        take(TAKE_1)
       )
       .subscribe();
   }

@@ -1,0 +1,14 @@
+<aside class="sidebar">
+  <nav class="menu">
+    <h2 class="menu-title">Mon espace</h2>
+
+    <ul class="menu-list">
+      @for (menuItem of menuItems; track menuItem) {
+        <li class="menu-item" [routerLink]="menuItem.link" routerLinkActive="active">
+          <i [class]="menuItem.icon + ' icon'"></i>
+          <span class="label">{{ menuItem.label }}</span>
+        </li>
+      }
+    </ul>
+  </nav>
+</aside>

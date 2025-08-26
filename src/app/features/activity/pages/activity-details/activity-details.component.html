@@ -1,22 +1,29 @@
-<div class="activity-details-page">
-  <div class="navigation">
-    <app-toggle-menu [tabs]="navigationItems" (chosenTab)="handleNavigation($event)"></app-toggle-menu>
-  </div>
-  <div class="activity" [ngClass]="chosenNavigation !== 'Activité' ? 'hidden' : ''">
-    <app-activity-description [activityId]="activityId"> </app-activity-description>
-  </div>
-  <div
-    class="association-messages"
-    [ngClass]="{
-      hidden: chosenNavigation === 'Activité' && screenWidth < 900,
-      'show-association': chosenNavigation === 'Association' || chosenNavigation === 'Activité',
-      'show-messages': chosenNavigation === 'Messages',
-    }">
-    <div class="association" [ngClass]="chosenNavigation !== 'Association' ? 'hidden' : ''">
-      <app-association-card [activityId]="activityId"></app-association-card>
+@if (navigationState$ | async; as nav) {
+  <div class="activity-details-page">
+    <div class="navigation">
+      @if (nav.tabs.length) {
+        <app-toggle-menu [tabs]="nav.tabs" [activeTabValue]="nav.activeTabIndex" (chosenTab)="handleNavigation($event)"></app-toggle-menu>
+      }
     </div>
-    <div class="messages" [ngClass]="chosenNavigation === 'Messages' ? 'show-messages' : ''">
-      <app-activity-messages-card [activityId]="activityId"></app-activity-messages-card>
+    <div class="activity" [ngClass]="nav.chosen !== 'Activité' ? 'hidden' : ''">
+      <app-activity-description [activity]="activity"></app-activity-description>
+    </div>
+    <div
+      class="association-messages"
+      [ngClass]="{
+        hidden: nav.chosen === 'Activité' && (screenWidth$ | async) < 900,
+        'show-association': nav.chosen === 'Association' || nav.chosen === 'Activité',
+        'show-messages': nav.chosen === 'Messages'
+      }">
+      <div class="association" [ngClass]="nav.chosen !== 'Association' ? 'hidden' : ''">
+        <app-association-card [association]="association"></app-association-card>
+      </div>
+
+      @if (nav.chosen === 'Messages') {
+        <div class="messages">
+          <app-activity-messages-card [activityId]="activity.id"></app-activity-messages-card>
+        </div>
+      }
     </div>
   </div>
-</div>
+}

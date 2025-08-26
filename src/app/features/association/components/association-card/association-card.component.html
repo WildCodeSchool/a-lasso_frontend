@@ -1,40 +1,49 @@
-@if (association$ | async; as association) {
-  <p-card class="card">
-    <ng-template #header>
-      <img alt="Card" class="activity-image" [src]="apiUrl + association.associationProfileImageURL" />
-      <div class="social">
-        <a class="link" [href]="association.siteURL" target="_blank">Voir le site</a>
-        <p-button class="follow-button" (click)="toggleFollow(association.id, association.isFollow)">
-          @if (association.isFollow) {
-            <i class="fa-solid fa-star"></i>
-          } @else {
-            <i class="fa-regular fa-star"></i>
-          }
-
-          <p>Suivre</p>
-        </p-button>
-      </div>
-    </ng-template>
-    <ng-template #title>
-      <img alt="Card" class="activity-logo" [src]="apiUrl + association.associationLogoImage" />
-      <h2 id="association-name">{{ association.name }}</h2>
-    </ng-template>
-    <ng-template #subtitle>
-      <h3>Fondée le {{ association.foundationDate | date: 'dd/MM/yyyy' }} par {{ association.founder }}</h3></ng-template
-    >
-    <p>
-      {{ association.description }}
-    </p>
-    <ng-template #footer>
-      <h3>Quelques chiffres :</h3>
-      <div class="statistics-container">
-        @for (stat of association.statistics; track $index) {
-          <div class="statistic">
-            <p class="value">{{ stat.value }}</p>
-            <p>{{ stat.description }}</p>
-          </div>
+<p-card class="card">
+  <ng-template #header>
+    <img alt="Card" class="activity-image" [src]="association.associationProfileImage.image" />
+    <div class="social">
+      <a class="link" [href]="association.siteURL" target="_blank">Voir le site</a>
+      <div class="follow-report-section">
+        @if (isVoluntary$ | async) {
+          <p-button class="follow-button" (click)="toggleFollow()">
+            @if (isFollowAssociation$ | async) {
+              <i class="fa-solid fa-star"></i>
+            } @else {
+              <i class="fa-regular fa-star"></i>
+            }
+            <p>Suivre</p>
+          </p-button>
+          <p-button (click)="showReportModal()">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+            <p>Signaler</p>
+          </p-button>
         }
       </div>
-    </ng-template>
-  </p-card>
+    </div>
+  </ng-template>
+  <ng-template #title>
+    <img alt="Card" class="activity-logo" [src]="association.associationLogoImage.image" />
+    <h2 id="association-name">{{ association.name }}</h2>
+  </ng-template>
+  <ng-template #subtitle>
+    <h3>Fondée le {{ association.foundationDate | dateFr }} par {{ association.founder }}</h3>
+  </ng-template>
+  <p>
+    {{ association.description }}
+  </p>
+  <ng-template #footer>
+    <h3>Quelques chiffres :</h3>
+    <div class="statistics-container">
+      @for (stat of association.statistics; track $index) {
+        <div class="statistic">
+          <p class="value">{{ stat.value }}</p>
+          <p class="description">{{ stat.description }}</p>
+        </div>
+      }
+    </div>
+  </ng-template>
+</p-card>
+
+@if (isShowReportModal) {
+  <app-report-modal [(visible)]="isShowReportModal" [association]="association"></app-report-modal>
 }

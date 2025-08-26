@@ -1,9 +1,15 @@
 import { createAction, props } from '@ngrx/store';
-import { Association } from '../model/association.model';
+import { Association } from '../models/association.model';
 import { UUIDTypes } from 'uuid';
 
-export const setAssociations = createAction('[associations] setAssociations', props<{ association: Association }>());
+export * as AssociationActions from './association.actions';
 
-export const selectAssociation = createAction('[associations] getAssociation', props<{ associationId: UUIDTypes }>());
+const ASSOCIATION_PREFIX = '[Associations]';
 
-export const updateFollowStatus = createAction(`[assocations] updateFollowStatus`, props<{ id: UUIDTypes; isFollow: boolean }>());
+export const setAssociations = createAction(`${ASSOCIATION_PREFIX} Set Associations`, props<{ association: Association }>());
+
+export const setManyAssociations = createAction(`${ASSOCIATION_PREFIX} Set Many Associations`, props<{ associations: Association[] }>());
+
+export const selectAssociation = createAction(`${ASSOCIATION_PREFIX} Get Association`, props<{ associationId: UUIDTypes }>());
+
+export const updateFollowStatus = createAction(`${ASSOCIATION_PREFIX} Update Follow Status`, props<{ id: UUIDTypes; isFollow: boolean }>());

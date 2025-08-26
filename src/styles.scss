@@ -1,6 +1,9 @@
 // import font family
 @import url('https://fonts.googleapis.com/css2?family=Crimson+Text&family=Roboto:ital,wght@0,100..900;1,100..900&family=Spectral+SC&display=swap');
 
+//import map
+@import 'maplibre-gl/dist/maplibre-gl.css';
+
 // initialization project
 body {
   margin: 0;
@@ -9,6 +12,12 @@ body {
   min-height: 100vh;
   max-width: 100vw;
   padding: 0;
+  background-color: var(--background-color-light);
+  overflow-y: hidden;
+
+  &.allow-scroll {
+    overflow-y: auto !important;
+  }
 }
 
 :root {
@@ -17,7 +26,9 @@ body {
   --background-color-light: #f8f8f8;
   --background-color-grey: #f3f3f3;
   --font-color: #505050;
+  --font-color-light: white;
   --font-color-grey: #898989;
+  --font-color-white: white;
 
   --icon-color: #d9d9d9;
 
@@ -29,7 +40,7 @@ body {
   --secondary-error-color: #d4412d;
 
   // variables for fonts (size & font families)
-  --font-size-p: 14px;
+  --font-size-p: 16px;
   --font-size-p-mini: 10px;
   --font-size-big-title: 36px; // for H1
   --font-size-medium-title: 22px; // for H2
@@ -47,13 +58,54 @@ body {
   // various variables
   --border-radius: 5px;
   --box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.1);
-  --grey-border: 1px solid #d9d9d9;
+  --grey-border: 1px solid var(--icon-color);
+  --page-padding: 5rem;
 
   // switch colors for dark mode
-  .dark-mode {
-    --background-color-light: #595959;
-    --font-color: white;
-    // TODO: à compléter pour les couleurs de dark mode
+  body.dark-mode {
+    --background-color-white: #1e1e1e;
+    --background-color-light: #2a2a2a;
+    --background-color-grey: #3a3a3a;
+
+    --font-color: #f5f5f5;
+    --font-color-light: #e0e0e0;
+    --font-color-grey: #b0b0b0;
+    --font-color-white: #ffffff;
+
+    --icon-color: #cccccc;
+
+    --primary-dark-color: #82d4f4;
+    --primary-light-color: #29b8e0;
+
+    --secondary-validate-color: #2ecf4d;
+    --secondary-complete-color: #ffab3c;
+    --secondary-error-color: #ff6f61;
+
+    --box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5);
+    --grey-border: 1px solid #444;
+
+    ::-webkit-scrollbar-track {
+      background: #2a2a2a;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--primary-light-color);
+    }
+
+    a,
+    a:visited,
+    a:active,
+    a:focus {
+      color: var(--primary-light-color);
+    }
+
+    p,
+    li,
+    label,
+    div,
+    ::placeholder {
+      color: white;
+    }
   }
 
   /* Largeur de la scrollbar */
@@ -100,9 +152,14 @@ body {
     margin: 0;
   }
 
-  p {
+  p,
+  li,
+  label,
+  div,
+  ::placeholder {
     font-family: var(--font-family-p);
     font-size: var(--font-size-p);
+    line-height: 1.5;
   }
 
   a,
@@ -119,4 +176,44 @@ body {
   .mini-p {
     font-size: var(--font-size-p-mini);
   }
+
+  .custom-dialog {
+    .selectable-photo {
+      max-width: 300px;
+      max-height: 300px;
+
+      object-fit: cover;
+      margin: 10px;
+      cursor: pointer;
+      border-radius: 6px;
+      transition: transform 0.2s ease;
+
+      &:hover {
+        transform: scale(1.05);
+        box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+      }
+    }
+
+    .footer-buttons {
+      display: flex;
+      flex-direction: row;
+      width: fit-content;
+      width: 100%;
+      justify-content: space-between;
+      margin-top: 20px;
+    }
+  }
+}
+
+.maplibregl-popup-close-button {
+  background-color: red !important;
+  color: white !important;
+  font-size: 20px !important;
+  border-radius: 50% !important;
+  width: 30px !important;
+  height: 30px !important;
+  line-height: 30px !important;
+  text-align: center !important;
+  top: 5px !important;
+  right: 5px !important;
 }

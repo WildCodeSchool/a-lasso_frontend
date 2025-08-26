@@ -1,0 +1,22 @@
+<div id="map" class="map-container">
+  <div class="map-legend">
+    <div class="legend-item">
+      <div class="item-color-and-name"><span class="legend-color activity"> </span> <span>Activités</span></div>
+      <p-checkbox [(ngModel)]="mapDisplay.activities" [binary]="true" (onChange)="addMarkers()" />
+    </div>
+    <div class="legend-item">
+      <div class="item-color-and-name"><span class="legend-color association"> </span> <span>Associations</span></div>
+      <p-checkbox [(ngModel)]="mapDisplay.associations" [binary]="true" (onChange)="addMarkers()" />
+    </div>
+  </div>
+
+  @if (isVoluntaryUser$ | async) {
+    <div class="my-city-control">
+      <button type="button" class="my-city-button" (click)="flyToMyCity()" title="Voir ma ville">
+        <i class="fa-solid fa-location-crosshairs"></i>
+      </button>
+    </div>
+  }
+</div>
+
+<app-popup-map #popupRef (popupClosed)="popup.remove()"></app-popup-map>

@@ -1,0 +1,27 @@
+{
+  "id": "asso2",
+  "description": "Organisation pour le bien-être animal et la réhabilitation des refuges.",
+  "founder": "Jean Dupont",
+  "foundationDate": "2000-04-15T00:00:00.000Z",
+  "name": "S.P.A.",
+  "associationProfileImage": {
+    "id": "profileSPA",
+    "image": "/images/Association/profileSPA.png"
+  },
+  "associationLogoImage": {
+    "id": "logoSPA",
+    "image": "/images/Association/logoSPA.png"
+  },
+  "siteURL": "https://www.spa.fr",
+  "statistics": [
+    {
+      "description": "volunteers",
+      "value": 150
+    },
+    {
+      "description": "activities",
+      "value": 42
+    }
+  ],
+  "isFollow": false
+}

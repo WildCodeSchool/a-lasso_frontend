@@ -1,0 +1,29 @@
+<form class="form-benevole">
+  @for (field of fields; track $index) {
+    @if (field.type === 'group' && field.children?.length) {
+      <div class="coordinates-fields">
+        @for (subField of field.children; track $index) {
+          <div class="form-field">
+            <app-input-field [fieldConfig]="subField" [formGroup]="form" />
+            <app-input-field-error [control]="form.get(subField.name)" [fieldName]="subField.name" />
+          </div>
+        }
+      </div>
+    } @else {
+      <div class="form-field">
+        <app-input-field [fieldConfig]="field" [showPasswordRules]="field.showPasswordRules || false" [formGroup]="form" />
+
+        <app-input-field-error
+          [control]="form.get(field.name)"
+          [fieldName]="field.name"
+          [showPasswordMismatchError]="
+            field.name === 'confirmationMotDePasse' && form.errors?.['passwordsMismatch'] && form.get('confirmationMotDePasse')?.touched
+          " />
+      </div>
+    }
+  }
+
+  <div class="submit-button">
+    <button pButton type="submit" class="register-btn" [disabled]="form.invalid" (click)="onSubmit()">S'enregistrer</button>
+  </div>
+</form>

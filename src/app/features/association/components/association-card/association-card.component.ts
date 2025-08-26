@@ -1,35 +1,45 @@
-import { ChangeDetectionStrategy, Component, inject, Input, OnInit } from '@angular/core';
-import { AssociationFacadeService } from '../../services/association-facade.service';
-import { Observable } from 'rxjs';
-import { Association } from '../../model/association.model';
-import { AsyncPipe, DatePipe } from '@angular/common';
-import { CardModule } from 'primeng/card';
+import { AsyncPipe } from '@angular/common';
+import { Component, inject, Input, OnInit } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
-import { environment } from 'src/environments/environment.development';
-import { UUIDTypes } from 'uuid';
+import { CardModule } from 'primeng/card';
+import { Observable, take } from 'rxjs';
+import { TAKE_1 } from 'src/app/common/constants/observables.constants';
+import { AuthService } from 'src/app/features/authentication/services/auth.service';
+import { environment } from 'src/environments/environment';
+import { DateFrPipe } from '../../../../common/pipes/date-fr.pipe';
+import { ReportModalComponent } from '../../../report/components/report-modal/report-modal.component';
+import { Association } from '../../models/association.model';
+import { AssociationFacadeService } from '../../services/association-facade.service';
 
 @Component({
   selector: 'app-association-card',
-  imports: [AsyncPipe, CardModule, ButtonModule, DatePipe],
-
+  imports: [CardModule, ButtonModule, AsyncPipe, ReportModalComponent, DateFrPipe],
   templateUrl: './association-card.component.html',
   styleUrl: './association-card.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AssociationCardComponent implements OnInit {
-  @Input() activityId!: UUIDTypes;
+  @Input() association!: Association;
 
-  associationFacadeService: AssociationFacadeService = inject(AssociationFacadeService);
+  private _authService = inject(AuthService);
+  private _associationFacadeService: AssociationFacadeService = inject(AssociationFacadeService);
 
-  association$!: Observable<Association | null>;
+  public isFollowAssociation$: Observable<boolean>;
+  public apiUrl: string = environment.apiUrl;
+  public isShowReportModal: boolean = false;
 
-  public apiUrl = environment.apiUrl;
+  isVoluntary$: Observable<boolean> = this._authService.isVoluntaryUser();
 
   ngOnInit(): void {
-    this.association$ = this.associationFacadeService.getAssociationCard(this.activityId);
+    this.isFollowAssociation$ = this._associationFacadeService.getIsFollowAssociation(this.association.id);
   }
 
-  toggleFollow(associationId: UUIDTypes, isFollow: boolean): void {
-    this.associationFacadeService.toggleFollow(associationId, isFollow);
+  toggleFollow(): void {
+    this.isFollowAssociation$.pipe(take(TAKE_1)).subscribe((isFollow: boolean) => {
+      this._associationFacadeService.toggleFollow(this.association.id, !isFollow);
+    });
+  }
+
+  showReportModal(): void {
+    this.isShowReportModal = !this.isShowReportModal;
   }
 }

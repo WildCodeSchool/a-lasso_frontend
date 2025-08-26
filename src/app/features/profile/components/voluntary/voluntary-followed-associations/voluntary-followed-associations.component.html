@@ -1,0 +1,19 @@
+@if (followedAssociations$ | async; as associations) {
+  @if (associations.length) {
+    <ul class="followed-associations-list">
+      @for (association of associations; track $index) {
+        <li class="followed-association">
+          <div class="association-header">
+            <img class="association-logo" [src]="association.associationLogoImage.image" [alt]="association.name" />
+            <div class="association-name">{{ association.name }}</div>
+          </div>
+          <div class="association-description">{{ association.description }}</div>
+          <div class="association-founder">Créé par {{ association.founder }} le {{ association.foundationDate | date: 'dd/MM/yyyy' }}</div>
+          <a [routerLink]="['/association', association.id]" class="view-association-link"> Voir l'association </a>
+        </li>
+      }
+    </ul>
+  } @else {
+    <p class="empty-message">Aucune association suivie.</p>
+  }
+}

@@ -1,0 +1,60 @@
+<div #content class="global-popup">
+  @if (activity) {
+    <div
+      role="button"
+      tabindex="0"
+      class="activity-popup"
+      (keydown.enter)="navigate('activity', activity.id)"
+      (click)="navigate('activity', activity.id)">
+      <img class="activity-img" [src]="activity.images[0].image" [alt]="activity.title" />
+      <div>
+        <div class="activity-title">
+          <h3>{{ activity.title }}</h3>
+          <span class="inscription-badge">
+            <app-inscription-badge [participants]="activity.participants"></app-inscription-badge>
+          </span>
+        </div>
+        <div class="activity-description">
+          <p>{{ activity.description | truncate: 100 }}</p>
+          <div class="info-asso">
+            <img [src]="associationLogoUrl" [alt]="activity.association?.name || 'Association'" />
+            <p>{{ activity.association?.name }}</p>
+          </div>
+        </div>
+
+        <div class="footer-description">
+          <div class="footer-details">
+            <div class="location">
+              <i class="fa-solid fa-location-dot"></i>
+              <p class="mini-p">{{ activity.address.city }}</p>
+            </div>
+            <div class="date">
+              <i class="fa-solid fa-calendar-days"></i>
+              <p class="mini-p">{{ activity.date | date: 'dd/MM/yyyy' }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+  @if (association) {
+    <div
+      class="association-popup"
+      tabindex="0"
+      (keydown.enter)="navigate('association', association.id)"
+      (click)="navigate('association', association.id)">
+      <img class="association-img" [src]="associationLogoUrl" [alt]="association?.name || 'Association'" />
+      <div class="association-content">
+        <h3>{{ association.name }}</h3>
+        @if (activityCountByAssociation > 1) {
+          <p>{{ activityCountByAssociation }} activités proposées actuellement par l'association</p>
+        } @else if (activityCountByAssociation === 1) {
+          <p>{{ activityCountByAssociation }} activité proposée actuellement par l'association</p>
+        } @else {
+          <p>Aucune activité proposée actuellement par l'association</p>
+        }
+      </div>
+    </div>
+      
+  }
+</div>

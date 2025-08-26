@@ -1,0 +1,35 @@
+footer {
+  display: flex;
+  justify-content: space-around;
+  background-color: var(--primary-light-color);
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+
+  .links-asso {
+    display: flex;
+    width: 50%;
+    gap: 2%;
+
+    p {
+      color: white;
+    }
+  }
+
+  .social-networks {
+    display: flex;
+    gap: 20%;
+
+    button {
+      background: none;
+      border: none;
+      cursor: pointer;
+    }
+
+    img {
+      width: 25px;
+      object-fit: contain;
+    }
+  }
+}

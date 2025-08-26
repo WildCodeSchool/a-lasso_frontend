@@ -1,0 +1,41 @@
+[
+  {
+    "reportedUser": {
+      "id": "lacroixrouge",
+      "userName": "La Croix Rouge",
+      "type": "association",
+      "email": "lacroixrouge@gmail.com"
+    },
+    "reporterUser": {
+      "id": "volunteer1",
+      "userName": "Pierre Lapin",
+      "type": "voluntary",
+      "email": "pierre@gmail.com"
+    },
+    "messageReporter": "Lors de ma participation à l’évènement d’aide au SDF, à plusieurs reprise le référent Mr.Patate à tenu des propos dégradant envers les femmes.",
+    "reportType": "BAD_BEHAVIOR",
+    "status": "IN_PROGRESS",
+    "createdAt": "2025-03-10T10:00:00.000Z",
+    "reportId": "report1"
+  },
+  {
+    "reportedUser": {
+      "id": "lacroixrouge",
+      "userName": "La Croix Rouge",
+      "type": "association",
+      "email": "lacroixrouge@gmail.com"
+    },
+    "reporterUser": {
+      "id": "volunteer2",
+      "userName": "Jacques Loyal",
+      "type": "voluntary",
+      "email": "admin@gmail.com"
+    },
+    "messageReporter": "M. Patate l'animateur est réellement problématique dans ses propos !",
+    "reportType": "BAD_BEHAVIOR",
+    "status": "IN_PROGRESS",
+    "commentaryAdmin": "Pas assez d'informations ou de détails pour décider d'une pénalisation de l'association.",
+    "createdAt": "2025-03-10T10:00:00.000Z",
+    "reportId": "report2"
+  }
+]

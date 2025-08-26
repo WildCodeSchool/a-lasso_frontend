@@ -9,23 +9,23 @@
   [header]="'SE CONNECTER'"
   styleClass="login-modal">
   <div class="form-container">
-    <form [formGroup]="loginForm" class="form">
+    <form class="form">
       @for (field of loginFields; track $index) {
         <ng-container>
           <div class="form-field">
-            <app-input-field
-              [label]="field.label"
-              [type]="field.type"
-              [showPasswordRules]="field.showPasswordRules || false"
-              [formControlName]="field.name">
-            </app-input-field>
+            <app-input-field [fieldConfig]="field" [formGroup]="loginForm" [showPasswordRules]="field.showPasswordRules || false"> </app-input-field>
+            <app-input-field-error [control]="loginForm.get(field.name)" [fieldName]="field.name" />
           </div>
         </ng-container>
       }
 
       <div class="submit-button">
-        <button pButton type="submit" (click)="onSubmit()" class="register-btn">Se connecter</button>
+        <button id="connexion-submit-button" type="submit" class="register-btn" [disabled]="loginForm.invalid" (click)="onSubmit()">
+          Se connecter
+        </button>
       </div>
+
+      <app-input-field-error [globalError]="error" />
     </form>
   </div>
 </p-dialog>

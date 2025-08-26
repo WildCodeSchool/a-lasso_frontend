@@ -1,0 +1,14 @@
+.animation-wrapper {
+  height: 24px;
+  .field-error {
+    color: var(--secondary-error-color);
+    font-size: 13px;
+    text-align: center;
+    margin-top: 4px;
+    overflow: hidden;
+
+    p {
+      margin: 0;
+    }
+  }
+}

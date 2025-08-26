@@ -1,0 +1,41 @@
+.about-container {
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+  width: 100%;
+  max-height: calc(100vh - 200px);
+  overflow-y: auto;
+
+  .about-title {
+    color: var(--primary-dark-color);
+    margin: 0;
+  }
+
+  .about-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin: 0 auto;
+    width: 60%;
+
+    .about-subtitle {
+      color: var(--primary-light-color);
+      margin-bottom: 16px;
+    }
+
+    .about-input-wrapper {
+      width: 100%;
+      max-width: 960px;
+    }
+  }
+
+  .about-info {
+    margin-bottom: 32px;
+  }
+
+  .about-number {
+    color: var(--primary-dark-color);
+    font-weight: bold;
+    margin-bottom: 8px;
+  }
+}
