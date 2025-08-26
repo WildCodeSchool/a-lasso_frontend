@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { BehaviorSubject, map, Observable, of, switchMap } from 'rxjs';
+import { BehaviorSubject, map, Observable, of, Subject, switchMap } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { jwtDecode } from 'jwt-decode';
 import { MessageService as Toast } from 'primeng/api';
@@ -17,6 +17,8 @@ export class AuthService {
   private _http: HttpClient = inject(HttpClient);
   private _apiUrl = environment.apiUrl;
   private _authState$ = new BehaviorSubject<boolean>(this._checkTokenValidOnInit());
+  private _openLoginModal$ = new Subject<void>();
+  openLoginModal$ = this._openLoginModal$.asObservable();
 
   registerVoluntary(data: VoluntaryRegister): Observable<boolean> {
     return this._http.post<boolean>(`${this._apiUrl}/auth/register/voluntary`, data);
@@ -140,5 +142,9 @@ export class AuthService {
       this.clearToken();
       return false;
     }
+  }
+
+  triggerLoginModal(): void {
+    this._openLoginModal$.next();
   }
 }
