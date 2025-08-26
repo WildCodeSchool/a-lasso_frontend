@@ -10,8 +10,8 @@ import { RegisterVoluntaryFormComponent } from '../register-voluntary-form/regis
 import { DATE_PAD_LENGTH, MONTH_OFFSET } from '../../../constants/form.constants';
 import { getFormattedAddress } from 'src/app/common/utils/address.utils';
 import { DestroyableComponent } from '../../../../../common/utils/DestroyableComponent';
-import { LoginModalComponent } from '../login-modal/login-modal.component';
 import { MessageService as Toast } from 'primeng/api';
+import { LoginModalComponent } from '../login-modal/login-modal.component';
 
 @Component({
   selector: 'app-register-modal',
@@ -66,7 +66,7 @@ export class RegisterModalComponent extends DestroyableComponent {
       .subscribe((success: boolean) => {
         if (success) {
           this.hideModal();
-          this.openLoginModal();
+          this._authService.triggerLoginModal();
         }
       });
   }
@@ -93,13 +93,9 @@ export class RegisterModalComponent extends DestroyableComponent {
       .subscribe((success: boolean) => {
         if (success) {
           this.hideModal();
-          this.openLoginModal();
+          this._authService.triggerLoginModal();
         }
       });
-  }
-
-  openLoginModal(): void {
-    this.showLoginModal = true;
   }
 
   private _formatDate(date: Date): string {
