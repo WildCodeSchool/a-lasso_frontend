@@ -94,7 +94,7 @@ export class LoginModalComponent {
     this._auth.isAuthenticated$
       .pipe(
         filter(isAuth => isAuth),
-        take(TAKE_1),
+        take(TAKE_1)
       )
       .subscribe(() => {
         loginSuccess = true;
