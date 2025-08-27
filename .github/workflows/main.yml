@@ -2,12 +2,10 @@ name: CI/CD Pipeline
 
 on:
   push:
-    branches:
-      - '**'
     branches-ignore:
-    - development
-    - staging
-    - production
+      - development
+      - staging
+      - production
 
   pull_request:
     branches:
@@ -21,7 +19,7 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-        
+
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
@@ -51,10 +49,10 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '18'
-          
+
       - name: Install dependencies
         run: npm install
-      
+
       - name: Run tests with increased memory
         run: node --max-old-space-size=4096 ./node_modules/.bin/jest --verbose
 
