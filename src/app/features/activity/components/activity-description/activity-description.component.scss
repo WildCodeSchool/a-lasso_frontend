@@ -71,4 +71,19 @@
       }
     }
   }
+
+  .full-message {
+    margin-top: 1rem;
+    padding: 0.6rem 1rem;
+    border-radius: 8px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--secondary-complete-color);
+    color: var(--background-color-white);
+    font-size: var(--font-size-p);
+    font-weight: 600;
+    font-family: var(--font-family-p);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  }
 }

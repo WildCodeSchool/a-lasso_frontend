@@ -1,7 +1,7 @@
 import { AsyncPipe, DatePipe } from '@angular/common';
 import { Component, inject, Input, OnInit } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
-import { Observable, take } from 'rxjs';
+import { map, Observable, take } from 'rxjs';
 import { TAKE_1 } from 'src/app/common/constants/observables.constants';
 import { ButtonStyleClass } from 'src/app/common/models/button';
 import { AuthService } from 'src/app/features/authentication/services/auth.service';
@@ -31,11 +31,13 @@ export class ActivityDescriptionComponent implements OnInit {
   public voluntariesRegistered$: Observable<Participant>;
 
   isVoluntary$: Observable<boolean> = this._authService.isVoluntaryUser();
+  isNotFull$: Observable<boolean>;
 
   ngOnInit(): void {
     this.isRegisteredActivity$ = this._activityFacadeService.getIsRegisteredActivity(this.activity.id);
     this.isSavedActivity$ = this._activityFacadeService.getIsSavedActivity(this.activity.id);
     this.voluntariesRegistered$ = this._activityFacadeService.getVoluntariesRegisteredToAnActivity(this.activity.id);
+    this.isNotFull$ = this.voluntariesRegistered$.pipe(map(participants => participants.current < participants.max));
   }
 
   toggleRegister(activity: Activity): void {
