@@ -95,7 +95,11 @@ export class ActivitiesHomeComponent implements OnInit {
 
   private _applyFilters(): void {
     this.filteredActivities$ = this.activities$.pipe(
-      map(activities => this._activityFilterService.filterActivities(activities, this.searchFilters, this.selectedThemesName))
+      map(activities =>
+        this._activityFilterService
+          .filterActivities(activities, this.searchFilters, this.selectedThemesName)
+          .filter(activity => new Date(activity.date).getTime() >= Date.now())
+      )
     );
   }
 }
