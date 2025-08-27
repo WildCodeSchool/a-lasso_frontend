@@ -26,7 +26,7 @@
     "e2e:ci:production": "npm run e2e:ci --env=production",
     "lint": "npx ng lint",
     "prettier": "npx prettier --write .",
-    "doc": "node -e \"require('os').platform() === 'win32' ? require('child_process').execSync('start http://127.0.0.1:8080') : require('child_process').execSync('open http://127.0.0.1:8080')\" && compodoc -p tsconfig.doc.json -s",
+    "doc": "npx compodoc -p tsconfig.doc.json -d documentation && npx compodoc -s -p tsconfig.doc.json --host 127.0.0.1 -r 8081",
     "docker:dev": "docker-compose -f docker-compose.development.yml up --build",
     "docker:staging": "docker-compose -f docker-compose.staging.yml up --build",
     "docker:prod": "docker-compose -f docker-compose.production.yml up --build"
@@ -61,7 +61,7 @@
     "@angular-devkit/build-angular": "^19.0.0",
     "@angular/cli": "^19.0.0",
     "@angular/compiler-cli": "^19.0.0",
-    "@compodoc/compodoc": "^1.1.19",
+    "@compodoc/compodoc": "^1.1.26",
     "@cypress/schematic": "^2.5.2",
     "@ngrx/store-devtools": "^19.2.1",
     "@types/jest": "^29.5.14",
