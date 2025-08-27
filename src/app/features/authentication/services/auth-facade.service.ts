@@ -147,6 +147,7 @@ export class AuthFacade {
       next: (success: boolean) => {
         if (success) {
           showSuccessToast(this._toast, 'Votre mot de passe a été réinitialisé avec succès.');
+          this._router.navigate(['/']);
           this._authService.triggerLoginModal();
         } else {
           showErrorToast(this._toast, 'Erreur lors de la réinitialisation du mot de passe.');
