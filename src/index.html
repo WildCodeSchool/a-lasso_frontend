@@ -2,14 +2,61 @@
 <html lang="fr">
   <head>
     <meta charset="utf-8" />
-    <title>A l'asso</title>
+    <title>A l'Asso – Trouvez des activités bénévoles près de chez vous</title>
     <base href="/" />
+
+    <!-- SEO de base -->
+    <meta
+      name="description"
+      content="A l'Asso est une plateforme qui connecte les associations et les bénévoles. Découvrez des activités solidaires près de chez vous ou à distance et engagez-vous facilement." />
+    <meta name="keywords" content="bénévolat, association, engagement, solidarité, activités bénévoles, entraide, volontariat, dons, missions" />
+    <meta name="author" content="A l'Asso" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://www.alasso.fr/" />
+
+    <!-- Mobile & Accessibilité -->
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="icon" type="image/x-icon" href="favicon.ico" />
+    <meta name="theme-color" content="#2c3e50" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+    <!-- Open Graph (Facebook, LinkedIn, etc.) -->
+    <meta property="og:title" content="A l'Asso – Trouvez des activités bénévoles près de chez vous" />
+    <meta property="og:description" content="Rejoignez facilement une association et participez à des activités solidaires locales ou à distance." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://www.alasso.fr/" />
+    <meta property="og:image" content="https://www.alasso.fr/opengraph.png" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="A l'Asso – Bénévolat & Engagement" />
+    <meta name="twitter:description" content="Rejoignez facilement une association et participez à des activités solidaires locales ou à distance." />
+    <meta name="twitter:image" content="https://www.alasso.fr/assets/opengraph.png" />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="LogoALAsso.png" />
+    <link rel="apple-touch-icon" href="LogoALAsso.png" />
+
+    <!-- Accessibilité : Police icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css" />
+
+    <!-- Balises structurées JSON-LD (SEO renforcé pour moteurs de recherche) -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "A l'asso",
+        "url": "https://www.alasso.fr/",
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": "https://www.alasso.fr/recherche?q={search_term_string}",
+          "query-input": "required name=search_term_string"
+        }
+      }
+    </script>
   </head>
 
   <body>
-    <app-root></app-root>
+    <app-root id="main-content"></app-root>
   </body>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css" />
 </html>
