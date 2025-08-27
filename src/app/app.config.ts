@@ -42,6 +42,9 @@ export const appConfig: ApplicationConfig = {
     providePrimeNG({
       theme: {
         preset: myPreset,
+        options: {
+          darkModeSelector: false,
+        },
       },
       translation: PRIME_NG_FR.password,
     }),

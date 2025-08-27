@@ -11,7 +11,7 @@ import { MAX_LENGTH, MIN_LENGTH, PHONE_REGEX } from 'src/app/features/authentica
 import { UserType, VoluntaryLogin } from 'src/app/features/authentication/models/user.model';
 import { AuthFacade } from 'src/app/features/authentication/services/auth-facade.service';
 import { AuthService } from 'src/app/features/authentication/services/auth.service';
-import { environment } from 'src/environments/environment.development';
+import { environment } from 'src/environments/environment';
 import { VoluntaryUpdateRequestDTO } from '../../../models/update-request-dto.models';
 import { VoluntaryProfileService } from '../../../services/voluntary-profil.service';
 import { EditableFieldComponent } from '../../editable-field/editable-field.component';
