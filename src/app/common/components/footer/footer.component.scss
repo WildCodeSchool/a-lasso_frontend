@@ -3,12 +3,8 @@ footer {
   justify-content: space-around;
   align-items: center;
   background-color: var(--primary-light-color);
-  position: fixed;
-  bottom: 0;
-  left: 0;
   width: 100%;
   padding: 12px 0;
-  z-index: 11;
 
   .links-asso {
     display: flex;

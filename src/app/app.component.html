@@ -1,10 +1,11 @@
-<app-header></app-header>
 <div class="page">
+  <app-header></app-header>
   <p-toast></p-toast>
   @if (loading) {
     <p-progressBar mode="indeterminate" [style]="{ height: '6px' }" />
   }
 
   <router-outlet></router-outlet>
+  <div class="spacer"></div>
   <app-footer></app-footer>
 </div>
