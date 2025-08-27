@@ -17,7 +17,16 @@ import { UserLogin } from '../../models/user.model';
 @Component({
   selector: 'app-login-modal',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, InputFieldErrorComponent, InputFieldComponent, ButtonModule, DialogModule, RadioButtonModule],
+  imports: [
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    InputFieldComponent,
+    ButtonModule,
+    DialogModule,
+    RadioButtonModule,
+    InputFieldErrorComponent,
+  ],
   templateUrl: './login-modal.component.html',
   styleUrl: './login-modal.component.scss',
   animations: [
@@ -85,7 +94,7 @@ export class LoginModalComponent {
     this._auth.isAuthenticated$
       .pipe(
         filter(isAuth => isAuth),
-        take(TAKE_1),
+        take(TAKE_1)
       )
       .subscribe(() => {
         loginSuccess = true;
