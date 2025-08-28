@@ -26,13 +26,15 @@
 
     @if (isVoluntary$ | async) {
       @if (isNotFull$ | async) {
-        <app-single-button
-          [id]="1"
-          (buttonClicked)="onRegisterClick(activity)"
-          [styleClass]="(isRegisteredActivity$ | async) ? ButtonStyleClass.unsubscribe : ButtonStyleClass.subscribe"
-          [label]="(isRegisteredActivity$ | async) ? 'Me désinscrire' : 'M\'inscrire !'"
-          [ariaLabel]="'bouton de ' + ((isRegisteredActivity$ | async) ? 'désinscription' : 'inscription')">
-        </app-single-button>
+        <div class="register-button">
+          <app-single-button
+            [id]="1"
+            (buttonClicked)="onRegisterClick(activity)"
+            [styleClass]="(isRegisteredActivity$ | async) ? ButtonStyleClass.unsubscribe : ButtonStyleClass.subscribe"
+            [label]="(isRegisteredActivity$ | async) ? 'Me désinscrire' : 'M\'inscrire !'"
+            [ariaLabel]="'bouton de ' + ((isRegisteredActivity$ | async) ? 'désinscription' : 'inscription')">
+          </app-single-button>
+        </div>
       } @else {
         <p class="full-message">Cette activité est complète</p>
       }

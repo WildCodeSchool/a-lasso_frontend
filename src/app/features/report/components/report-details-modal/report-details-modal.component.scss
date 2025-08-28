@@ -6,6 +6,9 @@
     overflow-y: auto;
     max-height: 60vh;
     padding: 0 1rem 1rem 1rem;
+    @media (max-width: 768px) {
+      width: 100vw;
+    }
 
     h1 {
       color: var(--primary-dark-color);
@@ -19,6 +22,10 @@
       .report-in-progress-details {
         display: flex;
         gap: 1rem;
+        @media (max-width: 1200px) {
+          flex-wrap: wrap;
+          gap: 0;
+        }
 
         .title-report {
           min-height: 4rem;
@@ -35,6 +42,9 @@
         .admin-section {
           width: 50%;
           padding: 1rem;
+          @media (max-width: 1200px) {
+            width: 100%;
+          }
         }
       }
     }
@@ -59,12 +69,29 @@
       display: flex;
       justify-content: center;
       gap: 5rem;
+      @media (max-width: 1200px) {
+        flex-direction: column-reverse;
+        gap: 2rem;
+      }
 
       .table-previous-reports {
         width: 60%;
-        min-height: 20rem;
+        height: 18rem;
         overflow-y: auto;
+
+        @media (max-width: 1200px) {
+          width: 100%;
+        }
       }
+    }
+  }
+
+  @media (max-width: 500px) {
+    h1 {
+      font-size: 1.5rem;
+    }
+    h3 {
+      font-size: 1rem;
     }
   }
 }
