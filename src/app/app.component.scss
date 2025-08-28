@@ -1,11 +1,16 @@
-.page {
+.app-container {
   background-color: var(--background-color-light);
   display: flex;
+  min-width: 100vw;
   flex-direction: column;
   white-space: pre-line;
-  max-width: 1920px;
-  margin: 0 auto;
   min-height: 100vh;
+
+  .page {
+    max-width: 1920px;
+    width: 100%;
+    margin: 0 auto;
+  }
 
   .spacer {
     flex-grow: 1;

@@ -10,13 +10,12 @@ import { RegisterVoluntaryFormComponent } from '../register-voluntary-form/regis
 import { DATE_PAD_LENGTH, MONTH_OFFSET } from '../../../constants/form.constants';
 import { getFormattedAddress } from 'src/app/common/utils/address.utils';
 import { DestroyableComponent } from '../../../../../common/utils/DestroyableComponent';
-import { LoginModalComponent } from '../../login-modal/login-modal.component';
 import { MessageService as Toast } from 'primeng/api';
 
 @Component({
   selector: 'app-register-modal',
   standalone: true,
-  imports: [CommonModule, DialogModule, Select, RegisterVoluntaryFormComponent, RegisterAssociationFormComponent, FormsModule, LoginModalComponent],
+  imports: [CommonModule, DialogModule, Select, RegisterVoluntaryFormComponent, RegisterAssociationFormComponent, FormsModule],
   templateUrl: './register-modal.component.html',
   styleUrls: ['./register-modal.component.scss'],
 })
@@ -29,7 +28,6 @@ export class RegisterModalComponent extends DestroyableComponent {
   @ViewChild(RegisterVoluntaryFormComponent) voluntaryFormComponent!: RegisterVoluntaryFormComponent;
   @ViewChild(RegisterAssociationFormComponent) associationFormComponent!: RegisterAssociationFormComponent;
 
-  showLoginModal = false;
   userType: UserType = UserType.Voluntary;
   userTypeOptions = [
     { label: 'Bénévole', value: UserType.Voluntary },
@@ -96,10 +94,6 @@ export class RegisterModalComponent extends DestroyableComponent {
           this._authService.triggerLoginModal();
         }
       });
-  }
-
-  openLoginModal(): void {
-    this.showLoginModal = true;
   }
 
   private _formatDate(date: Date): string {

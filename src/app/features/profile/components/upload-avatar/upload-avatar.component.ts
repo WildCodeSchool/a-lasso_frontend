@@ -8,6 +8,9 @@ import { AssociationProfileService } from '../../services/association-profil.ser
 import { VoluntaryProfileService } from '../../services/voluntary-profil.service';
 import { showErrorToast, showSuccessToast } from 'src/app/common/utils/toast.utils';
 import { MessageService } from 'primeng/api';
+import { Image } from 'src/app/features/activity/models/activity.model';
+
+type ImageType = 'logo' | 'cover' | 'voluntary';
 
 @Component({
   selector: 'app-upload-avatar',
@@ -24,6 +27,7 @@ export class UploadAvatarComponent {
   private _toast = inject(MessageService);
 
   @Input() imageUrl: string | null = null;
+  @Input() type: ImageType = 'logo';
 
   onFileSelected(event: Event): void {
     const target = event.target as HTMLInputElement;
@@ -68,15 +72,8 @@ export class UploadAvatarComponent {
 
   private _createFormData(file: File): FormData {
     const formData = new FormData();
-
-    this._authService
-      .isVoluntaryUser()
-      .pipe(take(TAKE_1))
-      .subscribe(isVoluntary => {
-        const fieldName = isVoluntary ? 'avatar' : 'logo';
-        formData.append(fieldName, file);
-      });
-
+    const fieldName = this.type === 'voluntary' ? 'avatar' : this.type === 'logo' ? 'logo' : 'cover';
+    formData.append(fieldName, file);
     return formData;
   }
 
@@ -86,11 +83,14 @@ export class UploadAvatarComponent {
     });
   }
 
-  private _uploadVoluntaryAvatar(formData: FormData): Observable<void> {
+  private _uploadVoluntaryAvatar(formData: FormData): Observable<Image> {
     return this._voluntaryProfileService.uploadVoluntaryAvatar(formData);
   }
 
-  private _uploadAssociationAvatar(formData: FormData): Observable<void> {
+  private _uploadAssociationAvatar(formData: FormData): Observable<Image> {
+    if (this.type === 'cover') {
+      return this._associationProfileService.uploadAssociationCover(formData);
+    }
     return this._associationProfileService.uploadAssociationLogo(formData);
   }
 }

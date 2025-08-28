@@ -13,7 +13,7 @@ import { AuthService } from './auth.service';
 import { getInitialUserState } from '../store/meta-reducers';
 import { VoluntaryProfileService } from '../../profile/services/voluntary-profil.service';
 import { MessageService } from 'primeng/api';
-import { showSuccessToast } from 'src/app/common/utils/toast.utils';
+import { showErrorToast, showSuccessToast } from 'src/app/common/utils/toast.utils';
 import { AssociationProfileService } from '../../profile/services/association-profil.service';
 import { UserSelectors } from '../store/user.selectors';
 import { UserActions } from '../store/user.actions';
@@ -132,6 +132,28 @@ export class AuthFacade {
           this._store.dispatch(UserActions.loginSuccess({ userInfos: user }));
         }
       });
+  }
+
+  resetPasswordRequest(email: string): void {
+    this._authService.resetPasswordRequest(email).subscribe({
+      next: () => {
+        showSuccessToast(this._toast, 'Un email de réinitialisation a été envoyé.');
+      },
+    });
+  }
+
+  resetPasswordConfirm(token: string, newPassword: string): void {
+    this._authService.resetPasswordConfirm(token, newPassword).subscribe({
+      next: (success: boolean) => {
+        if (success) {
+          showSuccessToast(this._toast, 'Votre mot de passe a été réinitialisé avec succès.');
+          this._router.navigate(['/']);
+          this._authService.triggerLoginModal();
+        } else {
+          showErrorToast(this._toast, 'Erreur lors de la réinitialisation du mot de passe.');
+        }
+      },
+    });
   }
 
   private _resetSession(): void {

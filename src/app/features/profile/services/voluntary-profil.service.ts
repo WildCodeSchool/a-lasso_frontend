@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { VoluntaryLogin } from '../../authentication/models/user.model';
 import { VoluntaryUpdateRequestDTO } from '../models/update-request-dto.models';
+import { Image } from '../../activity/models/activity.model';
 
 @Injectable({ providedIn: 'root' })
 export class VoluntaryProfileService {
@@ -18,7 +19,7 @@ export class VoluntaryProfileService {
     return this._http.put<void>(`${this._apiUrl}/voluntary/me`, payload);
   }
 
-  uploadVoluntaryAvatar(formData: FormData): Observable<void> {
-    return this._http.post<void>(`${this._apiUrl}/voluntary/me/avatar`, formData);
+  uploadVoluntaryAvatar(formData: FormData): Observable<Image> {
+    return this._http.post<Image>(`${this._apiUrl}/voluntary/me/avatar`, formData);
   }
 }
