@@ -1,9 +1,12 @@
 .report-admin {
-  padding: 4%;
-  width: 80vw;
+  padding: 3% 4% 3% 4%;
   display: flex;
   flex-direction: column;
   max-height: 80vh;
+
+  @media (max-width: 550px) {
+    width: 100vw;
+  }
 
   h1 {
     color: var(--primary-light-color);
@@ -14,7 +17,7 @@
   }
 
   .report-list {
-    padding-top: 2%;
+    padding-top: 4%;
     overflow-y: auto;
 
     .empty-report {

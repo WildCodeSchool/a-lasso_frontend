@@ -1,19 +1,20 @@
-import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
 import { Button } from 'primeng/button';
 import { Report, StatusReportEnum } from '../../models/report.model';
 import { ReportFacadeService } from '../../services/report-facade.service';
 import { FormGroup } from '@angular/forms';
 import { UserType } from '../../../authentication/models/user.model';
-import { ConfirmationService, MessageService } from 'primeng/api';
+import { ConfirmationService, MenuItem, MessageService } from 'primeng/api';
 import { showSuccessToast } from '../../../../common/utils/toast.utils';
+import { SplitButton } from 'primeng/splitbutton';
 
 @Component({
   selector: 'app-report-details-action-admin',
-  imports: [Button],
+  imports: [Button, SplitButton],
   templateUrl: './report-details-action-admin.component.html',
   styleUrl: './report-details-action-admin.component.scss',
 })
-export class ReportDetailsActionAdminComponent {
+export class ReportDetailsActionAdminComponent implements OnInit {
   protected readonly StatusReportEnum = StatusReportEnum;
   private _reportFacadeService: ReportFacadeService = inject(ReportFacadeService);
   private _confirmation: ConfirmationService = inject(ConfirmationService);
@@ -24,6 +25,39 @@ export class ReportDetailsActionAdminComponent {
   @Input() visible: boolean = false;
   @Input() reportSelected!: Report;
   @Input() reportForm!: FormGroup;
+
+  reporterActions: MenuItem[] = [];
+  reportedActions: MenuItem[] = [];
+
+  ngOnInit(): void {
+    this.reporterActions = [
+      {
+        label: 'Contacter',
+        icon: 'fa-regular fa-paper-plane',
+        url: 'mailto:' + this.reportSelected.reporterUser.email,
+        target: '_blank',
+      },
+      {
+        label: 'Bannir',
+        icon: 'fa-solid fa-user-xmark',
+        command: (): void => this.banUser('reporter'),
+      },
+    ];
+
+    this.reportedActions = [
+      {
+        label: 'Contacter',
+        icon: 'fa-regular fa-paper-plane',
+        url: 'mailto:' + this.reportSelected.reportedUser.email,
+        target: '_blank',
+      },
+      {
+        label: 'Bannir',
+        icon: 'fa-solid fa-user-xmark',
+        command: (): void => this.banUser('reported'),
+      },
+    ];
+  }
 
   saveReport(): void {
     const updatedReport: Report = {
