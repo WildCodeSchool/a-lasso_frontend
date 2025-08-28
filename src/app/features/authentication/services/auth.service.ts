@@ -43,6 +43,17 @@ export class AuthService {
     return this._http.patch<{ token: string; user: VoluntaryLogin | AssociationLogin }>(`${this._apiUrl}/auth/change-email`, { password, newEmail });
   }
 
+  resetPasswordRequest(email: string): Observable<void> {
+    return this._http.post<void>(`${this._apiUrl}/reset-password/request`, { email });
+  }
+
+  resetPasswordConfirm(token: string, newPassword: string): Observable<boolean> {
+    return this._http.post<boolean>(`${this._apiUrl}/reset-password/confirm`, {
+      token,
+      newPassword,
+    });
+  }
+
   deleteAccount(): Observable<void> {
     return this._http.delete<void>(`${this._apiUrl}/auth/delete-account`);
   }

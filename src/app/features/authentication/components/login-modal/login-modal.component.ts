@@ -8,7 +8,6 @@ import { RadioButtonModule } from 'primeng/radiobutton';
 import { filter, take } from 'rxjs';
 import { InputFieldComponent } from 'src/app/common/components/input-field/input-field.component';
 import { TAKE_1 } from 'src/app/common/constants/observables.constants';
-
 import { InputFieldErrorComponent } from 'src/app/common/components/input-field-error/input-field-error.component';
 import { AuthFacade } from '../../services/auth-facade.service';
 import { FormField } from '../../models/form.model';
@@ -44,9 +43,13 @@ import { UserLogin } from '../../models/user.model';
 })
 export class LoginModalComponent {
   @Output() visibleChange = new EventEmitter<boolean>();
+  @Output() openPasswordForgottenModal = new EventEmitter<boolean>();
+
   @Input() visible: boolean = false;
   private _auth = inject(AuthFacade);
   private _fb: FormBuilder = new FormBuilder();
+  isAuthenticated$ = this._auth.isAuthenticated$;
+  openForgotPasswordModal = false;
 
   loginForm = this._fb.group({
     email: ['', [Validators.required, Validators.email]],
@@ -70,6 +73,7 @@ export class LoginModalComponent {
     this.visible = false;
     this.visibleChange.emit(false);
     this.resetForms();
+    this.openForgotPasswordModal = false;
   }
 
   resetForms(): void {
@@ -107,5 +111,9 @@ export class LoginModalComponent {
         this.error = 'Informations invalides. Veuillez réessayer.';
       }
     }, timeoutDuration);
+  }
+
+  onForgotPassword(): void {
+    this.openPasswordForgottenModal.emit(true);
   }
 }
