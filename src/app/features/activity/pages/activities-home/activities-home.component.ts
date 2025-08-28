@@ -1,6 +1,6 @@
 import { AsyncPipe, NgClass } from '@angular/common';
 import { Component, inject, OnInit, ViewChild } from '@angular/core';
-import { fromEvent, Observable } from 'rxjs';
+import { Observable, fromEvent } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { FRANCE_LATITUDE, FRANCE_LONGITUDE } from 'src/app/features/map/constants/map.constants';
 import { MapService } from 'src/app/features/map/services/map.service';
@@ -15,6 +15,8 @@ import { Activity, ActivitySearchFilters, ThemeName } from '../../models/activit
 import { ActivityFacadeService } from '../../services/activity-facade.service';
 import { ActivityFilterService } from '../../services/activity-filter.service';
 import { MyCityClickedEvent } from 'src/app/features/map/models/map';
+import { showSuccessToast } from '../../../../common/utils/toast.utils';
+import { ConfirmationService, MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-activities-home',
@@ -36,6 +38,8 @@ export class ActivitiesHomeComponent implements OnInit {
   private _activityFacadeService: ActivityFacadeService = inject(ActivityFacadeService);
   private _activityFilterService: ActivityFilterService = inject(ActivityFilterService);
   private _mapService: MapService = inject(MapService);
+  private _confirmation = inject(ConfirmationService);
+  private _toast = inject(MessageService);
 
   @ViewChild(MapComponent) mapComponent!: MapComponent;
 
@@ -54,7 +58,6 @@ export class ActivitiesHomeComponent implements OnInit {
   searchedLon: number | null = null;
 
   ngOnInit(): void {
-    this._activityFacadeService.getActivityThemesFromApi();
     this._activityFacadeService.getAllActivitiesFromApi();
     this._applyFilters();
   }
@@ -85,6 +88,22 @@ export class ActivitiesHomeComponent implements OnInit {
     }
 
     this._applyFilters();
+  }
+
+  onDeleteActivity(activityId: string): void {
+    this._confirmation.confirm({
+      message: 'Êtes-vous sûr de vouloir supprimer cette activité ? Cette action est irréversible.',
+      header: 'Confirmation de suppression',
+      icon: 'pi pi-exclamation-triangle',
+      acceptLabel: 'Oui, supprimer',
+      rejectLabel: 'Annuler',
+      acceptButtonStyleClass: 'p-button-danger',
+      rejectButtonStyleClass: 'p-button-secondary',
+      accept: () => {
+        this._activityFacadeService.deleteActivityAndUpdateStore(activityId).subscribe();
+        showSuccessToast(this._toast);
+      },
+    });
   }
 
   onMyCityClicked(event: MyCityClickedEvent): void {

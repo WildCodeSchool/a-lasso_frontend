@@ -6,6 +6,7 @@ export const initialActivitiesState: Activity[] = [];
 
 export const activitiesReducer = createReducer(
   initialActivitiesState,
+
   on(ActivitiesActions.setActivities, (_, { activities }) => [...activities]),
 
   on(ActivitiesActions.setActivity, (state, { activity }) => [...state, activity]),

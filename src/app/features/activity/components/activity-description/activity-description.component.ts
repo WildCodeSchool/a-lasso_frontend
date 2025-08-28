@@ -2,7 +2,6 @@ import { AsyncPipe, DatePipe } from '@angular/common';
 import { Component, inject, Input, OnInit } from '@angular/core';
 import { ConfirmationService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
-import { ConfirmDialog } from 'primeng/confirmdialog';
 import { combineLatest, map, Observable, take } from 'rxjs';
 import { TAKE_1 } from 'src/app/common/constants/observables.constants';
 import { ButtonStyleClass } from 'src/app/common/models/button';
@@ -16,7 +15,7 @@ import { InscriptionBadgeComponent } from '../inscription-badge/inscription-badg
 
 @Component({
   selector: 'app-activity-description',
-  imports: [InscriptionBadgeComponent, FavoriteHeartComponent, DatePipe, ButtonModule, SingleButtonComponent, AsyncPipe, ConfirmDialog],
+  imports: [InscriptionBadgeComponent, FavoriteHeartComponent, DatePipe, ButtonModule, SingleButtonComponent, AsyncPipe],
   providers: [ConfirmationService],
   templateUrl: './activity-description.component.html',
   styleUrl: './activity-description.component.scss',
