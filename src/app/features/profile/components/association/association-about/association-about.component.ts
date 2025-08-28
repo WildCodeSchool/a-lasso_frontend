@@ -65,6 +65,7 @@ export class AssociationAboutComponent implements OnInit {
   });
 
   userAvatar$: Observable<string | null> = this._authFacade.userAvatar$;
+  associationCover$: Observable<string | null> = this._profileFacade.cover$;
 
   ngOnInit(): void {
     this._loadAssociationId();
@@ -107,6 +108,14 @@ export class AssociationAboutComponent implements OnInit {
   onCardsCountChanged(count: number): void {
     this.cardsCount = count;
     this._cdr.detectChanges();
+  }
+
+  onLogoSelected(file: File): void {
+    this._profileFacade.updateLogo(file);
+  }
+
+  onCoverSelected(file: File): void {
+    this._profileFacade.updateCover(file);
   }
 
   private _loadAssociationId(): void {

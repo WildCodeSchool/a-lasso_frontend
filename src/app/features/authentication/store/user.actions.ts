@@ -2,6 +2,7 @@ import { createAction, props } from '@ngrx/store';
 import { AssociationLogin, UserLogin, VoluntaryLogin } from '../models/user.model';
 import { UUIDTypes } from 'uuid';
 import { Statistic } from '../../association/models/association.model';
+import { Image } from '../../activity/models/activity.model';
 
 export * as UserActions from './user.actions';
 
@@ -60,3 +61,7 @@ export const updateAssociationGeneralInfo = createAction(
 export const updateAssociationDescription = createAction(`${ACTION_PREFIX} Update Association Description`, props<{ description: string }>());
 
 export const updateAssociationStats = createAction(`${ACTION_PREFIX} Update Association Stats`, props<{ statistics: Statistic[] }>());
+
+export const updateAssociationLogo = createAction(`${ACTION_PREFIX} Update Association Logo`, props<{ associationLogoImage: Image }>());
+
+export const updateAssociationCover = createAction(`${ACTION_PREFIX} Update Association Cover`, props<{ associationProfileImage: Image }>());

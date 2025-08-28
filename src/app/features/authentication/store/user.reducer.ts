@@ -159,5 +159,27 @@ export const userReducer = createReducer(
         founder,
       },
     };
+  }),
+
+  on(UserActions.updateAssociationLogo, (state, { associationLogoImage }) => {
+    if (!state.userInfos || state.userInfos.type !== UserType.Association) return state;
+    return {
+      ...state,
+      userInfos: {
+        ...state.userInfos,
+        associationLogoImage,
+      },
+    };
+  }),
+
+  on(UserActions.updateAssociationCover, (state, { associationProfileImage }) => {
+    if (!state.userInfos || state.userInfos.type !== UserType.Association) return state;
+    return {
+      ...state,
+      userInfos: {
+        ...state.userInfos,
+        associationProfileImage,
+      },
+    };
   })
 );
