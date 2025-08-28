@@ -4,16 +4,18 @@ import { AuthFacade } from '../../services/auth-facade.service';
 import { DialogModule } from 'primeng/dialog';
 import { FormField } from '../../models/form.model';
 import { InputFieldComponent } from 'src/app/common/components/input-field/input-field.component';
+import { InputFieldErrorComponent } from 'src/app/common/components/input-field-error/input-field-error.component';
 
 @Component({
   selector: 'app-forgot-password-modal',
-  imports: [DialogModule, FormsModule, ReactiveFormsModule, InputFieldComponent],
+  imports: [DialogModule, FormsModule, ReactiveFormsModule, InputFieldComponent, InputFieldErrorComponent],
   templateUrl: './forgot-password-modal.component.html',
   styleUrl: './forgot-password-modal.component.scss',
 })
 export class ForgotPasswordModalComponent {
   @Input() visible = false;
   @Output() visibleChange = new EventEmitter<boolean>();
+  @Output() closeLoginModal = new EventEmitter<boolean>();
 
   private _auth = inject(AuthFacade);
   private _fb = inject(FormBuilder);
@@ -27,7 +29,9 @@ export class ForgotPasswordModalComponent {
   onSubmit(): void {
     if (this.forgotPasswordForm.invalid) return;
     this._auth.resetPasswordRequest(this.forgotPasswordForm.value.email);
+
     this.visibleChange.emit(false);
+    this.closeLoginModal.emit(true);
   }
 
   onDialogHide(): void {

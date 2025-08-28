@@ -12,7 +12,6 @@ import { InputFieldErrorComponent } from 'src/app/common/components/input-field-
 import { AuthFacade } from '../../services/auth-facade.service';
 import { FormField } from '../../models/form.model';
 import { UserLogin } from '../../models/user.model';
-import { ForgotPasswordModalComponent } from '../forgot-password-modal/forgot-password-modal.component';
 
 @Component({
   selector: 'app-login-modal',
@@ -26,7 +25,6 @@ import { ForgotPasswordModalComponent } from '../forgot-password-modal/forgot-pa
     DialogModule,
     RadioButtonModule,
     InputFieldErrorComponent,
-    ForgotPasswordModalComponent,
   ],
   templateUrl: './login-modal.component.html',
   styleUrl: './login-modal.component.scss',
@@ -45,6 +43,8 @@ import { ForgotPasswordModalComponent } from '../forgot-password-modal/forgot-pa
 })
 export class LoginModalComponent {
   @Output() visibleChange = new EventEmitter<boolean>();
+  @Output() openPasswordForgottenModal = new EventEmitter<boolean>();
+
   @Input() visible: boolean = false;
   private _auth = inject(AuthFacade);
   private _fb: FormBuilder = new FormBuilder();
@@ -114,6 +114,6 @@ export class LoginModalComponent {
   }
 
   onForgotPassword(): void {
-    this.openForgotPasswordModal = true;
+    this.openPasswordForgottenModal.emit(true);
   }
 }

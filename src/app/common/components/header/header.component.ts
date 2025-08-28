@@ -13,11 +13,20 @@ import { SingleButtonComponent } from '../single-button/single-button.component'
 import { AuthService } from 'src/app/features/authentication/services/auth.service';
 import { DestroyableComponent } from 'src/app/common/utils/DestroyableComponent';
 import { LoginModalComponent } from 'src/app/features/authentication/components/login-modal/login-modal.component';
+import { ForgotPasswordModalComponent } from 'src/app/features/authentication/components/forgot-password-modal/forgot-password-modal.component';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [RegisterModalComponent, CommonModule, RouterLink, LoginModalComponent, HeaderMenuComponent, SingleButtonComponent],
+  imports: [
+    RegisterModalComponent,
+    CommonModule,
+    RouterLink,
+    LoginModalComponent,
+    HeaderMenuComponent,
+    SingleButtonComponent,
+    ForgotPasswordModalComponent,
+  ],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
   providers: [MessageService],
@@ -35,13 +44,14 @@ export class HeaderComponent extends DestroyableComponent implements OnInit {
 
   showRegisterModal = false;
   showLoginModal = false;
+  showPasswordForgottenModal = false;
   ButtonStyleClass = ButtonStyleClass;
 
   userInfos$: Observable<UserHeaderInfo> = this._authFacade.getUserHeaderInfo();
 
   ngOnInit(): void {
     this._authService.openLoginModal$.pipe(this.untilDestroyed()).subscribe(() => {
-      this.openLoginModal();
+      this.handleLoginModal(true);
     });
   }
 
@@ -49,8 +59,16 @@ export class HeaderComponent extends DestroyableComponent implements OnInit {
     this.showRegisterModal = true;
   }
 
-  openLoginModal(): void {
-    this.showLoginModal = true;
+  handleLoginModal(status: boolean): void {
+    this.showLoginModal = status;
+  }
+
+  closeLoginModal(): void {
+    this.showLoginModal = false;
+  }
+
+  openPasswordForgottenModal(): void {
+    this.showPasswordForgottenModal = true;
   }
 
   isOnActivityCreationPage(): boolean {

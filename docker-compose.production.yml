@@ -1,12 +1,17 @@
 services:
-  nginx:
-    image: alasso:prod
-    build:
-      context: ./
-      dockerfile: Dockerfile.prod
+  alasso-frontend-production:
+    image: alasso/alasso-frontend:production
+    container_name: alasso-frontend-production
+    restart: unless-stopped
     networks:
-      - dev-networks
+      - traefik
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.alasso-frontend-production.rule=Host(`a-l-asso.fr`)"
+      - "traefik.http.routers.alasso-frontend-production.entrypoints=websecure"
+      - "traefik.http.routers.alasso-frontend-production.tls.certresolver=letsencrypt"
+      - "traefik.http.services.alasso-frontend-production.loadbalancer.server.port=80"
 
 networks:
-  dev-networks:
-    driver: bridge
+  traefik:
+    external: true
