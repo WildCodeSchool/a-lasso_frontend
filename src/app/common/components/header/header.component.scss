@@ -37,7 +37,7 @@ header {
       margin-right: 8px;
     }
 
-    h1 {
+    #header-title {
       color: var(--primary-dark-color);
       margin: 0;
     }
@@ -101,5 +101,23 @@ header {
   &:hover::after {
     transform: scaleX(1);
     transform-origin: left;
+  }
+}
+
+@media screen and (max-width: 575px) {
+  header {
+    .logo {
+      #header-title {
+        display: none;
+      }
+    }
+
+    .right-side-container {
+      .user-info {
+        .user-name {
+          display: none;
+        }
+      }
+    }
   }
 }

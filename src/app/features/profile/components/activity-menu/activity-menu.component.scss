@@ -7,6 +7,9 @@
   .activity-menu-header {
     width: fit-content;
     padding: 16px;
+    @media screen and (max-width: 768px) {
+      align-self: center;
+    }
     .activity-menu-title {
       color: var(--primary-dark-color);
       margin: 0 0 16px;

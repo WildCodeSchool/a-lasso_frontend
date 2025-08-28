@@ -1,3 +1,10 @@
 .activity-filter-search {
-  width: 960px;
+  max-width: 1024px;
+  width: 80vw;
+}
+
+@media (max-width: 1024px) {
+  .activity-filter-search {
+    width: 80vw;
+  }
 }

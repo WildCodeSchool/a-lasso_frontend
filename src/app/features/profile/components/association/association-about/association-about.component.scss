@@ -5,6 +5,9 @@
   width: 100%;
   max-height: calc(100vh - 200px);
   overflow-y: auto;
+  @media screen and (max-width: 768px) {
+    overflow-y: hidden;
+  }
 
   .about-title {
     color: var(--primary-dark-color);
@@ -20,11 +23,23 @@
     .about-visual-identity-subtitle {
       color: var(--primary-light-color);
       margin-bottom: 16px;
+      @media screen and (max-width: 768px) {
+        text-align: center;
+      }
     }
 
     .about-visual-identity-images {
       display: flex;
       justify-content: space-between;
+      @media screen and (max-width: 768px) {
+        text-align: center;
+      }
+
+      @media screen and (max-width: 768px) {
+        flex-direction: column;
+        align-items: center;
+        gap: 16px;
+      }
 
       .about-image {
         display: flex;
@@ -40,6 +55,9 @@
     justify-content: space-between;
     margin: 0 auto;
     width: 60%;
+    @media screen and (max-width: 768px) {
+      width: 100%;
+    }
 
     .about-subtitle {
       color: var(--primary-light-color);

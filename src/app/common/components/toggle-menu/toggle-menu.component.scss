@@ -17,6 +17,10 @@ p-tablist::ng-deep {
   ::ng-deep {
     .p-tab {
       padding: 16px 32px;
+
+      @media screen and (max-width: 768px) {
+        padding: 8px 16px;
+      }
     }
 
     .p-tablist-tab-list {

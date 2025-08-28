@@ -4,6 +4,9 @@
       <app-activity-filter-search (searchFiltersChanged)="onSearchFiltersChanged($event)"></app-activity-filter-search>
     </div>
     <app-activity-filter (selectedThemes)="onSelectedThemeChanges($event)"></app-activity-filter>
+    <div class="switch-map">
+      <app-toggle-menu [tabs]="navigationItems" [activeTabValue]="0" (chosenTab)="handleNavigation($event)"></app-toggle-menu>
+    </div>
   </div>
 
   <div class="cards-and-map">
@@ -29,9 +32,5 @@
     <div class="map-activities" [ngClass]="chosenNavigation !== 'Carte' ? 'hidden' : ''">
       <app-map [filteredActivities$]="filteredActivities$" (myCityClicked)="onMyCityClicked($event)"></app-map>
     </div>
-  </div>
-
-  <div class="switch-map">
-    <app-toggle-menu [tabs]="navigationItems" [activeTabValue]="0" (chosenTab)="handleNavigation($event)"></app-toggle-menu>
   </div>
 </div>

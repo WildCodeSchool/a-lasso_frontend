@@ -11,10 +11,10 @@
   <div class="form-container">
     <form class="form">
       @for (field of loginFields; track $index) {
-      <div class="form-field">
-        <app-input-field [fieldConfig]="field" [formGroup]="loginForm" [showPasswordRules]="field.showPasswordRules || false"></app-input-field>
-        <app-input-field-error [control]="loginForm.get(field.name)" [fieldName]="field.name"></app-input-field-error>
-      </div>
+        <div class="form-field">
+          <app-input-field [fieldConfig]="field" [formGroup]="loginForm" [showPasswordRules]="field.showPasswordRules || false"></app-input-field>
+          <app-input-field-error [control]="loginForm.get(field.name)" [fieldName]="field.name"></app-input-field-error>
+        </div>
       }
 
       <div class="submit-button">
