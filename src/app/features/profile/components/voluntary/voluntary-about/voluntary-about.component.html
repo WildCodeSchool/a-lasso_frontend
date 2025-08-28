@@ -1,7 +1,7 @@
 <section class="about-container">
   <h1 class="about-title">Mes informations personnelles</h1>
   <div class="about-content">
-    <app-upload-avatar [imageUrl]="userAvatar$ | async"></app-upload-avatar>
+    <app-upload-avatar [imageUrl]="userAvatar$ | async" type="voluntary"></app-upload-avatar>
 
     @if (voluntaryUser$ | async; as user) {
       <form [formGroup]="profileForm" class="about-info" (ngSubmit)="submitProfile()">

@@ -8,6 +8,7 @@ import { AssociationProfileService } from './association-profil.service';
 import { UserSelectors } from '../../authentication/store/user.selectors';
 import { ActivitiesSelectors } from '../../activity/store/activities.selectors';
 import { UserActions } from '../../authentication/store/user.actions';
+import { Image } from '../../activity/models/activity.model';
 
 @Injectable({ providedIn: 'root' })
 export class AssociationProfileFacadeService {
@@ -18,6 +19,8 @@ export class AssociationProfileFacadeService {
   readonly associationId$ = this._authFacade.associationId$;
   readonly userInfos$ = this._store.select(UserSelectors.selectUser);
   activities$ = this._store.select(ActivitiesSelectors.selectActivities);
+  logo$ = this._store.select(UserSelectors.selectAssociationLogo);
+  cover$ = this._store.select(UserSelectors.selectAssociationCover);
 
   updateGeneralInfo(foundationDate: string, founder: string): void {
     this.associationId$.pipe(take(TAKE_1)).subscribe(id => {
@@ -51,6 +54,28 @@ export class AssociationProfileFacadeService {
             this._store.dispatch(UserActions.updateAssociationStats({ statistics }));
           })
         );
+      })
+    );
+  }
+
+  updateLogo(file: File): Observable<Image> {
+    const formData = new FormData();
+    formData.append('logo', file);
+
+    return this._profileService.uploadAssociationLogo(formData).pipe(
+      tap(image => {
+        this._store.dispatch(UserActions.updateAssociationLogo({ associationLogoImage: image }));
+      })
+    );
+  }
+
+  updateCover(file: File): Observable<Image> {
+    const formData = new FormData();
+    formData.append('cover', file);
+
+    return this._profileService.uploadAssociationCover(formData).pipe(
+      tap(image => {
+        this._store.dispatch(UserActions.updateAssociationCover({ associationProfileImage: image }));
       })
     );
   }

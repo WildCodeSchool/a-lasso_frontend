@@ -11,6 +11,29 @@
     margin: 0;
   }
 
+  .about-visual-identity {
+    display: flex;
+    flex-direction: column;
+    margin: 32px auto;
+    width: 60%;
+
+    .about-visual-identity-subtitle {
+      color: var(--primary-light-color);
+      margin-bottom: 16px;
+    }
+
+    .about-visual-identity-images {
+      display: flex;
+      justify-content: space-between;
+
+      .about-image {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+    }
+  }
+
   .about-wrapper {
     display: flex;
     flex-direction: column;
