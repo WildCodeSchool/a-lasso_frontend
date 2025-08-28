@@ -1,8 +1,20 @@
 <div class="activity-filter-search">
-  <app-multiple-input-field
-    [fieldConfigs]="customFieldConfigs"
-    [showSearchButton]="true"
-    (inputValuesChanged)="onInputValuesChanged()"
-    [formGroup]="formGroup">
-  </app-multiple-input-field>
+  @if (mobileMode) {
+    <app-multiple-input-field
+      [fieldConfigs]="[customFieldConfigs[0]]"
+      [showSearchButton]="false"
+      (inputValuesChanged)="onInputValuesChanged()"
+      [formGroup]="formGroup">
+    </app-multiple-input-field>
+
+    <app-multiple-input-field [fieldConfigs]="fieldConfigs" (inputValuesChanged)="onInputValuesChanged()" [formGroup]="formGroup">
+    </app-multiple-input-field>
+  } @else {
+    <app-multiple-input-field
+      [fieldConfigs]="fieldConfigs"
+      [showSearchButton]="true"
+      (inputValuesChanged)="onInputValuesChanged()"
+      [formGroup]="formGroup">
+    </app-multiple-input-field>
+  }
 </div>

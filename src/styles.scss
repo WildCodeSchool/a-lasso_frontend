@@ -4,6 +4,13 @@
 //import map
 @import 'maplibre-gl/dist/maplibre-gl.css';
 
+* {
+  @media screen and (max-width: 768px) {
+    ::-webkit-scrollbar {
+      display: none;
+    }
+  }
+}
 // initialization project
 body {
   margin: 0;
@@ -12,12 +19,12 @@ body {
   max-width: 100vw;
   padding: 0;
   background-color: var(--background-color-light);
-  overflow: hidden;
-}
-
-body.allow-scroll {
-  overflow-y: auto !important;
   overflow-x: hidden;
+
+  &.allow-scroll {
+    overflow-y: auto !important;
+    overflow-x: hidden;
+  }
 }
 
 :root {
@@ -74,8 +81,8 @@ body.allow-scroll {
 
     --icon-color: #cccccc;
 
-    --primary-dark-color: #82d4f4;
-    --primary-light-color: #29b8e0;
+    --primary-dark-color: #48869e;
+    --primary-light-color: #187f9b;
 
     --secondary-validate-color: #2ecf4d;
     --secondary-complete-color: #ffab3c;
@@ -203,6 +210,13 @@ body.allow-scroll {
       margin-top: 20px;
     }
   }
+
+  @media screen and (max-width: 768px) {
+    --font-size-p: 14px;
+    --font-size-big-title: 30px;
+    --font-size-medium-title: 18px;
+    --font-size-small-title: 16px;
+  }
 }
 
 .maplibregl-popup-close-button {
@@ -216,4 +230,52 @@ body.allow-scroll {
   text-align: center !important;
   top: 5px !important;
   right: 5px !important;
+}
+
+/* ========== Toast PrimeNG global override ========== */
+.p-toast {
+  width: 90% !important;
+}
+
+.p-toast-message {
+  font-size: 0.8rem;
+  padding: 0.5rem 0.75rem;
+}
+
+.p-toast-message .p-toast-summary {
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.p-toast-message .p-toast-detail {
+  font-size: 0.75rem;
+}
+
+.p-toast .p-toast-icon-close {
+  font-size: 0.9rem;
+}
+
+/* ========== Desktop (≥ 768px) ========== */
+@media (min-width: 768px) {
+  .p-toast {
+    width: 25rem !important;
+  }
+
+  .p-toast-message {
+    font-size: 1rem;
+    padding: 1rem;
+  }
+
+  .p-toast-message .p-toast-summary {
+    font-size: 1rem;
+    font-weight: 600;
+  }
+
+  .p-toast-message .p-toast-detail {
+    font-size: 0.9rem;
+  }
+
+  .p-toast .p-toast-icon-close {
+    font-size: 1rem;
+  }
 }

@@ -12,6 +12,8 @@
                     [formControlName]="field.name"
                     (onFocus)="focusedIndex = i"
                     (onBlur)="focusedIndex = null"
+                    (onSelect)="emitValues()"
+                    (onClear)="emitValues()"
                     [inputId]="'input-' + i"
                     [placeholder]="field.placeholder"
                     [showIcon]="true"
@@ -27,7 +29,13 @@
               </div>
             } @else {
               <p-iftalabel class="custom-iftalabel">
-                <input pInputText [id]="'input-' + i" [placeholder]="field.placeholder" [type]="field.type" [formControlName]="field.name" />
+                <input
+                  pInputText
+                  [id]="'input-' + i"
+                  [placeholder]="field.placeholder"
+                  [type]="field.type"
+                  [formControlName]="field.name"
+                  (input)="emitValues()" />
 
                 @if (field.value) {
                   <button class="clear-btn" type="button" (click)="clearInput(i)">

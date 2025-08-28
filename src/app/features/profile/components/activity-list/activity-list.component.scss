@@ -2,6 +2,11 @@
   padding: 16px 0 0;
   width: 86vw;
 
+  @media screen and (max-width: 768px) {
+    padding: 8px 0 0;
+    width: 100vw;
+  }
+
   .empty-message {
     color: var(--font-color-grey);
     font-style: italic;
@@ -9,24 +14,30 @@
     margin-top: 2rem;
   }
 
-  .card-grid {
+  .card-container {
+    width: 100%;
     display: flex;
     flex-direction: row;
-    overflow-x: auto;
     gap: 16px;
-    padding: 0 32px 32px 16px;
+    padding: 0 48px 32px 16px;
+    overflow-x: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--primary-light-color) transparent;
+    @media screen and (max-width: 768px) {
+      padding: 0 0 32px 0;
+    }
 
-    & > * {
-      flex: 0 0 auto;
+    &::-webkit-scrollbar {
+      height: 8px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: var(--primary-light-color);
+      border-radius: 8px;
     }
   }
+}
 
-  .card-grid::-webkit-scrollbar {
-    height: 8px;
-  }
-
-  .card-grid::-webkit-scrollbar-thumb {
-    background-color: var(--primary-light-color);
-    border-radius: 8px;
-  }
+.scroll-hidden {
+  overflow-x: hidden;
 }

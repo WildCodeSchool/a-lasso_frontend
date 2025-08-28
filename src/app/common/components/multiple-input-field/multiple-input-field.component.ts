@@ -6,6 +6,7 @@ import { IftaLabelModule } from 'primeng/iftalabel';
 import { InputGroupModule } from 'primeng/inputgroup';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 import { InputTextModule } from 'primeng/inputtext';
+import { Subject, debounceTime } from 'rxjs';
 import { FormField } from 'src/app/features/authentication/models/form.model';
 import { InputFieldErrorComponent } from '../input-field-error/input-field-error.component';
 
@@ -39,11 +40,19 @@ export class MultipleInputFieldComponent implements OnChanges {
   focusedIndex: number | null = null;
   inputConfigs: { name: string; label: string; placeholder: string; type: string; value: string }[] = [];
 
+  private _inputChanges$ = new Subject<Record<string, string>>();
+
   get inputClass(): Record<string, boolean> {
     return {
       'with-search': this.showSearchButton,
       'without-search': !this.showSearchButton,
     };
+  }
+
+  constructor() {
+    this._inputChanges$.pipe(debounceTime(500)).subscribe(filters => {
+      this.inputValuesChanged.emit(filters);
+    });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -63,7 +72,7 @@ export class MultipleInputFieldComponent implements OnChanges {
     this.inputConfigs.forEach(config => {
       filters[config.name] = config.value;
     });
-    this.inputValuesChanged.emit(filters);
+    this._inputChanges$.next(filters);
   }
 
   clearInput(index: number): void {
