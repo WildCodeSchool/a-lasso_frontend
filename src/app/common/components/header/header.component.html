@@ -27,12 +27,12 @@
       } @else {
         <div class="auth-buttons">
           <button class="inscription-btn" type="button" (click)="openRegisterModal()">S'inscrire</button>
-          <button id="connexion-btn" class="connexion-btn" type="button" (click)="openLoginModal()">Se connecter</button>
+          <button id="connexion-btn" class="connexion-btn" type="button" (click)="handleLoginModal(true)">Se connecter</button>
         </div>
       }
     }
   </div>
 </header>
-
 <app-register-modal [(visible)]="showRegisterModal"></app-register-modal>
-<app-login-modal [(visible)]="showLoginModal"></app-login-modal>
+<app-login-modal [(visible)]="showLoginModal" (openPasswordForgottenModal)="openPasswordForgottenModal()"></app-login-modal>
+<app-forgot-password-modal [(visible)]="showPasswordForgottenModal" (closeLoginModal)="closeLoginModal()"></app-forgot-password-modal>

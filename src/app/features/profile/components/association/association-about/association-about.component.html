@@ -1,9 +1,19 @@
 <section class="about-container">
   <h1 class="about-title">À propos</h1>
 
-  <div class="about-avatar about-wrapper">
-    <h2 class="about-subtitle">Logo de l'association</h2>
-    <app-upload-avatar [imageUrl]="userAvatar$ | async"></app-upload-avatar>
+  <div class="about-visual-identity">
+    <h2 class="about-visual-identity-subtitle">Identité visuelle</h2>
+    <div class="about-visual-identity-images">
+      <div class="about-image about-wrapper">
+        <h3 class="about-subtitle">Logo de l'association</h3>
+        <app-upload-avatar [imageUrl]="userAvatar$ | async" type="logo"> </app-upload-avatar>
+      </div>
+
+      <div class="about-image about-wrapper">
+        <h3 class="about-subtitle">Image de couverture</h3>
+        <app-upload-avatar [imageUrl]="associationCover$ | async" type="cover"> </app-upload-avatar>
+      </div>
+    </div>
   </div>
 
   <div class="about-info about-wrapper">

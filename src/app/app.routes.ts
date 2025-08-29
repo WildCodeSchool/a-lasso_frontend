@@ -14,6 +14,7 @@ import { isVoluntaryGuard } from './common/guards/is-voluntary.guard';
 import { isAdminGuard } from './common/guards/is-admin.guard';
 import { CguComponent } from './features/authentication/components/legals/cgu/cgu.component';
 import { PolitiqueConfidentialiteComponent } from './features/authentication/components/legals/politique-confidentialite/politique-confidentialite.component';
+import { ResetPasswordPageComponent } from './features/authentication/pages/reset-password-page/reset-password-page.component';
 
 export const routes: Routes = [
   {
@@ -52,6 +53,7 @@ export const routes: Routes = [
   },
   { path: 'cgu', component: CguComponent },
   { path: 'politique-confidentialite', component: PolitiqueConfidentialiteComponent },
+  { path: 'reset-password', component: ResetPasswordPageComponent },
   {
     path: 'profile/association',
     component: AssociationProfilePageComponent,

@@ -35,8 +35,8 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
           severity = 'warn';
 
           authService.resetUser();
-          authService.triggerLoginModal();
           router.navigate(['/']);
+          authService.triggerLoginModal();
         } else {
           summary = 'Authentification';
           detail = message || 'Accès non autorisé.';

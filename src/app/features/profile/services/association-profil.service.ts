@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Statistic } from '../../association/models/association.model';
 import { AssociationLogin } from '../../authentication/models/user.model';
+import { Image } from '../../activity/models/activity.model';
 
 @Injectable({ providedIn: 'root' })
 export class AssociationProfileService {
@@ -26,7 +27,11 @@ export class AssociationProfileService {
     return this._http.put<void>(`${this._apiUrl}/association/me/statistics`, statistics);
   }
 
-  uploadAssociationLogo(formData: FormData): Observable<void> {
-    return this._http.post<void>(`${this._apiUrl}/association/me/logo`, formData);
+  uploadAssociationLogo(formData: FormData): Observable<Image> {
+    return this._http.post<Image>(`${this._apiUrl}/association/me/logo`, formData);
+  }
+
+  uploadAssociationCover(formData: FormData): Observable<Image> {
+    return this._http.post<Image>(`${this._apiUrl}/association/me/cover`, formData);
   }
 }
