@@ -2,7 +2,7 @@
   @if (activities.length === 0) {
     <p class="empty-message">Aucune activité à afficher pour le moment.</p>
   } @else {
-    <div class="card-grid">
+    <div class="card-container">
       @for (activity of activities; track activity.id) {
         <app-activity-card
           [activity]="activity"

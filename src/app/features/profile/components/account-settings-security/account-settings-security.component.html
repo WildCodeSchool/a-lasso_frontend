@@ -3,14 +3,14 @@
     <h1 class="security-title">Sécurité</h1>
     <div class="security-wrapper">
       <div class="security-email-container module">
-        <p>Adresse email</p>
+        <p class="p-custom">Adresse email</p>
         <p class="security-email">{{ user.email }}</p>
         <app-single-button [id]="3" label="Modifier" size="small" [styleClass]="ButtonStyleClass.defaultBlue" (buttonClicked)="onEmailEdit()">
         </app-single-button>
       </div>
 
       <div class="security-password-container module">
-        <p>Mot de passe</p>
+        <p class="p-custom">Mot de passe</p>
         <p class="security-password">*****************</p>
         <app-single-button [id]="1" label="Modifier" size="small" [styleClass]="ButtonStyleClass.defaultBlue" (buttonClicked)="onPasswordEdit()">
         </app-single-button>
@@ -19,7 +19,7 @@
       <div class="separate"></div>
 
       <div class="security-info-container module">
-        <p>Date de création du compte :</p>
+        <p class="p-custom">Date de création du compte :</p>
         <p class="security-created">{{ user.createdAt | date: 'dd/MM/yyyy' }}</p>
         <app-single-button
           [id]="2"

@@ -139,7 +139,7 @@ export class ActivityFacadeService {
           this._store.dispatch(
             ActivitiesActions.updateActivityParticipants({
               id: activityId,
-              participants: apiResponse.activityVoluntaryDTO,
+              participants: apiResponse.activityParticipantsRequestDTO,
             })
           );
           this._store.dispatch(

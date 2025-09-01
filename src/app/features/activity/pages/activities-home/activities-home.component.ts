@@ -1,7 +1,7 @@
 import { AsyncPipe, NgClass } from '@angular/common';
 import { Component, inject, OnInit, ViewChild } from '@angular/core';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { fromEvent, Observable } from 'rxjs';
+import { map, startWith } from 'rxjs/operators';
 import { FRANCE_LATITUDE, FRANCE_LONGITUDE } from 'src/app/features/map/constants/map.constants';
 import { MapService } from 'src/app/features/map/services/map.service';
 import { ToggleMenuComponent } from '../../../../common/components/toggle-menu/toggle-menu.component';
@@ -41,6 +41,10 @@ export class ActivitiesHomeComponent implements OnInit {
 
   activities$: Observable<Activity[]> = this._activityFacadeService.activities$;
   filteredActivities$: Observable<Activity[]> = this.activities$;
+  isMobile$: Observable<boolean> = fromEvent(window, 'resize').pipe(
+    map(() => window.innerWidth < 768),
+    startWith(window.innerWidth < 768)
+  );
 
   searchFilters: ActivitySearchFilters = { search: '', date: '', location: '' };
   selectedThemesName: ThemeName[] = [];
