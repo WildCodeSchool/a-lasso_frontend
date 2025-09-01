@@ -1,17 +1,17 @@
-import { Component, inject, Input, OnInit } from '@angular/core';
-import { Message } from '../../models/message.model';
-import { Observable } from 'rxjs';
-import { ActivityFacadeService } from '../../services/activity-facade.service';
 import { AsyncPipe, NgClass } from '@angular/common';
-import { Card } from 'primeng/card';
-import { InputFieldComponent } from '../../../../common/components/input-field/input-field.component';
-import { Menu } from 'primeng/menu';
-import { MenuItem } from 'primeng/api';
-import { MessageCreation } from '../../models/messageCreation';
-import { FormField } from '../../../authentication/models/form.model';
+import { Component, inject, Input, OnInit } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { selectMessagesByActivityId } from '../../store/messages/messages.selectors';
 import { Store } from '@ngrx/store';
+import { MenuItem } from 'primeng/api';
+import { Card } from 'primeng/card';
+import { Menu } from 'primeng/menu';
+import { Observable } from 'rxjs';
+import { InputFieldComponent } from '../../../../common/components/input-field/input-field.component';
+import { FormField } from '../../../authentication/models/form.model';
+import { Message } from '../../models/message.model';
+import { MessageCreation } from '../../models/messageCreation';
+import { ActivityFacadeService } from '../../services/activity-facade.service';
+import { selectMessagesByActivityId } from '../../store/messages/messages.selectors';
 
 @Component({
   selector: 'app-activity-messages-card',

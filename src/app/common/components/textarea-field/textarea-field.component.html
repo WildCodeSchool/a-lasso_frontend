@@ -7,15 +7,27 @@
       [rows]="rows"
       [cols]="cols"
       [formControlName]="fieldConfig.name"
-      [ngClass]="{ 'with-save-button': showSaveButton }">
+      [disabled]="disabled"
+      class="textarea-field">
     </textarea>
     <label [for]="id">{{ fieldConfig.label }}</label>
   </p-iftalabel>
-  <app-input-field-error [submitted]="submitted" [control]="formGroup.get(fieldConfig.name)" [fieldName]="fieldConfig.name"></app-input-field-error>
+
+  <div class="field-feedback">
+    <app-input-field-error [submitted]="submitted" [control]="formGroup.get(fieldConfig.name)" [fieldName]="fieldConfig.name">
+    </app-input-field-error>
+
+    @if (autosave && isMobile) {
+      <p class="save-status" [class.visible]="saveStatus !== 'idle'" [class.success]="saveStatus === 'saved'">
+        {{ saveStatus === 'saving' ? 'Enregistrement...' : saveStatus === 'saved' ? 'Enregistré ✅' : '' }}
+      </p>
+    }
+  </div>
+
   <p class="max-length" [class.max-length--error]="fieldContentLength > maxlength">{{ fieldContentLength }} / {{ maxlength }} caractères maximum</p>
 
-  @if (showSaveButton) {
-    <button pButton type="button" class="save-button" (click)="save.emit()">
+  @if (showSaveButton && !isMobile) {
+    <button pButton type="button" class="save-button" (click)="manualSave()">
       <i class="fa-solid fa-floppy-disk"></i>
     </button>
   }

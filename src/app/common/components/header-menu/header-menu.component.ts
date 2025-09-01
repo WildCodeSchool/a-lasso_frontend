@@ -1,7 +1,7 @@
 import { animate, style, transition, trigger } from '@angular/animations';
 import { CommonModule } from '@angular/common';
 import { Component, ElementRef, HostListener, inject } from '@angular/core';
-import { Router } from '@angular/router';
+import { NavigationEnd, Router } from '@angular/router';
 import { firstValueFrom, map, Observable } from 'rxjs';
 import { AuthFacade } from 'src/app/features/authentication/services/auth-facade.service';
 import { environment } from 'src/environments/environment';
@@ -9,6 +9,7 @@ import { AuthService } from 'src/app/features/authentication/services/auth.servi
 import { BadgeComponent } from '../badge/badge.component';
 import { HeaderMenuMessagesComponent } from '../header-menu-messages/header-menu-messages.component';
 import { HeaderMenuReportsComponent } from '../header-menu-reports/header-menu-reports.component';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-header-menu',
@@ -44,12 +45,16 @@ export class HeaderMenuComponent {
     map(user => {
       if (!user || !user.notification) return null;
       const messagesCount = user.notification.messages.reduce((total, notification) => total + notification.countMessagesNotRead, 0);
-
       const reportsCount = user.notification.reports ?? 0;
-
       return messagesCount + reportsCount;
     })
   );
+
+  constructor() {
+    this._router.events.pipe(filter((event): event is NavigationEnd => event instanceof NavigationEnd)).subscribe(() => {
+      this.closeMenu();
+    });
+  }
 
   @HostListener('document:click', ['$event'])
   onClickOutside(event: MouseEvent): void {
@@ -60,6 +65,10 @@ export class HeaderMenuComponent {
 
   toggleMenu(): void {
     this.isOpen = !this.isOpen;
+  }
+
+  closeMenu(): void {
+    this.isOpen = false;
   }
 
   async goToProfile(): Promise<void> {

@@ -14,9 +14,19 @@ p-card {
     padding: 5%;
     height: 65vh;
     overflow-y: auto;
+    overflow-x: hidden;
+    width: 100%;
 
+    &::-webkit-scrollbar {
+      display: none;
+    }
     .message {
-      padding: 2% 0 2% 0;
+      padding: 2% 0;
+      width: 100%;
+
+      @media screen and (max-width: 768px) {
+        padding: 2% 8%;
+      }
     }
 
     .author {
@@ -45,6 +55,13 @@ p-card {
         padding: 3%;
         width: 50%;
         margin-block: 0;
+
+        @media screen and (max-width: 768px) {
+          overflow: hidden;
+          text-overflow: ellipsis;
+          width: 75%;
+          margin-right: 1%;
+        }
       }
     }
 
@@ -70,6 +87,14 @@ p-card {
       padding: 3%;
       color: var(--background-color-white);
       border-radius: var(--border-radius);
+      @media screen and (max-width: 768px) {
+        width: 83vw;
+      }
+    }
+
+    @media screen and (max-width: 768px) {
+      padding: 0;
+      width: 90vw;
     }
   }
 

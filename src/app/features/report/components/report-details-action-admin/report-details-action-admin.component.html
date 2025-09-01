@@ -1,30 +1,10 @@
 <div class="action-admin">
   <div class="actions-reporter-reported">
     <div class="actions-reporter">
-      <p>Plaignant</p>
-      <div class="buttons">
-        <a [href]="'mailto:' + reportSelected.reporterUser.email" class="p-button contact-button" target="_blank">
-          <i class="fa-regular fa-paper-plane"></i>
-          Contacter
-        </a>
-        <p-button severity="warn" (click)="banUser('reporter')">
-          <i class="fa-solid fa-user-xmark"></i>
-          Bannir
-        </p-button>
-      </div>
+      <p-splitButton label="Plaignant" icon="fa-solid fa-user" [model]="reporterActions"> </p-splitButton>
     </div>
     <div class="actions-reported">
-      <p>Mis en cause</p>
-      <div class="buttons">
-        <a [href]="'mailto:' + reportSelected.reportedUser.email" class="p-button contact-button" target="_blank">
-          <i class="fa-regular fa-paper-plane"></i>
-          Contacter
-        </a>
-        <p-button severity="warn" (click)="banUser('reported')">
-          <i class="fa-solid fa-user-xmark"></i>
-          Bannir
-        </p-button>
-      </div>
+      <p-splitButton label="Mis en cause" icon="fa-solid fa-user" [model]="reportedActions"> </p-splitButton>
     </div>
   </div>
 </div>

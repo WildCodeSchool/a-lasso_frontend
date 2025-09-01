@@ -62,3 +62,23 @@ footer {
     }
   }
 }
+
+@media screen and (max-width: 650px) {
+  footer {
+    padding: 8px 0 75px;
+    justify-content: space-around;
+
+    .links-asso {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+
+      .separate {
+        display: none;
+      }
+    }
+    .social-networks {
+      flex-direction: column;
+    }
+  }
+}

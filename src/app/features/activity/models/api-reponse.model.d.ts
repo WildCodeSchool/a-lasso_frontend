@@ -1,6 +1,6 @@
 export type APIResponseToggleRegister = {
   isRegistered: boolean;
-  activityVoluntaryDTO: {
+  activityParticipantsRequestDTO: {
     current: number;
     max: number;
   };
