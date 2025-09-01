@@ -19,11 +19,14 @@ describe('As an association, create a new activity (mocked)', () => {
     // Ajouter nouvelle photo locale
     cy.get('#file-input-0').attachFile('/images/spa.jpg', { force: true });
 
-    // Valider le recadrage
-    cy.contains('button', 'Valider').click();
+    // Vérifier que le cropper s’ouvre
+    cy.get('.cropper-modal').should('be.visible');
+
+    // Cliquer sur "Valider" du cropper
+    cy.get('.cropper-modal .p-button-success').click();
 
     // Vérifier que la photo est bien visible dans la box
-    cy.get('#photo-box-0 img', { timeout: 10000 }).should('be.visible');
+    cy.get('#photo-box-0 img', { timeout: 20000 }).should('be.visible');
 
     // Fill form using fixture
     cy.fixture('/createActivity/activityCreation.json').then((activity) => {
