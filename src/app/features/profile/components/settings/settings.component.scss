@@ -25,6 +25,10 @@
       justify-content: space-between;
       gap: 64px;
 
+      .p-custom {
+        color: var(--primary-light-color);
+      }
+
       .settings-email,
       .settings-phone {
         display: flex;
@@ -57,6 +61,30 @@
       height: 1px;
       background-color: var(--icon-color);
       margin: 16px 0;
+    }
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .settings-container {
+    flex-direction: column;
+
+    .settings-wrapper {
+      gap: 32px;
+      margin-bottom: 32px;
+      .module {
+        flex-direction: column;
+        text-align: center;
+        align-items: center;
+        gap: 0px;
+        width: 90%;
+
+        .p-custom {
+          font-family: var(--font-family-big-medium-title);
+          font-size: var(--font-size-medium-title);
+          margin: 0;
+        }
+      }
     }
   }
 }

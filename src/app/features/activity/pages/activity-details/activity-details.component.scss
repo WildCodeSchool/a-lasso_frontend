@@ -8,6 +8,18 @@
     right: 18%;
     top: 2%;
     z-index: 1;
+
+    @media screen and (max-width: 900px) {
+      right: 5%;
+    }
+
+    @media screen and (max-width: 768px) {
+      left: 50%;
+      right: auto;
+      transform: translateX(-50%);
+      top: 2%;
+      width: fit-content;
+    }
   }
 
   .activity {
@@ -39,6 +51,11 @@
     justify-content: center;
     align-items: center;
     margin-top: 15px;
+
+    @media screen and (max-width: 768px) {
+      margin-bottom: 32px;
+      width: 100vw;
+    }
   }
 
   .show-messages {
@@ -58,10 +75,6 @@
       display: none;
     }
 
-    .navigation {
-      right: 5%;
-    }
-
     .activity {
       width: 100%;
     }
@@ -69,5 +82,9 @@
     .association-messages {
       width: 100%;
     }
+  }
+
+  @media screen and (max-width: 768px) {
+    height: 100%;
   }
 }

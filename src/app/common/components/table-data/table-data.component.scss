@@ -25,7 +25,7 @@
   ::ng-deep p-table td {
     display: flex;
     justify-content: space-between;
-    border: none;
+    border-bottom: 1px solid #ddd;
     padding: 8px;
     text-align: left;
   }
@@ -38,7 +38,7 @@
   }
 
   ::ng-deep p-table td:last-child {
-    border-bottom: none;
+    border-bottom: none !important;
     flex: 1;
   }
 }

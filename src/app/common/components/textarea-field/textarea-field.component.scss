@@ -1,6 +1,5 @@
 form {
   position: relative;
-
   label {
     font-size: 14px;
     color: var(--font-color);
@@ -28,7 +27,6 @@ form {
     color: black;
     resize: none;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-
     &.with-save-button {
       padding-right: 75px;
     }
@@ -44,6 +42,36 @@ form {
     &::placeholder {
       color: var(--font-color-grey);
       font-size: 14px;
+    }
+  }
+
+  .field-feedback {
+    margin-top: 4px;
+    min-height: 20px;
+    font-size: 14px;
+    line-height: 1.2;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+
+    .save-status {
+      color: var(--font-color-grey);
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease;
+      margin: 0;
+
+      &.visible {
+        opacity: 1;
+        visibility: visible;
+      }
+
+      &.success {
+        color: var(--primary-light-color);
+        font-weight: 500;
+      }
     }
   }
 
@@ -72,6 +100,9 @@ form {
     cursor: pointer;
     border-radius: 0 10px 10px 0;
     box-shadow: var(--box-shadow);
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
     i {
       font-size: 18px;
@@ -80,5 +111,17 @@ form {
     &:hover {
       background-color: var(--primary-dark-color);
     }
+  }
+
+  /* Mobile : pas de bouton, pas de statut */
+  @media screen and (max-width: 767px) {
+    .save-button {
+      display: none;
+    }
+  }
+
+  @media screen and (max-width: 768px) {
+    text-align: center;
+    margin-bottom: 5vh;
   }
 }

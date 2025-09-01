@@ -3,6 +3,11 @@ p-tablist::ng-deep {
   font-family: var(--font-family-p);
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   overflow: hidden;
+  width: fit-content;
+
+  @media screen and (max-width: 768px) {
+    margin: auto;
+  }
 }
 
 .p-tablist-tab-list:first-child::ng-deep {
@@ -17,11 +22,22 @@ p-tablist::ng-deep {
   ::ng-deep {
     .p-tab {
       padding: 16px 32px;
+
+      @media screen and (max-width: 768px) {
+        padding: 8px 16px;
+      }
+
+      @media screen and (max-width: 400px) {
+        padding: 4px 8px;
+      }
     }
 
     .p-tablist-tab-list {
       border: none;
       box-shadow: var(--box-shadow);
+      @media screen and (max-width: 768px) {
+        width: 100%;
+      }
     }
   }
 
@@ -29,10 +45,17 @@ p-tablist::ng-deep {
     position: relative;
   }
 
-  .badge-toggle-menu {
-    position: absolute;
-    top: 0;
-    right: 2px;
-    z-index: 10;
+  .badge-inline {
+    display: inline-block;
+    margin-left: 6px;
+    background: var(--primary-color);
+    color: black;
+    font-size: 12px;
+    font-weight: 600;
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    text-align: center;
+    line-height: 18px;
   }
 }

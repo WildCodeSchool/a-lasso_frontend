@@ -25,8 +25,7 @@
       justify-content: space-between;
       gap: 64px;
 
-      .security-password,
-      .security-created {
+      .p-custom {
         color: var(--primary-light-color);
       }
     }
@@ -36,6 +35,30 @@
       height: 1px;
       background-color: var(--icon-color);
       margin: 16px 0;
+    }
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .security-container {
+    flex-direction: column;
+
+    .security-wrapper {
+      gap: 32px;
+      margin-bottom: 32px;
+      .module {
+        flex-direction: column;
+        text-align: center;
+        align-items: center;
+        gap: 0px;
+        width: 90%;
+
+        .p-custom {
+          font-family: var(--font-family-big-medium-title);
+          font-size: var(--font-size-medium-title);
+          margin: 0;
+        }
+      }
     }
   }
 }

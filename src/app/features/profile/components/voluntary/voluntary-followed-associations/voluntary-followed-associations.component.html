@@ -5,10 +5,10 @@
         <li class="followed-association">
           <div class="association-header">
             <img class="association-logo" [src]="association.associationLogoImage.image" [alt]="association.name" />
-            <div class="association-name">{{ association.name }}</div>
+            <p class="association-name">{{ association.name }}</p>
           </div>
-          <div class="association-description">{{ association.description }}</div>
-          <div class="association-founder">Créé par {{ association.founder }} le {{ association.foundationDate | date: 'dd/MM/yyyy' }}</div>
+          <p class="association-description">{{ association.description }}</p>
+          <p class="association-founder">Créé par {{ association.founder }} le {{ association.foundationDate | date: 'dd/MM/yyyy' }}</p>
           <a [routerLink]="['/association', association.id]" class="view-association-link"> Voir l'association </a>
         </li>
       }

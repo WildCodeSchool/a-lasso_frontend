@@ -1,9 +1,22 @@
 <div class="activities-home">
+  <div class="hero">
+    <h1 class="hero-title">À l’Asso</h1>
+    <h2 class="hero-subtitle">Des activités bénévoles près de chez vous</h2>
+    <p class="hero-description">Explorez des opportunités de bénévolat adaptées à vos envies et à votre disponibilité.</p>
+  </div>
+
   <div class="search-activities">
     <div class="input-container">
-      <app-activity-filter-search (searchFiltersChanged)="onSearchFiltersChanged($event)"></app-activity-filter-search>
+      @if (isMobile$ | async) {
+        <app-activity-filter-search [mobileMode]="true" (searchFiltersChanged)="onSearchFiltersChanged($event)"> </app-activity-filter-search>
+      } @else {
+        <app-activity-filter-search (searchFiltersChanged)="onSearchFiltersChanged($event)"> </app-activity-filter-search>
+      }
     </div>
     <app-activity-filter (selectedThemes)="onSelectedThemeChanges($event)"></app-activity-filter>
+    <div class="switch-map">
+      <app-toggle-menu [tabs]="navigationItems" [activeTabValue]="0" (chosenTab)="handleNavigation($event)"></app-toggle-menu>
+    </div>
   </div>
 
   <div class="cards-and-map">
@@ -29,9 +42,5 @@
     <div class="map-activities" [ngClass]="chosenNavigation !== 'Carte' ? 'hidden' : ''">
       <app-map [filteredActivities$]="filteredActivities$" (myCityClicked)="onMyCityClicked($event)"></app-map>
     </div>
-  </div>
-
-  <div class="switch-map">
-    <app-toggle-menu [tabs]="navigationItems" [activeTabValue]="0" (chosenTab)="handleNavigation($event)"></app-toggle-menu>
   </div>
 </div>
