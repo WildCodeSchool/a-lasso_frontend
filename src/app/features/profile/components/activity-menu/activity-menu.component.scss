@@ -7,14 +7,18 @@
   .activity-menu-header {
     width: fit-content;
     padding: 16px;
-    @media screen and (max-width: 768px) {
+    @media screen and (max-width: 900px) {
       align-self: center;
+      justify-content: center;
       padding: 16px 0;
     }
     .activity-menu-title {
       color: var(--primary-dark-color);
       margin: 0 0 16px;
-      text-align: center;
+
+      @media screen and (max-width: 900px) {
+        text-align: center;
+      }
     }
   }
 }

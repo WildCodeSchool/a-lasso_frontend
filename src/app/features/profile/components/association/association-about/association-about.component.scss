@@ -6,9 +6,13 @@
   max-height: calc(100vh - 150px);
   overflow-y: auto;
 
-  .about-title {
+  h1.about-title {
     color: var(--primary-dark-color);
     margin: 0;
+
+    @media screen and (max-width: 900px) {
+      text-align: center;
+    }
   }
 
   .about-visual-identity {
