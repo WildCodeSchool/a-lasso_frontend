@@ -12,23 +12,19 @@
   }
 
   .page-header {
-    text-align: center;
-    margin-bottom: 48px;
+    background: transparent;
+    box-shadow: none;
+    border-radius: 0;
     padding: 32px 0;
-    background: linear-gradient(135deg, var(--primary-light-color), var(--primary-dark-color));
-    border-radius: 16px;
-    color: var(--font-color-white);
-    box-shadow: var(--box-shadow);
-
+    margin-bottom: 48px;
+    text-align: center;
     .page-title {
       font-family: var(--font-family-big-medium-title);
       font-size: var(--font-size-big-title);
       font-weight: 700;
-      margin: 0 0 8px 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 16px;
+      color: var(--primary-dark-color);
+      margin-bottom: 8px;
+      display: block;
 
       i {
         font-size: 32px;
@@ -45,9 +41,9 @@
     .page-subtitle {
       font-family: var(--font-family-p);
       font-size: 18px;
-      opacity: 0.9;
       margin: 0;
-      font-weight: 300;
+      font-weight: 400;
+      color: var(--font-color-grey);
     }
   }
 
@@ -106,9 +102,12 @@
           }
 
           @media (max-width: 768px) {
-            flex-direction: column;
-            align-items: flex-start;
+            flex-wrap: wrap;
             gap: 8px;
+          }
+
+          @media (max-width: 350px) {
+            justify-content: center;
           }
         }
 

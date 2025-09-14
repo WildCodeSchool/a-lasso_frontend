@@ -1,36 +1,62 @@
-.filter-container {
-  width: 100%;
-  height: 100%;
+.filter-wrapper {
+  position: relative;
   display: flex;
-  flex-direction: column;
+  align-items: center;
+  width: 100%;
+
+  .scroll-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+    background: var(--primary-dark-color);
+    color: white;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem 0.8rem;
+    font-size: 1.5rem;
+    border-radius: 50%;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    width: 45px;
+
+    &.left {
+      left: 0;
+    }
+    &.right {
+      right: 0;
+    }
+
+    &:hover {
+      background: var(--primary-light-color);
+    }
+  }
+
+  @media screen and (min-width: 1441px) {
+    .scroll-btn {
+      display: none !important;
+    }
+  }
+
+  .filter-scroll {
+    flex: 1;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE 10+ */
+
+    &::-webkit-scrollbar {
+      display: none; /* Chrome, Safari, Opera */
+    }
+  }
 
   .filter-buttons {
     display: flex;
-    justify-content: center;
-    align-items: center;
     gap: 1.5rem;
-    flex-wrap: wrap;
-    width: 100%;
-    height: auto;
-    padding: 1rem;
-  }
-}
-
-@media screen and (max-width: 901px) {
-  .filter-container {
-    flex-direction: row;
-    overflow-x: auto;
-    white-space: nowrap;
-    scrollbar-width: none; /* Firefox */
-    -ms-overflow-style: none; /* Internet Explorer 10+ */
-  }
-
-  .filter-container::-webkit-scrollbar {
-    display: none; /* Chrome, Safari, Opera */
-  }
-
-  .filter-buttons {
     flex-wrap: nowrap;
+    padding: 1rem;
     min-width: max-content;
+    align-items: center;
+    justify-content: center;
   }
 }

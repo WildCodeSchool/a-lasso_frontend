@@ -2,7 +2,7 @@
   display: flex;
   flex-direction: column;
   gap: 32px;
-  padding: 32px;
+  padding: 32px 0 0;
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;
@@ -37,8 +37,7 @@
 
     .about-info {
       display: flex;
-      justify-content: space-between;
-      flex-wrap: wrap;
+      flex-direction: column;
 
       .group {
         flex: 1 1 45%;
@@ -51,7 +50,7 @@
   .edit-button-wrapper {
     display: flex;
     justify-content: flex-end;
-    margin: 32px auto 0;
+    margin: 32px auto;
 
     app-single-button {
       margin-left: auto;

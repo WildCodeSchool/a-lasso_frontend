@@ -1,6 +1,12 @@
 @if (messages$ | async; as messages) {
   <p-card class="card">
     <div class="all-messages">
+      <div class="intro">
+        <p>
+          Ceci est un espace d'échange entre vous et l’association.<br />
+          N’hésitez pas à poser vos questions ou partager vos impressions !
+        </p>
+      </div>
       @for (message of messages; track message.id) {
         <div class="message">
           <p class="author" [ngClass]="message.isSendByUserConnected ? 'right-author' : 'left-author'">{{ message.author }}</p>
