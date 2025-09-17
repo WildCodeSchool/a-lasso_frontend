@@ -1,20 +1,10 @@
 .legal-container {
   max-width: 900px;
-  overflow-y: auto;
-  height: 85vh;
   margin: auto;
   padding: 24px;
   font-size: 1rem;
   line-height: 1.6;
   color: #333;
-
-  @media screen and (max-width: 768px) {
-    overflow-y: hidden;
-    height: auto;
-    &::-webkit-scrollbar {
-      display: none;
-    }
-  }
 
   h1 {
     font-size: 2rem;
