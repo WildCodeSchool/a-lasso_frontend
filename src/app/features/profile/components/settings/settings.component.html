@@ -1,25 +1,22 @@
 <div class="settings-container">
   <h1 class="settings-title">Préférences</h1>
-  <div class="settings-wrapper">
-    <div class="settings-notifications-container module">
-      <p class="p-custom">Notifications</p>
-      <div>
-        <span class="settings-email">
-          <p>Par e-mail</p>
-          <p-toggleswitch [(ngModel)]="isEmailChecked" />
-        </span>
-      </div>
+
+  <div class="settings-table">
+    <div class="row">
+      <span class="label">Notifications</span>
+      <span class="value email"
+        >Par e-mail
+        <p-toggleswitch [(ngModel)]="isEmailChecked"></p-toggleswitch>
+      </span>
     </div>
 
-    <div class="separate"></div>
-
-    <div class="settings-theme-container module">
-      <p class="p-custom">Thème utilisateur</p>
-      <div class="settings-theme">
+    <div class="row">
+      <span class="label">Thème utilisateur</span>
+      <span class="value theme">
         <p [class.active]="!isThemeChecked">Clair</p>
-        <p-toggleswitch [(ngModel)]="isThemeChecked" (ngModelChange)="toggleTheme()" />
+        <p-toggleswitch [(ngModel)]="isThemeChecked" (ngModelChange)="toggleTheme()"></p-toggleswitch>
         <p [class.active]="isThemeChecked">Sombre</p>
-      </div>
+      </span>
     </div>
   </div>
 </div>

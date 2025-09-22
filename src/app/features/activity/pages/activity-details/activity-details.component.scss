@@ -3,58 +3,78 @@
   height: 80vh;
   position: relative;
 
-  .navigation {
-    position: absolute;
-    right: 18%;
-    top: 2%;
-    z-index: 1;
-
-    @media screen and (max-width: 900px) {
-      right: 5%;
-    }
-
-    @media screen and (max-width: 768px) {
-      left: 50%;
-      right: auto;
-      transform: translateX(-50%);
-      top: 2%;
-      width: fit-content;
-    }
-  }
-
   .activity {
     display: flex;
     justify-content: center;
     align-items: center;
     width: 50%;
     height: 100%;
+    position: relative;
+
+    @media screen and (max-width: 1300px) {
+      margin-top: 16px;
+    }
+
+    .navigation {
+      position: absolute;
+      display: none;
+      justify-content: center;
+      width: 100%;
+      z-index: 1;
+
+      @media screen and (max-width: 1300px) {
+        display: flex;
+        left: 50%;
+        right: auto;
+        transform: translateX(-50%);
+        top: -1%;
+        width: fit-content;
+      }
+    }
   }
 
   .association-messages {
     width: 50%;
     height: 100%;
-  }
+    position: relative;
 
-  .association {
-    margin-top: 30px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 100%;
-  }
+    .association {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      height: 100%;
+      margin-top: 15px;
+    }
 
-  .messages {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 15px;
+    .messages {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top: 15px;
 
-    @media screen and (max-width: 768px) {
-      margin-bottom: 32px;
-      width: 100vw;
+      @media screen and (max-width: 768px) {
+        margin-bottom: 32px;
+        width: 100vw;
+      }
+    }
+
+    .navigation {
+      position: absolute;
+      display: flex;
+      justify-content: center;
+      width: 100%;
+      z-index: 1;
+      top: 1%;
+
+      @media screen and (max-width: 1300px) {
+        left: 50%;
+        right: auto;
+        transform: translateX(-50%);
+        width: fit-content;
+      }
     }
   }
 
@@ -70,7 +90,7 @@
     }
   }
 
-  @media screen and (max-width: 900px) {
+  @media screen and (max-width: 1300px) {
     .hidden {
       display: none;
     }

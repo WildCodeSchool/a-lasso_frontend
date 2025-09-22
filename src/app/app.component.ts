@@ -7,11 +7,12 @@ import { HeaderComponent } from './common/components/header/header.component';
 import { ProgressBar } from 'primeng/progressbar';
 import { AuthFacade } from './features/authentication/services/auth-facade.service';
 import { filter } from 'rxjs/operators';
+import { ConfirmDialog } from 'primeng/confirmdialog';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [ButtonModule, RouterOutlet, HeaderComponent, FooterComponent, Toast, ProgressBar],
+  imports: [ButtonModule, RouterOutlet, HeaderComponent, FooterComponent, Toast, ProgressBar, ConfirmDialog],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })

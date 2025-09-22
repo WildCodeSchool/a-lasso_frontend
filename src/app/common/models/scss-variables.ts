@@ -1,1 +1,1 @@
-export const MOBILE_SIZE: number = 900;
+export const MOBILE_SIZE: number = 1300;

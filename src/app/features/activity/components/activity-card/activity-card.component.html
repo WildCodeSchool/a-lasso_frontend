@@ -1,6 +1,6 @@
 <div class="card-wrapper">
   <p-card class="card p-slideinup" [routerLink]="['/activity', activity.id]">
-    @if (showDeleteButton && (isAssociation$ | async)) {
+    @if ((showDeleteButton && (isAssociation$ | async)) || (isAdmin$ | async)) {
       <button
         class="delete-btn"
         type="button"
@@ -51,7 +51,7 @@
           </div>
         </div>
 
-        @if (isVoluntary$ | async) {
+        @if (showFavorite$ | async) {
           <app-favorite-heart [activityId]="activity.id" [isSaved]="isSavedActivity$ | async"></app-favorite-heart>
         }
       </div>

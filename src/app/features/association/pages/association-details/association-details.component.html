@@ -1,23 +1,48 @@
 <div class="association-details-page">
+  <h2 class="page-title">Détails de l'association</h2>
+
   <div class="navigation">
     @if (navigationItems.length) {
-      <app-toggle-menu [tabs]="navigationItems" [activeTabValue]="0" (chosenTab)="handleNavigation($event)"></app-toggle-menu>
+      <app-toggle-menu [tabs]="navigationItems" [activeTabValue]="0" (chosenTab)="handleNavigation($event)"> </app-toggle-menu>
     }
   </div>
-  <div class="activities-association">
-    <div class="cards-activities" [ngClass]="chosenNavigation !== 'Association' ? '' : 'hidden'">
-      @for (activity of activities$ | async; track activity.id) {
-        <app-activity-card [activity]="activity"></app-activity-card>
-      } @empty {
-        <p class="empty">
-          <i class="fa-solid fa-magnifying-glass"></i>
-          Aucune activité proposée par l'association en ce moment !
-        </p>
-      }
-    </div>
 
-    <div class="association" [ngClass]="chosenNavigation === 'Association' ? '' : 'hidden'">
-      <app-association-card [association]="association"></app-association-card>
-    </div>
+  <div class="activities-association">
+    <!-- Desktop : toujours afficher les deux colonnes -->
+    @if (!navigationItems.length) {
+      <div class="cards-activities">
+        @for (activity of activities$ | async; track activity.id) {
+          <app-activity-card [activity]="activity"></app-activity-card>
+        } @empty {
+          <p class="empty">
+            <i class="fa-solid fa-calendar-xmark"></i><br />
+            Aucune activité proposée pour l’instant.
+          </p>
+        }
+      </div>
+
+      <div class="association">
+        <app-association-card [association]="association"></app-association-card>
+      </div>
+    }
+
+    <!-- Mobile : navigation choisit -->
+    @if (navigationItems.length && chosenNavigation === 'Activités') {
+      <div class="cards-activities">
+        @for (activity of activities$ | async; track activity.id) {
+          <app-activity-card [activity]="activity"></app-activity-card>
+        } @empty {
+          <p class="empty">
+            <i class="fa-solid fa-calendar-xmark"></i><br />
+            Aucune activité proposée pour l’instant.
+          </p>
+        }
+      </div>
+    }
+    @if (navigationItems.length && chosenNavigation === 'Association') {
+      <div class="association">
+        <app-association-card [association]="association"></app-association-card>
+      </div>
+    }
   </div>
 </div>

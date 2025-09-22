@@ -8,8 +8,8 @@
       [cols]="cols"
       [formControlName]="fieldConfig.name"
       [disabled]="disabled"
-      class="textarea-field">
-    </textarea>
+      class="textarea-field"
+      [ngClass]="{ 'with-save-button': showSaveButton && !isMobile }"></textarea>
     <label [for]="id">{{ fieldConfig.label }}</label>
   </p-iftalabel>
 
