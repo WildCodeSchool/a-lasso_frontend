@@ -6,8 +6,9 @@ import { IftaLabelModule } from 'primeng/iftalabel';
 import { InputGroupModule } from 'primeng/inputgroup';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 import { InputTextModule } from 'primeng/inputtext';
-import { Subject, debounceTime } from 'rxjs';
 import { FormField } from 'src/app/features/authentication/models/form.model';
+import { AutosaveFieldComponent } from '../../directives/autosave-field.component';
+import { SaveStatus } from '../../models/status';
 import { InputFieldErrorComponent } from '../input-field-error/input-field-error.component';
 
 @Component({
@@ -27,20 +28,21 @@ import { InputFieldErrorComponent } from '../input-field-error/input-field-error
   templateUrl: './multiple-input-field.component.html',
   styleUrls: ['./multiple-input-field.component.scss'],
 })
-export class MultipleInputFieldComponent implements OnChanges {
+export class MultipleInputFieldComponent extends AutosaveFieldComponent<Record<string, string>> implements OnChanges {
   @Output() inputValuesChanged = new EventEmitter<Record<string, string>>();
-  @Output() save = new EventEmitter<void>();
+  @Output() save = new EventEmitter<Record<string, string>>();
 
   @Input() fieldConfigs: FormField[] = [];
-  @Input() showSearchButton: boolean = false;
+  @Input() showSearchButton = false;
   @Input() showSaveButton = false;
   @Input() showErrors = false;
-  @Input() formGroup: FormGroup;
+  @Input() formGroup!: FormGroup;
+  @Input() override autosave = false;
 
   focusedIndex: number | null = null;
   inputConfigs: { name: string; label: string; placeholder: string; type: string; value: string }[] = [];
 
-  private _inputChanges$ = new Subject<Record<string, string>>();
+  override saveStatus: SaveStatus = 'idle';
 
   get inputClass(): Record<string, boolean> {
     return {
@@ -49,10 +51,8 @@ export class MultipleInputFieldComponent implements OnChanges {
     };
   }
 
-  constructor() {
-    this._inputChanges$.pipe(debounceTime(500)).subscribe(filters => {
-      this.inputValuesChanged.emit(filters);
-    });
+  override ngOnInit(): void {
+    super.ngOnInit();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -70,13 +70,27 @@ export class MultipleInputFieldComponent implements OnChanges {
   emitValues(): void {
     const filters: Record<string, string> = {};
     this.inputConfigs.forEach(config => {
-      filters[config.name] = config.value;
+      filters[config.name] = this.formGroup.get(config.name)?.value || '';
     });
-    this._inputChanges$.next(filters);
+    this.valueChanges$.next(filters);
+    this.inputValuesChanged.emit(filters);
+  }
+
+  manualSave(): void {
+    const values: Record<string, string> = {};
+    this.inputConfigs.forEach(config => {
+      values[config.name] = this.formGroup.get(config.name)?.value || '';
+    });
+    this.startSaving();
+    this.onSave(values);
   }
 
   clearInput(index: number): void {
     this.inputConfigs[index].value = '';
     this.emitValues();
+  }
+
+  protected override onSave(values: Record<string, string>): void {
+    this.save.emit(values);
   }
 }

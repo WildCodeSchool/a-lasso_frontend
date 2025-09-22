@@ -1,74 +1,98 @@
-.association-details-page {
-  display: flex;
-  flex-direction: column;
-  flex-wrap: wrap;
-  justify-content: space-around;
-  background-color: var(--background-color-light);
-  width: 90vw;
-  height: 85vh;
-  margin: auto;
-  position: relative;
-
-  .navigation {
-    position: absolute;
-    right: 18%;
-    top: 2%;
-    z-index: 1;
-  }
-
-  .activities-association {
+:host {
+  .association-details-page {
     display: flex;
-    width: 100%;
-    gap: 2vw;
+    flex-direction: column;
+    width: 90vw;
+    height: 85vh;
+    margin: auto;
+    background-color: var(--background-color-light);
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-sizing: border-box;
+    overflow: hidden;
 
-    .cards-activities {
-      width: 50%;
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 20px;
-      height: 100%;
-      padding-bottom: 0;
-      box-sizing: border-box;
-      overflow-y: auto;
-      overflow-x: hidden;
-      position: relative;
+    .page-title {
+      text-align: center;
+      margin-bottom: 1rem;
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
 
-      .empty {
-        position: absolute;
-        top: 35%;
-        width: 100%;
-        text-align: center;
-        font-size: 18px;
-        font-style: italic;
-        color: var(--dai-secondary, #888);
+    .navigation {
+      display: none;
+      justify-content: center;
+      margin-bottom: 1rem;
 
-        i {
-          margin-right: 8px;
+      @media (max-width: 1300px) {
+        display: flex;
+      }
+    }
+
+    .activities-association {
+      flex: 1;
+      display: flex;
+      gap: 2vw;
+      min-height: 0;
+
+      .cards-activities {
+        flex: 1;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+        overflow-y: auto;
+        overflow-x: hidden;
+        padding-right: 0.5rem;
+
+        scrollbar-width: thin;
+        scrollbar-color: var(--primary-light-color) transparent;
+
+        &::-webkit-scrollbar {
+          width: 6px;
+        }
+        &::-webkit-scrollbar-thumb {
+          background-color: var(--primary-light-color);
+          border-radius: 4px;
+        }
+        &::-webkit-scrollbar-track {
+          background: transparent;
+        }
+
+        .empty {
+          grid-column: 1 / -1;
+          text-align: center;
+          font-style: italic;
+          color: var(--dai-secondary, #888);
+        }
+
+        @media (max-width: 1500px) {
+          grid-template-columns: 1fr;
+        }
+
+        @media (max-width: 1300px) {
+          overflow-y: visible;
+        }
+
+        @media (max-width: 768px) {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      .association {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        @media (max-width: 1300px) {
+          overflow: visible;
         }
       }
     }
 
-    .association {
-      width: 50%;
-      flex-grow: 1;
-    }
-
-    @media screen and (max-width: 900px) {
-      .hidden {
-        display: none;
-      }
-
-      .navigation {
-        right: 5%;
-      }
-
-      .cards-activities {
-        width: 100%;
-      }
-
-      .association {
-        width: 100%;
-      }
+    @media (max-width: 1300px) {
+      height: auto;
+      overflow: auto;
+      padding: 16px 0 32px;
     }
   }
 }

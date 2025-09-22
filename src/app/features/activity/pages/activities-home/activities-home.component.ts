@@ -42,8 +42,8 @@ export class ActivitiesHomeComponent implements OnInit {
   activities$: Observable<Activity[]> = this._activityFacadeService.activities$;
   filteredActivities$: Observable<Activity[]> = this.activities$;
   isMobile$: Observable<boolean> = fromEvent(window, 'resize').pipe(
-    map(() => window.innerWidth < 768),
-    startWith(window.innerWidth < 768)
+    map(() => window.innerWidth < 901),
+    startWith(window.innerWidth < 901)
   );
 
   searchFilters: ActivitySearchFilters = { search: '', date: '', location: '' };

@@ -1,4 +1,4 @@
-<form class="input-wrapper" [formGroup]="formGroup">
+<form class="input-wrapper" [formGroup]="formGroup" [ngClass]="{ 'row-layout': showSearchButton, 'column-layout': !showSearchButton }">
   <div class="search-container" [ngClass]="showSearchButton ? 'with-search' : 'without-search'">
     @for (field of inputConfigs; track field.label; let i = $index; let isLast = $last) {
       <div class="input-container">
@@ -63,9 +63,17 @@
       <i class="fa-solid fa-magnifying-glass"></i>
     </button>
   }
-  @if (showSaveButton) {
-    <button pButton type="button" class="save-button" (click)="save.emit()">
+  @if (showSaveButton && !isMobile) {
+    <button pButton type="button" class="save-button" (click)="manualSave()">
       <i class="fa-solid fa-floppy-disk"></i>
     </button>
   }
+
+  <div class="field-feedback">
+    @if (autosave && isMobile) {
+      <p class="save-status" [class.visible]="saveStatus !== 'idle'" [class.success]="saveStatus === 'saved'">
+        {{ saveStatus === 'saving' ? 'Enregistrement...' : saveStatus === 'saved' ? 'Enregistré ✅' : '' }}
+      </p>
+    }
+  </div>
 </form>

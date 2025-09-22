@@ -1,16 +1,26 @@
-<div class="filter-container">
-  <div class="filter-buttons">
-    @for (theme of themes$ | async; track $index) {
-      <app-single-button
-        [type]="'button'"
-        [id]="$index"
-        (buttonClicked)="updateSelectedThemes($event)"
-        [styleClass]="selected.includes(theme.name) ? ButtonStyleClass.defaultWhiteSelected : ButtonStyleClass.defaultWhite"
-        [label]="theme.name"
-        [icon]="theme.iconUrl"
-        [ariaLabel]="'bouton de thème ' + theme.name"
-        size="large">
-      </app-single-button>
-    }
+<div class="filter-wrapper">
+  @if (showLeftArrow) {
+    <button class="scroll-btn left" type="button" (click)="scrollLeft()">‹</button>
+  }
+
+  <div class="filter-scroll" #scrollContainer>
+    <div class="filter-buttons">
+      @for (theme of themes$ | async; track $index) {
+        <app-single-button
+          [type]="'button'"
+          [id]="$index"
+          (buttonClicked)="updateSelectedThemes($event)"
+          [styleClass]="selected.includes(theme.name) ? ButtonStyleClass.defaultWhiteSelected : ButtonStyleClass.defaultWhite"
+          [label]="theme.name"
+          [icon]="theme.iconUrl"
+          [ariaLabel]="'bouton de thème ' + theme.name"
+          size="large">
+        </app-single-button>
+      }
+    </div>
   </div>
+
+  @if (showRightArrow) {
+    <button class="scroll-btn right" type="button" (click)="scrollRight()">›</button>
+  }
 </div>

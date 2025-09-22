@@ -1,20 +1,20 @@
+import { AsyncPipe } from '@angular/common';
 import { Component, HostListener, inject, OnInit } from '@angular/core';
-import { ToggleMenuComponent } from '../../../../common/components/toggle-menu/toggle-menu.component';
-import { AssociationCardComponent } from '../../components/association-card/association-card.component';
-import { AsyncPipe, NgClass } from '@angular/common';
-import { ActivityCardComponent } from '../../../activity/components/activity-card/activity-card.component';
-import { Observable } from 'rxjs';
-import { Activity } from '../../../activity/models/activity.model';
-import { ActivityFacadeService } from '../../../activity/services/activity-facade.service';
 import { ActivatedRoute } from '@angular/router';
+import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { Association } from '../../models/association.model';
+import { ToggleMenuComponent } from '../../../../common/components/toggle-menu/toggle-menu.component';
 import { MOBILE_SIZE } from '../../../../common/models/scss-variables';
 import { NavigationItems } from '../../../../common/models/toggle-menu';
+import { ActivityCardComponent } from '../../../activity/components/activity-card/activity-card.component';
+import { Activity } from '../../../activity/models/activity.model';
+import { ActivityFacadeService } from '../../../activity/services/activity-facade.service';
+import { AssociationCardComponent } from '../../components/association-card/association-card.component';
+import { Association } from '../../models/association.model';
 
 @Component({
   selector: 'app-association-details',
-  imports: [ToggleMenuComponent, AssociationCardComponent, NgClass, ActivityCardComponent, AsyncPipe],
+  imports: [ToggleMenuComponent, AssociationCardComponent, ActivityCardComponent, AsyncPipe],
   templateUrl: './association-details.component.html',
   styleUrl: './association-details.component.scss',
 })

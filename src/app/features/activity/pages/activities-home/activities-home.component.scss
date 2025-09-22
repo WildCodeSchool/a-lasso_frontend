@@ -12,7 +12,7 @@
   .hero {
     display: none;
 
-    @media screen and (max-width: 768px) {
+    @media screen and (max-width: 901px) {
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -106,13 +106,13 @@
           margin-right: 8px;
         }
 
-        @media screen and (max-width: 768px) {
+        @media screen and (max-width: 901px) {
           position: relative;
           font-size: 14px;
         }
       }
 
-      @media screen and (max-width: 768px) {
+      @media screen and (max-width: 901px) {
         overflow-y: hidden;
       }
     }
@@ -121,11 +121,11 @@
       width: 50%;
       flex-grow: 1;
       height: 60vh;
-      overflow: auto; // ici
+      overflow: auto;
     }
   }
 
-  @media screen and (max-width: 768px) {
+  @media screen and (max-width: 901px) {
     height: auto;
   }
 }
@@ -152,6 +152,7 @@
       }
     }
     .search-activities {
+      margin-bottom: 16px;
       .switch-map {
         display: initial;
       }

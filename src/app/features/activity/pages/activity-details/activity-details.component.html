@@ -1,20 +1,25 @@
 @if (navigationState$ | async; as nav) {
   <div class="activity-details-page">
-    <div class="navigation">
-      @if (nav.tabs.length) {
-        <app-toggle-menu [tabs]="nav.tabs" [activeTabValue]="nav.activeTabIndex" (chosenTab)="handleNavigation($event)"></app-toggle-menu>
-      }
-    </div>
     <div class="activity" [ngClass]="nav.chosen !== 'Activité' ? 'hidden' : ''">
+      <div class="navigation">
+        @if (nav.tabs.length) {
+          <app-toggle-menu [tabs]="nav.tabs" [activeTabValue]="nav.activeTabIndex" (chosenTab)="handleNavigation($event)"></app-toggle-menu>
+        }
+      </div>
       <app-activity-description [activity]="activity"></app-activity-description>
     </div>
     <div
       class="association-messages"
       [ngClass]="{
-        hidden: nav.chosen === 'Activité' && (screenWidth$ | async) < 900,
+        hidden: nav.chosen === 'Activité' && (screenWidth$ | async) < 1300,
         'show-association': nav.chosen === 'Association' || nav.chosen === 'Activité',
         'show-messages': nav.chosen === 'Messages',
       }">
+      <div class="navigation">
+        @if (nav.tabs.length) {
+          <app-toggle-menu [tabs]="nav.tabs" [activeTabValue]="nav.activeTabIndex" (chosenTab)="handleNavigation($event)"></app-toggle-menu>
+        }
+      </div>
       <div class="association" [ngClass]="nav.chosen !== 'Association' ? 'hidden' : ''">
         <app-association-card [association]="association"></app-association-card>
       </div>
