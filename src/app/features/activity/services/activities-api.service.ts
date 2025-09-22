@@ -23,8 +23,12 @@ export class ActivitiesApiService {
     return this._http.get<Theme[]>(`${this._apiUrl}/themes`);
   }
 
-  getAllActivities(): Observable<Activity[]> {
-    return this._http.get<Activity[]>(`${this._apiUrl}/activities`);
+  getFutureActivities(): Observable<Activity[]> {
+    return this._http.get<Activity[]>(`${this._apiUrl}/activities/future`);
+  }
+
+  getPastActivities(): Observable<Activity[]> {
+    return this._http.get<Activity[]>(`${this._apiUrl}/activities/past`);
   }
 
   getActivitiesByAssociationId(associationId: UUIDTypes): Observable<Activity[]> {

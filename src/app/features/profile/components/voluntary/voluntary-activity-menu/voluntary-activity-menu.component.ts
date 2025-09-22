@@ -36,27 +36,36 @@ export class VoluntaryActivityMenuComponent implements OnInit {
   get filteredActivities$(): Observable<Activity[]> {
     return combineLatest([this.activities$, this.registeredActivityIds$, this.chosenNavigation$]).pipe(
       map(([activities, registeredIds, chosenNavigation]) => {
-        const today = new Date();
+        const registeredSet = new Set(registeredIds.map(id => id.toString()));
 
-        return activities.filter(activity => {
-          if (!registeredIds.map(id => id.toString()).includes(activity.id.toString())) return false;
+        if (chosenNavigation === 'Futures' || chosenNavigation === 'Passées') {
+          return activities.filter(activity => registeredSet.has(activity.id.toString()));
+        }
 
-          const activityDate = new Date(activity.date);
-          if (chosenNavigation === 'Futures') return activityDate >= today;
-          if (chosenNavigation === 'Passées') return activityDate < today;
+        if (chosenNavigation === 'Enregistrées') {
+          return activities.filter(activity => registeredSet.has(activity.id.toString()));
+        }
 
-          return true;
-        });
+        return activities;
       })
     );
   }
 
   ngOnInit(): void {
-    this._activityFacade.getAllActivitiesFromApi();
+    this._loadActivitiesForTab(this.chosenNavigation$.value);
   }
 
   handleNavigation(chosenNavigation: string): void {
     this.activeTab = this.navigationItems.findIndex(item => item.name === chosenNavigation);
     this.chosenNavigation$.next(chosenNavigation);
+    this._loadActivitiesForTab(chosenNavigation);
+  }
+
+  private _loadActivitiesForTab(tab: string): void {
+    if (tab === 'Futures') {
+      this._activityFacade.getFutureActivitiesFromApi();
+    } else if (tab === 'Passées') {
+      this._activityFacade.getPastActivitiesFromApi();
+    }
   }
 }
