@@ -58,7 +58,7 @@ export class ActivitiesHomeComponent implements OnInit {
   searchedLon: number | null = null;
 
   ngOnInit(): void {
-    this._activityFacadeService.getAllActivitiesFromApi();
+    this._activityFacadeService.getFutureActivitiesFromApi();
     this._applyFilters();
   }
 
