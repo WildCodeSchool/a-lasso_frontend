@@ -171,7 +171,6 @@ export class AuthFacade {
     }
 
     this._activityFacade.getFutureActivitiesFromApi();
-    this._activityFacade.getPastActivitiesFromApi();
     this._store.dispatch(UserActions.loginSuccess({ userInfos: user }));
 
     this._store
