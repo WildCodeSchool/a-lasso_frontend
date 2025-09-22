@@ -6,9 +6,13 @@
   width: 100%;
   height: 75%;
 
-  .settings-title {
-    margin-bottom: 32px;
+  h1.settings-title {
+    margin: 0 0 16px 0;
     color: var(--primary-dark-color);
+
+    @media screen and (max-width: 900px) {
+      text-align: center;
+    }
   }
 
   .settings-table {

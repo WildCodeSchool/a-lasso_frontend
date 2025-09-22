@@ -2,17 +2,21 @@
   display: flex;
   flex-direction: column;
   gap: 32px;
-  padding: 32px 0 0;
   width: 100%;
-  max-width: 1200px;
   margin: 0 auto;
 
   .about-title {
     color: var(--primary-dark-color);
-    font-size: 32px;
+    font-size: 36px;
     font-weight: 600;
     margin: 0;
-    text-align: center;
+    width: fit-content;
+    padding: 16px;
+
+    @media screen and (max-width: 900px) {
+      text-align: center;
+      width: 100%;
+    }
   }
 
   .about-content {
@@ -50,7 +54,7 @@
   .edit-button-wrapper {
     display: flex;
     justify-content: flex-end;
-    margin: 32px auto;
+    margin: 14px auto;
 
     app-single-button {
       margin-left: auto;
