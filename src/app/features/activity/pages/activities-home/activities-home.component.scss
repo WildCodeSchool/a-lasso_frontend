@@ -8,6 +8,9 @@
   height: 83vh;
   margin: 5px auto;
   position: relative;
+  @media screen and (max-width: 768px) {
+    height: auto;
+  }
 
   .hero {
     display: none;

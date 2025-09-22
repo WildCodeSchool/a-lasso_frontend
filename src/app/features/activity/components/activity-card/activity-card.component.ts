@@ -2,7 +2,7 @@ import { AsyncPipe, DatePipe } from '@angular/common';
 import { Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { Card } from 'primeng/card';
-import { Observable } from 'rxjs';
+import { combineLatest, map, Observable } from 'rxjs';
 import { AuthService } from 'src/app/features/authentication/services/auth.service';
 import { environment } from 'src/environments/environment';
 import { TruncatePipe } from '../../../../common/pipes/truncate-string.pipe';
@@ -33,9 +33,12 @@ export class ActivityCardComponent implements OnInit {
   public voluntariesRegistered$: Observable<Participant>;
   public apiUrl: string = environment.apiUrl;
   public associationLogoUrl!: string;
-
   isVoluntary$: Observable<boolean> = this._authService.isVoluntaryUser();
   isAssociation$: Observable<boolean> = this._authService.isAssociationUser();
+  isAdmin$: Observable<boolean> = this._authService.isAdminUser();
+  showFavorite$: Observable<boolean> = combineLatest([this.isVoluntary$, this.isAdmin$]).pipe(
+    map(([isVoluntary, isAdmin]) => isVoluntary && !isAdmin)
+  );
 
   ngOnInit(): void {
     this.isSavedActivity$ = this._activityFacadeService.getIsSavedActivity(this.activity.id);
