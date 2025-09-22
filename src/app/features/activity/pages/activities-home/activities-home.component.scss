@@ -55,26 +55,6 @@
       display: none;
     }
 
-    .filter-hint-bubble {
-      display: none;
-      width: fit-content;
-      position: relative;
-      left: 50%;
-      transform: translateX(-50%);
-      background: var(--primary-light-color);
-      color: white;
-      padding: 6px 12px;
-      border-radius: 12px;
-      font-size: 12px;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-      white-space: nowrap;
-      z-index: 10;
-
-      @media screen and (max-width: 1440px) {
-        display: block;
-      }
-    }
-
     .input-container {
       display: flex;
       justify-content: center;
@@ -141,7 +121,7 @@
       width: 50%;
       flex-grow: 1;
       height: 60vh;
-      overflow: auto; // ici
+      overflow: auto;
     }
   }
 
@@ -172,6 +152,7 @@
       }
     }
     .search-activities {
+      margin-bottom: 16px;
       .switch-map {
         display: initial;
       }

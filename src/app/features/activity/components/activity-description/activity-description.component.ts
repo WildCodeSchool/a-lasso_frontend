@@ -3,7 +3,7 @@ import { Component, inject, Input, OnInit } from '@angular/core';
 import { ConfirmationService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { ConfirmDialog } from 'primeng/confirmdialog';
-import { map, Observable, take } from 'rxjs';
+import { combineLatest, map, Observable, take } from 'rxjs';
 import { TAKE_1 } from 'src/app/common/constants/observables.constants';
 import { ButtonStyleClass } from 'src/app/common/models/button';
 import { AuthService } from 'src/app/features/authentication/services/auth.service';
@@ -36,12 +36,16 @@ export class ActivityDescriptionComponent implements OnInit {
 
   isVoluntary$: Observable<boolean> = this._authService.isVoluntaryUser();
   isNotFull$: Observable<boolean>;
+  canShowRegisterButton$: Observable<boolean>;
 
   ngOnInit(): void {
     this.isRegisteredActivity$ = this._activityFacadeService.getIsRegisteredActivity(this.activity.id);
     this.isSavedActivity$ = this._activityFacadeService.getIsSavedActivity(this.activity.id);
     this.voluntariesRegistered$ = this._activityFacadeService.getVoluntariesRegisteredToAnActivity(this.activity.id);
     this.isNotFull$ = this.voluntariesRegistered$.pipe(map(participants => participants.current < participants.max));
+    this.canShowRegisterButton$ = combineLatest([this.isNotFull$, this.isRegisteredActivity$, this.isVoluntary$]).pipe(
+      map(([isNotFull, isRegistered]) => isNotFull || isRegistered)
+    );
   }
 
   onRegisterClick(activity: Activity): void {

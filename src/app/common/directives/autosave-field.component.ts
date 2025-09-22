@@ -4,7 +4,7 @@ import { debounceTime, map, startWith } from 'rxjs/operators';
 import { SaveStatus } from '../models/status';
 
 @Directive()
-export abstract class AutosaveFieldComponent<T = any> implements OnInit, OnDestroy {
+export abstract class AutosaveFieldComponent<T> implements OnInit, OnDestroy {
   @Input() autosave = false;
 
   isMobile = false;

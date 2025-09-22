@@ -57,8 +57,10 @@ export class ActivityDetailsComponent extends DestroyableComponent implements On
   }
 
   private _initializeActivityAndAssociation(): void {
-    this.activity = this._route.snapshot.data['activityDetails']['activity'];
-    this.association = this._route.snapshot.data['activityDetails']['association'];
+    this._route.data.pipe(this.untilDestroyed()).subscribe(data => {
+      this.activity = data['activityDetails'].activity;
+      this.association = data['activityDetails'].association;
+    });
   }
 
   private _isUserRegistered(activitiesUserInfos: ActivitiesUserInfos[]): boolean {

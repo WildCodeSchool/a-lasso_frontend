@@ -61,6 +61,9 @@
       .description {
         height: 10vh;
         margin: 0;
+        word-wrap: break-word;
+        overflow-wrap: anywhere;
+        white-space: normal;
       }
 
       .info-asso {
@@ -92,6 +95,15 @@
           align-items: center;
           gap: 10%;
           width: 50%;
+
+          p,
+          span {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            display: block;
+            max-width: 100%;
+          }
         }
 
         .date {
@@ -171,13 +183,6 @@
           color: var(--font-color-white);
         }
       }
-    }
-  }
-}
-
-@media screen and (max-width: 901px) {
-  .card-wrapper {
-    .card {
     }
   }
 }

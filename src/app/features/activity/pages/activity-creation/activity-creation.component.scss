@@ -123,7 +123,6 @@
 
         .add-informations-container {
           overflow: visible;
-          z-index: 11;
           .section-content {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -144,7 +143,6 @@
 
         .search-adress-container {
           overflow: visible;
-          z-index: 10;
           grid-column: 1 / -1;
         }
 

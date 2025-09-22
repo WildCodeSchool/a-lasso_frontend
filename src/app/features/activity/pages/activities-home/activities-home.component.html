@@ -13,7 +13,6 @@
         <app-activity-filter-search (searchFiltersChanged)="onSearchFiltersChanged($event)"> </app-activity-filter-search>
       }
     </div>
-    <div class="filter-hint-bubble">Glissez pour voir plus →</div>
     <app-activity-filter (selectedThemes)="onSelectedThemeChanges($event)"></app-activity-filter>
     <div class="switch-map">
       <app-toggle-menu [tabs]="navigationItems" [activeTabValue]="0" (chosenTab)="handleNavigation($event)"></app-toggle-menu>
