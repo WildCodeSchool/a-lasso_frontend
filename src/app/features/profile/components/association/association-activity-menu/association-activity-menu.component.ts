@@ -31,27 +31,34 @@ export class AssociationActivityMenuComponent implements OnInit {
       map(([activities, associationId, chosenNavigation]) => {
         if (!associationId) return [];
 
-        const today = new Date();
-        return activities.filter(activity => {
-          if (activity.association.id !== associationId) return false;
+        if (chosenNavigation === 'Futures' || chosenNavigation === 'Passées') {
+          return activities.filter(activity => activity.association.id === associationId && activity.status === ActivityStatusEnum.PUBLISHED);
+        }
 
-          const activityDate = new Date(activity.date);
-          if (chosenNavigation === 'Futures') return activityDate >= today && activity.status === ActivityStatusEnum.PUBLISHED;
-          if (chosenNavigation === 'Passées') return activityDate < today && activity.status === ActivityStatusEnum.PUBLISHED;
-          if (chosenNavigation === 'Brouillons') return activity.status === ActivityStatusEnum.DRAFT;
-          return true;
-        });
+        if (chosenNavigation === 'Brouillons') {
+          return activities.filter(activity => activity.association.id === associationId && activity.status === ActivityStatusEnum.DRAFT);
+        }
+
+        return [];
       })
     );
   }
 
   ngOnInit(): void {
-    this._activityFacade.getAllActivitiesFromApi();
+    this._loadActivitiesForTab(this.chosenNavigation$.value);
   }
 
   handleTabChange(tab: string): void {
     this.activeTab = this.navigationItems.findIndex(item => item.name === tab);
-    this.currentTab = tab;
-    this.chosenNavigation$.next(this.currentTab);
+    this.chosenNavigation$.next(tab);
+    this._loadActivitiesForTab(tab);
+  }
+
+  private _loadActivitiesForTab(tab: string): void {
+    if (tab === 'Futures') {
+      this._activityFacade.getFutureActivitiesFromApi();
+    } else if (tab === 'Passées') {
+      this._activityFacade.getPastActivitiesFromApi();
+    }
   }
 }

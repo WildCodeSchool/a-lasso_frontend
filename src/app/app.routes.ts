@@ -1,69 +1,55 @@
 import { Routes } from '@angular/router';
-import { ActivitiesHomeComponent } from './features/activity/pages/activities-home/activities-home.component';
-import { ActivityDetailsComponent } from './features/activity/pages/activity-details/activity-details.component';
-import { activityDetailsResolver } from './common/resolvers/activity-details.resolver';
-import { AssociationDetailsComponent } from './features/association/pages/association-details/association-details.component';
-import { associationResolver } from './common/resolvers/association.resolver';
-import { ActivityCreationComponent } from './features/activity/pages/activity-creation/activity-creation.component';
-import { isLoggedInGuard } from './common/guards/is-logged-in.guard';
-import { isAssociationGuard } from './common/guards/is-association.guard';
-import { ReportHomePageComponent } from './features/report/pages/report-home-page/report-home-page.component';
-import { AssociationProfilePageComponent } from './features/profile/pages/association-profile-page/association-profile-page.component';
-import { VoluntaryProfilePageComponent } from './features/profile/pages/voluntary-profile-page/voluntary-profile-page.component';
-import { isVoluntaryGuard } from './common/guards/is-voluntary.guard';
 import { isAdminGuard } from './common/guards/is-admin.guard';
-import { CguComponent } from './features/authentication/components/legals/cgu/cgu.component';
-import { PolitiqueConfidentialiteComponent } from './features/authentication/components/legals/politique-confidentialite/politique-confidentialite.component';
-import { ResetPasswordPageComponent } from './features/authentication/pages/reset-password-page/reset-password-page.component';
+import { isAssociationGuard } from './common/guards/is-association.guard';
+import { isLoggedInGuard } from './common/guards/is-logged-in.guard';
+import { isVoluntaryGuard } from './common/guards/is-voluntary.guard';
+import { activityDetailsResolver } from './common/resolvers/activity-details.resolver';
+import { associationResolver } from './common/resolvers/association.resolver';
+import { ActivitiesHomeComponent } from './features/activity/pages/activities-home/activities-home.component';
 
 export const routes: Routes = [
   {
     path: '',
-    component: ActivitiesHomeComponent,
     pathMatch: 'full',
+    component: ActivitiesHomeComponent,
   },
+
   {
     path: 'activity/creation',
     canActivate: [isLoggedInGuard, isAssociationGuard],
-    component: ActivityCreationComponent,
+    loadComponent: () => import('./features/activity/pages/activity-creation/activity-creation.component').then(m => m.ActivityCreationComponent),
   },
   {
     path: 'activity/creation/:id',
     canActivate: [isLoggedInGuard, isAssociationGuard],
-    component: ActivityCreationComponent,
-  },
-  {
-    path: 'reports',
-    canActivate: [isLoggedInGuard, isAdminGuard],
-    component: ReportHomePageComponent,
+    loadComponent: () => import('./features/activity/pages/activity-creation/activity-creation.component').then(m => m.ActivityCreationComponent),
   },
   {
     path: 'activity/:id',
-    resolve: {
-      activityDetails: activityDetailsResolver,
-    },
-    component: ActivityDetailsComponent,
+    resolve: { activityDetails: activityDetailsResolver },
+    loadComponent: () => import('./features/activity/pages/activity-details/activity-details.component').then(m => m.ActivityDetailsComponent),
   },
+
   {
     path: 'association/:id',
-    component: AssociationDetailsComponent,
-    resolve: {
-      association: associationResolver,
-    },
+    resolve: { association: associationResolver },
+    loadComponent: () =>
+      import('./features/association/pages/association-details/association-details.component').then(m => m.AssociationDetailsComponent),
   },
-  { path: 'cgu', component: CguComponent },
-  { path: 'politique-confidentialite', component: PolitiqueConfidentialiteComponent },
-  { path: 'reset-password', component: ResetPasswordPageComponent },
+
+  {
+    path: 'reports',
+    canActivate: [isLoggedInGuard, isAdminGuard],
+    loadComponent: () => import('./features/report/pages/report-home-page/report-home-page.component').then(m => m.ReportHomePageComponent),
+  },
+
   {
     path: 'profile/association',
-    component: AssociationProfilePageComponent,
     canActivate: [isLoggedInGuard, isAssociationGuard],
+    loadComponent: () =>
+      import('./features/profile/pages/association-profile-page/association-profile-page.component').then(m => m.AssociationProfilePageComponent),
     children: [
-      {
-        path: '',
-        redirectTo: 'activities',
-        pathMatch: 'full',
-      },
+      { path: '', redirectTo: 'activities', pathMatch: 'full' },
       {
         path: 'activities',
         loadComponent: () =>
@@ -89,16 +75,14 @@ export const routes: Routes = [
       },
     ],
   },
+
   {
     path: 'profile/voluntary',
-    component: VoluntaryProfilePageComponent,
     canActivate: [isLoggedInGuard, isVoluntaryGuard],
+    loadComponent: () =>
+      import('./features/profile/pages/voluntary-profile-page/voluntary-profile-page.component').then(m => m.VoluntaryProfilePageComponent),
     children: [
-      {
-        path: '',
-        redirectTo: 'activities',
-        pathMatch: 'full',
-      },
+      { path: '', redirectTo: 'activities', pathMatch: 'full' },
       {
         path: 'activities',
         loadComponent: () =>
@@ -124,8 +108,23 @@ export const routes: Routes = [
       },
     ],
   },
+
   {
-    path: '**',
-    redirectTo: '',
+    path: 'cgu',
+    loadComponent: () => import('./features/authentication/components/legals/cgu/cgu.component').then(m => m.CguComponent),
   },
+  {
+    path: 'politique-confidentialite',
+    loadComponent: () =>
+      import('./features/authentication/components/legals/politique-confidentialite/politique-confidentialite.component').then(
+        m => m.PolitiqueConfidentialiteComponent
+      ),
+  },
+  {
+    path: 'reset-password',
+    loadComponent: () =>
+      import('./features/authentication/pages/reset-password-page/reset-password-page.component').then(m => m.ResetPasswordPageComponent),
+  },
+
+  { path: '**', redirectTo: '' },
 ];

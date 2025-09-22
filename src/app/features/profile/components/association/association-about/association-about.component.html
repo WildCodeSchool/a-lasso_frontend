@@ -24,7 +24,8 @@
         [formGroup]="generalInfoForm"
         [showErrors]="true"
         [showSaveButton]="true"
-        (save)="onGeneralInfoSave()">
+        [autosave]="true"
+        (save)="onGeneralInfoSave($event)">
       </app-multiple-input-field>
     </span>
   </div>
@@ -41,7 +42,7 @@
         [fieldConfig]="descriptionFieldConfig"
         [formGroup]="descriptionForm"
         [showSaveButton]="true"
-        (save)="onDescriptionSave()">
+        (save)="onDescriptionSave($event)">
       </app-textarea-field>
     </span>
   </div>

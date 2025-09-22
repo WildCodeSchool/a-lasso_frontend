@@ -170,7 +170,7 @@ export class AuthFacade {
       return;
     }
 
-    this._activityFacade.getAllActivitiesFromApi();
+    this._activityFacade.getFutureActivitiesFromApi();
     this._store.dispatch(UserActions.loginSuccess({ userInfos: user }));
 
     this._store

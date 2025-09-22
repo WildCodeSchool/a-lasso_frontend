@@ -39,17 +39,18 @@ export class ActivityFacadeService {
     return this._activitiesApi.getActivityThemes();
   }
 
-  getAllActivitiesFromApi(): void {
-    this._activitiesApi
-      .getAllActivities()
-      .pipe(
-        map((activities: Activity[]) => activities.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())),
-        tap((sortedActivities: Activity[]) => {
-          this._store.dispatch(ActivitiesActions.setActivities({ activities: sortedActivities }));
-        }),
-        take(TAKE_1)
-      )
-      .subscribe();
+  getFutureActivitiesFromApi(): void {
+    this._fetchActivities(
+      () => this._activitiesApi.getFutureActivities(),
+      (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
+    );
+  }
+
+  getPastActivitiesFromApi(): void {
+    this._fetchActivities(
+      () => this._activitiesApi.getPastActivities(),
+      (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+    );
   }
 
   getActivityFromStore$(activityId: UUIDTypes): Observable<Activity> {
@@ -233,5 +234,17 @@ export class ActivityFacadeService {
         this._store.dispatch(ActivitiesActions.deleteActivity({ activityId: activityId }));
       })
     );
+  }
+
+  private _fetchActivities(apiCall: () => Observable<Activity[]>, sortFn: (a: Activity, b: Activity) => number): void {
+    apiCall()
+      .pipe(
+        map((activities: Activity[]) => [...activities].sort(sortFn)),
+        tap((sortedActivities: Activity[]) => {
+          this._store.dispatch(ActivitiesActions.setActivities({ activities: sortedActivities }));
+        }),
+        take(TAKE_1)
+      )
+      .subscribe();
   }
 }

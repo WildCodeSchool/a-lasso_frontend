@@ -13,7 +13,6 @@ import { DestroyableComponent } from '../../../../common/utils/DestroyableCompon
 import { ReportDetailsStatsComponent } from '../report-details-stats/report-details-stats.component';
 import { ReportDetailsActionAdminComponent } from '../report-details-action-admin/report-details-action-admin.component';
 import { TAKE_1 } from '../../../../common/constants/observables.constants';
-import { ConfirmDialog } from 'primeng/confirmdialog';
 
 @Component({
   selector: 'app-report-details-modal',
@@ -27,7 +26,6 @@ import { ConfirmDialog } from 'primeng/confirmdialog';
     ReportDetailsStatsComponent,
     AsyncPipe,
     ReportDetailsActionAdminComponent,
-    ConfirmDialog,
   ],
   templateUrl: './report-details-modal.component.html',
   styleUrl: './report-details-modal.component.scss',

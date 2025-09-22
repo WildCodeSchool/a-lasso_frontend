@@ -20,6 +20,7 @@
       h1 {
         color: var(--primary-dark-color);
         @media screen and (max-width: 768px) {
+          text-align: center;
           margin: 0;
         }
       }
@@ -35,7 +36,7 @@
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      margin: 48px 0 0 0;
+      margin: 24 px 0 0 0;
       gap: 16px;
     }
   }
@@ -126,5 +127,10 @@
     flex-direction: column;
     gap: 16px;
     overflow: auto;
+    margin-top: 32px;
+  }
+
+  @media screen and (max-width: 400px) {
+    margin-top: 16px;
   }
 }

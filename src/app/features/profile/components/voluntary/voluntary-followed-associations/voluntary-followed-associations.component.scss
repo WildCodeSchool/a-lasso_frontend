@@ -1,13 +1,25 @@
 .followed-associations-list {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 32px;
+  gap: 24px;
   padding: 16px;
   margin: 0;
   list-style: none;
+  max-height: 60vh;
+  overflow-y: auto;
 
-  @media screen and (max-width: 768px) {
-    grid-template-columns: repeat(1, 1fr);
+  @media screen and (max-width: 1500px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  @media screen and (max-width: 1200px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  @media screen and (max-width: 900px) {
+    overflow-y: hidden;
+    max-height: none;
+  }
+  @media screen and (max-width: 500px) {
+    grid-template-columns: 1fr;
   }
 }
 

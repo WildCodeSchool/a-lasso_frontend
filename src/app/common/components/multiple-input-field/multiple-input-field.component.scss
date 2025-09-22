@@ -3,6 +3,15 @@
   position: relative;
   z-index: 1100;
   margin-bottom: 15px;
+
+  &.row-layout {
+    flex-direction: row;
+  }
+
+  &.column-layout {
+    flex-direction: column;
+  }
+
   .search-container {
     display: flex;
     align-items: center;
@@ -187,4 +196,33 @@
 .save-button {
   position: absolute;
   right: 0;
+}
+
+.field-feedback {
+  margin-top: 4px;
+  min-height: 22px;
+  font-size: 14px;
+  line-height: 1.2;
+
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+
+  .save-status {
+    color: var(--font-color-grey);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease;
+    margin: 0;
+
+    &.visible {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    &.success {
+      color: var(--primary-light-color);
+      font-weight: 500;
+    }
+  }
 }

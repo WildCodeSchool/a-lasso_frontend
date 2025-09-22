@@ -28,4 +28,9 @@ export const clearUserActivityInfos = createAction(`${ACTION_PREFIX} Clear User 
 
 export const deleteActivity = createAction(`${ACTION_PREFIX} Delete Activity`, props<{ activityId: UUIDTypes }>());
 
-export const removeActivitiesByAssociation = createAction('[Activities] Remove Activities By Association', props<{ associationId: UUIDTypes }>());
+export const removeActivitiesByAssociation = createAction(
+  '[Activities] Remove Activities By Association',
+  props<{
+    associationId: UUIDTypes;
+  }>()
+);

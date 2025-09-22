@@ -1,16 +1,15 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { IftaLabelModule } from 'primeng/iftalabel';
 import { TextareaModule } from 'primeng/textarea';
-import { Subject, Subscription, fromEvent } from 'rxjs';
-import { debounceTime, startWith, map } from 'rxjs/operators';
 import { FormField } from 'src/app/features/authentication/models/form.model';
+import { AutosaveFieldComponent } from '../../directives/autosave-field.component';
+import { SaveStatus } from '../../models/status';
 import { InputFieldErrorComponent } from '../input-field-error/input-field-error.component';
 
-const DEFAULT_ROWS: number = 5;
-const DEFAULT_COLS: number = 30;
-type SaveStatus = 'idle' | 'saving' | 'saved';
+const DEFAULT_ROWS = 5;
+const DEFAULT_COLS = 30;
 
 @Component({
   selector: 'app-textarea-field',
@@ -19,7 +18,7 @@ type SaveStatus = 'idle' | 'saving' | 'saved';
   templateUrl: './textarea-field.component.html',
   styleUrls: ['./textarea-field.component.scss'],
 })
-export class TextareaFieldComponent implements OnInit, OnDestroy {
+export class TextareaFieldComponent extends AutosaveFieldComponent<string> {
   @Output() save = new EventEmitter<string>();
 
   @Input() submitted!: boolean;
@@ -28,62 +27,27 @@ export class TextareaFieldComponent implements OnInit, OnDestroy {
   @Input() rows: number = DEFAULT_ROWS;
   @Input() cols: number = DEFAULT_COLS;
   @Input() id: string = 'textarea-field';
-  @Input() autosave = false;
+  @Input() override autosave = false;
   @Input({ required: true }) maxlength!: number;
   @Input({ required: true }) fieldConfig!: FormField;
   @Input({ required: true }) formGroup!: FormGroup;
 
-  isMobile = false;
-  saveStatus: SaveStatus = 'idle';
+  override saveStatus: SaveStatus = 'idle';
 
-  private _valueChanges$ = new Subject<string>();
-  private _sub!: Subscription;
-  private _resizeSub!: Subscription;
-
-  ngOnInit(): void {
-    this._resizeSub = fromEvent(window, 'resize')
-      .pipe(
-        startWith(null),
-        map(() => window.innerWidth <= 768)
-      )
-      .subscribe(isMobile => {
-        this.isMobile = isMobile;
-      });
-
-    if (this.autosave) {
-      this._sub = this._valueChanges$.pipe(debounceTime(750)).subscribe(value => {
-        if (this.isMobile) {
-          this._triggerSave(value);
-        }
-      });
-
-      const control = this.formGroup.get(this.fieldConfig.name);
-      control?.valueChanges.subscribe(val => {
-        this._valueChanges$.next(val);
-      });
-    }
-  }
-
-  ngOnDestroy(): void {
-    this._sub?.unsubscribe();
-    this._resizeSub?.unsubscribe();
+  override ngOnInit(): void {
+    super.ngOnInit();
+    const control = this.formGroup.get(this.fieldConfig.name);
+    control?.valueChanges.subscribe(val => this.valueChanges$.next(val));
   }
 
   manualSave(): void {
-    if (!this.isMobile && this.autosave) {
-      const value = this.formGroup.get(this.fieldConfig.name)?.value;
-      this._triggerSave(value);
-    }
+    const value = this.formGroup.get(this.fieldConfig.name)?.value;
+    this.startSaving();
+    this.save.emit(value);
   }
 
-  private _triggerSave(value: string): void {
-    this.saveStatus = 'saving';
+  protected override onSave(value: string): void {
     this.save.emit(value);
-
-    setTimeout(() => {
-      this.saveStatus = 'saved';
-      setTimeout(() => (this.saveStatus = 'idle'), 2000);
-    }, 500);
   }
 
   get fieldContentLength(): number {

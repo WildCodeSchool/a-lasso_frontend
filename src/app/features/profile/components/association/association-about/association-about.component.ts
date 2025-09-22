@@ -1,5 +1,5 @@
 import { AsyncPipe } from '@angular/common';
-import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { Observable, take } from 'rxjs';
@@ -33,6 +33,9 @@ import { AssociationStatsComponent } from '../association-stats/association-stat
   styleUrl: './association-about.component.scss',
 })
 export class AssociationAboutComponent implements OnInit {
+  @ViewChild(TextareaFieldComponent) descriptionField!: TextareaFieldComponent;
+  @ViewChild(MultipleInputFieldComponent) generalInfoField!: MultipleInputFieldComponent;
+
   private _fb: FormBuilder = inject(FormBuilder);
   private _associationFacade: AssociationFacadeService = inject(AssociationFacadeService);
   private _profileFacade: AssociationProfileFacadeService = inject(AssociationProfileFacadeService);
@@ -72,34 +75,42 @@ export class AssociationAboutComponent implements OnInit {
     this._populateFormsFromUserInfos();
   }
 
-  onGeneralInfoSave(): void {
+  onGeneralInfoSave(values: Record<string, string>): void {
     if (this.generalInfoForm.invalid) {
       this.generalInfoForm.markAllAsTouched();
       return;
     }
 
     if (this.associationId) {
-      const fd = this.generalInfoForm.value.foundationDate;
+      const fd = values['foundationDate'];
       const payload = {
         foundationDate: toApiLocalDateString(fd),
-        founder: this.generalInfoForm.value.founder,
+        founder: values['founder'],
       };
 
       this._profileService.updateGeneralInfo(payload).subscribe({
         next: () => {
           showSuccessToast(this._toast);
           this._profileFacade.updateGeneralInfo(payload.foundationDate, payload.founder);
+          this.generalInfoField.markSaved();
+        },
+        error: () => {
+          this.generalInfoField.markError();
         },
       });
     }
   }
 
-  onDescriptionSave(): void {
+  onDescriptionSave(value: string): void {
     if (this.descriptionForm.valid && this.associationId) {
-      this._profileService.updateDescription(this.descriptionForm.value.description).subscribe({
+      this._profileService.updateDescription(value).subscribe({
         next: () => {
           showSuccessToast(this._toast);
-          this._profileFacade.updateDescription(this.descriptionForm.value.description);
+          this._profileFacade.updateDescription(value);
+          this.descriptionField.markSaved();
+        },
+        error: () => {
+          this.descriptionField.markError();
         },
       });
     }
