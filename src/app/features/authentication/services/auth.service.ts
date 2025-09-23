@@ -19,6 +19,7 @@ export class AuthService {
   private _authState$ = new BehaviorSubject<boolean>(this._checkTokenValidOnInit());
   private _openLoginModal$ = new Subject<void>();
   openLoginModal$ = this._openLoginModal$.asObservable();
+  isbanned$ = new BehaviorSubject<boolean>(false);
 
   registerVoluntary(data: VoluntaryRegister): Observable<boolean> {
     return this._http.post<boolean>(`${this._apiUrl}/auth/register/voluntary`, data);
@@ -72,6 +73,10 @@ export class AuthService {
 
   public clearToken(): void {
     localStorage.removeItem('tokenAlAsso');
+  }
+
+  public tooManyAttempts(value: boolean): void {
+    this.isbanned$.next(value);
   }
 
   public clearUserState(): void {

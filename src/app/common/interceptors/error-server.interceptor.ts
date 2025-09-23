@@ -16,13 +16,16 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
       let summary = 'Erreur';
       let detail = 'Une erreur est survenue. Veuillez réessayer.';
       let severity = 'error';
-
+      authService.tooManyAttempts(false);
       if (error.status >= HttpStatusCode.InternalServerError) {
         detail = 'Erreur interne du serveur. Veuillez réessayer plus tard.';
       } else if (error.status === HttpStatusCode.NotFound) {
         detail = 'La ressource demandée est introuvable.';
       } else if (error.status === HttpStatusCode.BadRequest) {
         detail = 'Requête invalide.';
+      } else if (error.status === HttpStatusCode.TooManyRequests) {
+        detail = 'Trop de tentatives échouées. Veuillez réessayer plus tard.';
+        authService.tooManyAttempts(true);
       } else if (error.status === HttpStatusCode.Forbidden) {
         detail = "Vous n'avez pas la permission d'accéder à cette ressource.";
       } else if (error.status === HttpStatusCode.Unauthorized) {
