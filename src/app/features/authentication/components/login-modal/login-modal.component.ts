@@ -12,6 +12,7 @@ import { InputFieldErrorComponent } from 'src/app/common/components/input-field-
 import { AuthFacade } from '../../services/auth-facade.service';
 import { FormField } from '../../models/form.model';
 import { UserLogin } from '../../models/user.model';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-login-modal',
@@ -46,9 +47,11 @@ export class LoginModalComponent {
   @Output() openPasswordForgottenModal = new EventEmitter<boolean>();
 
   @Input() visible: boolean = false;
-  private _auth = inject(AuthFacade);
+  private _authFacade = inject(AuthFacade);
+  private _authService = inject(AuthService);
   private _fb: FormBuilder = new FormBuilder();
-  isAuthenticated$ = this._auth.isAuthenticated$;
+  isAuthenticated$ = this._authFacade.isAuthenticated$;
+  isBanned$ = this._authService.isbanned$;
   openForgotPasswordModal = false;
 
   loginForm = this._fb.group({
@@ -91,11 +94,11 @@ export class LoginModalComponent {
     }
 
     const credentials = this.loginForm.value as UserLogin;
-    this._auth.login(credentials);
+    this._authFacade.login(credentials);
 
     let loginSuccess = false;
 
-    this._auth.isAuthenticated$
+    this._authFacade.isAuthenticated$
       .pipe(
         filter(isAuth => isAuth),
         take(TAKE_1)
@@ -107,9 +110,13 @@ export class LoginModalComponent {
 
     const timeoutDuration = 100;
     setTimeout(() => {
-      if (!loginSuccess) {
-        this.error = 'Informations invalides. Veuillez réessayer.';
-      }
+      this.isBanned$.pipe(take(1)).subscribe(isBanned => {
+        if (!loginSuccess && isBanned) {
+          this.error = 'Trop de tentatives échouées. Veuillez réessayer plus tard.';
+        } else {
+          this.error = 'Informations invalides. Veuillez réessayer.';
+        }
+      });
     }, timeoutDuration);
   }
 
