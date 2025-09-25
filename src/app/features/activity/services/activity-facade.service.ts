@@ -1,23 +1,23 @@
 import { inject, Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { MessageService as Toast } from 'primeng/api';
-import { map, Observable, of, switchMap, take, tap } from 'rxjs';
+import { combineLatest, map, Observable, of, switchMap, take, tap } from 'rxjs';
 import { TAKE_1 } from 'src/app/common/constants/observables.constants';
 import { showInfoToast, showSuccessToast } from 'src/app/common/utils/toast.utils';
 import { UUIDTypes } from 'uuid';
 import { ActivitiesUserInfos, AddressApiResult } from '../../authentication/models/user.model';
+import { UserActions } from '../../authentication/store/user.actions';
+import { UserSelectors } from '../../authentication/store/user.selectors';
 import { ActivityFormData } from '../models/activity-creation.model';
 import { Activity, Participant, Theme } from '../models/activity.model';
 import { APIResponseToggleRegister } from '../models/api-reponse.model';
 import { Message } from '../models/message.model';
 import { MessageCreation } from '../models/messageCreation';
-import { ActivitiesApiService } from './activities-api.service';
-import { UserSelectors } from '../../authentication/store/user.selectors';
-import { ActivitiesSelectors } from '../store/activities.selectors';
 import { ActivitiesActions } from '../store/activities.actions';
-import { UserActions } from '../../authentication/store/user.actions';
-import { MessagesSelectors } from '../store/messages/messages.selectors';
+import { ActivitiesSelectors } from '../store/activities.selectors';
 import { MessagesActions } from '../store/messages/messages.actions';
+import { MessagesSelectors } from '../store/messages/messages.selectors';
+import { ActivitiesApiService } from './activities-api.service';
 
 @Injectable({
   providedIn: 'root',
@@ -47,10 +47,36 @@ export class ActivityFacadeService {
   }
 
   getPastActivitiesFromApi(): void {
-    this._fetchActivities(
-      () => this._activitiesApi.getPastActivities(),
-      (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
-    );
+    this._activitiesApi
+      .getPastActivities()
+      .pipe(
+        tap((activities: Activity[]) => {
+          this._store.dispatch(ActivitiesActions.setActivities({ activities }));
+
+          activities.forEach(activity => {
+            this._store.dispatch(
+              UserActions.updateActivitiesUserInfos({
+                activityId: activity.id,
+                isRegistered: true,
+              })
+            );
+          });
+        }),
+        take(1)
+      )
+      .subscribe();
+  }
+
+  getSavedActivitiesFromApi(): void {
+    combineLatest([this._activitiesApi.getFutureActivities(), this._activitiesApi.getPastActivities()])
+      .pipe(
+        map(([future, past]) => [...future, ...past]),
+        tap((all: Activity[]) => {
+          this._store.dispatch(ActivitiesActions.setActivities({ activities: all }));
+        }),
+        take(1)
+      )
+      .subscribe();
   }
 
   getActivityFromStore$(activityId: UUIDTypes): Observable<Activity> {
@@ -214,25 +240,22 @@ export class ActivityFacadeService {
       tap((activity: Activity): void => {
         this._store.dispatch(ActivitiesActions.setActivity({ activity: activity }));
         showSuccessToast(this._toast);
-        // TODO, compléter avec le message personnalisé de succès quand nouvelle version de TOAST mergé avec cette branch.
-        //const isDraft = activity.status === ActivityStatusEnum.DRAFT;
-        // summary: isDraft ? 'Brouillon enregistré !' : 'Activité publiée !',
       })
-    );
-  }
-
-  deleteActivity(activityId: UUIDTypes): Observable<void> {
-    return this.associationId$.pipe(
-      take(TAKE_1),
-      switchMap(() => this._activitiesApi.deleteActivity(activityId))
     );
   }
 
   deleteActivityAndUpdateStore(activityId: UUIDTypes): Observable<void> {
-    return this.deleteActivity(activityId).pipe(
+    return this._deleteActivity(activityId).pipe(
       tap(() => {
         this._store.dispatch(ActivitiesActions.deleteActivity({ activityId: activityId }));
       })
+    );
+  }
+
+  private _deleteActivity(activityId: UUIDTypes): Observable<void> {
+    return this.associationId$.pipe(
+      take(TAKE_1),
+      switchMap(() => this._activitiesApi.deleteActivity(activityId))
     );
   }
 

@@ -1,5 +1,5 @@
 <div class="activity-list">
-  @if (activities.length === 0) {
+  @if (activities?.length === 0) {
     <p class="empty-message">Aucune activité à afficher pour le moment.</p>
   } @else {
     <div class="card-container">
@@ -8,8 +8,8 @@
           [activity]="activity"
           [showDeleteButton]="true"
           [showEditButton]="showEditButton(activity.date)"
-          (delete)="onDeleteActivity($event)"
-          (edit)="onEditActivity($event)" />
+          (deleteActivity)="onDeleteActivity($event)"
+          (editActivity)="onEditActivity($event)" />
       }
     </div>
   }

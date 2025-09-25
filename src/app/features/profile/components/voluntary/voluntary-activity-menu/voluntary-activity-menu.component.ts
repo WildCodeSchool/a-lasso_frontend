@@ -42,10 +42,6 @@ export class VoluntaryActivityMenuComponent implements OnInit {
           return activities.filter(activity => registeredSet.has(activity.id.toString()));
         }
 
-        if (chosenNavigation === 'Enregistrées') {
-          return activities.filter(activity => registeredSet.has(activity.id.toString()));
-        }
-
         return activities;
       })
     );
@@ -66,6 +62,8 @@ export class VoluntaryActivityMenuComponent implements OnInit {
       this._activityFacade.getFutureActivitiesFromApi();
     } else if (tab === 'Passées') {
       this._activityFacade.getPastActivitiesFromApi();
+    } else if (tab === 'Enregistrées') {
+      this._activityFacade.getSavedActivitiesFromApi();
     }
   }
 }
