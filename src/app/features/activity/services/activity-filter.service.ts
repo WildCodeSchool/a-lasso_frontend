@@ -47,8 +47,6 @@ export class ActivityFilterService {
   }
 
   private _matchesLocation(activity: Activity, location: string): boolean {
-    if (!location) return true;
-
     if (this._searchedLat !== null && this._searchedLon !== null) {
       const actLat = activity.location.latitude;
       const actLon = activity.location.longitude;
@@ -59,6 +57,10 @@ export class ActivityFilterService {
       }
     }
 
-    return activity.address.city.toLowerCase().includes(location.toLowerCase());
+    if (location) {
+      return activity.address.city.toLowerCase().includes(location.toLowerCase());
+    }
+
+    return true;
   }
 }

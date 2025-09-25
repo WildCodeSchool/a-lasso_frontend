@@ -29,12 +29,13 @@
         <app-activity-skeleton></app-activity-skeleton>
       } @else {
         @for (activity of filteredActivities$ | async; track activity.id) {
-          <app-activity-card [activity]="activity"></app-activity-card>
+          <app-activity-card [activity]="activity" [showDeleteButton]="true" (deleteActivity)="onDeleteActivity($event)"> </app-activity-card>
         } @empty {
-          <p class="empty">
+          <div class="empty">
             <i class="fa-solid fa-magnifying-glass"></i>
-            Aucun résultat ne correspond à votre recherche
-          </p>
+            <p>Aucun résultat ne correspond à votre recherche</p>
+            <button type="button" class="btn-reset" (click)="resetFiltersAndShowAll()">Voir toutes les activités</button>
+          </div>
         }
       }
     </div>
