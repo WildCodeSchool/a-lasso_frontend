@@ -1,7 +1,7 @@
 import { AsyncPipe, NgClass } from '@angular/common';
 import { Component, inject, OnInit, ViewChild } from '@angular/core';
-import { Observable, fromEvent } from 'rxjs';
-import { map, startWith } from 'rxjs/operators';
+import { Observable, fromEvent, of } from 'rxjs';
+import { map, startWith, switchMap } from 'rxjs/operators';
 import { FRANCE_LATITUDE, FRANCE_LONGITUDE } from 'src/app/features/map/constants/map.constants';
 import { MapService } from 'src/app/features/map/services/map.service';
 import { ToggleMenuComponent } from '../../../../common/components/toggle-menu/toggle-menu.component';
@@ -17,6 +17,8 @@ import { ActivityFilterService } from '../../services/activity-filter.service';
 import { MyCityClickedEvent } from 'src/app/features/map/models/map';
 import { showSuccessToast } from '../../../../common/utils/toast.utils';
 import { ConfirmationService, MessageService } from 'primeng/api';
+import { AuthService } from 'src/app/features/authentication/services/auth.service';
+import { VoluntaryProfileService } from 'src/app/features/profile/services/voluntary-profil.service';
 
 @Component({
   selector: 'app-activities-home',
@@ -37,6 +39,8 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 export class ActivitiesHomeComponent implements OnInit {
   private _activityFacadeService: ActivityFacadeService = inject(ActivityFacadeService);
   private _activityFilterService: ActivityFilterService = inject(ActivityFilterService);
+  private _authService = inject(AuthService);
+  private _voluntaryProfileService = inject(VoluntaryProfileService);
   private _mapService: MapService = inject(MapService);
   private _confirmation = inject(ConfirmationService);
   private _toast = inject(MessageService);
@@ -59,7 +63,7 @@ export class ActivitiesHomeComponent implements OnInit {
 
   ngOnInit(): void {
     this._activityFacadeService.getFutureActivitiesFromApi();
-    this._applyFilters();
+    this._initializeVoluntaryUserLocation();
   }
 
   handleNavigation(title: string): void {
@@ -114,6 +118,34 @@ export class ActivitiesHomeComponent implements OnInit {
 
     this._activityFilterService.setSearchedLocation(event.coords.lat, event.coords.lon);
     this._applyFilters();
+  }
+
+  resetFiltersAndShowAll(): void {
+    this.searchFilters = { search: '', date: '', location: '' };
+    this.selectedThemesName = [];
+
+    this._activityFilterService.setSearchedLocation(null, null);
+
+    if (this.mapComponent) {
+      this.mapComponent.flyTo(FRANCE_LONGITUDE, FRANCE_LATITUDE, 5);
+    }
+
+    this._applyFilters();
+  }
+
+  private _initializeVoluntaryUserLocation(): void {
+    this._authService
+      .isVoluntaryUser()
+      .pipe(switchMap(isVoluntary => (isVoluntary ? this._voluntaryProfileService.getVoluntary() : of(null))))
+      .subscribe(voluntary => {
+        if (voluntary?.geolocation?.latitude && voluntary?.geolocation?.longitude) {
+          this._activityFilterService.setSearchedLocation(voluntary.geolocation.latitude, voluntary.geolocation.longitude);
+        } else {
+          this._activityFilterService.setSearchedLocation(null, null);
+        }
+
+        this._applyFilters();
+      });
   }
 
   private _applyFilters(): void {

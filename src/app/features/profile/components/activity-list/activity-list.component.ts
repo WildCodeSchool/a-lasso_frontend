@@ -1,15 +1,16 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, Input } from '@angular/core';
+import { Router } from '@angular/router';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ToastModule } from 'primeng/toast';
 import { showSuccessToast } from 'src/app/common/utils/toast.utils';
 import { ActivityCardComponent } from 'src/app/features/activity/components/activity-card/activity-card.component';
+import { ActivityStatusEnum } from 'src/app/features/activity/models/activity-creation.model';
 import { Activity } from 'src/app/features/activity/models/activity.model';
 import { ActivityFacadeService } from 'src/app/features/activity/services/activity-facade.service';
 import { AssociationProfileFacadeService } from '../../services/association-profile-facade.service';
-import { ActivityStatusEnum } from 'src/app/features/activity/models/activity-creation.model';
-import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-activity-list',
@@ -29,14 +30,11 @@ export class ActivityListComponent {
   private _profileFacade = inject(AssociationProfileFacadeService);
   private _activitiesFacade = inject(ActivityFacadeService);
 
-  activities$ = this._profileFacade.activities$;
+  activities$: Observable<Activity[]> = this._profileFacade.activities$;
 
   onDeleteActivity(activityId: string): void {
-    const activity = this.activities.find(a => a.id === activityId);
-    if (!activity) return;
-
     this._confirmation.confirm({
-      message: 'Êtes-vous sûr de vouloir supprimer cette activité ? Cette action est irréversible.',
+      message: 'Êtes-vous sûr de vouloir supprimer cette activité ? Cette action est irréversible.',
       header: 'Confirmation de suppression',
       icon: 'pi pi-exclamation-triangle',
       acceptLabel: 'Oui, supprimer',
