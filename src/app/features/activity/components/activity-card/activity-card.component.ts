@@ -19,8 +19,8 @@ import { InscriptionBadgeComponent } from '../inscription-badge/inscription-badg
   standalone: true,
 })
 export class ActivityCardComponent implements OnInit {
-  @Output() delete = new EventEmitter<string>();
-  @Output() edit = new EventEmitter<string>();
+  @Output() deleteActivity = new EventEmitter<string>();
+  @Output() editActivity = new EventEmitter<string>();
 
   @Input() activity!: Activity;
   @Input() showDeleteButton: boolean = false;
@@ -47,13 +47,14 @@ export class ActivityCardComponent implements OnInit {
   }
 
   onDeleteClick(event: MouseEvent): void {
+    event.preventDefault();
     event.stopPropagation();
-    this.delete.emit(this.activity.id);
+    this.deleteActivity.emit(this.activity.id);
   }
 
   onEditClick(event: MouseEvent): void {
     event.stopPropagation();
-    this.edit.emit(this.activity.id);
+    this.editActivity.emit(this.activity.id);
   }
 
   private _setAssociationLogoUrl(): void {
