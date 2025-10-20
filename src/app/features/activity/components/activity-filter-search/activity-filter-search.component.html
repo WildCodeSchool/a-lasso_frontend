@@ -11,6 +11,7 @@
     </app-multiple-input-field>
   } @else {
     <app-multiple-input-field
+      [dateMode]="'future'"
       [fieldConfigs]="fieldConfigs"
       [showSearchButton]="true"
       (inputValuesChanged)="onInputValuesChanged()"

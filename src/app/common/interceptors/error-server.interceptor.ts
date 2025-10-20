@@ -30,6 +30,7 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
         detail = "Vous n'avez pas la permission d'accéder à cette ressource.";
       } else if (error.status === HttpStatusCode.Unauthorized) {
         const message = error?.error?.message;
+        console.error('Unauthorized error message from server:', message);
         const isTokenExpired = message === 'Token expired';
 
         if (isTokenExpired) {
@@ -42,7 +43,7 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
           authService.triggerLoginModal();
         } else {
           summary = 'Authentification';
-          detail = message || 'Accès non autorisé.';
+          detail = 'Accès non autorisé.';
           severity = 'error';
         }
       }

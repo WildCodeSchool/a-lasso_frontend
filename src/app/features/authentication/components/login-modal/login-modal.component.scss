@@ -66,11 +66,11 @@
       }
     }
 
-    .forgot-password-container {
+    .helper-action-container {
       display: flex;
       justify-content: flex-end;
 
-      .forgot-password-btn {
+      .action-btn {
         background: none;
         border: none;
         color: var(--primary-color);
@@ -80,6 +80,11 @@
 
         &:focus {
           outline: 2px solid var(--primary-color);
+        }
+
+        &:hover {
+          transition: color 0.3s ease;
+          color: var(--primary-dark-color);
         }
       }
     }

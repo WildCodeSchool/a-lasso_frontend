@@ -16,6 +16,8 @@
                     (onClear)="emitValues()"
                     [inputId]="'input-' + i"
                     [placeholder]="field.placeholder"
+                    [minDate]="dateMode === 'future' ? minDate : null"
+                    [maxDate]="dateMode === 'past' ? maxDate : null"
                     [showIcon]="true"
                     inputStyleClass="custom-calendar-input"
                     dateFormat="dd/mm/yy" />

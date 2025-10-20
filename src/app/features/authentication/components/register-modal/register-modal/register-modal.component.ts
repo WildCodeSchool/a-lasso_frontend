@@ -64,7 +64,7 @@ export class RegisterModalComponent extends DestroyableComponent {
       .subscribe((success: boolean) => {
         if (success) {
           this.hideModal();
-          this._authService.triggerLoginModal();
+          this._authService.triggerLoginModal(data.email);
         }
       });
   }

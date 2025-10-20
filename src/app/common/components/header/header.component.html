@@ -34,5 +34,5 @@
   </div>
 </header>
 <app-register-modal [(visible)]="showRegisterModal"></app-register-modal>
-<app-login-modal [(visible)]="showLoginModal" (openPasswordForgottenModal)="openPasswordForgottenModal()"></app-login-modal>
+<app-login-modal [email]="email" [(visible)]="showLoginModal" (openPasswordForgottenModal)="openPasswordForgottenModal()"></app-login-modal>
 <app-forgot-password-modal [(visible)]="showPasswordForgottenModal" (closeLoginModal)="closeLoginModal()"></app-forgot-password-modal>

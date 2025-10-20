@@ -31,6 +31,7 @@ import { ButtonStyleClass } from 'src/app/common/models/button';
 export class ActivityFilterComponent implements OnInit, AfterViewInit, OnChanges {
   @Output() selectedThemes: EventEmitter<ThemeName[]> = new EventEmitter<ThemeName[]>();
   @Input() formGroup?: FormGroup;
+  @Input() resetFormTrigger: boolean = false;
   @Input() formThemeField?: string;
   @Input() hasLoadedDraft?: boolean;
 
@@ -73,6 +74,11 @@ export class ActivityFilterComponent implements OnInit, AfterViewInit, OnChanges
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['hasLoadedDraft'] && this.formGroup) {
       this.loadDraftThemes();
+    }
+
+    if (changes['resetFormTrigger']) {
+      this.selected = [];
+      this.selectedThemes.emit([...this.selected]);
     }
   }
 

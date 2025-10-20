@@ -8,12 +8,14 @@
   <div class="search-activities">
     <div class="input-container">
       @if (isMobile$ | async) {
-        <app-activity-filter-search [mobileMode]="true" (searchFiltersChanged)="onSearchFiltersChanged($event)"> </app-activity-filter-search>
+        <app-activity-filter-search [resetFormTrigger]="resetFormTrigger" [mobileMode]="true" (searchFiltersChanged)="onSearchFiltersChanged($event)">
+        </app-activity-filter-search>
       } @else {
-        <app-activity-filter-search (searchFiltersChanged)="onSearchFiltersChanged($event)"> </app-activity-filter-search>
+        <app-activity-filter-search [resetFormTrigger]="resetFormTrigger" (searchFiltersChanged)="onSearchFiltersChanged($event)">
+        </app-activity-filter-search>
       }
     </div>
-    <app-activity-filter (selectedThemes)="onSelectedThemeChanges($event)"></app-activity-filter>
+    <app-activity-filter [resetFormTrigger]="resetFormTrigger" (selectedThemes)="onSelectedThemeChanges($event)"></app-activity-filter>
     <div class="switch-map">
       <app-toggle-menu [tabs]="navigationItems" [activeTabValue]="0" (chosenTab)="handleNavigation($event)"></app-toggle-menu>
     </div>
@@ -29,10 +31,9 @@
         <app-activity-skeleton></app-activity-skeleton>
       } @else {
         @for (activity of filteredActivities$ | async; track activity.id) {
-          <app-activity-card [activity]="activity" [showDeleteButton]="true" (deleteActivity)="onDeleteActivity($event)"> </app-activity-card>
+          <app-activity-card [activity]="activity" (deleteActivity)="onDeleteActivity($event)"> </app-activity-card>
         } @empty {
           <div class="empty">
-            <i class="fa-solid fa-magnifying-glass"></i>
             <p>Aucun résultat ne correspond à votre recherche</p>
             <button type="button" class="btn-reset" (click)="resetFiltersAndShowAll()">Voir toutes les activités</button>
           </div>

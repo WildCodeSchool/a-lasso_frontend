@@ -10,6 +10,8 @@ import { Activity, Participant } from '../../models/activity.model';
 import { ActivityFacadeService } from '../../services/activity-facade.service';
 import { FavoriteHeartComponent } from '../favorite-heart/favorite-heart.component';
 import { InscriptionBadgeComponent } from '../inscription-badge/inscription-badge.component';
+import { UUIDTypes } from 'uuid';
+import { AuthFacade } from '../../../authentication/services/auth-facade.service';
 
 @Component({
   selector: 'app-activity-card',
@@ -23,19 +25,21 @@ export class ActivityCardComponent implements OnInit {
   @Output() editActivity = new EventEmitter<string>();
 
   @Input() activity!: Activity;
-  @Input() showDeleteButton: boolean = false;
   @Input() showEditButton: boolean = false;
 
   private _activityFacadeService: ActivityFacadeService = inject(ActivityFacadeService);
   private _authService = inject(AuthService);
+  private _authFacadeService = inject(AuthFacade);
 
   public isSavedActivity$: Observable<boolean>;
   public voluntariesRegistered$: Observable<Participant>;
   public apiUrl: string = environment.apiUrl;
   public associationLogoUrl!: string;
+  public showDeleteButton: boolean = false;
   isVoluntary$: Observable<boolean> = this._authService.isVoluntaryUser();
   isAssociation$: Observable<boolean> = this._authService.isAssociationUser();
   isAdmin$: Observable<boolean> = this._authService.isAdminUser();
+  connectedUserId$: Observable<UUIDTypes> = this._authFacadeService.getConnectedUserId();
   showFavorite$: Observable<boolean> = combineLatest([this.isVoluntary$, this.isAdmin$]).pipe(
     map(([isVoluntary, isAdmin]) => isVoluntary && !isAdmin)
   );
@@ -44,6 +48,12 @@ export class ActivityCardComponent implements OnInit {
     this.isSavedActivity$ = this._activityFacadeService.getIsSavedActivity(this.activity.id);
     this.voluntariesRegistered$ = this._activityFacadeService.getVoluntariesRegisteredToAnActivity(this.activity.id);
     this._setAssociationLogoUrl();
+
+    combineLatest([this.isAssociation$, this.isAdmin$, this.connectedUserId$]).subscribe(([isAssociation, isAdmin, connectedUserId]) => {
+      if ((isAssociation && this.activity.association.id === connectedUserId) || isAdmin) {
+        this.showDeleteButton = true;
+      }
+    });
   }
 
   onDeleteClick(event: MouseEvent): void {

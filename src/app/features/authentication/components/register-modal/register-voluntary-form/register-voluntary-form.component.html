@@ -11,7 +11,7 @@
       </div>
     } @else {
       <div class="form-field">
-        <app-input-field [fieldConfig]="field" [showPasswordRules]="field.showPasswordRules || false" [formGroup]="form" />
+        <app-input-field [fieldConfig]="field" [showPasswordRules]="field.showPasswordRules || false" [formGroup]="form" dateMode="past" />
         <app-input-field-error
           [control]="form.get(field.name)"
           [fieldName]="field.name"

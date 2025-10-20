@@ -33,6 +33,8 @@
       [appendTo]="'body'"
       styleClass="custom-dialog"
       contentStyleClass="custom-dialog-content">
+      <p class="subtitle" style="color: grey">Sélectionner une photo parmi vos précédentes activités ou télécharger une nouvelle image</p>
+
       <div class="existing-photos">
         @if (existingImages$ | async; as existingImages) {
           @for (pic of existingImages; track pic.id) {
@@ -56,7 +58,7 @@
           [type]="'button'"
           (buttonClicked)="loadMorePictures()"
           [styleClass]="ButtonStyleClass.defaultWhite"
-          label="Plus d'images"
+          label="Charger plus d'images précédentes"
           ariaLabel="button pour charger plus de photos"
           size="small">
         </app-single-button>

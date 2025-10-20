@@ -17,8 +17,10 @@ export class AuthService {
   private _http: HttpClient = inject(HttpClient);
   private _apiUrl = environment.apiUrl;
   private _authState$ = new BehaviorSubject<boolean>(this._checkTokenValidOnInit());
-  private _openLoginModal$ = new Subject<void>();
+  private _openLoginModal$ = new Subject<string | null>();
+  private _openSubscribeModal$ = new Subject<void>();
   openLoginModal$ = this._openLoginModal$.asObservable();
+  openSubscribeModal$ = this._openSubscribeModal$.asObservable();
   isbanned$ = new BehaviorSubject<boolean>(false);
 
   registerVoluntary(data: VoluntaryRegister): Observable<boolean> {
@@ -79,10 +81,6 @@ export class AuthService {
     this.isbanned$.next(value);
   }
 
-  public clearUserState(): void {
-    localStorage.removeItem('userState');
-  }
-
   public updateAuthState(): boolean {
     const token = this.getToken();
     if (!token) {
@@ -116,7 +114,6 @@ export class AuthService {
 
   public resetUser(): void {
     this.clearToken();
-    this.clearUserState();
     this.updateAuthState();
   }
 
@@ -160,7 +157,11 @@ export class AuthService {
     }
   }
 
-  triggerLoginModal(): void {
-    this._openLoginModal$.next();
+  triggerLoginModal(email?: string): void {
+    this._openLoginModal$.next(email ?? null);
+  }
+
+  triggerSubscribeModal(): void {
+    this._openSubscribeModal$.next();
   }
 }

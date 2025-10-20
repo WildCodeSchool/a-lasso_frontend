@@ -106,7 +106,6 @@ module.exports = tseslint.config(
       "@angular-eslint/template/no-call-expression": "warn",
       "@angular-eslint/template/no-distracting-elements": "warn",
       "@angular-eslint/template/mouse-events-have-key-events": "warn",
-      "@angular-eslint/template/no-inline-styles": "warn",
       "@angular-eslint/template/no-interpolation-in-attributes": "warn",
       "@angular-eslint/template/prefer-control-flow": "warn",
     },

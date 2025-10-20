@@ -10,7 +10,6 @@ import { ACTIVITY_LENGTH, UserRole } from '../constants/auth.constants';
 import { ApiResponseLogin } from '../models/api-response.model';
 import { AssociationLogin, UserHeaderInfo, UserLogin, UserType, VoluntaryLogin } from '../models/user.model';
 import { AuthService } from './auth.service';
-import { getInitialUserState } from '../store/meta-reducers';
 import { VoluntaryProfileService } from '../../profile/services/voluntary-profil.service';
 import { MessageService } from 'primeng/api';
 import { showErrorToast, showSuccessToast } from 'src/app/common/utils/toast.utils';
@@ -19,6 +18,7 @@ import { UserSelectors } from '../store/user.selectors';
 import { UserActions } from '../store/user.actions';
 import { ActivitiesActions } from '../../activity/store/activities.actions';
 import { ActivitiesSelectors } from '../../activity/store/activities.selectors';
+import { AuthApiService } from './auth-api.service';
 
 @Injectable({
   providedIn: 'root',
@@ -27,6 +27,7 @@ export class AuthFacade {
   private _store = inject(Store);
   private _authService = inject(AuthService);
   private _activityFacade = inject(ActivityFacadeService);
+  private _authApiService = inject(AuthApiService);
   private _voluntaryProfileService = inject(VoluntaryProfileService);
   private _associationProfileService = inject(AssociationProfileService);
   private _toast = inject(MessageService);
@@ -70,9 +71,7 @@ export class AuthFacade {
     return this._authService.changeEmail(password, newEmail).pipe(
       map(({ token, user }) => {
         this._authService.saveToken(token);
-        this._authService.updateAuthState();
         this._store.dispatch(UserActions.loginSuccess({ userInfos: user }));
-        localStorage.setItem('userState', JSON.stringify({ isAuthenticated: true, userInfos: user }));
         showSuccessToast(this._toast);
 
         return { token, user };
@@ -82,6 +81,10 @@ export class AuthFacade {
 
   deleteAccount(): Observable<void> {
     return this._authService.deleteAccount();
+  }
+
+  getConnectedUserId(): Observable<UUIDTypes> {
+    return this.user$.pipe(map(user => user?.id ?? ''));
   }
 
   getUserHeaderInfo(): Observable<UserHeaderInfo> {
@@ -106,10 +109,13 @@ export class AuthFacade {
     );
   }
 
-  initUserFromStorage(): void {
-    const userState = getInitialUserState();
-    if (userState.isAuthenticated && userState.userInfos) {
-      this._store.dispatch(UserActions.loginSuccess({ userInfos: userState.userInfos }));
+  getUserByToken(): void {
+    const token = this._authService.getToken();
+    if (token) {
+      this._authApiService
+        .getUserByToken()
+        .pipe()
+        .subscribe(response => this._store.dispatch(UserActions.loginSuccess({ userInfos: response.user })));
     }
   }
 
@@ -158,7 +164,6 @@ export class AuthFacade {
 
   private _resetSession(): void {
     this._authService.clearToken();
-    this._authService.clearUserState();
   }
 
   private _handleLoginSuccess({ token, user }: ApiResponseLogin): void {
