@@ -25,27 +25,11 @@ export class AssociationActivityMenuComponent implements OnInit {
   activities$: Observable<Activity[]> = this._activityFacade.activities$;
   associationId$: Observable<UUIDTypes | null> = this._activityFacade.associationId$;
   chosenNavigation$ = new BehaviorSubject<string>('Futures');
-
-  get filteredActivities$(): Observable<Activity[]> {
-    return combineLatest([this.activities$, this.associationId$, this.chosenNavigation$]).pipe(
-      map(([activities, associationId, chosenNavigation]) => {
-        if (!associationId) return [];
-
-        if (chosenNavigation === 'Futures' || chosenNavigation === 'Passées') {
-          return activities.filter(activity => activity.association.id === associationId && activity.status === ActivityStatusEnum.PUBLISHED);
-        }
-
-        if (chosenNavigation === 'Brouillons') {
-          return activities.filter(activity => activity.association.id === associationId && activity.status === ActivityStatusEnum.DRAFT);
-        }
-
-        return [];
-      })
-    );
-  }
+  filteredActivities$!: Observable<Activity[]>;
 
   ngOnInit(): void {
     this._loadActivitiesForTab(this.chosenNavigation$.value);
+    this._filterActivitiesForTab();
   }
 
   handleTabChange(tab: string): void {
@@ -62,5 +46,20 @@ export class AssociationActivityMenuComponent implements OnInit {
     } else if (tab === 'Brouillons') {
       this._activityFacade.getDraftActivitiesFromApi();
     }
+  }
+
+  private _filterActivitiesForTab(): void {
+    this.filteredActivities$ = combineLatest([this.activities$, this.associationId$, this.chosenNavigation$]).pipe(
+      map(([activities, associationId, chosenNavigation]) => {
+        if (!associationId) return [];
+        if (['Futures', 'Passées'].includes(chosenNavigation)) {
+          return activities.filter(activity => activity.association.id === associationId && activity.status === ActivityStatusEnum.PUBLISHED);
+        }
+        if (chosenNavigation === 'Brouillons') {
+          return activities.filter(activity => activity.association.id === associationId && activity.status === ActivityStatusEnum.DRAFT);
+        }
+        return [];
+      })
+    );
   }
 }
