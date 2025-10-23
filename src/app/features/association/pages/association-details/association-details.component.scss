@@ -12,6 +12,7 @@
     overflow: hidden;
 
     .page-title {
+      color: var(--primary-light-color);
       text-align: center;
       margin-bottom: 1rem;
       font-size: 1.5rem;
@@ -34,46 +35,59 @@
       gap: 2vw;
       min-height: 0;
 
-      .cards-activities {
+      .cards-activities-container {
         flex: 1;
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 1rem;
-        overflow-y: auto;
-        overflow-x: hidden;
-        padding-right: 0.5rem;
+        display: flex;
+        flex-direction: column;
+        min-height: 0;
 
-        scrollbar-width: thin;
-        scrollbar-color: var(--primary-light-color) transparent;
-
-        &::-webkit-scrollbar {
-          width: 6px;
-        }
-        &::-webkit-scrollbar-thumb {
-          background-color: var(--primary-light-color);
-          border-radius: 4px;
-        }
-        &::-webkit-scrollbar-track {
-          background: transparent;
+        .cards-activities-header {
+          color: var(--primary-light-color);
+          margin-top: 2rem;
+          margin-bottom: 3rem;
         }
 
-        .empty {
-          grid-column: 1 / -1;
-          text-align: center;
-          font-style: italic;
-          color: var(--dai-secondary, #888);
-        }
+        .cards-activities {
+          flex: 1;
+          display: grid;
+          grid-template-columns: repeat(2, 1fr);
+          gap: 1rem;
+          overflow-y: auto;
+          overflow-x: hidden;
+          padding-right: 0.5rem;
 
-        @media (max-width: 1500px) {
-          grid-template-columns: 1fr;
-        }
+          scrollbar-width: thin;
+          scrollbar-color: var(--primary-light-color) transparent;
 
-        @media (max-width: 1300px) {
-          overflow-y: visible;
-        }
+          &::-webkit-scrollbar {
+            width: 6px;
+          }
+          &::-webkit-scrollbar-thumb {
+            background-color: var(--primary-light-color);
+            border-radius: 4px;
+          }
+          &::-webkit-scrollbar-track {
+            background: transparent;
+          }
 
-        @media (max-width: 768px) {
-          grid-template-columns: 1fr;
+          .empty {
+            grid-column: 1 / -1;
+            text-align: center;
+            font-style: italic;
+            color: var(--dai-secondary, #888);
+          }
+
+          @media (max-width: 1500px) {
+            grid-template-columns: 1fr;
+          }
+
+          @media (max-width: 1300px) {
+            overflow-y: visible;
+          }
+
+          @media (max-width: 768px) {
+            grid-template-columns: 1fr;
+          }
         }
       }
 

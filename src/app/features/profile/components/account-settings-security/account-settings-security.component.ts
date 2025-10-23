@@ -55,6 +55,7 @@ export class AccountSettingsSecurityComponent {
       rejectLabel: 'Annuler',
       acceptButtonStyleClass: 'p-button-danger',
       rejectButtonStyleClass: 'p-button-secondary',
+      dismissableMask: true,
       accept: () => {
         this._authFacade.deleteAccount().subscribe({
           next: () => {

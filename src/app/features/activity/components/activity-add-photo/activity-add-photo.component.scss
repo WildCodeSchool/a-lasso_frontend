@@ -76,12 +76,10 @@
     }
   }
 
-  .modal-container {
-    ::ng-deep .p-dialog-header .p-dialog-title {
-      font-family: var(--font-family-big-medium-title);
-      font-size: var(--font-size-medium-title);
-      font-weight: 400 !important;
-    }
+  .modal-container ::ng-deep .p-dialog-header .p-dialog-title {
+    font-family: var(--font-family-big-medium-title);
+    font-size: var(--font-size-medium-title);
+    font-weight: 400 !important;
 
     .existing-photos {
       display: flex;

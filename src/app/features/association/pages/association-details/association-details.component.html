@@ -10,15 +10,18 @@
   <div class="activities-association">
     <!-- Desktop : toujours afficher les deux colonnes -->
     @if (!navigationItems.length) {
-      <div class="cards-activities">
-        @for (activity of activities$ | async; track activity.id) {
-          <app-activity-card [activity]="activity"></app-activity-card>
-        } @empty {
-          <p class="empty">
-            <i class="fa-solid fa-calendar-xmark"></i><br />
-            Aucune activité proposée pour l’instant.
-          </p>
-        }
+      <div class="cards-activities-container">
+        <h2 class="cards-activities-header">Découvrez toutes les activités prévues</h2>
+        <div class="cards-activities">
+          @for (activity of activities$ | async; track activity.id) {
+            <app-activity-card [activity]="activity"></app-activity-card>
+          } @empty {
+            <p class="empty">
+              <i class="fa-solid fa-calendar-xmark"></i><br />
+              Aucune activité proposée pour l’instant.
+            </p>
+          }
+        </div>
       </div>
 
       <div class="association">
@@ -28,15 +31,17 @@
 
     <!-- Mobile : navigation choisit -->
     @if (navigationItems.length && chosenNavigation === 'Activités') {
-      <div class="cards-activities">
-        @for (activity of activities$ | async; track activity.id) {
-          <app-activity-card [activity]="activity"></app-activity-card>
-        } @empty {
-          <p class="empty">
-            <i class="fa-solid fa-calendar-xmark"></i><br />
-            Aucune activité proposée pour l’instant.
-          </p>
-        }
+      <div class="cards-activities-container">
+        <div class="cards-activities">
+          @for (activity of activities$ | async; track activity.id) {
+            <app-activity-card [activity]="activity"></app-activity-card>
+          } @empty {
+            <p class="empty">
+              <i class="fa-solid fa-calendar-xmark"></i><br />
+              Aucune activité proposée pour l’instant.
+            </p>
+          }
+        </div>
       </div>
     }
     @if (navigationItems.length && chosenNavigation === 'Association') {

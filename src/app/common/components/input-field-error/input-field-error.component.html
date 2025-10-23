@@ -14,8 +14,11 @@
         @if (control.errors?.['invalidAddress']) {
           <p>L'adresse sélectionnée est invalide. Veuillez en choisir une depuis la liste</p>
         }
-        @if (control.errors?.['dateRequired']) {
-          <p>La date saisie doit être dans le futur</p>
+        @if (control.errors?.['pastDate']) {
+          <p>La date doit être dans le passé.</p>
+        }
+        @if (control.errors?.['futureDate']) {
+          <p>La date doit être dans le futur.</p>
         }
         @if (control.errors?.['email']) {
           <p>Adresse e-mail invalide</p>

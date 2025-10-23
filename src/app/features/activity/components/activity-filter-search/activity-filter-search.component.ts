@@ -1,9 +1,12 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivitySearchFilters } from '../../models/activity.model';
 import { MultipleInputFieldComponent } from 'src/app/common/components/multiple-input-field/multiple-input-field.component';
 import { FormBuilder } from '@angular/forms';
-import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
+import { debounceTime, map, Observable, Subject } from 'rxjs';
+import { AuthFacade } from 'src/app/features/authentication/services/auth-facade.service';
+import { UserType } from 'src/app/features/authentication/models/user.model';
+import { DestroyableComponent } from 'src/app/common/utils/DestroyableComponent';
 
 type CustomFieldConfig = {
   name: string;
@@ -19,10 +22,15 @@ type CustomFieldConfig = {
   templateUrl: './activity-filter-search.component.html',
   styleUrls: ['./activity-filter-search.component.scss'],
 })
-export class ActivityFilterSearchComponent implements OnInit {
+export class ActivityFilterSearchComponent extends DestroyableComponent implements OnInit, OnChanges {
   private readonly _fb: FormBuilder = new FormBuilder();
+  private _authFacade: AuthFacade = inject(AuthFacade);
+
   @Input() mobileMode: boolean = false;
+  @Input() resetFormTrigger: boolean = false;
   @Output() searchFiltersChanged = new EventEmitter<ActivitySearchFilters>();
+
+  userCity$: Observable<string | null> = this._authFacade.user$.pipe(map(user => (user?.type === UserType.Voluntary ? user.city : null)));
 
   private _searchTerms$ = new Subject<string>();
 
@@ -44,6 +52,21 @@ export class ActivityFilterSearchComponent implements OnInit {
 
   ngOnInit(): void {
     this._initializeSearchTermSubscription();
+
+    this.userCity$.pipe(this.untilDestroyed()).subscribe(city => {
+      const locationControl = this.formGroup.get('location');
+      if (city) {
+        locationControl.setValue(city);
+        this.onInputValuesChanged();
+      }
+    });
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['resetFormTrigger']) {
+      this.formGroup.reset();
+      this.onInputValuesChanged();
+    }
   }
 
   onInputValuesChanged(): void {
@@ -52,7 +75,7 @@ export class ActivityFilterSearchComponent implements OnInit {
   }
 
   private _initializeSearchTermSubscription(): void {
-    this._searchTerms$.pipe(debounceTime(500), distinctUntilChanged()).subscribe(term => {
+    this._searchTerms$.pipe(debounceTime(500)).subscribe(term => {
       const filters: ActivitySearchFilters = {
         search: this.formGroup.value.search ?? '',
         date: this.formGroup.value.date ?? '',

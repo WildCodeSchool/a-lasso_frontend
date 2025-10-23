@@ -1,11 +1,11 @@
 import { animate, style, transition, trigger } from '@angular/animations';
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { RadioButtonModule } from 'primeng/radiobutton';
-import { filter, take } from 'rxjs';
+import { combineLatest, filter, take } from 'rxjs';
 import { InputFieldComponent } from 'src/app/common/components/input-field/input-field.component';
 import { TAKE_1 } from 'src/app/common/constants/observables.constants';
 import { InputFieldErrorComponent } from 'src/app/common/components/input-field-error/input-field-error.component';
@@ -42,10 +42,11 @@ import { AuthService } from '../../services/auth.service';
     ]),
   ],
 })
-export class LoginModalComponent {
+export class LoginModalComponent implements OnChanges {
   @Output() visibleChange = new EventEmitter<boolean>();
   @Output() openPasswordForgottenModal = new EventEmitter<boolean>();
 
+  @Input() email: string = '';
   @Input() visible: boolean = false;
   private _authFacade = inject(AuthFacade);
   private _authService = inject(AuthService);
@@ -55,7 +56,7 @@ export class LoginModalComponent {
   openForgotPasswordModal = false;
 
   loginForm = this._fb.group({
-    email: ['', [Validators.required, Validators.email]],
+    email: [this.email, [Validators.required, Validators.email]],
     password: ['', [Validators.required]],
   });
 
@@ -66,6 +67,12 @@ export class LoginModalComponent {
 
   error: string = '';
   submitted = false;
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['email'] && changes['email'].currentValue !== undefined) {
+      this.loginForm.get('email')?.setValue(changes['email'].currentValue);
+    }
+  }
 
   showModal(): void {
     this.visible = true;
@@ -96,31 +103,29 @@ export class LoginModalComponent {
     const credentials = this.loginForm.value as UserLogin;
     this._authFacade.login(credentials);
 
-    let loginSuccess = false;
-
-    this._authFacade.isAuthenticated$
-      .pipe(
+    combineLatest([
+      this._authFacade.isAuthenticated$.pipe(
         filter(isAuth => isAuth),
         take(TAKE_1)
-      )
-      .subscribe(() => {
-        loginSuccess = true;
+      ),
+      this.isBanned$.pipe(take(TAKE_1)),
+    ]).subscribe(([isAuth, isBanned]) => {
+      if (isAuth) {
         this.hideModal();
-      });
-
-    const timeoutDuration = 100;
-    setTimeout(() => {
-      this.isBanned$.pipe(take(1)).subscribe(isBanned => {
-        if (!loginSuccess && isBanned) {
-          this.error = 'Trop de tentatives échouées. Veuillez réessayer plus tard.';
-        } else {
-          this.error = 'Informations invalides. Veuillez réessayer.';
-        }
-      });
-    }, timeoutDuration);
+        this.error = null;
+      } else if (isBanned) {
+        this.error = 'Trop de tentatives échouées. Veuillez réessayer plus tard.';
+      } else {
+        this.error = 'Informations invalides. Veuillez réessayer.';
+      }
+    });
   }
 
   onForgotPassword(): void {
     this.openPasswordForgottenModal.emit(true);
+  }
+
+  onNoAccount(): void {
+    this._authService.triggerSubscribeModal();
   }
 }

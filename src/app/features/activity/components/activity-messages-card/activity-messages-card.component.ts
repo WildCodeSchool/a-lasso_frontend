@@ -1,5 +1,5 @@
 import { AsyncPipe, NgClass } from '@angular/common';
-import { Component, inject, Input, OnInit } from '@angular/core';
+import { Component, ElementRef, inject, Input, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { MenuItem } from 'primeng/api';
@@ -24,6 +24,7 @@ export class ActivityMessagesCardComponent implements OnInit {
   private _activityFacadeService: ActivityFacadeService = inject(ActivityFacadeService);
   private _fb: FormBuilder = new FormBuilder();
   @Input() activityId!: string;
+  @ViewChild('messageContainer') messageContainer!: ElementRef;
 
   messages$!: Observable<Message[]>;
   emojis: MenuItem[] = [
@@ -69,5 +70,14 @@ export class ActivityMessagesCardComponent implements OnInit {
 
     this._activityFacadeService.postActivityMessage(newMessage);
     this.messageForm.reset();
+    setTimeout(() => this._scrollToBottom(), 100);
+  }
+
+  private _scrollToBottom(): void {
+    try {
+      this.messageContainer.nativeElement.scrollTop = this.messageContainer.nativeElement.scrollHeight;
+    } catch (err) {
+      console.error('Scroll failed:', err);
+    }
   }
 }

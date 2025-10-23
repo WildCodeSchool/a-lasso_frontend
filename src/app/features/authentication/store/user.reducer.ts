@@ -1,9 +1,12 @@
 import { createReducer, on } from '@ngrx/store';
 import { AssociationLogin, FollowedAssociation, MessageNotification, UserState, UserType, VoluntaryLogin } from '../models/user.model';
-import { getInitialUserState } from './meta-reducers';
 import { UserActions } from './user.actions';
 
-export const initialState: UserState = getInitialUserState();
+export const initialState: UserState = {
+  userInfos: null,
+  isAuthenticated: false,
+  error: null,
+};
 
 export const userReducer = createReducer(
   initialState,

@@ -14,12 +14,25 @@ export function photoRequiredValidator(): ValidatorFn {
   };
 }
 
-export function dateRequiredValidator(): ValidatorFn {
-  const today = new Date();
-
+export function futureDateValidator(): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {
-    const date = control.value;
-    return date && date >= today ? null : { dateRequired: true };
+    if (!control.value) return null;
+
+    const inputDate = new Date(control.value);
+    const today = new Date();
+
+    return inputDate >= today ? null : { futureDate: true };
+  };
+}
+
+export function pastDateValidator(): ValidatorFn {
+  return (control: AbstractControl): ValidationErrors | null => {
+    if (!control.value) return null;
+
+    const inputDate = new Date(control.value);
+    const today = new Date();
+
+    return inputDate <= today ? null : { pastDate: true };
   };
 }
 

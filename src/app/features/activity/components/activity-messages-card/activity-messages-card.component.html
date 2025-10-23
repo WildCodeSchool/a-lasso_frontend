@@ -1,6 +1,6 @@
 @if (messages$ | async; as messages) {
   <p-card class="card">
-    <div class="all-messages">
+    <div #messageContainer class="all-messages">
       <div class="intro">
         <p>
           Ceci est un espace d'échange entre vous et l’association.<br />
@@ -24,7 +24,7 @@
 
     <ng-template #footer>
       <div class="footer">
-        <div class="footer-send-message">
+        <form class="footer-send-message" (keydown.enter)="postMessage()">
           <button (click)="menu.toggle($event)" type="button">
             <i class="fa-solid fa-face-smile icon"></i>
           </button>
@@ -36,7 +36,7 @@
           <button (click)="postMessage()" type="button">
             <i class="fa-solid fa-paper-plane icon"></i>
           </button>
-        </div>
+        </form>
         <p-menu #menu [model]="emojis" [popup]="true" />
       </div>
     </ng-template>

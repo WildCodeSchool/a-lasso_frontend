@@ -55,6 +55,7 @@ export class ActivitiesHomeComponent implements OnInit {
   );
 
   searchFilters: ActivitySearchFilters = { search: '', date: '', location: '' };
+  resetFormTrigger: boolean = false;
   selectedThemesName: ThemeName[] = [];
   navigationItems: NavigationItems[] = [{ name: 'Liste' }, { name: 'Carte' }];
   chosenNavigation: string = 'Liste';
@@ -121,6 +122,7 @@ export class ActivitiesHomeComponent implements OnInit {
   }
 
   resetFiltersAndShowAll(): void {
+    this.resetFormTrigger = !this.resetFormTrigger;
     this.searchFilters = { search: '', date: '', location: '' };
     this.selectedThemesName = [];
 

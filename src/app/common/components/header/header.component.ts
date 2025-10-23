@@ -44,14 +44,20 @@ export class HeaderComponent extends DestroyableComponent implements OnInit {
 
   showRegisterModal = false;
   showLoginModal = false;
+  email: string = '';
+
   showPasswordForgottenModal = false;
   ButtonStyleClass = ButtonStyleClass;
 
   userInfos$: Observable<UserHeaderInfo> = this._authFacade.getUserHeaderInfo();
 
   ngOnInit(): void {
-    this._authService.openLoginModal$.pipe(this.untilDestroyed()).subscribe(() => {
+    this._authService.openLoginModal$.pipe(this.untilDestroyed()).subscribe((email: string | null) => {
+      this.email = email ?? '';
       this.handleLoginModal(true);
+    });
+    this._authService.openSubscribeModal$.pipe(this.untilDestroyed()).subscribe(() => {
+      this.handleSubscribeModal(true);
     });
   }
 
@@ -61,6 +67,10 @@ export class HeaderComponent extends DestroyableComponent implements OnInit {
 
   handleLoginModal(status: boolean): void {
     this.showLoginModal = status;
+  }
+  handleSubscribeModal(status: boolean): void {
+    this.showLoginModal = false;
+    this.showRegisterModal = status;
   }
 
   closeLoginModal(): void {
