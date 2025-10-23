@@ -12,6 +12,6 @@ export class VoluntaryProfileMenuComponent {
     { label: 'Activités', link: '/profile/voluntary/activities', icon: 'fas fa-user-circle' },
     { label: 'Profil', link: '/profile/voluntary/about', icon: 'fas fa-id-badge' },
     { label: 'Sécurité', link: '/profile/voluntary/security', icon: 'fas fa-lock' },
-    { label: 'Préférences', link: '/profile/voluntary/settings', icon: 'fas fa-sliders-h' },
+    // { label: 'Préférences', link: '/profile/voluntary/settings', icon: 'fas fa-sliders-h' }, //todo: à changer quand dark ok
   ];
 }

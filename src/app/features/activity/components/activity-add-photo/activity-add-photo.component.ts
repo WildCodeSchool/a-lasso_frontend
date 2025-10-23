@@ -117,9 +117,9 @@ export class ActivityAddPhotoComponent implements OnInit, OnChanges {
       return;
     }
 
-    const maxFileSize = 8 * 1024 * 1024;
+    const maxFileSize = 10 * 1024 * 1024;
     if (file.size > maxFileSize) {
-      showErrorToast(this._toast, 'Le fichier est trop volumineux (max 8MB).');
+      showErrorToast(this._toast, 'Le fichier est trop volumineux (max 10MB).');
       return;
     }
 

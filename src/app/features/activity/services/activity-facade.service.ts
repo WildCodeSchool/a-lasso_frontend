@@ -46,6 +46,13 @@ export class ActivityFacadeService {
     );
   }
 
+  getDraftActivitiesFromApi(): void {
+    this._fetchActivities(
+      () => this._activitiesApi.getDraftActivities(),
+      (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
+    );
+  }
+
   getPastActivitiesFromApi(): void {
     this._activitiesApi
       .getPastActivities()
