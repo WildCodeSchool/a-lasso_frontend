@@ -23,6 +23,10 @@ export class ActivitiesApiService {
     return this._http.get<Theme[]>(`${this._apiUrl}/themes`);
   }
 
+  getDraftActivities(): Observable<Activity[]> {
+    return this._http.get<Activity[]>(`${this._apiUrl}/activities/draft`);
+  }
+
   getFutureActivities(): Observable<Activity[]> {
     return this._http.get<Activity[]>(`${this._apiUrl}/activities/future`);
   }

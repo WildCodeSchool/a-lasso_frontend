@@ -73,7 +73,7 @@ export class ActivityCreationComponent implements OnInit {
   activityForm: FormGroup = this._fb.group({
     title: ['', [Validators.required, Validators.maxLength(MAX_LENGTH), Validators.minLength(MIN_LENGTH)]],
     requestedVolunteers: ['', [Validators.required, Validators.pattern(ACTIVITY_PARTICIPANTS_NUMBER_REGEX)]],
-    date: ['', [futureDateValidator()]],
+    date: ['', [Validators.required, futureDateValidator()]],
     hour: ['', [Validators.required, Validators.pattern(HOUR_REGEX)]],
     matchedAddress: [null, [addressRequiredValidator()]],
     selectedThemesName: [[], themeRequiredValidator()],

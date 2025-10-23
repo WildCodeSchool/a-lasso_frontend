@@ -59,6 +59,8 @@ export class AssociationActivityMenuComponent implements OnInit {
       this._activityFacade.getFutureActivitiesFromApi();
     } else if (tab === 'Passées') {
       this._activityFacade.getPastActivitiesFromApi();
+    } else if (tab === 'Brouillons') {
+      this._activityFacade.getDraftActivitiesFromApi();
     }
   }
 }
