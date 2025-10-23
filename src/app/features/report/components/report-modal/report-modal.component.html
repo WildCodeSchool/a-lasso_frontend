@@ -20,7 +20,7 @@
 
       <div class="actions-footer">
         <p-button label="Annuler" severity="secondary" (click)="closeModal()" />
-        <p-button label="Envoyer" type="submit" (click)="sendReport()" />
+        <p-button label="Envoyer" [disabled]="reportForm.invalid" (click)="sendReport()" />
       </div>
     </form>
   </p-dialog>

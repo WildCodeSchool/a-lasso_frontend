@@ -22,7 +22,7 @@ export class AppComponent implements OnInit {
   loading = false;
 
   ngOnInit(): void {
-    this._authFacade.initUserFromStorage();
+    this._authFacade.getUserByToken();
     this._handleRouterEvents();
     this._applySavedTheme();
   }

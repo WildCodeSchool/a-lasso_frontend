@@ -6,7 +6,7 @@ import { InputFieldErrorComponent } from '../../../../../common/components/input
 import { InputFieldComponent } from 'src/app/common/components/input-field/input-field.component';
 import { MAX_LENGTH, MIN_LENGTH, PASSWORD_REGEX, PHONE_REGEX } from '../../../constants/form.constants';
 import { FormField } from '../../../models/form.model';
-import { passwordsMatchValidator } from '../../../utils/form.validators';
+import { passwordsMatchValidator, pastDateValidator } from '../../../utils/form.validators';
 
 @Component({
   selector: 'app-register-voluntary-form',
@@ -30,9 +30,9 @@ export class RegisterVoluntaryFormComponent {
       phone: ['', [Validators.pattern(PHONE_REGEX)]],
       city: ['', [Validators.required, Validators.minLength(MIN_LENGTH), Validators.maxLength(MAX_LENGTH)]],
       country: ['', [Validators.required, Validators.minLength(MIN_LENGTH), Validators.maxLength(MAX_LENGTH)]],
-      birthdate: ['', Validators.required],
-      cguConsent: [false, Validators.requiredTrue], // ✅ obligatoire
-      rgpdConsent: [false, Validators.requiredTrue], // ✅ obligatoire
+      birthdate: ['', [Validators.required, pastDateValidator()]],
+      cguConsent: [false, Validators.requiredTrue],
+      rgpdConsent: [false, Validators.requiredTrue],
     },
     {
       validators: [passwordsMatchValidator],
@@ -44,7 +44,7 @@ export class RegisterVoluntaryFormComponent {
     { name: 'last_name', label: 'Nom', type: 'text', required: true },
     { name: 'email', label: 'E-mail', type: 'email', required: true },
     { name: 'password', label: 'Mot de passe', type: 'password', required: true, showPasswordRules: true },
-    { name: 'confirmPassword', label: 'Confirmation', type: 'password', required: true },
+    { name: 'confirmPassword', label: 'Confirmation du mot de passe', type: 'password', required: true },
     { name: 'phone', label: 'Téléphone', type: 'tel' },
     {
       name: 'coordonnees',

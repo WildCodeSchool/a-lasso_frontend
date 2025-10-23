@@ -37,6 +37,7 @@ export class ActivityListComponent {
       message: 'Êtes-vous sûr de vouloir supprimer cette activité ? Cette action est irréversible.',
       header: 'Confirmation de suppression',
       icon: 'pi pi-exclamation-triangle',
+      dismissableMask: true,
       acceptLabel: 'Oui, supprimer',
       rejectLabel: 'Annuler',
       acceptButtonStyleClass: 'p-button-danger',

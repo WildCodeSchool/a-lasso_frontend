@@ -1,13 +1,14 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Location as LocationRouter } from '@angular/common';
 import { format } from 'date-fns';
 import { InputFieldComponent } from 'src/app/common/components/input-field/input-field.component';
 import {
   ACTIVITY_DESCRIPTION_MAX_LENGTH,
+  ACTIVITY_PARTICIPANTS_NUMBER_REGEX,
   HOUR_REGEX,
   MAX_LENGTH,
   MIN_LENGTH,
-  NUMBER_REGEX,
 } from 'src/app/features/authentication/constants/form.constants';
 import { FormField } from 'src/app/features/authentication/models/form.model';
 import { SingleButtonComponent } from '../../../../common/components/single-button/single-button.component';
@@ -18,7 +19,7 @@ import {
   photoRequiredValidator,
   themeRequiredValidator,
   addressRequiredValidator,
-  dateRequiredValidator,
+  futureDateValidator,
 } from 'src/app/features/authentication/utils/form.validators';
 import { ActivityStatusEnum, ActivityFormData } from '../../models/activity-creation.model';
 import { SearchAddressComponent } from '../../../../common/components/search-address/search-address.component';
@@ -57,6 +58,7 @@ export class ActivityCreationComponent implements OnInit {
   private _activityFacadeService: ActivityFacadeService = inject(ActivityFacadeService);
   private _fb: FormBuilder = new FormBuilder();
   private _router: Router = inject(Router);
+  private _location: LocationRouter = inject(LocationRouter);
   private _route: ActivatedRoute = inject(ActivatedRoute);
   private _editedActivityId = this._route.snapshot.paramMap.get('id');
   private _loadedActivityFromDraft: Activity;
@@ -70,8 +72,8 @@ export class ActivityCreationComponent implements OnInit {
 
   activityForm: FormGroup = this._fb.group({
     title: ['', [Validators.required, Validators.maxLength(MAX_LENGTH), Validators.minLength(MIN_LENGTH)]],
-    requestedVolunteers: ['', [Validators.required, Validators.pattern(NUMBER_REGEX)]],
-    date: ['', [dateRequiredValidator()]],
+    requestedVolunteers: ['', [Validators.required, Validators.pattern(ACTIVITY_PARTICIPANTS_NUMBER_REGEX)]],
+    date: ['', [futureDateValidator()]],
     hour: ['', [Validators.required, Validators.pattern(HOUR_REGEX)]],
     matchedAddress: [null, [addressRequiredValidator()]],
     selectedThemesName: [[], themeRequiredValidator()],
@@ -83,7 +85,7 @@ export class ActivityCreationComponent implements OnInit {
 
   activityFields: FormField[] = [
     { name: 'title', label: "Titre de l'activité", placeholder: 'Ex : La maraude' },
-    { name: 'requestedVolunteers', label: 'Volontaires requis', placeholder: 'Ex : 10' },
+    { name: 'requestedVolunteers', label: 'Volontaires requis', placeholder: 'Ex : 10', type: 'number', min: 1 },
     { name: 'date', label: 'Date', placeholder: 'Ex : 26/09/2025', type: 'date' },
     { name: 'hour', label: 'Heure', placeholder: 'Ex : 06:00' },
   ];
@@ -188,8 +190,8 @@ export class ActivityCreationComponent implements OnInit {
     );
   }
 
-  navigateToHomePage(): void {
-    this._router.navigate(['/']);
+  navigateToPreviousPage(): void {
+    this._location.back();
   }
 
   private _loadDraftData(): void {

@@ -1,4 +1,4 @@
-import { AsyncPipe, DatePipe } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
@@ -16,11 +16,12 @@ import { VoluntaryUpdateRequestDTO } from '../../../models/update-request-dto.mo
 import { VoluntaryProfileService } from '../../../services/voluntary-profil.service';
 import { EditableFieldComponent } from '../../editable-field/editable-field.component';
 import { UploadAvatarComponent } from '../../upload-avatar/upload-avatar.component';
+import { IsoDatePipe } from '../../../../../common/pipes/date-iso-pipe';
 
 @Component({
   selector: 'app-voluntary-about',
   standalone: true,
-  imports: [AsyncPipe, SingleButtonComponent, ReactiveFormsModule, DatePipe, EditableFieldComponent, UploadAvatarComponent],
+  imports: [AsyncPipe, SingleButtonComponent, ReactiveFormsModule, EditableFieldComponent, UploadAvatarComponent, IsoDatePipe],
   templateUrl: './voluntary-about.component.html',
   styleUrl: './voluntary-about.component.scss',
 })

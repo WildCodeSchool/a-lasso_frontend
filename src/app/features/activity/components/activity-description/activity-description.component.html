@@ -26,17 +26,19 @@
       }
     </div>
 
-    @if (isVoluntary$ | async) {
+    @if ((isAssociation$ | async) === false) {
       @if (canShowRegisterButton$ | async) {
-        <div class="register-button">
-          <app-single-button
-            [id]="1"
-            (buttonClicked)="onRegisterClick(activity)"
-            [styleClass]="(isRegisteredActivity$ | async) ? ButtonStyleClass.unsubscribe : ButtonStyleClass.subscribe"
-            [label]="(isRegisteredActivity$ | async) ? 'Me désinscrire' : 'M\'inscrire !'"
-            [ariaLabel]="'bouton de ' + ((isRegisteredActivity$ | async) ? 'désinscription' : 'inscription')">
-          </app-single-button>
-        </div>
+        @if (isActivityUpcoming()) {
+          <div class="register-button">
+            <app-single-button
+              [id]="1"
+              (buttonClicked)="onRegisterClick(activity)"
+              [styleClass]="(isRegisteredActivity$ | async) ? ButtonStyleClass.unsubscribe : ButtonStyleClass.subscribe"
+              [label]="(isRegisteredActivity$ | async) ? 'Me désinscrire' : 'M\'inscrire !'"
+              [ariaLabel]="'bouton de ' + ((isRegisteredActivity$ | async) ? 'désinscription' : 'inscription')">
+            </app-single-button>
+          </div>
+        }
       } @else {
         <p class="full-message">Cette activité est complète</p>
       }
