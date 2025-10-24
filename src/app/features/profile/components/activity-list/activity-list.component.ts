@@ -54,6 +54,6 @@ export class ActivityListComponent {
   }
 
   showEditButton(activityDate: string | Date): boolean {
-    return new Date(activityDate) > new Date();
+    return activityDate ? new Date(activityDate) > new Date() : true;
   }
 }
