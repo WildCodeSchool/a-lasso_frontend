@@ -10,6 +10,7 @@ import { FormField } from 'src/app/features/authentication/models/form.model';
 import { AutosaveFieldComponent } from '../../directives/autosave-field.component';
 import { SaveStatus } from '../../models/status';
 import { InputFieldErrorComponent } from '../input-field-error/input-field-error.component';
+import { updateDateLimits } from '../../utils/date.utils';
 
 @Component({
   selector: 'app-multiple-input-field',
@@ -32,6 +33,7 @@ export class MultipleInputFieldComponent extends AutosaveFieldComponent<Record<s
   @Output() inputValuesChanged = new EventEmitter<Record<string, string>>();
   @Output() save = new EventEmitter<Record<string, string>>();
 
+  @Input() dateMode: 'future' | 'past' | 'all' = 'all';
   @Input() fieldConfigs: FormField[] = [];
   @Input() showSearchButton = false;
   @Input() showSaveButton = false;
@@ -39,6 +41,8 @@ export class MultipleInputFieldComponent extends AutosaveFieldComponent<Record<s
   @Input() formGroup!: FormGroup;
   @Input() override autosave = false;
 
+  minDate: Date | undefined;
+  maxDate: Date | undefined;
   focusedIndex: number | null = null;
   inputConfigs: { name: string; label: string; placeholder: string; type: string; value: string }[] = [];
 
@@ -65,6 +69,10 @@ export class MultipleInputFieldComponent extends AutosaveFieldComponent<Record<s
         value: '',
       }));
     }
+
+    const { maxDate, minDate } = updateDateLimits(this.dateMode);
+    this.maxDate = maxDate;
+    this.minDate = minDate;
   }
 
   emitValues(): void {

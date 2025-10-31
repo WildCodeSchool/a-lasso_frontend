@@ -8,7 +8,9 @@
         appendTo="body"
         dateFormat="dd.mm.yy"
         [ariaLabel]="fieldConfig.label"
-        [placeholder]="fieldConfig.placeholder ?? ''">
+        [placeholder]="fieldConfig.placeholder ?? ''"
+        [minDate]="dateMode === 'future' ? minDate : null"
+        [maxDate]="dateMode === 'past' ? maxDate : null">
       </p-calendar>
     } @else if (fieldConfig.type === 'password') {
       <p-password
@@ -38,10 +40,10 @@
         [id]="inputId"
         [formControlName]="fieldConfig.name"
         [type]="inputType"
+        [min]="fieldConfig.min"
         [disabled]="disabled"
         [placeholder]="fieldConfig.placeholder ?? ''"
-        autocomplete="on"
-        [ariaLabel]="fieldConfig.label" />
+        autocomplete="on" />
     }
   </ng-template>
 

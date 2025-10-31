@@ -24,11 +24,8 @@ describe('Feature Report', () => {
       it('can\'t report with an empty reason', () => {
         loginAsVoluntary();
         accessToReportModal();
-        cy.get('p-button').contains('Envoyer')
-          .click();
-        cy.get('app-textarea-field p')
-          .contains('Ce champ est requis')
-          .should('be.visible');
+        cy.get('p-button[label="Envoyer"] button')
+          .should('be.disabled');
         cy.get('body').find('.p-dialog-mask')
           .click({ force: true });
         logout();

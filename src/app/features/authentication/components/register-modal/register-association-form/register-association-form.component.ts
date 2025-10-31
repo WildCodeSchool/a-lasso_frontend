@@ -29,8 +29,8 @@ export class RegisterAssociationFormComponent {
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.pattern(PASSWORD_REGEX)]],
       confirmPassword: ['', [Validators.required]],
-      cguConsent: [false, Validators.requiredTrue], // ✅ obligatoire
-      rgpdConsent: [false, Validators.requiredTrue], // ✅ obligatoire
+      cguConsent: [false, Validators.requiredTrue],
+      rgpdConsent: [false, Validators.requiredTrue],
     },
     {
       validators: [passwordsMatchValidator],
@@ -48,7 +48,7 @@ export class RegisterAssociationFormComponent {
   authFields: FormField[] = [
     { name: 'email', label: 'E-mail', type: 'email', required: true },
     { name: 'password', label: 'Mot de passe', type: 'password', required: true, showPasswordRules: true },
-    { name: 'confirmPassword', label: 'Confirmation', type: 'password', required: true },
+    { name: 'confirmPassword', label: 'Confirmation du mot de passe', type: 'password', required: true },
   ];
 
   onSubmit(event?: Event): void {

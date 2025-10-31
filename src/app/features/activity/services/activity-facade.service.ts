@@ -46,6 +46,13 @@ export class ActivityFacadeService {
     );
   }
 
+  getDraftActivitiesFromApi(): void {
+    this._fetchActivities(
+      () => this._activitiesApi.getDraftActivities(),
+      (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
+    );
+  }
+
   getPastActivitiesFromApi(): void {
     this._activitiesApi
       .getPastActivities()
@@ -130,12 +137,6 @@ export class ActivityFacadeService {
                 isSaved: isFollowApiResponse,
               })
             );
-
-            if (isFollowApiResponse) {
-              showSuccessToast(this._toast);
-            } else {
-              showInfoToast(this._toast, 'Activité retirée de vos favoris.');
-            }
           },
         })
       )
@@ -225,7 +226,6 @@ export class ActivityFacadeService {
       .pipe(
         tap((postedMessage: Message) => {
           this._store.dispatch(MessagesActions.addMessage({ message: postedMessage }));
-          showSuccessToast(this._toast);
         })
       )
       .subscribe();

@@ -31,7 +31,8 @@
                   [useIftaLabel]="true"
                   [fieldConfig]="activityField"
                   [formGroup]="activityForm"
-                  [submitted]="submitted">
+                  [submitted]="submitted"
+                  dateMode="future">
                 </app-input-field>
                 <app-input-field-error [control]="activityForm.get(activityField.name)" [fieldName]="activityField.name" [submitted]="submitted">
                 </app-input-field-error>
@@ -86,7 +87,7 @@
           type="button"
           label="Annuler"
           ariaLabel="annuler la création de l'activité"
-          (buttonClicked)="navigateToHomePage()"
+          (buttonClicked)="navigateToPreviousPage()"
           [styleClass]="ButtonStyleClass.defaultWhite">
         </app-single-button>
         <app-single-button

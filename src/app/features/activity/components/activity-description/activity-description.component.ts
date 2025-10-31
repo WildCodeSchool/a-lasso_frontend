@@ -16,7 +16,7 @@ import { InscriptionBadgeComponent } from '../inscription-badge/inscription-badg
 @Component({
   selector: 'app-activity-description',
   imports: [InscriptionBadgeComponent, FavoriteHeartComponent, DatePipe, ButtonModule, SingleButtonComponent, AsyncPipe],
-  providers: [ConfirmationService],
+  providers: [],
   templateUrl: './activity-description.component.html',
   styleUrl: './activity-description.component.scss',
 })
@@ -29,11 +29,13 @@ export class ActivityDescriptionComponent implements OnInit {
 
   ButtonStyleClass = ButtonStyleClass;
   public apiUrl: string = environment.apiUrl;
+  public today: Date = new Date();
   public isRegisteredActivity$: Observable<boolean>;
   public isSavedActivity$: Observable<boolean>;
   public voluntariesRegistered$: Observable<Participant>;
 
   isVoluntary$: Observable<boolean> = this._authService.isVoluntaryUser();
+  isAssociation$: Observable<boolean> = this._authService.isAssociationUser();
   isNotFull$: Observable<boolean>;
   canShowRegisterButton$: Observable<boolean>;
 
@@ -47,19 +49,40 @@ export class ActivityDescriptionComponent implements OnInit {
     );
   }
 
+  isActivityUpcoming(): boolean {
+    const activityDate = new Date(this.activity.date);
+    return activityDate >= this.today;
+  }
+
   onRegisterClick(activity: Activity): void {
-    this.isRegisteredActivity$.pipe(take(TAKE_1)).subscribe(isRegistered => {
-      if (isRegistered) {
-        this._confirmationService.confirm({
-          message: 'Êtes-vous sûr de vouloir vous désinscrire de cette activité ?',
-          header: 'Confirmation',
-          icon: 'pi pi-exclamation-triangle',
-          acceptLabel: 'Oui',
-          rejectLabel: 'Non',
-          accept: () => this.toggleRegister(activity),
+    this.isVoluntary$.pipe(take(TAKE_1)).subscribe(isVoluntary => {
+      if (isVoluntary) {
+        this.isRegisteredActivity$.pipe(take(TAKE_1)).subscribe(isRegistered => {
+          if (isRegistered) {
+            this._confirmationService.confirm({
+              message: 'Êtes-vous sûr de vouloir vous désinscrire de cette activité ?',
+              header: 'Confirmation',
+              icon: 'pi pi-exclamation-triangle',
+              acceptLabel: 'Oui',
+              rejectLabel: 'Non',
+              dismissableMask: true,
+              accept: () => this.toggleRegister(activity),
+            });
+            this.toggleRegister(activity);
+          } else {
+            this.toggleRegister(activity);
+          }
         });
       } else {
-        this.toggleRegister(activity);
+        this._confirmationService.confirm({
+          message: "Seuls les utilisateurs connectés peuvent s'inscrire aux activités.",
+          header: 'Information',
+          icon: 'pi pi-info-circle',
+          acceptLabel: 'Se connecter maintenant',
+          rejectVisible: false,
+          dismissableMask: true,
+          accept: () => this.navigateToLogin(),
+        });
       }
     });
   }
@@ -68,5 +91,9 @@ export class ActivityDescriptionComponent implements OnInit {
     this.isRegisteredActivity$.pipe(take(TAKE_1)).subscribe(isRegistered => {
       this._activityFacadeService.toggleRegister(activity.id, !isRegistered);
     });
+  }
+
+  navigateToLogin(): void {
+    this._authService.triggerLoginModal();
   }
 }

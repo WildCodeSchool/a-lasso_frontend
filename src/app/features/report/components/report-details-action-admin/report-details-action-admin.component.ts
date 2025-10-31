@@ -82,6 +82,7 @@ export class ReportDetailsActionAdminComponent implements OnInit {
       rejectLabel: 'Annuler',
       acceptButtonStyleClass: 'p-button-danger',
       rejectButtonStyleClass: 'p-button-secondary',
+      dismissableMask: true,
       accept: () => {
         const updatedReport: Report = {
           ...this.reportSelected,
@@ -110,6 +111,7 @@ export class ReportDetailsActionAdminComponent implements OnInit {
       rejectLabel: 'Annuler',
       acceptButtonStyleClass: 'p-button-danger',
       rejectButtonStyleClass: 'p-button-secondary',
+      dismissableMask: true,
       accept: () => {
         switch (userBan) {
           case 'reporter':

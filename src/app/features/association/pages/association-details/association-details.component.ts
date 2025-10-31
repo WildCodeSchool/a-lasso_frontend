@@ -30,6 +30,7 @@ export class AssociationDetailsComponent implements OnInit {
 
   ngOnInit(): void {
     this._initializeAssociationData();
+    this._updateNavigationItems(this.screenWidth);
   }
 
   @HostListener('window:resize', ['$event'])

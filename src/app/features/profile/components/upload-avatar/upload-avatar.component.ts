@@ -57,10 +57,10 @@ export class UploadAvatarComponent {
   }
 
   private _isValidFile(file: File): boolean {
-    const maxFileSize = 2 * 1024 * 1024;
+    const maxFileSize = 10 * 1024 * 1024;
     const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg', 'image/webp'];
     if (file.size > maxFileSize) {
-      showErrorToast(this._toast, 'Le fichier est trop volumineux (max 2MB).');
+      showErrorToast(this._toast, 'Le fichier est trop volumineux (max 10MB).');
       return false;
     }
     if (!allowedTypes.includes(file.type)) {
