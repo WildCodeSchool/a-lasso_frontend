@@ -11,7 +11,7 @@ BackEnd Prod : https://api.a-l-asso.fr/ | Stagging : https://staging-api.a-l-ass
 
 Repo gitHub BackEnd : https://github.com/WildCodeSchool/a-lasso_backend
 
-![alt text](image.png)
+![Image 1](https://i.ibb.co/jktVfxQn/image.png)
 
 ## Description du projet
 
@@ -178,7 +178,7 @@ npm run docker:prod
 
 ## Architecture
 
-![alt text](image-1.png)
+![Image 2](https://i.ibb.co/RGQNfsTJ/image-1.png)
 
 ## Qualité du code
 
