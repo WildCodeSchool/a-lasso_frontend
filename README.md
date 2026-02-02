@@ -1,90 +1,250 @@
-# Frontend project template : Angular 🛡️
+# ALASSO - Frontend
 
-This repository is a Angular project template shipped with a base configuration in order to have a clean base to work with, for you and your teammates. 
-
-This project has been initialized from Angular CLI version 18.2.
-
-🔥 To properly understand the structure of this project, open the `package.json` file and take your time reviewing it.
+Plateforme de mise en relation entre bénévoles et associations.
 
 
-## Branch protection rules
-- You need to manually add your protection rules from your repository instance settings :
-  - Lock pushes on production, staging & development ;
-  - Make PR mandatory towards production, staging & development
-  - PR, any branch ➡️ development :
-     - All contributors must add their review.
-  - PR, development ➡️ staging :
-     - Only the `development` branch can make a PR to the `staging` branch ;
-     - All contributors must add their review.
-  - PR, staging ➡️ production :
-    - Only the `staging` branch can make a PR to the `production` branch ;
-    - All contributors must add their review ;
-    - The owner of the repository must approve the PR.
- 
-## Same code format : Prettier
-- This project uses Prettier. 
-- Prettier makes sure that everyone has the same code format and standardize it. It helps developers to be focused on creating feature, not formatting. The same format for everyone also means easier code reviews.
-- The configuration file is in the `source directory` > `.prettierrc.json`.
-- You can install Prettier plugin on your IDE if you want, it would help you to configure when prettier should run. For instance, you can choose to let it run after every file save. But you are not forced to install the plugin because **Prettier will run every time after you are trying to commit**.
-- You can run Prettier at any time with the following command: `npm run prettier`
+Backend API pour l'application A l'Asso, une plateforme de mise en relation entre bénévoles et associations.
 
-⚠️ You cannot edit Prettier config file. Otherwise your commit won't pass.
+FrontEnd Prod : https://a-l-asso.fr/ | Stagging : https://staging.a-l-asso.fr/
+
+BackEnd Prod : https://api.a-l-asso.fr/ | Stagging : https://staging-api.a-l-asso.fr/
+
+Repo gitHub BackEnd : https://github.com/WildCodeSchool/a-lasso_backend
+
+![alt text](image.png)
+
+## Description du projet
+
+ALASSO est une application web permettant aux bénévoles de découvrir et participer à des activités proposées par des associations. L'application offre une carte interactive pour visualiser les activités à proximité, un système de messagerie, et des profils dédiés pour les bénévoles et les associations.
+
+## Stack technique
+
+| Technologie | Version | Usage |
+|-------------|---------|-------|
+| Angular | 19 | Framework frontend (composants standalone) |
+| NgRx | 19 | State management (store, effects, selectors) |
+| PrimeNG | 19 | Bibliothèque de composants UI |
+| MapLibre GL | 5 | Carte interactive |
+| SCSS | - | Styles |
+| Jest | 29 | Tests unitaires et d'intégration |
+| Cypress | latest | Tests End-to-End |
+| TypeScript | 5.5 | Langage |
+
+## Architecture du projet
+
+```
+src/
+├── app/
+│   ├── common/                    # Éléments partagés
+│   │   ├── components/            # Composants réutilisables (badge, button, header...)
+│   │   ├── guards/                # Guards d'authentification et de rôles
+│   │   ├── interceptors/          # Intercepteurs HTTP (JWT)
+│   │   ├── models/                # Interfaces et types communs
+│   │   ├── pipes/                 # Pipes personnalisés
+│   │   ├── resolvers/             # Resolvers de routes
+│   │   ├── store/                 # État global NgRx
+│   │   └── utils/                 # Fonctions utilitaires
+│   │
+│   └── features/                  # Modules fonctionnels
+│       ├── activity/              # Gestion des activités
+│       │   ├── components/        # Composants (cartes, filtres, favoris...)
+│       │   ├── models/            # Modèles d'activité
+│       │   ├── pages/             # Pages (liste, détails, création)
+│       │   ├── services/          # Services API et façade
+│       │   ├── store/             # État NgRx des activités
+│       │   └── utils/             # Utilitaires spécifiques
+│       │
+│       ├── association/           # Gestion des associations
+│       │   ├── components/        # Composants (carte association)
+│       │   ├── models/            # Modèles d'association
+│       │   ├── pages/             # Page détails association
+│       │   ├── services/          # Services API et façade
+│       │   └── store/             # État NgRx des associations
+│       │
+│       ├── authentication/        # Authentification
+│       │   ├── components/        # Modales (login, register, forgot password)
+│       │   ├── constants/         # Constantes d'auth
+│       │   ├── models/            # Modèles utilisateur
+│       │   ├── pages/             # Page reset password
+│       │   └── store/             # État NgRx d'authentification
+│       │
+│       ├── map/                   # Carte interactive
+│       │   ├── components/        # Composants map et popup
+│       │   ├── constants/         # Configuration de la carte
+│       │   ├── models/            # Types de la carte
+│       │   └── services/          # Service de la carte
+│       │
+│       ├── profile/               # Profils utilisateurs
+│       │   ├── components/        # Composants profil (association/voluntary)
+│       │   ├── models/            # Modèles de profil
+│       │   ├── pages/             # Pages profil association et bénévole
+│       │   └── utils/             # Validateurs et utilitaires
+│       │
+│       └── report/                # Signalements (admin)
+│           ├── components/        # Composants de signalement
+│           ├── models/            # Modèles de signalement
+│           ├── pages/             # Page d'accueil des signalements
+│           ├── services/          # Services API et façade
+│           └── store/             # État NgRx des signalements
+│
+├── environments/                  # Configuration par environnement
+└── styles.scss                    # Styles globaux
+```
+
+## Rôles utilisateurs
+
+| Rôle | Description | Fonctionnalités |
+|------|-------------|-----------------|
+| **Bénévole** | Utilisateur standard | Consulter les activités, s'inscrire, ajouter aux favoris, messagerie |
+| **Association** | Organisateur d'activités | Créer/modifier des activités, gérer les inscriptions, statistiques |
+| **Admin** | Administrateur | Gestion des signalements, modération |
+
+## Installation et lancement
+
+### Prérequis
+
+- Node.js (version LTS recommandée)
+- npm
+
+### Installation
+
+```bash
+# Cloner le repository
+git clone <url-du-repo>
+
+# Installer les dépendances
+npm install
+
+# Activer Husky (hooks git)
+npm run prepare
+```
 
 
-## Same code rules : Eslint
-- This project uses Eslint. The configuration file is in the `source directory` > `eslint.config.js`.
-- Eslint prevent a lot of typo mistakes & future bugs to come. It enforces code rules & conventions.
-- It uses all recommanded configurations from Eslint, Tslint and Nglint. It has a few more custom configurations specific for this project.
-- You can run Eslint at any time with the following command: ng lint
+### Configuration
 
-⚠️ You cannot edit Eslint config file. Otherwise your commit won't pass.
+1. Copier le fichier d'environnement secret :
+```bash
+cp src/environments/environment.secret.sample.ts src/environments/environment.secret.ts
+```
 
-## Clean git workflow : Husky
-This project uses Husky. It enforces rules to keep your git workflow clean & consistent. It mainly uses the pre-commit git hook. Before each commit, Husky:
-- Makes sure you did not modify Prettier, Eslint or Husky configuration files ;
-- Run Prettier and Eslint automatically ;
-- Validate branch name and help you to rename it with good practices if test fails.
-- You need to enable it once after cloning the project by running the `npm run prepare` command to set up your local instance.
-- Since all tests run locally with Husky are also executed on CI after every push, not enabling Husky upfront will result in slower feedback on your Git practices, as you’ll have to wait for CI to complete the checks 🙈.
+2. Renseigner les clés API nécessaires dans `environment.secret.ts`
 
-## Automatic documentation : compodoc
-- This project uses compodoc : a dynamic documentation of your whole application. 
-- It builds a clean documentation on your localhost and gives you a nice overview of your application. 
-- It needs to be rebuilt after each code modification. You can run it with the following command: `npm run doc`
+### Lancer l'application
+
+```bash
+# Développement (par défaut)
+npm start
+# ou
+npm run serve:development
+
+# Staging
+npm run serve:staging
+
+# Production
+npm run serve:production
+```
+
+L'application sera accessible sur `http://localhost:4200`
+
+### Avec Docker
+
+```bash
+# Développement
+npm run docker:dev
+
+# Staging
+npm run docker:staging
+
+# Production
+npm run docker:prod
+```
+
+## Scripts disponibles
+
+| Commande | Description |
+|----------|-------------|
+| `npm start` | Lancer en mode développement |
+| `npm run build:staging` | Build pour staging |
+| `npm run build:production` | Build pour production |
+| `npm run test` | Lancer les tests unitaires |
+| `npm run test:coverage` | Tests avec rapport de couverture |
+| `npm run test:watch` | Tests en mode watch |
+| `npm run e2e:ui:staging` | Tests E2E Cypress (UI) - staging |
+| `npm run e2e:ci:staging` | Tests E2E Cypress (CLI) - staging |
+| `npm run lint` | Lancer ESLint |
+| `npm run prettier` | Formater le code avec Prettier |
+| `npm run doc` | Générer et servir la documentation Compodoc |
 
 
-## Environments
-- This application is creates around 3 environments : `development`, `staging` and `production`.
-- Npm scripts about serving, building and e2e testing the application allow you to easily swap between them.
-- Some checks are made to make sure that anyone can't add a new environement in a snap.
-- These environments are fundamentals ; be sure to know what you do when you manipulate them.
+## Architecture
+
+![alt text](image-1.png)
+
+## Qualité du code
+
+### Prettier
+- Formatage automatique du code
+- Configuration : `.prettierrc.json`
+- Exécution automatique avant chaque commit
+
+### ESLint
+- Règles de linting TypeScript et Angular
+- Configuration : `eslint.config.js`
+- Inclut les configurations recommandées ESLint, TSLint et NgLint
+
+### Husky
+Pre-commit hooks qui :
+- Vérifient que les fichiers de configuration ne sont pas modifiés
+- Exécutent Prettier et ESLint
+- Valident le nom de la branche
 
 ## Tests
-1. Unit & Integration tests
-   - Jest is used for both **unit** and **integration** tests.
-   - To test the application, run the following command: `npm run test`. 
 
+### Tests unitaires et d'intégration (Jest)
+```bash
+npm run test
+```
 
-2. End to End tests
-   - Cypress is used for End to End tests.
-   - To test the application, run any command starting with `e2e`. 
-   - You will choose the right command based on the environment you want to test.
-   - `e2e:ui` related commands will trigger Cypress with its user interface.
-   - `e2e:ci` related commands will trigger Cypress in command line interface.
-   - It's not anticipated to run your e2e tests in the development environment since e2e is designed for build & production purposes.
+### Tests End-to-End (Cypress)
+```bash
+# Interface graphique
+npm run e2e:ui:staging
+
+# Ligne de commande (CI)
+npm run e2e:ci:staging
+```
+
+## Documentation
+
+Générer et consulter la documentation avec Compodoc :
+```bash
+npm run doc
+```
+Documentation accessible sur `http://127.0.0.1:8081`
+
+## Environnements
+
+| Environnement | Fichier de config | Usage |
+|---------------|-------------------|-------|
+| Development | `environment.development.ts` | Développement local |
+| Staging | `environment.staging.ts` | Tests et validation |
+| Production | `environment.production.ts` | Production |
 
 ## CI/CD
-- This project has a Dockerfile to build an image of the application
-- This project has a CI/CD pipeline in `source directory` > `.github` > `workflows`.
 
-Flow details: 
-- When a push is triggered on any branch (except staging or prod), the CI is triggered and run unit tests & integration tests.
-- When a push is triggered on staging, the CI is triggered and run unit tests, integration tests **and E2E tests**. 
-- If it fails, details can be found on the github repository > actions tab.
-- If everything is fine, then the CD is triggered and an image of the application is built with Docker and then deployed on DockerHub.
-- The VPS is configured to listen successfull pushes on staging branch by a webhook, and then pull the docker image from DockerHub, stops the current running docker container & start the new one.
-- User only need to refresh its browser & taadaa : the frontend application on staging environnement is now successfully deployed 🎉
+Pipeline GitHub Actions :
+1. **Push sur une branche** : Tests unitaires et d'intégration
+2. **Push sur staging** : Tests unitaires, d'intégration et E2E
+3. **Build réussi** : Construction de l'image Docker et déploiement sur DockerHub
+4. **Webhook** : Le VPS pull l'image et redémarre le container
 
-👉 The pipeline is the same with the production branch. 
+## Conventions Git
 
-## Happy coding 🔥🔥🔥
+### Nommage des branches
+Les branches doivent suivre le format validé par Husky (ex: `feature/issue-123/description`, `hotfix/issue-456/fix-bug`)
+
+### Protection des branches
+- `production`, `staging`, `development` : Push direct interdit
+- PR obligatoires avec review des contributeurs
+- PR vers `production` : Approbation du owner requise
+
